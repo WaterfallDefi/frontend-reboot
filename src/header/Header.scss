@@ -1,0 +1,90 @@
+.header-wrapper {
+  height: 64px;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white; //temp
+
+  .pc-left {
+    display: grid;
+    gap: 36px;
+    grid-auto-flow: column;
+    @media screen and (max-width: 1024px) {
+      display: none;
+    }
+
+    .waterfalldefi {
+      width: 84px;
+      height: 42px;
+      background: url("../../public/waterfalldefi.png");
+      background-size: cover;
+    }
+
+    .menu-block-wrapper {
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      position: relative;
+      @media screen and (max-width: 1024px) {
+        padding: 6px 0;
+      }
+      :hover {
+        & > div {
+          display: block;
+        }
+      }
+      color: rgba(51, 51, 51, 0.7);
+
+      .link {
+        color: grey;
+        text-decoration: none;
+        &[data-selected="true"] {
+          color: blue; //temp
+        }
+      }
+    }
+  }
+  .mobile-left {
+    display: none;
+    @media screen and (max-width: 1024px) {
+      display: block;
+    }
+  }
+  .right {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+
+    .wallet-wrapper {
+      display: flex;
+      align-items: center;
+      .network {
+        padding: 0 16px 0 0;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: grey; //temp
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        transform: translateX(10px);
+        white-space: normal;
+      }
+      .connect-wallet-btn {
+        border-radius: 8px;
+        height: 40px;
+        border: 0;
+        padding: 0 24px;
+        font-weight: 400;
+        font-size: 16px;
+        color: white; //temp
+        background-color: blue; //temp
+      }
+    }
+  }
+}
