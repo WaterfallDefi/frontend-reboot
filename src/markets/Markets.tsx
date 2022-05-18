@@ -13,22 +13,19 @@ const Markets: React.FC<Props> = ({}) => {
           <span>Asset</span>
         </div>
         <div className="header">
-          <span>Cycle</span>
+          <span>Lock-up period</span>
         </div>
         <div className="header">
-          <span>Tranche</span>
+          <span>Deposit APR</span>
         </div>
         <div className="header">
-          <span>APR</span>
-        </div>
-        <div className="header">
-          <span>Principal</span>
+          <span>TVL</span>
         </div>
         <div className="header">
           <span>Status</span>
         </div>
         <div className="header last">
-          <span>Yield</span>
+          <span>Action</span>
         </div>
       </div>
     </div>
