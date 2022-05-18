@@ -22,5 +22,34 @@
     max-width: 1248px;
     margin: 0 auto;
     min-height: 100vh;
+
+    .information {
+      display: flex;
+      padding-top: 37px;
+
+      .block-wrapper {
+        display: grid;
+        gap: 40px;
+        grid-auto-flow: column;
+        @media screen and (max-width: 768px) {
+          grid-auto-flow: row;
+        }
+        .block {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          font-size: 14px;
+          span:last-child {
+            color: grey; //temp
+          }
+          :last-child {
+            span:last-child {
+              font-size: 16px;
+              color: blue; //temp
+            }
+          }
+        }
+      }
+    }
   }
 }
