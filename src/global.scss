@@ -34,3 +34,18 @@
     }
   }
 }
+
+@mixin table-row() {
+  display: flex;
+  align-items: center;
+  border-radius: 12px;
+  height: 127px;
+  background-color: rgb(245, 250, 255);
+  margin: 0 20px;
+  .col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+  }
+}

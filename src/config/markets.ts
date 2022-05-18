@@ -38,13 +38,12 @@ import {
   BUSDTriple_VenusStrategyAddress,
   BUSDTriple_StargateStrategyAddress,
 } from "./address";
-import { abi as TranchesAbi } from "./abis/TrancheMaster.json";
-//we will need this
-import { abi as MC_TranchesAbi } from "./abis/MC_TrancheMaster.json";
-import { abi as AR_TranchesAbi } from "./abis/AR_TrancheMaster.json";
-import { abi as MasterChefAbi } from "./abis/MasterChef.json";
-import { abi as WTFAbi } from "./abis/WTF.json";
-import { abi as AVAXTranchesAbi } from "./abis/AVAXTrancheMaster.json";
+import Tranches from "./abis/TrancheMaster.json";
+import MC_Tranches from "./abis/MC_TrancheMaster.json";
+import AR_Tranches from "./abis/AR_TrancheMaster.json";
+import MasterChef from "./abis/MasterChef.json";
+import WTF from "./abis/WTF.json";
+import AVAXTranches from "./abis/AVAXTrancheMaster.json";
 import AVAXTrancheMasterAutorollABI from "./abis/AVAXTrancheMasterAutoroll.json";
 import { Market, NETWORKS } from "../types";
 
@@ -70,12 +69,12 @@ export const MarketList: Market[] = [
     nextTime: "",
     address: DAIFallsTrancheMasterAddress2[NETWORK],
     abi: AVAXTrancheMasterAutorollABI,
-    masterChefAbi: MasterChefAbi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: DAIFallsMasterWTFAddress2[NETWORK],
     pools: [],
     depositAssetAddress: DAI_E_DepositAddress[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Benqi DAI.e",
@@ -111,12 +110,12 @@ export const MarketList: Market[] = [
     nextTime: "",
     address: WAVAXFallsTrancheMasterAddress2[NETWORK],
     abi: AVAXTrancheMasterAutorollABI,
-    masterChefAbi: MasterChefAbi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: WAVAXFallsMasterWTFAddress2[NETWORK],
     pools: [],
     depositAssetAddress: WAVAXDepositAddress[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Benqi AVAX",
@@ -151,13 +150,13 @@ export const MarketList: Market[] = [
     status: "",
     nextTime: "",
     address: DAIFallsTrancheMasterAddress[NETWORK],
-    abi: AVAXTranchesAbi,
-    masterChefAbi: MasterChefAbi,
+    abi: AVAXTranches.abi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: DAIFallsMasterWTFAddress[NETWORK],
     pools: [],
     depositAssetAddress: DAI_E_DepositAddress[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Benqi DAI.e",
@@ -192,13 +191,13 @@ export const MarketList: Market[] = [
     status: "",
     nextTime: "",
     address: WAVAXFallsTrancheMasterAddress[NETWORK],
-    abi: AVAXTranchesAbi,
-    masterChefAbi: MasterChefAbi,
+    abi: AVAXTranches.abi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: WAVAXFallsMasterWTFAddress[NETWORK],
     pools: [],
     depositAssetAddress: WAVAXDepositAddress[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Benqi AVAX",
@@ -233,13 +232,13 @@ export const MarketList: Market[] = [
     status: "",
     nextTime: "",
     address: BUSD4_TrancheMaster[NETWORK],
-    abi: AR_TranchesAbi,
-    masterChefAbi: MasterChefAbi,
+    abi: AR_Tranches.abi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: BUSD4_MasterWTF[NETWORK],
     pools: [],
     depositAssetAddress: BUSDAddress[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Alpaca BUSD",
@@ -274,13 +273,13 @@ export const MarketList: Market[] = [
     status: "",
     nextTime: "",
     address: BULL_BNB_TrancheMasterAddress[NETWORK],
-    abi: MC_TranchesAbi,
-    masterChefAbi: MasterChefAbi,
+    abi: MC_Tranches.abi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: BULL_BNB_WTFMasterAddress[NETWORK],
     pools: [],
     depositAssetAddress: "",
     depositAssetAddresses: [BUSDAddress[NETWORK], USDT_Address_BNB[NETWORK]],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Alpaca BUSD:BNB",
@@ -314,13 +313,13 @@ export const MarketList: Market[] = [
     status: "",
     nextTime: "",
     address: BEAR_BNB_TrancheMasterAddress[NETWORK],
-    abi: TranchesAbi,
-    masterChefAbi: MasterChefAbi,
+    abi: Tranches.abi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: BEAR_BNB_WTFMasterAddress[NETWORK],
     pools: [],
     depositAssetAddress: WBNB_Address[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Alpaca BNB:BUSD",
@@ -354,13 +353,13 @@ export const MarketList: Market[] = [
     status: "",
     nextTime: "",
     address: BUSDTripleStratTrancheMasterAddress[NETWORK],
-    abi: AR_TranchesAbi,
-    masterChefAbi: MasterChefAbi,
+    abi: AR_Tranches.abi,
+    masterChefAbi: MasterChef.abi,
     masterChefAddress: BUSDTripleStratMasterWTFAddress[NETWORK],
     pools: [],
     depositAssetAddress: BUSDAddress[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTFAbi,
+    depositAssetAbi: WTF.abi,
     strategyFarms: [
       {
         farmName: "Alpaca BUSD",
