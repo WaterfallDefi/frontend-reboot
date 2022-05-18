@@ -281,8 +281,6 @@ export const MarketList: Market[] = [
     depositAssetAddress: "",
     depositAssetAddresses: [BUSDAddress[NETWORK], USDT_Address_BNB[NETWORK]],
     depositAssetAbi: WTFAbi,
-    // strategyAddress: StrategyAddress[NETWORK],
-    // strategyAbi: StrategyAbi,
     strategyFarms: [
       {
         farmName: "Alpaca BUSD:BNB",
@@ -323,8 +321,6 @@ export const MarketList: Market[] = [
     depositAssetAddress: WBNB_Address[NETWORK],
     depositAssetAddresses: [],
     depositAssetAbi: WTFAbi,
-    // strategyAddress: StrategyAddress[NETWORK],
-    // strategyAbi: StrategyAbi,
     strategyFarms: [
       {
         farmName: "Alpaca BNB:BUSD",

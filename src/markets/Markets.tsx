@@ -1,4 +1,6 @@
 import "./Markets.scss";
+import { MarketList } from "../config/markets";
+import { Market } from "../types";
 
 type Props = {};
 
@@ -28,6 +30,9 @@ const Markets: React.FC<Props> = ({}) => {
           <span>Action</span>
         </div>
       </div>
+      {MarketList.map((m: Market) => (
+        <div />
+      ))}
     </div>
   );
 };
