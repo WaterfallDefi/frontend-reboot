@@ -1,3 +1,6 @@
+import { MarketList } from "../config/markets";
+import TableRow from "../shared/TableRow";
+import { Market } from "../types";
 import "./MyPortfolio.scss";
 
 type Props = {};
@@ -31,6 +34,20 @@ const MyPortfolio: React.FC<Props> = ({}) => {
           <span>Yield</span>
         </div>
       </div>
+      {MarketList.map((m: Market) => (
+        <TableRow
+          data={{
+            portfolio: m.portfolio,
+            assets: "asdf",
+            duration: "asdf",
+            apr: "asdf",
+            tvl: "asdf",
+            status: "asdf",
+            action: "asdf",
+            yield: "asdf",
+          }}
+        />
+      ))}
     </div>
   );
 };

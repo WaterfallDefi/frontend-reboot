@@ -1,8 +1,15 @@
 .tutorial-wrapper {
-  height: 666px;
+  height: 800px;
   overflow: hidden;
+  transition: height 0.25s linear;
+
+  &.collapsed {
+    height: 120px;
+  }
+
   .tutorial-banner {
     display: flex;
+    justify-content: center;
     margin-top: 20px;
     margin-bottom: 100px;
 
@@ -23,7 +30,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 60px;
+      margin-top: 120px;
 
       h1 {
         font-size: 36px;
@@ -57,8 +64,43 @@
         }
       }
     }
+    .mountain {
+      margin-top: 100px;
+
+      svg {
+        padding-left: 40px;
+      }
+
+      .claim {
+        background-color: white; //temp
+        color: blue;
+        padding: 18px 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid blue; //temp
+        border-radius: 8px;
+        position: relative;
+        align-items: center;
+        transform: translateY(-5px);
+
+        .label {
+          margin-bottom: 12px;
+          margin-right: 4px;
+          font-size: 12px;
+        }
+        .weekly-reward {
+          font-size: 20;
+          font-weight: 600;
+          text-align: center;
+          @media screen and (max-width: 678px) {
+            font-size: 12;
+          }
+        }
+      }
+    }
   }
-  .claim-wrapper {
+  .guide-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -112,16 +154,27 @@
         .img-wrapper {
           display: flex;
           justify-content: center;
-
-          align-items: center;
-          & > svg {
+          .img {
             height: 74px;
             width: 74px;
-          }
-          @media screen and (max-width: 768px) {
-            & > svg {
+            @media screen and (max-width: 768px) {
               height: 48px;
               width: 48px;
+            }
+            &.deposit {
+              background: url("../../public/deposit.png");
+              background-size: cover;
+              background-position: center;
+            }
+            &.wait {
+              background: url("../../public/wait.png");
+              background-size: cover;
+              background-position: center;
+            }
+            &.withdraw {
+              background: url("../../public/withdraw.png");
+              background-size: cover;
+              background-position: center;
             }
           }
         }
@@ -145,11 +198,20 @@
       }
     }
   }
-  .guide {
-    position: relative;
-    margin-bottom: 90px;
-    @media screen and (max-width: 1024px) {
-      margin-bottom: 45px;
+  .collapse-control {
+    right: 24px;
+    width: 100%;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    &.collapse {
+      position: relative;
+      bottom: 0;
+    }
+    &.uncollapse {
+      position: absolute;
+      top: 80px;
     }
   }
 }

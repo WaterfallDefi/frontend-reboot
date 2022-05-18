@@ -7,4 +7,13 @@
   .header-row {
     @include header-row;
   }
+  .table-row {
+    @include table-row;
+  }
+  .table-row,
+  .header-row {
+    div {
+      width: 150px;
+    }
+  }
 }

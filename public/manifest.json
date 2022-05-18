@@ -8,14 +8,24 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "waterfalldefi.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "506x253"
     },
     {
-      "src": "logo512.png",
+      "src": "deposit.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "74x74"
+    },
+    {
+      "src": "wait.png",
+      "type": "image/png",
+      "sizes": "74x74"
+    },
+    {
+      "src": "withdraw.png",
+      "type": "image/png",
+      "sizes": "74x74"
     }
   ],
   "start_url": ".",
