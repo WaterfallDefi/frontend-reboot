@@ -110,6 +110,17 @@ const MarketDetail: React.FC<Props> = ({}) => {
               <div className="progress-bar" />
             </div>
           </div>
+          <div className="approve-card">
+            <div className="row">
+              <div>Wallet Balance</div>
+              <div>100,000</div>
+            </div>
+            <div className="row">
+              <div>Remaining</div>
+              <div>100,000</div>
+            </div>
+            <div className="separator" />
+          </div>
         </div>
       </div>
     </div>
