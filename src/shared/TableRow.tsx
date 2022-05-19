@@ -1,6 +1,12 @@
-type Props = { data: any };
+import React from "react";
+import { Market } from "../types";
 
-const TableRow: React.FC<Props> = ({ data }) => {
+type Props = {
+  data: any;
+  setSelectedMarket?: React.Dispatch<React.SetStateAction<Market | undefined>>;
+};
+
+const TableRow: React.FC<Props> = ({ data, setSelectedMarket }) => {
   const cols = [];
   for (const key in data) {
     if (Object.prototype.hasOwnProperty.call(data, key)) {
@@ -9,7 +15,12 @@ const TableRow: React.FC<Props> = ({ data }) => {
     }
   }
   return (
-    <div className="table-row">
+    <div
+      className="table-row"
+      onClick={() => {
+        setSelectedMarket && setSelectedMarket(data);
+      }}
+    >
       {cols.map((c) => (
         <div className="col">{c}</div>
       ))}

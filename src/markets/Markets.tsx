@@ -3,15 +3,16 @@ import { MarketList } from "../config/markets";
 import { Market } from "../types";
 import TableRow from "../shared/TableRow";
 import { useState } from "react";
+import MarketDetail from "./subcomponents/MarketDetail";
 
 type Props = {};
 
 const Markets: React.FC<Props> = ({}) => {
-  const [marketSelected, setMarketSelected] = useState<boolean>(false);
+  const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   return (
     <div className="markets-wrapper">
-      {!marketSelected ? (
+      {!selectedMarket ? (
         <div className="header-row">
           <div className="header first">
             <span>Portfolio Name</span>
@@ -36,9 +37,10 @@ const Markets: React.FC<Props> = ({}) => {
           </div>
         </div>
       ) : null}
-      {!marketSelected
+      {!selectedMarket
         ? MarketList.map((m: Market) => (
             <TableRow
+              setSelectedMarket={setSelectedMarket}
               data={{
                 portfolio: m.portfolio,
                 assets: "asdf",
@@ -51,6 +53,7 @@ const Markets: React.FC<Props> = ({}) => {
             />
           ))
         : null}
+      {selectedMarket ? <MarketDetail /> : null}
     </div>
   );
 };
