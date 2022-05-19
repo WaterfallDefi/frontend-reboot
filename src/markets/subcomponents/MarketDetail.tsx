@@ -1,4 +1,4 @@
-import { Mountain } from "../../tutorial/svgs/Mountain";
+import { Hill } from "../svgs/Hill";
 
 type Props = {};
 
@@ -57,7 +57,7 @@ const MarketDetail: React.FC<Props> = ({}) => {
       </div>
       <div className="deposit">
         <div className="next-cycle-wrapper">
-          <Mountain />
+          <Hill />
           <div className="next-cycle">Next Cycle</div>
           <div className="active-cycle">Active Cycle</div>
           <div className="button">Remind Me</div>
