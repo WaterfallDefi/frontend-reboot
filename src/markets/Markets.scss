@@ -217,6 +217,95 @@
         }
       }
       .deposit-item {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-column-gap: 24px;
+        @media screen and (max-width: 675px) {
+          grid-template-columns: "none";
+          grid-row-gap: 20px;
+        }
+        .tranches {
+          display: grid;
+          grid-template-rows: 1fr 1fr 1fr;
+          grid-row-gap: 20px;
+
+          .tranche {
+            padding: 20px;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            border: grey; //temp
+            box-sizing: border-box;
+            border-radius: 8px;
+            background: white; //temp
+            &[data-disabled="false"][data-selected="true"] {
+              border-color: blue; //temp
+              background: grey; //temp
+            }
+
+            &[data-disabled="false"] {
+              :hover {
+                background: grey; //temp
+              }
+            }
+
+            &[data-disabled="true"] {
+              opacity: 0.5;
+              cursor: default;
+            }
+            @media screen and (max-width: 768px) {
+              & {
+                height: auto;
+              }
+            }
+
+            .tranche-name {
+              font-size: 14px;
+              line-height: 18px;
+              color: grey; //temp
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            .apr {
+              font-size: 16px;
+              line-height: 22px;
+              color: orange; //temp
+              margin: 10px 0;
+            }
+            .risk-text {
+              font-size: 12px;
+              line-height: 125%;
+              letter-spacing: -0.015em;
+              color: grey;
+            }
+            .status {
+              display: flex;
+              justify-content: space-between;
+              .remaining {
+                font-size: 12px;
+                line-height: 16px;
+                letter-spacing: -0.015em;
+                color: grey; //temp
+              }
+            }
+            .progress-bar {
+              margin: 10px 0;
+              border-radius: 2px;
+              width: 100%;
+              height: 6px;
+              position: relative;
+              background-color: grey;
+              &:after {
+                content: "";
+                background-color: orange;
+                width: 100%; //var
+                height: 6px;
+                position: absolute;
+              }
+            }
+          }
+        }
       }
     }
   }

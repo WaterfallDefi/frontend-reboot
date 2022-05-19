@@ -77,7 +77,40 @@ const MarketDetail: React.FC<Props> = ({}) => {
             </div>
           </div>
         </div>
-        <div className="deposit-item"></div>
+        <div className="deposit-item">
+          <div className="tranches">
+            <div className="tranche one">
+              <div className="tranche-name">Senior</div>
+              <div className="apr">APR 3.5%</div>
+              <div className="risk-text">Low Risk; Fixed</div>
+              <div className="status">
+                <div className="risk-text">TVL: $1</div>
+                <div className="remaining">Remaining: 1</div>
+              </div>
+              <div className="progress-bar"></div>
+            </div>
+            <div className="tranche two">
+              <div className="tranche-name">Fixed</div>
+              <div className="apr">APR 5%</div>
+              <div className="risk-text">Medium Risk; Fixed</div>
+              <div className="status">
+                <div className="risk-text">TVL: $3</div>
+                <div className="remaining">Remaining: 3</div>
+              </div>
+              <div className="progress-bar"></div>
+            </div>
+            <div className="tranche three">
+              <div className="tranche-name">Mezzanine</div>
+              <div className="apr">APR 7.8%</div>
+              <div className="risk-text">Multiple Leverage; Variable</div>
+              <div className="status">
+                <div className="risk-text">TVL: 5%</div>
+                <div className="remaining">Remaining: 5</div>
+              </div>
+              <div className="progress-bar" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
