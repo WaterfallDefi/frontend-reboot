@@ -7,13 +7,19 @@ type Props = {
 };
 
 const TableRow: React.FC<Props> = ({ data, setSelectedMarket }) => {
-  const cols = [];
-  for (const key in data) {
-    if (Object.prototype.hasOwnProperty.call(data, key)) {
-      const element = data[key];
-      cols.push(element);
+  const columns = () => {
+    const elements = [];
+    for (const key in data) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        const columnData = data[key];
+        //condition based on key
+        const element = <div className="col">{columnData}</div>;
+        elements.push(element);
+      }
     }
-  }
+    return elements;
+  };
+
   return (
     <div
       className="table-row"
@@ -21,9 +27,7 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket }) => {
         setSelectedMarket && setSelectedMarket(data);
       }}
     >
-      {cols.map((c) => (
-        <div className="col">{c}</div>
-      ))}
+      {columns()}
     </div>
   );
 };
