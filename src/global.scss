@@ -50,6 +50,7 @@
     justify-content: center;
     flex-grow: 1;
 
+    // refactor: separate these into those relevant for markets, those relevant for portfolio
     .coin {
       height: 25px;
       width: 25px;

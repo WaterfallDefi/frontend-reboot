@@ -17,18 +17,20 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket }) => {
           case "assets":
             elements.push(
               <div className="col">
-                {columnData.map((assetName: string) => (
+                {columnData.map((assetName: string) => [
                   <div
+                    key={assetName + "-img"}
                     className="coin"
                     style={{ backgroundImage: `url(/coins/${assetName}.png)` }}
-                  />
-                ))}
+                  />,
+                  <span key={assetName + "-span"}>{assetName}</span>,
+                ])}
               </div>
             );
+            break;
+          default:
+            elements.push(<div className="col">{columnData}</div>);
         }
-
-        const element = <div className="col">{columnData}</div>;
-        elements.push(element);
       }
     }
     return elements;
