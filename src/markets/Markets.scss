@@ -7,9 +7,15 @@
   .header-row {
     @include header-row;
   }
-  .table-row {
-    @include table-row;
+  .row-wrapper {
+    .table-row {
+      @include table-row;
+      &:hover {
+        border: 2px solid lightgrey; //temp
+      }
+    }
   }
+
   .table-row,
   .header-row {
     div {

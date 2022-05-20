@@ -46,6 +46,7 @@ const MyPortfolio: React.FC<Props> = ({}) => {
             action: "asdf",
             yield: "asdf",
           }}
+          openFold={true}
         />
       ))}
     </div>
