@@ -49,5 +49,12 @@
     align-items: center;
     justify-content: center;
     flex-grow: 1;
+
+    .coin {
+      height: 25px;
+      width: 25px;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
   }
 }

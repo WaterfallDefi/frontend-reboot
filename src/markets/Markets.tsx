@@ -43,7 +43,7 @@ const Markets: React.FC<Props> = ({}) => {
               setSelectedMarket={setSelectedMarket}
               data={{
                 portfolio: m.portfolio,
-                assets: "asdf",
+                assets: m.assets,
                 duration: "asdf",
                 apr: "asdf",
                 tvl: "asdf",

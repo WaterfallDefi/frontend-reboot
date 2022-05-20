@@ -79,8 +79,8 @@ export const Hill = () => (
         y2="118.406"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#8CE5F3" stop-opacity="0.2" />
-        <stop offset="0.45" stop-color="#8CE5F3" stop-opacity="0" />
+        <stop stopColor="#8CE5F3" stop-opacity="0.2" />
+        <stop offset="0.45" stopColor="#8CE5F3" stop-opacity="0" />
       </linearGradient>
       <linearGradient
         id="mountain2_linear"
@@ -90,9 +90,9 @@ export const Hill = () => (
         y2="16.7473"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0.03" stop-color="#8CE5F3" stop-opacity="0.4" />
-        <stop offset="0.25" stop-color="#8CE5F3" stop-opacity="0.2" />
-        <stop offset="0.8" stop-color="#8CE5F3" stop-opacity="0" />
+        <stop offset="0.03" stopColor="#8CE5F3" stop-opacity="0.4" />
+        <stop offset="0.25" stopColor="#8CE5F3" stop-opacity="0.2" />
+        <stop offset="0.8" stopColor="#8CE5F3" stop-opacity="0" />
       </linearGradient>
       <linearGradient
         id="mountain1_linear"
@@ -102,9 +102,9 @@ export const Hill = () => (
         y2="3870.75"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0.03" stop-color="#8CE5F3" stop-opacity="0.4" />
-        <stop offset="0.25" stop-color="#8CE5F3" stop-opacity="0.2" />
-        <stop offset="0.8" stop-color="#8CE5F3" stop-opacity="0" />
+        <stop offset="0.03" stopColor="#8CE5F3" stop-opacity="0.4" />
+        <stop offset="0.25" stopColor="#8CE5F3" stop-opacity="0.2" />
+        <stop offset="0.8" stopColor="#8CE5F3" stop-opacity="0" />
       </linearGradient>
     </defs>
   </svg>

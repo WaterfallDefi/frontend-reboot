@@ -616,9 +616,9 @@ export const Mountain = () => (
         y2="17.2439"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0.1097" stop-color="#FFFB74" />
-        <stop offset="0.4851" stop-color="#FFFA00" />
-        <stop offset="0.9305" stop-color="#FFC921" />
+        <stop offset="0.1097" stopColor="#FFFB74" />
+        <stop offset="0.4851" stopColor="#FFFA00" />
+        <stop offset="0.9305" stopColor="#FFC921" />
       </linearGradient>
       <radialGradient
         id="paint1_radial"
@@ -629,7 +629,7 @@ export const Mountain = () => (
         gradientTransform="translate(41.33 17.006) rotate(180) scale(10.1777 10.3129)"
       >
         <stop offset="0.4146" />
-        <stop offset="0.8549" stop-color="white" />
+        <stop offset="0.8549" stopColor="white" />
       </radialGradient>
       <radialGradient
         id="paint2_radial"
@@ -639,8 +639,8 @@ export const Mountain = () => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(41.33 17.006) rotate(180) scale(10.1777 10.3129)"
       >
-        <stop offset="0.4146" stop-color="#FFFB62" />
-        <stop offset="0.8549" stop-color="#F39F46" />
+        <stop offset="0.4146" stopColor="#FFFB62" />
+        <stop offset="0.8549" stopColor="#F39F46" />
       </radialGradient>
     </defs>
   </svg>

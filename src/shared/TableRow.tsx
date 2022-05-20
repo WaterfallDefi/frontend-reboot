@@ -12,7 +12,21 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket }) => {
     for (const key in data) {
       if (Object.prototype.hasOwnProperty.call(data, key)) {
         const columnData = data[key];
-        //condition based on key
+
+        switch (key) {
+          case "assets":
+            elements.push(
+              <div className="col">
+                {columnData.map((assetName: string) => (
+                  <div
+                    className="coin"
+                    style={{ backgroundImage: `url(/coins/${assetName}.png)` }}
+                  />
+                ))}
+              </div>
+            );
+        }
+
         const element = <div className="col">{columnData}</div>;
         elements.push(element);
       }
