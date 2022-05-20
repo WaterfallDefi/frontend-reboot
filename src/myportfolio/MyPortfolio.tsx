@@ -38,11 +38,11 @@ const MyPortfolio: React.FC<Props> = ({}) => {
         <TableRow
           data={{
             portfolio: m.portfolio,
-            assets: "asdf",
+            assets: m.assets,
             duration: "asdf",
             apr: "asdf",
-            tvl: "asdf",
-            status: "asdf",
+            tvl: "$100,000",
+            status: "Pending",
             action: "asdf",
             yield: "asdf",
           }}

@@ -29,11 +29,8 @@ const Markets: React.FC<Props> = ({}) => {
           <div className="header">
             <span>TVL</span>
           </div>
-          <div className="header">
-            <span>Status</span>
-          </div>
           <div className="header last">
-            <span>Action</span>
+            <span>Status</span>
           </div>
         </div>
       ) : null}
@@ -44,11 +41,13 @@ const Markets: React.FC<Props> = ({}) => {
               data={{
                 portfolio: m.portfolio,
                 assets: m.assets,
-                duration: "asdf",
+                duration:
+                  Number(172800) / 86400 >= 1
+                    ? Number(172800) / 86400 + " Days"
+                    : Number(172800) / 60 + " Mins",
                 apr: "asdf",
-                tvl: "asdf",
-                status: "asdf",
-                action: "asdf",
+                tvl: "$100,000",
+                status: "Active",
               }}
             />
           ))

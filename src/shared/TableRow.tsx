@@ -28,6 +28,40 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket }) => {
               </div>
             );
             break;
+          case "apr":
+            elements.push(
+              <div className="col apr">
+                <div className="tranche-apr">
+                  <span>Senior</span>
+                  <div style={{ color: "orange" }}>
+                    {/* ^ color is temp */}
+                    10% APR
+                  </div>
+                </div>
+                <div className="tranche-apr">
+                  <span>Mezzanine</span>
+                  <div style={{ color: "orange" }}>
+                    {/* ^ color is temp */}
+                    10% APR
+                  </div>
+                </div>
+                <div className="tranche-apr">
+                  <span>Junior</span>
+                  <div style={{ color: "orange" }}>
+                    {/* ^ color is temp */}
+                    10% APR
+                  </div>
+                </div>
+              </div>
+            );
+            break;
+          case "status":
+            elements.push(
+              <div className="col">
+                <div className={"status " + columnData}>{columnData}</div>
+              </div>
+            );
+            break;
           default:
             elements.push(<div className="col">{columnData}</div>);
         }

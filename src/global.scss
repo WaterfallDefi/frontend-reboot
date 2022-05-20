@@ -50,12 +50,86 @@
     justify-content: center;
     flex-grow: 1;
 
-    // refactor: separate these into those relevant for markets, those relevant for portfolio
     .coin {
       height: 25px;
       width: 25px;
       background-size: cover;
       background-repeat: no-repeat;
+    }
+
+    &.apr {
+      display: flex;
+      flex-direction: column;
+
+      .tranche-apr {
+        display: flex;
+        font-size: 12px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        display: flex;
+        align-items: center;
+        & > span:nth-of-type(1) {
+          width: 70px;
+          text-align: left;
+        }
+        & > span:nth-of-type(2) {
+          text-align: left;
+        }
+        & > span {
+          min-width: 40px;
+          margin-left: 5px;
+        }
+        & > span:nth-of-type(3) {
+          display: grid;
+          gap: 5px;
+          grid-auto-flow: column;
+          background-color: white; //temp
+          border-radius: 4px;
+          padding: 5px;
+          text-align: center;
+          color: blue; //temp
+          min-width: 60px;
+          margin-left: 0px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          & > div {
+            display: flex;
+            align-items: center;
+          }
+        }
+        & > div > div {
+          display: flex;
+          align-items: center;
+        }
+        & svg {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .status {
+      border-radius: 4px;
+      height: 24px;
+      line-height: 24px;
+      border: 0;
+      font-weight: 600;
+      font-size: 12px;
+      display: inline-flex;
+      min-width: 60px;
+      justify-content: center;
+      &.Expired {
+        background: pink; //temp
+        color: red; //temp
+      }
+      &.Pending {
+        background: rgba(252, 181, 0, 0.1);
+        color: #fcb500;
+      }
+      &.Active {
+        background: rgba(0, 184, 184, 0.1);
+        color: #00b8b8;
+      }
     }
   }
 }
