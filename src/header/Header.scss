@@ -1,3 +1,5 @@
+@import "../global.scss";
+
 .header-wrapper {
   width: 100%;
   position: fixed;
@@ -9,7 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white; //temp
+  background: $base-color;
 
   .pc-left {
     display: grid;
@@ -41,13 +43,12 @@
           display: block;
         }
       }
-      color: rgba(51, 51, 51, 0.7);
 
       .link {
-        color: grey;
+        color: $darktext-color;
         text-decoration: none;
         &[data-selected="true"] {
-          color: blue; //temp
+          color: $highlight-color;
         }
       }
     }
@@ -75,7 +76,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: grey; //temp
+        background: $lighttext-color;
         border-top-left-radius: 8px;
         border-bottom-left-radius: 8px;
         transform: translateX(10px);
@@ -88,8 +89,9 @@
         padding: 0 24px;
         font-weight: 400;
         font-size: 16px;
-        color: white; //temp
-        background-color: blue; //temp
+        color: $base-color;
+        background-color: $highlight-color;
+        z-index: 1;
       }
     }
   }

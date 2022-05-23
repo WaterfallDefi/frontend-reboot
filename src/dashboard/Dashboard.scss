@@ -145,10 +145,10 @@
         height: 75px;
         display: flex;
         align-items: center;
-        border-bottom: 1px solid grey; //temp
+        border-bottom: 1px solid $lighttext-color;
         font-size: 24px;
         line-height: 31px;
-        color: $darktext-color; //temp
+        color: $darktext-color;
         font-weight: 500;
       }
     }
