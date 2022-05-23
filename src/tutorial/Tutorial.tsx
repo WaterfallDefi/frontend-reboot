@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { ArrowLine } from "./svgs/ArrowLine";
 import { Boxes } from "./svgs/Boxes";
 import { Mountain } from "./svgs/Mountain";
 import "./Tutorial.scss";
@@ -7,10 +9,24 @@ type Props = {};
 
 const Tutorial: React.FC<Props> = ({}) => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
+  const location = useLocation();
+
+  const scrollToRelevant = useCallback(() => {
+    window.scrollTo(0, collapsed ? 0 : 800);
+  }, [collapsed]);
+
+  useEffect(() => {
+    scrollToRelevant();
+  }, [location]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className={"tutorial-wrapper" + (collapsed ? " collapsed" : "")}>
       <div className="tutorial-banner">
+        ,
         <div className="boxes">
           <Boxes />
         </div>
@@ -42,6 +58,7 @@ const Tutorial: React.FC<Props> = ({}) => {
               Choose the tranche that suits you and get started!
             </p>
           </div>
+          <ArrowLine />
           <div className="col">
             <div className="img-wrapper">
               <div className="wait img" />
@@ -52,6 +69,7 @@ const Tutorial: React.FC<Props> = ({}) => {
               deployment.
             </p>
           </div>
+          <ArrowLine />
           <div className="col">
             <div className="img-wrapper">
               <div className="withdraw img" />

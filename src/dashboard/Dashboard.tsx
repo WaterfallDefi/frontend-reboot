@@ -1,14 +1,19 @@
 import "./Dashboard.scss";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
+import { useEffect } from "react";
 
 type Props = {};
 
 const Dashboard: React.FC<Props> = ({}) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="dashboard-wrapper">
       <div className="dash-banner">
-        <div className="dash-banner-img-wrapper"></div>
-        {/* ...what linear gradient?? */}
+        <div className="dash-banner-img" />
+        <div className="linear-gradient" />
         <h1>Dashboard</h1>
         <div className="content">
           <div className="block">

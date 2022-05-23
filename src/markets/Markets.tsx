@@ -37,6 +37,7 @@ const Markets: React.FC<Props> = ({}) => {
       {!selectedMarket
         ? MarketList.map((m: Market) => (
             <TableRow
+              key={m.portfolio}
               setSelectedMarket={setSelectedMarket}
               data={{
                 portfolio: m.portfolio,

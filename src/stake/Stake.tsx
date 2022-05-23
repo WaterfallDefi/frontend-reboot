@@ -1,8 +1,13 @@
+import { useEffect } from "react";
 import "./Stake.scss";
 
 type Props = {};
 
 const Stake: React.FC<Props> = ({}) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="stake-wrapper">
       <div className="body-wrapper">

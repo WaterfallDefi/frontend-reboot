@@ -1,3 +1,5 @@
+@import "../global.scss";
+
 .dashboard-wrapper {
   max-width: 1048px;
   padding: 180px 15px 144px;
@@ -9,16 +11,35 @@
   .dash-banner {
     border-radius: 24px;
     padding: 32px 44px 102px;
-    background: lightcyan; //temp
+    background: $layer-color;
     position: relative;
-    color: grey; //temp
-    .dash-banner-img-wrapper {
+    color: $darktext-color;
+    .dash-banner-img {
       position: absolute;
+      height: 370px;
+      width: 420px;
       right: 0;
       bottom: 56px;
+      background-image: url("../../public/DashboardImage.svg");
+      background-size: contain;
       @media screen and (max-width: 876px) {
         display: none;
       }
+    }
+    .linear-gradient {
+      width: 95%;
+      height: 280px;
+      background: linear-gradient(
+        90deg,
+        rgba(252, 182, 4, 0.1) 14.14%,
+        rgba(3, 161, 75, 0.1) 45.76%,
+        rgba(12, 108, 254, 0.1) 84.73%
+      );
+      filter: blur(100px);
+      position: absolute;
+      left: 50%;
+      bottom: 100px;
+      transform: matrix(-1, 0, 0, 1, 0, 0) translate(50%, 100%);
     }
     h1 {
       font-size: 36px;
@@ -44,22 +65,22 @@
           font-size: 16px;
           line-height: 20.8px;
           margin-bottom: 12px;
-          color: grey; //temp
-          .value {
-            font-size: 24px;
-            line-height: 31.2px;
-            font-weight: 600;
-          }
+          color: $lighttext-color;
+        }
+        .value {
+          font-size: 24px;
+          line-height: 31.2px;
+          font-weight: 600;
         }
       }
     }
   }
 
   .total-value-locked {
-    height: 143px;
+    height: 100px;
     border-radius: 24px;
     padding: 26px 0;
-    background: white; //temp
+    background: $base-color;
     position: relative;
     transform: translateY(-56px);
     display: flex;
@@ -79,7 +100,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: grey; //temp
+      color: rgb(44, 82, 144); //temp
       font-size: 32px;
       font-weight: 600;
       border-radius: 16px;
@@ -112,7 +133,7 @@
     }
     .announcements {
       border-radius: 24px;
-      background: white; //temp
+      background: $base-color;
       filter: drop-shadow(0px 4px 20px rgba(0, 108, 253, 0.04));
       padding: 0 24px;
       display: flex;
@@ -127,7 +148,7 @@
         border-bottom: 1px solid grey; //temp
         font-size: 24px;
         line-height: 31px;
-        color: grey; //temp
+        color: $darktext-color; //temp
         font-weight: 500;
       }
     }

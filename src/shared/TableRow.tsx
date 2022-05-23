@@ -19,7 +19,7 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket, openFold }) => {
         switch (key) {
           case "assets":
             elements.push(
-              <div className="col">
+              <div className="col" key={key}>
                 {columnData.map((assetName: string) => [
                   <div
                     key={assetName + "-img"}
@@ -33,7 +33,7 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket, openFold }) => {
             break;
           case "apr":
             elements.push(
-              <div className="col apr">
+              <div className="col apr" key={key}>
                 <div className="tranche-apr">
                   <span>Senior</span>
                   <div style={{ color: "orange" }}>
@@ -60,13 +60,17 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket, openFold }) => {
             break;
           case "status":
             elements.push(
-              <div className="col">
+              <div className="col" key={key}>
                 <div className={"status " + columnData}>{columnData}</div>
               </div>
             );
             break;
           default:
-            elements.push(<div className="col">{columnData}</div>);
+            elements.push(
+              <div className="col" key={key}>
+                {columnData}
+              </div>
+            );
         }
       }
     }
