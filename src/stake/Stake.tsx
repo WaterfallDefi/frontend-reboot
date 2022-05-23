@@ -1,9 +1,14 @@
 import { useEffect } from "react";
+import { Mode } from "../WaterfallDefi";
 import "./Stake.scss";
 
-type Props = {};
+type Props = {
+  mode: Mode;
+};
 
-const Stake: React.FC<Props> = ({}) => {
+function Stake(props: Props) {
+  const { mode } = props;
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -74,6 +79,6 @@ const Stake: React.FC<Props> = ({}) => {
       </div>
     </div>
   );
-};
+}
 
 export default Stake;

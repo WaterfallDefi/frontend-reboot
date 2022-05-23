@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { Mode } from "../WaterfallDefi";
 import { ArrowLine } from "./svgs/ArrowLine";
 import { Boxes } from "./svgs/Boxes";
 import { Mountain } from "./svgs/Mountain";
 import "./Tutorial.scss";
 
-type Props = {};
+type Props = {
+  mode: Mode;
+};
 
-const Tutorial: React.FC<Props> = ({}) => {
+function Tutorial(props: Props) {
+  const { mode } = props;
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const location = useLocation();
 
@@ -47,7 +51,7 @@ const Tutorial: React.FC<Props> = ({}) => {
         </div>
       </div>
       <div className="guide-wrapper">
-        {!collapsed ? <div className="pre-row" /> : null}
+        {!collapsed ? <div className="linear-gradient" /> : null}
         <div className="row">
           <div className="col">
             <div className="img-wrapper">
@@ -99,6 +103,6 @@ const Tutorial: React.FC<Props> = ({}) => {
       ) : null}
     </div>
   );
-};
+}
 
 export default Tutorial;

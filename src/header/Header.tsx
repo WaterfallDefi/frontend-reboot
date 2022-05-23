@@ -1,10 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
+import { Mode } from "../WaterfallDefi";
 import "./Header.scss";
-import { Burger } from "./svgs/burger";
+//this is for mobile, do later
+// import { Burger } from "./svgs/burger";
 
-type Props = {};
+type Props = {
+  mode: Mode;
+};
 
-const Header: React.FC<Props> = ({}) => {
+function Header(props: Props) {
+  const { mode } = props;
+
   const location = useLocation();
   return (
     <div className="header-wrapper">
@@ -47,26 +53,16 @@ const Header: React.FC<Props> = ({}) => {
           </Link>
         </div>
         <div className="menu-block-wrapper">
-          <Link
-            className="link"
-            target="_blank"
-            rel="noopener noreferrer"
-            to={
-              "https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide"
-            }
-          >
+          <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">
             User Guide
-          </Link>
+          </a>
         </div>
       </div>
       <div className="mobile-left"></div>
       <div className="right">
         <div className="wallet-wrapper">
-          <div className="network">
-            <select className="network-menu">
-              <option value="avax">AVAX</option>
-              <option value="bnb">BNB</option>
-            </select>
+          <div className="network avax">
+            <div className="dropdown-triangle">▼</div>AVAX
           </div>
           <button className="connect-wallet-btn">Connect Wallet</button>
         </div>
@@ -80,6 +76,6 @@ const Header: React.FC<Props> = ({}) => {
       {/* <ConnectWalletModal/> */}
     </div>
   );
-};
+}
 
 export default Header;

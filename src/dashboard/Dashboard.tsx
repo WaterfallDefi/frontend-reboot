@@ -1,16 +1,20 @@
 import "./Dashboard.scss";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
 import { useEffect } from "react";
+import { Mode } from "../WaterfallDefi";
 
-type Props = {};
+type Props = {
+  mode: Mode;
+};
 
-const Dashboard: React.FC<Props> = ({}) => {
+function Dashboard(props: Props) {
+  const { mode } = props;
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className="dashboard-wrapper">
+    <div className={"dashboard-wrapper " + mode}>
       <div className="dash-banner">
         <div className="dash-banner-img" />
         <div className="linear-gradient" />
@@ -50,6 +54,6 @@ const Dashboard: React.FC<Props> = ({}) => {
       </div>
     </div>
   );
-};
+}
 
 export default Dashboard;

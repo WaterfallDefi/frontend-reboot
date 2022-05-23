@@ -1,11 +1,16 @@
 import { MarketList } from "../config/markets";
 import TableRow from "../shared/TableRow";
 import { Market } from "../types";
+import { Mode } from "../WaterfallDefi";
 import "./MyPortfolio.scss";
 
-type Props = {};
+type Props = {
+  mode: Mode;
+};
 
-const MyPortfolio: React.FC<Props> = ({}) => {
+function MyPortfolio(props: Props) {
+  const { mode } = props;
+
   return (
     <div className="my-portfolio-wrapper">
       <div className="header-row">
@@ -51,6 +56,6 @@ const MyPortfolio: React.FC<Props> = ({}) => {
       ))}
     </div>
   );
-};
+}
 
 export default MyPortfolio;

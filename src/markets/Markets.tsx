@@ -4,14 +4,18 @@ import { Market } from "../types";
 import TableRow from "../shared/TableRow";
 import { useState } from "react";
 import MarketDetail from "./subcomponents/MarketDetail";
+import { Mode } from "../WaterfallDefi";
 
-type Props = {};
+type Props = {
+  mode: Mode;
+};
 
-const Markets: React.FC<Props> = ({}) => {
+function Markets(props: Props) {
+  const { mode } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   return (
-    <div className="markets-wrapper">
+    <div className={"markets-wrapper " + mode}>
       {!selectedMarket ? (
         <div className="header-row">
           <div className="header first">
@@ -56,6 +60,6 @@ const Markets: React.FC<Props> = ({}) => {
       {selectedMarket ? <MarketDetail /> : null}
     </div>
   );
-};
+}
 
 export default Markets;

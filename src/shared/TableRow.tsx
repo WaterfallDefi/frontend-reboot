@@ -7,7 +7,8 @@ type Props = {
   openFold?: boolean; //temporary coding to boolean
 };
 
-const TableRow: React.FC<Props> = ({ data, setSelectedMarket, openFold }) => {
+function TableRow(props: Props) {
+  const { data, setSelectedMarket, openFold } = props;
   const [foldOpen, setFoldOpen] = useState<boolean>(false);
 
   const columns = () => {
@@ -131,6 +132,6 @@ const TableRow: React.FC<Props> = ({ data, setSelectedMarket, openFold }) => {
       ) : null}
     </div>
   );
-};
+}
 
 export default TableRow;

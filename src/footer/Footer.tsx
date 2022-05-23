@@ -1,10 +1,15 @@
+import { Mode } from "../WaterfallDefi";
 import "./Footer.scss";
 
-type Props = {};
+type Props = {
+  mode: Mode;
+};
 
-const Footer: React.FC<Props> = ({}) => {
+function Footer(props: Props) {
+  const { mode } = props;
+
   return (
-    <div className="footer-wrapper">
+    <div className={"footer-wrapper " + mode}>
       <div className="content-wrapper">
         <div className="logo-footer"></div>
         <div className="connect">
@@ -16,6 +21,6 @@ const Footer: React.FC<Props> = ({}) => {
       </div>
     </div>
   );
-};
+}
 
 export default Footer;
