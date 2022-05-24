@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Mode } from "../WaterfallDefi";
 import "./Header.scss";
@@ -6,14 +7,15 @@ import "./Header.scss";
 
 type Props = {
   mode: Mode;
+  setMode: React.Dispatch<React.SetStateAction<Mode>>;
 };
 
 function Header(props: Props) {
-  const { mode } = props;
+  const { mode, setMode } = props;
 
   const location = useLocation();
   return (
-    <div className="header-wrapper">
+    <div className={"header-wrapper " + mode}>
       <div className="pc-left">
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
@@ -66,6 +68,7 @@ function Header(props: Props) {
           </div>
           <button className="connect-wallet-btn">Connect Wallet</button>
         </div>
+        <div onClick={() => setMode(Mode.Dark)}>D</div>
       </div>
       {/* todo: mobile drawers */}
       {/* <header>

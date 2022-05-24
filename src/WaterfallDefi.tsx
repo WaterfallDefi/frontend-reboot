@@ -28,14 +28,14 @@ function WaterfallDefi() {
         <Route
           path="/"
           element={[
-            <Header key="header" mode={mode} />,
+            <Header key="header" mode={mode} setMode={setMode} />,
             <Dashboard key="dashboard" mode={mode} />,
           ]}
         />
         <Route
           path="/portfolio/markets"
           element={[
-            <Header key="header" mode={mode} />,
+            <Header key="header" mode={mode} setMode={setMode} />,
             <Tutorial key="tutorial" mode={mode} />,
             <Markets key="markets" mode={mode} />,
           ]}
@@ -43,14 +43,17 @@ function WaterfallDefi() {
         <Route
           path="/portfolio/my-portfolio"
           element={[
-            <Header key="header" mode={mode} />,
+            <Header key="header" mode={mode} setMode={setMode} />,
             <Tutorial key="tutorial" mode={mode} />,
             <MyPortfolio key="portfolio" mode={mode} />,
           ]}
         />
         <Route
           path="/stake"
-          element={[<Header key="header" mode={mode} />, <Stake mode={mode} />]}
+          element={[
+            <Header key="header" mode={mode} setMode={setMode} />,
+            <Stake mode={mode} />,
+          ]}
         />
       </Routes>
       <Footer mode={mode} />

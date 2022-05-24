@@ -1,8 +1,10 @@
 @import "../global.scss";
 
+$evenPadding: calc((100vw - 1048px) / 2);
+
 .dashboard-wrapper {
   max-width: 1048px;
-  padding: 180px 15px 144px;
+  padding: 180px $evenPadding 144px $evenPadding;
   margin: 0 auto;
   @media screen and (max-width: 876px) {
     padding-top: 100px;
@@ -13,7 +15,7 @@
     padding: 32px 44px 102px;
     background: $layer-color;
     position: relative;
-    color: $darktext-color;
+    color: $text-color;
     .dash-banner-img {
       position: absolute;
       height: 370px;
@@ -65,7 +67,7 @@
           font-size: 16px;
           line-height: 20.8px;
           margin-bottom: 12px;
-          color: $lighttext-color;
+          color: $text-color-lighter;
         }
         .value {
           font-size: 24px;
@@ -145,11 +147,36 @@
         height: 75px;
         display: flex;
         align-items: center;
-        border-bottom: 1px solid $lighttext-color;
+        border-bottom: 1px solid $text-color-lighter;
         font-size: 24px;
         line-height: 31px;
-        color: $darktext-color;
+        color: $text-color;
         font-weight: 500;
+      }
+    }
+  }
+
+  &.dark {
+    background: $base-color-dark;
+    .dash-banner {
+      background-color: $layer-color-dark;
+      color: $text-color-dark;
+
+      .content {
+        .block {
+          .title {
+            color: $text-color-darker;
+          }
+        }
+      }
+    }
+    .total-value-locked {
+      background: $layer-color-dark-2;
+    }
+
+    .info-wrapper {
+      .announcements {
+        background-color: $layer-color-dark;
       }
     }
   }

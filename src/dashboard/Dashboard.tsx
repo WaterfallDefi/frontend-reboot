@@ -1,6 +1,6 @@
 import "./Dashboard.scss";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Mode } from "../WaterfallDefi";
 
 type Props = {
@@ -9,6 +9,18 @@ type Props = {
 
 function Dashboard(props: Props) {
   const { mode } = props;
+
+  const [darkTwitter, setDarkTwitter] = useState(false);
+
+  useEffect(() => {
+    console.log("wtf");
+    if (mode === Mode.Dark) {
+      setDarkTwitter(true);
+    } else {
+      setDarkTwitter(false);
+    }
+  }, [mode]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -39,16 +51,30 @@ function Dashboard(props: Props) {
       </div>
       <div className="info-wrapper">
         <div className="announcements">
-          <TwitterTimelineEmbed
-            sourceType="profile"
-            screenName="Waterfalldefi"
-            theme="light"
-            noHeader
-            noFooter
-            options={{ height: "100%" }}
-            transparent
-            noScrollbar
-          />
+          {!darkTwitter ? (
+            <TwitterTimelineEmbed
+              sourceType="profile"
+              screenName="Waterfalldefi"
+              theme="light"
+              noHeader
+              noFooter
+              options={{ height: "100%" }}
+              transparent
+              noScrollbar
+            />
+          ) : null}
+          {darkTwitter ? (
+            <TwitterTimelineEmbed
+              sourceType="profile"
+              screenName="Waterfalldefi"
+              theme="dark"
+              noHeader
+              noFooter
+              options={{ height: "100%" }}
+              transparent
+              noScrollbar
+            />
+          ) : null}
         </div>
         <div className="market-carousel"></div>
       </div>
