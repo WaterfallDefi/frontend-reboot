@@ -12,7 +12,7 @@ function MyPortfolio(props: Props) {
   const { mode } = props;
 
   return (
-    <div className="my-portfolio-wrapper">
+    <div className={"my-portfolio-wrapper " + mode}>
       <div className="header-row">
         <div className="header first">
           <span>Portfolio Name</span>

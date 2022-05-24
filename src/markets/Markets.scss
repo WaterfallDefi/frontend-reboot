@@ -387,6 +387,6 @@
   }
 
   &.dark {
-    background-color: $base-color-dark;
+    @include dark-table;
   }
 }

@@ -226,6 +226,32 @@
           color: $text-color-dark;
         }
       }
+
+      .mountain {
+        .claim {
+          background-color: $layer-color-dark-2;
+          border: 2px solid $highlight-color-dark;
+
+          .label {
+            color: $base-color;
+          }
+        }
+      }
+    }
+
+    .guide-wrapper {
+      .row {
+        .col {
+          background: $base-color-dark;
+          border: 1px solid $base-color-dark;
+        }
+        h2 {
+          color: $text-color-dark;
+        }
+        .desc-text {
+          color: $text-color-darker;
+        }
+      }
     }
   }
 }

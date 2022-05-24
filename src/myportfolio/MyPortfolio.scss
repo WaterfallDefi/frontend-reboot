@@ -110,4 +110,8 @@
       width: 150px;
     }
   }
+
+  &.dark {
+    @include dark-table;
+  }
 }
