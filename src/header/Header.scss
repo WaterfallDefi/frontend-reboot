@@ -73,29 +73,42 @@
     .wallet-wrapper {
       display: flex;
       align-items: center;
-      .network {
-        padding: 0 16px 2px 0;
-        height: 34px;
+      .dropdown {
+        background-color: $base-color;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        background: $text-color-lightest;
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-        transform: translateX(10px);
-        white-space: normal;
-        cursor: pointer;
-        &.avax {
-          color: rgb(232, 65, 66);
-        }
-        &.bnb {
-          color: rgb(240, 185, 11);
+        flex-direction: column;
+        justify-content: flex-start;
+        &.open {
+          height: 70px;
+          transform: translateY(17.5px);
         }
 
-        .dropdown-triangle {
-          font-size: 10px;
-          margin: 0 5px 0 8px;
-          padding-top: 3px;
+        .network {
+          padding: 0 16px 2px 0;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: $text-color-lightest;
+          border-top-left-radius: 8px;
+          border-bottom-left-radius: 8px;
+          white-space: normal;
+          cursor: pointer;
+          &.avax {
+            color: rgb(232, 65, 66);
+          }
+          &.bnb {
+            color: rgb(240, 185, 11);
+          }
+          &.option {
+            border-radius: 8px;
+          }
+
+          .dropdown-triangle {
+            font-size: 10px;
+            margin: 0 5px 0 8px;
+            padding-top: 3px;
+          }
         }
       }
       .connect-wallet-btn {
@@ -139,8 +152,11 @@
     }
     .right {
       .wallet-wrapper {
-        .network {
-          background: $text-color-lighter;
+        .dropdown {
+          background-color: $base-color-dark;
+          .network {
+            background: $text-color-lighter;
+          }
         }
       }
       .light-icon {

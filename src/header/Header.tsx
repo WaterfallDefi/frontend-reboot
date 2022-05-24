@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Mode } from "../WaterfallDefi";
 import "./Header.scss";
@@ -14,6 +14,8 @@ type Props = {
 
 function Header(props: Props) {
   const { mode, setMode } = props;
+
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
   const location = useLocation();
   return (
@@ -65,8 +67,19 @@ function Header(props: Props) {
       <div className="mobile-left"></div>
       <div className="right">
         <div className="wallet-wrapper">
-          <div className="network avax">
-            <div className="dropdown-triangle">▼</div>AVAX
+          <div
+            className={"dropdown" + (dropdownOpen ? " open" : "")}
+            onMouseEnter={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+          >
+            <div className="network avax">
+              <div className="dropdown-triangle">▼</div>AVAX
+            </div>
+            {dropdownOpen ? (
+              <div className="network bnb option">
+                <div className="dropdown-triangle">▼</div>BNB
+              </div>
+            ) : null}
           </div>
           <button className="connect-wallet-btn">Connect Wallet</button>
         </div>
