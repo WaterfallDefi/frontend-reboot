@@ -28,7 +28,11 @@ function Tutorial(props: Props) {
   }, []);
 
   return (
-    <div className={"tutorial-wrapper" + (collapsed ? " collapsed" : "")}>
+    <div
+      className={
+        "tutorial-wrapper" + (collapsed ? " collapsed" : "") + " " + mode
+      }
+    >
       <div className="tutorial-banner">
         ,
         <div className="boxes">

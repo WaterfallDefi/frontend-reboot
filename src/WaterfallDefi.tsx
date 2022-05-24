@@ -52,7 +52,7 @@ function WaterfallDefi() {
           path="/stake"
           element={[
             <Header key="header" mode={mode} setMode={setMode} />,
-            <Stake mode={mode} />,
+            <Stake key="stake" mode={mode} />,
           ]}
         />
       </Routes>

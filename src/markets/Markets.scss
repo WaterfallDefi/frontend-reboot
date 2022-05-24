@@ -316,7 +316,7 @@
           .row {
             font-size: 20px;
             line-height: 27px;
-            color: $text-color-lighter; //temp
+            color: $text-color-lighter;
             display: flex;
             margin-bottom: 35px;
             justify-content: space-between;
@@ -327,7 +327,7 @@
             }
           }
           .separator {
-            background: $text-color-lighter; //temp
+            background: $text-color-lighter;
             height: 2px;
             margin: 40px 0px;
           }
@@ -342,22 +342,22 @@
           .important-notes {
             margin-top: 20px;
             border-radius: 8px;
-            background-color: grey; //temp
+            background-color: $text-color-lighter;
             padding: 20px;
             display: flex;
             min-height: 140px;
 
             & > div:nth-of-type(1) {
-              color: blue; //temp
+              color: $highlight-color;
               padding-top: 2px;
               margin-right: 10px;
             }
             & > div:nth-of-type(2) > div:nth-of-type(1) {
-              color: blue; //temp
+              color: $highlight-color;
               margin-bottom: 10px;
             }
             & > div:nth-of-type(2) > div:nth-of-type(2) {
-              color: grey; //temp
+              color: $text-color-lighter;
             }
           }
           .button {
@@ -374,15 +374,19 @@
             }
           }
           .redemption-fee {
-            color: grey;
+            color: $text-color-lightest;
             margin-top: 10px;
             text-align: center;
             & > span {
-              color: blue;
+              color: $highlight-color;
             }
           }
         }
       }
     }
+  }
+
+  &.dark {
+    background-color: $base-color-dark;
   }
 }
