@@ -1,7 +1,10 @@
+@import "../global.scss";
+
+$evenPadding: calc((100vw - 1072px) / 2);
+
 .stake-wrapper {
   max-width: 1072px;
-  padding: 86px 24px 160px;
-  margin: 0 auto;
+  padding: 86px $evenPadding 160px $evenPadding;
   .body-wrapper {
     .APY-card {
       background: linear-gradient(
@@ -13,7 +16,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      color: grey; //temp
+      color: $text-color;
       border-radius: 12px;
       & > div {
         p {
@@ -33,7 +36,7 @@
         font-weight: 300;
         font-size: 40px;
         line-height: 52px;
-        color: grey; //temp
+        color: $text-color;
       }
     }
     .total {
@@ -42,7 +45,7 @@
       margin: 20px 0 32px;
       font-size: 16px;
       line-height: 21px;
-      color: grey;
+      color: $text-color;
     }
     .actions {
       display: flex;
@@ -64,7 +67,7 @@
         max-width: 100%;
 
         p {
-          color: grey; //temp
+          color: $text-color;
         }
         & > div {
           max-width: 100%;
@@ -103,7 +106,7 @@
             font-size: 14px;
             line-height: 18px;
             margin: 12px 0;
-            color: grey;
+            color: $text-color;
           }
           button {
             height: 32px;
@@ -112,12 +115,14 @@
             line-height: 125%;
             padding: 7px 12px;
             width: fit-content;
-            background: blue; //temp
+            background: $highlight-color;
+            color: $base-color;
+            border: 0;
           }
         }
         & > div:nth-of-type(2) {
           height: 1px;
-          background: grey; //temp
+          background: $text-color-lightest;
           margin: 36px 0;
         }
 
@@ -128,7 +133,7 @@
             font-size: 16px;
             line-height: 20px;
             margin-bottom: 10px;
-            color: grey; //temp
+            color: $text-color;
           }
         }
 
@@ -150,10 +155,10 @@
               font-size: 14px;
               line-height: 18px;
               :nth-of-type(1) {
-                color: grey; //temp
+                color: $text-color;
               }
               :nth-of-type(2) {
-                color: grey; //temp
+                color: $text-color;
               }
               :nth-of-type(3) {
                 color: red; //temp
@@ -165,6 +170,45 @@
             font-size: 16px;
             line-height: 21px;
             margin-bottom: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  &.dark {
+    background-color: $base-color-dark;
+    .body-wrapper {
+      .APY-card {
+        background: $layer-color-dark;
+        color: $text-color-dark;
+
+        & > span {
+          color: $text-color-dark;
+        }
+      }
+      .total {
+        color: $text-color-dark;
+      }
+      .actions {
+        .stake-info {
+          p {
+            color: $text-color-dark;
+          }
+          & > div:nth-of-type(3) {
+            div {
+              color: $text-color-dark;
+            }
+          }
+          div {
+            .veWTF {
+              color: $text-color-dark;
+            }
+            section {
+              span {
+                color: $text-color-dark;
+              }
+            }
           }
         }
       }

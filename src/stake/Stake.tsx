@@ -14,7 +14,7 @@ function Stake(props: Props) {
   }, []);
 
   return (
-    <div className="stake-wrapper">
+    <div className={"stake-wrapper " + mode}>
       <div className="body-wrapper">
         <div className="APY-card">
           <div>

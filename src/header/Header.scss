@@ -111,4 +111,23 @@
       }
     }
   }
+
+  &.dark {
+    background: $base-color-dark;
+
+    .pc-left {
+      .menu-block-wrapper {
+        .link {
+          color: $text-color-dark;
+
+          &[data-selected="true"] {
+            color: $highlight-color;
+          }
+        }
+        a {
+          color: $text-color-dark;
+        }
+      }
+    }
+  }
 }

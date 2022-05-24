@@ -1,5 +1,12 @@
+@import "../global.scss";
+
 .footer-wrapper {
   background-color: black;
+
+  &.dark {
+    background-color: $layer-color-dark;
+  }
+
   height: 500px;
   .content-wrapper {
     display: flex;

@@ -388,5 +388,13 @@
 
   &.dark {
     @include dark-table;
+
+    .row-wrapper {
+      .table-row {
+        &:hover {
+          border: 2px solid $highlight-color-dark;
+        }
+      }
+    }
   }
 }

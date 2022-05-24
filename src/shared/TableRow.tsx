@@ -91,7 +91,6 @@ function TableRow(props: Props) {
       </div>
       {foldOpen ? (
         <div className="fold">
-          <div className="linear-gradient" />
           <div className="wrapper">
             <div className="card">
               <div className="card-title">
