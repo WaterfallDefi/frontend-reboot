@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Mode } from "../WaterfallDefi";
 import "./Header.scss";
+import { Dark } from "./svgs/dark";
+import { Light } from "./svgs/light";
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
 
@@ -68,7 +70,16 @@ function Header(props: Props) {
           </div>
           <button className="connect-wallet-btn">Connect Wallet</button>
         </div>
-        <div onClick={() => setMode(Mode.Dark)}>D</div>
+        {mode === Mode.Light ? (
+          <div className="dark-icon" onClick={() => setMode(Mode.Dark)}>
+            <Dark />
+          </div>
+        ) : null}
+        {mode === Mode.Dark ? (
+          <div className="light-icon" onClick={() => setMode(Mode.Light)}>
+            <Light />
+          </div>
+        ) : null}
       </div>
       {/* todo: mobile drawers */}
       {/* <header>

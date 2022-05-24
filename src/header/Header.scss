@@ -110,6 +110,14 @@
         z-index: 1;
       }
     }
+    .dark-icon,
+    .light-icon {
+      margin-left: 15px;
+      cursor: pointer;
+    }
+    .dark-icon {
+      color: $base-color-dark;
+    }
   }
 
   &.dark {
@@ -127,6 +135,16 @@
         a {
           color: $text-color-dark;
         }
+      }
+    }
+    .right {
+      .wallet-wrapper {
+        .network {
+          background: $text-color-lighter;
+        }
+      }
+      .light-icon {
+        color: $base-color;
       }
     }
   }
