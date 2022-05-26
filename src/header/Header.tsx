@@ -1,5 +1,7 @@
+import { useWeb3React } from "@web3-react/core";
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Web3Provider } from "@ethersproject/providers";
 import { Mode } from "../WaterfallDefi";
 import "./Header.scss";
 import { Dark } from "./svgs/dark";
@@ -14,6 +16,8 @@ type Props = {
 
 function Header(props: Props) {
   const { mode, setMode } = props;
+
+  const { active, account, chainId } = useWeb3React<Web3Provider>();
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
