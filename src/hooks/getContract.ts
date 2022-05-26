@@ -1,14 +1,21 @@
 import { ethers } from "ethers";
 import Multicall from "../config/abis/Multicall.json";
+import { Network } from "../WaterfallDefi";
 
 export const getContract = (
   abi: any,
   address: string,
+  network: Network,
   signer?: ethers.Signer | ethers.providers.Provider
 ) => {
-  const simpleRpcProvider = new ethers.providers.JsonRpcProvider(
-    "https://api.avax-test.network/ext/bc/C/rpc"
-  );
+  const simpleRpcProvider =
+    network === Network.AVAX
+      ? new ethers.providers.JsonRpcProvider(
+          "https://api.avax.network/ext/bc/C/rpc"
+        )
+      : new ethers.providers.JsonRpcProvider(
+          "https://bsc-dataseed.binance.org/"
+        );
   const signerOrProvider = signer ?? simpleRpcProvider;
   return new ethers.Contract(address, abi, signerOrProvider);
 };
@@ -29,22 +36,19 @@ interface Call {
 }
 
 const getMulticallContract = (
+  network: Network,
   signer?: ethers.Signer | ethers.providers.Provider
 ) => {
-  return getContract(
-    Multicall,
-    //FUJI TESTNET!!
-    "0xccc75e78Dce6A20bCCa3a30deB23Cb4D23df993a",
-    signer
-  );
+  return getContract(Multicall, "", network, signer);
 };
 
 export const multicall = async <T = any>(
+  network: Network,
   abi: any[],
   calls: Call[]
 ): Promise<T> => {
   try {
-    const multi = getMulticallContract();
+    const multi = getMulticallContract(network);
     const itf = new ethers.utils.Interface(abi);
 
     const calldata = calls.map((call) => [
