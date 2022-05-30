@@ -1,27 +1,18 @@
 import "./Markets.scss";
-import { MarketList } from "../config/markets";
 import { Market } from "../types";
 import TableRow from "../shared/TableRow";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { Mode } from "../WaterfallDefi";
-import { getMarkets } from "./hooks/getMarkets";
 
 type Props = {
   mode: Mode;
+  markets: Market[];
 };
 
 function Markets(props: Props) {
-  const { mode } = props;
+  const { mode, markets } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
-
-  const [markets, setMarkets] = useState<Market[]>([]);
-
-  useEffect(() => {
-    getMarkets(MarketList).then((res) => {
-      setMarkets(res);
-    });
-  }, []);
 
   return (
     <div className={"markets-wrapper " + mode}>

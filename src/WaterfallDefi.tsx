@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { MarketList } from "./config/markets";
 import Dashboard from "./dashboard/Dashboard";
 import Footer from "./footer/Footer";
 import Header from "./header/Header";
+import { getMarkets } from "./hooks/getMarkets";
 import Markets from "./markets/Markets";
 import MyPortfolio from "./myportfolio/MyPortfolio";
 import Stake from "./stake/Stake";
 import Tutorial from "./tutorial/Tutorial";
+import { Market } from "./types";
 
 export enum Mode {
   Light = "light",
@@ -21,6 +24,14 @@ export enum Network {
 function WaterfallDefi() {
   const [mode, setMode] = useState<Mode>(Mode.Light);
   const [network, setNetwork] = useState<Network>(Network.AVAX);
+
+  const [markets, setMarkets] = useState<Market[]>([]);
+
+  useEffect(() => {
+    getMarkets(MarketList).then((res) => {
+      setMarkets(res);
+    });
+  }, []);
 
   const layout = (element: JSX.Element, tutorial: boolean) => [
     <Header
@@ -44,11 +55,17 @@ function WaterfallDefi() {
         />
         <Route
           path="/portfolio/markets"
-          element={layout(<Markets key="markets" mode={mode} />, true)}
+          element={layout(
+            <Markets key="markets" mode={mode} markets={markets} />,
+            true
+          )}
         />
         <Route
           path="/portfolio/my-portfolio"
-          element={layout(<MyPortfolio key="portfolio" mode={mode} />, true)}
+          element={layout(
+            <MyPortfolio key="portfolio" mode={mode} markets={markets} />,
+            true
+          )}
         />
         <Route
           path="/stake"
