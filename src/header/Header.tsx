@@ -2,22 +2,27 @@ import { useWeb3React } from "@web3-react/core";
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Web3Provider } from "@ethersproject/providers";
-import { Mode } from "../WaterfallDefi";
+import { Mode, Network } from "../WaterfallDefi";
 import "./Header.scss";
 import { Dark } from "./svgs/dark";
 import { Light } from "./svgs/light";
+import useAuth from "./hooks/useAuth";
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
 
 type Props = {
   mode: Mode;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  network: Network;
+  setNetwork: React.Dispatch<React.SetStateAction<Network>>;
 };
 
 function Header(props: Props) {
-  const { mode, setMode } = props;
+  const { mode, setMode, network, setNetwork } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
+
+  const { login, logout } = useAuth(network);
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
