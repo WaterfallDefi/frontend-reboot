@@ -27,6 +27,30 @@ function Header(props: Props) {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
   const location = useLocation();
+
+  const switchNetwork = async (newNetwork: Network) => {
+    const oldNetwork = network;
+    setNetwork(newNetwork);
+    if (account) {
+      const provider = window.ethereum;
+      if (provider?.request) {
+        try {
+          await provider.request({
+            method: "wallet_switchEthereumChain",
+            params: [
+              {
+                chainId: `0x${newNetwork.toString(16)}`,
+              },
+            ],
+          });
+        } catch (error) {
+          console.error("Failed to setup the network in Metamask:", error);
+          setNetwork(oldNetwork);
+        }
+      }
+    }
+  };
+
   return (
     <div className={"header-wrapper " + mode}>
       <div className="pc-left">
@@ -81,13 +105,30 @@ function Header(props: Props) {
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
-            <div className="network avax">
-              <div className="dropdown-triangle">▼</div>AVAX
+            <div
+              className={
+                "network" + (network === Network.AVAX ? " avax" : " bnb")
+              }
+            >
+              <div className="dropdown-triangle">▼</div>
+              {network === Network.AVAX ? "AVAX" : "BNB"}
             </div>
             {dropdownOpen ? (
-              <div className="network bnb option">
-                <div className="dropdown-triangle">▼</div>BNB
-              </div>
+              network === Network.AVAX ? (
+                <div
+                  className="network bnb option"
+                  onClick={() => switchNetwork(Network.BNB)}
+                >
+                  BNB
+                </div>
+              ) : (
+                <div
+                  className="network avax option"
+                  onClick={() => switchNetwork(Network.AVAX)}
+                >
+                  AVAX
+                </div>
+              )
             ) : null}
           </div>
           <button className="connect-wallet-btn">Connect Wallet</button>
