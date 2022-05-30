@@ -1,7 +1,29 @@
 import { Metamask } from "../svgs/Metamask";
 import { WalletConnect } from "../svgs/WalletConnect";
+import { useWeb3React } from "@web3-react/core";
+import { Network } from "../../WaterfallDefi";
+import useAuth from "../hooks/useAuth";
+import { useCallback } from "react";
 
-function ConnectWalletModal() {
+type Props = {
+  network: Network;
+};
+
+function ConnectWalletModal(props: Props) {
+  const { network } = props;
+
+  const { active } = useWeb3React();
+
+  const { login } = useAuth(network);
+
+  const onConnect = useCallback(async () => {
+    if (window.ethereum?.isMetaMask && window.ethereum.request) {
+      login("injected");
+    } else {
+      window.open("https://metamask.io/");
+    }
+  }, []);
+
   return (
     <div className="connect-wallet-modal">
       <title className="connect-wallet-title">Connect Wallet</title>
@@ -12,12 +34,7 @@ function ConnectWalletModal() {
           you have read and understand the{" "}
           <span className="pp">Privacy Policy</span>.
         </div>
-        <div
-          className="connect metamask"
-          onClick={() => {
-            //on connect
-          }}
-        >
+        <div className="connect metamask" onClick={onConnect}>
           <div className="metamask">
             {!window.ethereum?.isMetaMask && (
               <span className="install">Install</span>
@@ -29,7 +46,8 @@ function ConnectWalletModal() {
         <div
           className="connect walletconnect"
           onClick={() => {
-            //on connect
+            if (network === Network.AVAX) login("walletconnect");
+            if (network === Network.BNB) login("walletconnect2");
           }}
         >
           <div className="walletconnect">

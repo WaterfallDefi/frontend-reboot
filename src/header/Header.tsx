@@ -64,7 +64,7 @@ function Header(props: Props) {
         className={"mask" + (modalOpen ? " visible" : "")}
         onClick={() => setModalOpen(false)}
       />
-      {modalOpen ? <ConnectWalletModal /> : null}
+      {modalOpen ? <ConnectWalletModal network={network} /> : null}
       <div className="pc-left">
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
@@ -143,14 +143,20 @@ function Header(props: Props) {
               )
             ) : null}
           </div>
-          <button
-            className="connect-wallet-btn"
-            onClick={() => {
-              setModalOpen(!modalOpen);
-            }}
-          >
-            Connect Wallet
-          </button>
+          {!active ? (
+            <button
+              className="connect-wallet-btn"
+              onClick={() => {
+                setModalOpen(!modalOpen);
+              }}
+            >
+              Connect Wallet
+            </button>
+          ) : (
+            <div className="connect-wallet-btn">
+              {formatAccountAddress(account)}
+            </div>
+          )}
         </div>
         {mode === Mode.Light ? (
           <div className="dark-icon" onClick={() => setMode(Mode.Dark)}>
