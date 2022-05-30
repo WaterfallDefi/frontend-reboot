@@ -22,7 +22,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
       width: 420px;
       right: 0;
       bottom: 56px;
-      background-image: url("../../public/DashboardImage.svg");
+      background-image: url("./DashboardImage.svg");
       background-size: contain;
       @media screen and (max-width: 876px) {
         display: none;

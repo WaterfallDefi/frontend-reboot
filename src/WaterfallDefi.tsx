@@ -22,62 +22,35 @@ function WaterfallDefi() {
   const [mode, setMode] = useState<Mode>(Mode.Light);
   const [network, setNetwork] = useState<Network>(Network.AVAX);
 
+  const layout = (element: JSX.Element, tutorial: boolean) => [
+    <Header
+      key="header"
+      mode={mode}
+      setMode={setMode}
+      network={network}
+      setNetwork={setNetwork}
+    />,
+    ...(tutorial ? [<Tutorial mode={mode} />, element] : [element]),
+  ];
+
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={[
-            <Header
-              key="header"
-              mode={mode}
-              setMode={setMode}
-              network={network}
-              setNetwork={setNetwork}
-            />,
-            <Dashboard key="dashboard" mode={mode} />,
-          ]}
+          element={layout(<Dashboard key="dashboard" mode={mode} />, false)}
         />
         <Route
           path="/portfolio/markets"
-          element={[
-            <Header
-              key="header"
-              mode={mode}
-              setMode={setMode}
-              network={network}
-              setNetwork={setNetwork}
-            />,
-            <Tutorial key="tutorial" mode={mode} />,
-            <Markets key="markets" mode={mode} />,
-          ]}
+          element={layout(<Markets key="markets" mode={mode} />, true)}
         />
         <Route
           path="/portfolio/my-portfolio"
-          element={[
-            <Header
-              key="header"
-              mode={mode}
-              setMode={setMode}
-              network={network}
-              setNetwork={setNetwork}
-            />,
-            <Tutorial key="tutorial" mode={mode} />,
-            <MyPortfolio key="portfolio" mode={mode} />,
-          ]}
+          element={layout(<MyPortfolio key="portfolio" mode={mode} />, true)}
         />
         <Route
           path="/stake"
-          element={[
-            <Header
-              key="header"
-              mode={mode}
-              setMode={setMode}
-              network={network}
-              setNetwork={setNetwork}
-            />,
-            <Stake key="stake" mode={mode} />,
-          ]}
+          element={layout(<Stake key="stake" mode={mode} />, false)}
         />
       </Routes>
       <Footer mode={mode} />
