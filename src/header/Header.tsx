@@ -10,6 +10,11 @@ import useAuth from "./hooks/useAuth";
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
 
+const formatAccountAddress = (address?: string | null) => {
+  if (!address) return "";
+  return address.slice(0, 6) + "..." + address.slice(-4);
+};
+
 type Props = {
   mode: Mode;
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
@@ -25,6 +30,7 @@ function Header(props: Props) {
   const { login, logout } = useAuth(network);
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const location = useLocation();
 
@@ -53,6 +59,7 @@ function Header(props: Props) {
 
   return (
     <div className={"header-wrapper " + mode}>
+      <div className={"mask" + (modalOpen ? " visible" : "")} />
       <div className="pc-left">
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
@@ -131,7 +138,14 @@ function Header(props: Props) {
               )
             ) : null}
           </div>
-          <button className="connect-wallet-btn">Connect Wallet</button>
+          <button
+            className="connect-wallet-btn"
+            onClick={() => {
+              setModalOpen(true);
+            }}
+          >
+            Connect Wallet
+          </button>
         </div>
         {mode === Mode.Light ? (
           <div className="dark-icon" onClick={() => setMode(Mode.Dark)}>

@@ -13,6 +13,24 @@
   align-items: center;
   background: $base-color;
 
+  .mask {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: 0.125s opacity ease-out;
+    pointer-events: none;
+    z-index: 1;
+
+    &.visible {
+      opacity: 0.5;
+      background-color: #000000;
+      pointer-events: all;
+    }
+  }
+
   .pc-left {
     display: grid;
     gap: 36px;
@@ -127,7 +145,6 @@
         font-size: 16px;
         color: $base-color;
         background-color: $highlight-color;
-        z-index: 1;
       }
     }
     .dark-icon,
