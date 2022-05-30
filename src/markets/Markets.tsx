@@ -2,9 +2,10 @@ import "./Markets.scss";
 import { MarketList } from "../config/markets";
 import { Market } from "../types";
 import TableRow from "../shared/TableRow";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { Mode } from "../WaterfallDefi";
+import { getMarkets } from "./hooks/getMarkets";
 
 type Props = {
   mode: Mode;
@@ -13,6 +14,14 @@ type Props = {
 function Markets(props: Props) {
   const { mode } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
+
+  const [markets, setMarkets] = useState<Market[]>([]);
+
+  useEffect(() => {
+    getMarkets(MarketList).then((res) => {
+      setMarkets(res);
+    });
+  }, []);
 
   return (
     <div className={"markets-wrapper " + mode}>
@@ -38,8 +47,8 @@ function Markets(props: Props) {
           </div>
         </div>
       ) : null}
-      {!selectedMarket
-        ? MarketList.map((m: Market) => (
+      {!selectedMarket && markets.length > 0
+        ? markets.map((m: Market) => (
             <TableRow
               key={m.portfolio}
               setSelectedMarket={setSelectedMarket}
@@ -47,9 +56,9 @@ function Markets(props: Props) {
                 portfolio: m.portfolio,
                 assets: m.assets,
                 duration:
-                  Number(172800) / 86400 >= 1
-                    ? Number(172800) / 86400 + " Days"
-                    : Number(172800) / 60 + " Mins",
+                  Number(m.duration) / 86400 >= 1
+                    ? Number(m.duration) / 86400 + " Days"
+                    : Number(m.duration) / 60 + " Mins",
                 apr: "asdf",
                 tvl: "$100,000",
                 status: "Active",

@@ -39,7 +39,13 @@ const getMulticallContract = (
   network: Network,
   signer?: ethers.Signer | ethers.providers.Provider
 ) => {
-  return getContract(Multicall, "", network, signer);
+  //turn into a switch case if we ever add a third chain
+  const multicallAddress =
+    network === Network.AVAX
+      ? "0x0b78ad358dDa2887285eaD72e84b47242360b872"
+      : "0x41263cba59eb80dc200f3e2544eda4ed6a90e76c";
+
+  return getContract(Multicall, multicallAddress, network, signer);
 };
 
 export const multicall = async <T = any>(

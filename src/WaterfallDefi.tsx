@@ -30,7 +30,9 @@ function WaterfallDefi() {
       network={network}
       setNetwork={setNetwork}
     />,
-    ...(tutorial ? [<Tutorial mode={mode} />, element] : [element]),
+    ...(tutorial
+      ? [<Tutorial key="tutorial" mode={mode} />, element]
+      : [element]),
   ];
 
   return (
