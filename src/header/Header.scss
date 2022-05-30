@@ -13,6 +13,52 @@
   align-items: center;
   background: $base-color;
 
+  .connect-wallet-modal {
+    position: fixed;
+    top: 69px;
+    width: 420px;
+    border-radius: 12px;
+    left: calc(50vw - 210px);
+    padding: 16px;
+    background: $base-color;
+
+    .connect-wallet-title {
+      color: $text-color;
+      font-weight: 600;
+      font-size: 16px;
+      margin-bottom: 14px;
+    }
+    .connect-wallet-section {
+      display: flex;
+      flex-direction: column;
+      .agreement {
+        padding: 16px;
+        background-color: $text-color-lightest;
+        border-radius: 12px;
+        color: $text-color;
+        font-weight: 600;
+      }
+      .connect {
+        padding: 0 16px;
+        height: 48px;
+        border-radius: 12px;
+        border: 1px solid $text-color;
+        background-color: $text-color-lightest;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        color: $text-color;
+        &:hover {
+          border-color: $highlight-color;
+        }
+      }
+    }
+  }
+
   .mask {
     position: fixed;
     height: 100%;
@@ -22,7 +68,6 @@
     opacity: 0;
     transition: 0.125s opacity ease-out;
     pointer-events: none;
-    z-index: 1;
 
     &.visible {
       opacity: 0.5;
