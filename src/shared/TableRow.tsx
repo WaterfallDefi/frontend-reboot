@@ -1,3 +1,4 @@
+import numeral from "numeral";
 import React, { useState } from "react";
 import { Market } from "../types";
 
@@ -36,26 +37,27 @@ function TableRow(props: Props) {
             elements.push(
               <div className="col apr" key={key}>
                 <div className="tranche-apr">
-                  <span>Senior</span>
+                  <span>{data[key].length === 2 ? "Fixed" : "Senior"}</span>
                   <div style={{ color: "orange" }}>
-                    {/* ^ color is temp */}
-                    10% APR
+                    {numeral(data[key][0]).format("0,0.[00]")} %
                   </div>
                 </div>
                 <div className="tranche-apr">
-                  <span>Mezzanine</span>
-                  <div style={{ color: "orange" }}>
-                    {/* ^ color is temp */}
-                    10% APR
+                  <span>
+                    {data[key].length === 2 ? "Variable" : "Mezzanine"}
+                  </span>
+                  <div style={{ color: "green" }}>
+                    {numeral(data[key][1]).format("0,0.[00]")} %
                   </div>
                 </div>
-                <div className="tranche-apr">
-                  <span>Junior</span>
-                  <div style={{ color: "orange" }}>
-                    {/* ^ color is temp */}
-                    10% APR
+                {data[key].length === 3 ? (
+                  <div className="tranche-apr">
+                    <span>Junior</span>
+                    <div style={{ color: "blue" }}>
+                      {numeral(data[key][2]).format("0,0.[00]")} %
+                    </div>
                   </div>
-                </div>
+                ) : null}
               </div>
             );
             break;
@@ -102,7 +104,7 @@ function TableRow(props: Props) {
               </div>
               <div className="autoroll-toggle">
                 <span>Auto Rolling</span>
-                <switch />
+                {/* <switch /> */}
               </div>
             </div>
             <div className="card">

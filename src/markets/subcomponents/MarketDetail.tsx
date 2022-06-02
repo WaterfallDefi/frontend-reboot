@@ -37,7 +37,7 @@ const MarketDetail: React.FC<Props> = ({}) => {
                   borderRadius: 10,
                 }}
               >
-                <switch />
+                {/* <switch /> */}
               </div>
             </div>
           </section>

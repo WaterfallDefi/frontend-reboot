@@ -3,7 +3,11 @@ import { Market } from "../types";
 import TableRow from "../shared/TableRow";
 import { useState } from "react";
 import MarketDetail from "./subcomponents/MarketDetail";
-import { Mode } from "../WaterfallDefi";
+import { Mode, Network } from "../WaterfallDefi";
+import getWTFApr, { formatAllocPoint } from "./hooks/getWtfApr";
+import { useWTFPriceLP } from "./hooks/useWtfPriceFromLP";
+import { useCoingeckoPrices } from "./hooks/useCoingeckoPrices";
+import numeral from "numeral";
 
 type Props = {
   mode: Mode;
@@ -13,6 +17,9 @@ type Props = {
 function Markets(props: Props) {
   const { mode, markets } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
+
+  const { price: wtfPrice } = useWTFPriceLP();
+  const coingeckoPrices = useCoingeckoPrices(markets);
 
   return (
     <div className={"markets-wrapper " + mode}>
@@ -39,23 +46,44 @@ function Markets(props: Props) {
         </div>
       ) : null}
       {!selectedMarket && markets.length > 0
-        ? markets.map((m: Market) => (
-            <TableRow
-              key={m.portfolio}
-              setSelectedMarket={setSelectedMarket}
-              data={{
-                portfolio: m.portfolio,
-                assets: m.assets,
-                duration:
-                  Number(m.duration) / 86400 >= 1
-                    ? Number(m.duration) / 86400 + " Days"
-                    : Number(m.duration) / 60 + " Mins",
-                apr: "asdf",
-                tvl: "$100,000",
-                status: "Active",
-              }}
-            />
-          ))
+        ? markets.map((m: Market) => {
+            const tranchesApr = m.tranches.map((_t, _i) => {
+              const wtfAPR = getWTFApr(
+                m.isAvax ? Network.AVAX : Network.BNB,
+                formatAllocPoint(m?.pools[_i], m?.totalAllocPoints),
+                m?.tranches[_i],
+                m.duration,
+                m.rewardPerBlock,
+                wtfPrice,
+                m?.assets,
+                coingeckoPrices
+              );
+              const trancheAPR = _t.apy;
+              const totalAPR =
+                wtfAPR !== "0.00" && wtfAPR !== undefined
+                  ? Number(trancheAPR) + Number(numeral(wtfAPR).value())
+                  : trancheAPR;
+              return totalAPR;
+            });
+
+            return (
+              <TableRow
+                key={m.portfolio}
+                setSelectedMarket={setSelectedMarket}
+                data={{
+                  portfolio: m.portfolio,
+                  assets: m.assets,
+                  duration:
+                    Number(m.duration) / 86400 >= 1
+                      ? Number(m.duration) / 86400 + " Days"
+                      : Number(m.duration) / 60 + " Mins",
+                  apr: tranchesApr,
+                  tvl: "$100,000",
+                  status: "Active",
+                }}
+              />
+            );
+          })
         : null}
       {selectedMarket ? <MarketDetail /> : null}
     </div>
