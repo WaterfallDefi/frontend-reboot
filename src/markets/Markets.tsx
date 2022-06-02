@@ -87,7 +87,9 @@ function Markets(props: Props) {
                       : Number(m.duration) / 60 + " Mins",
                   apr_markets: tranchesApr,
                   tvl: tvl,
-                  status: "Active",
+                  status: m.isRetired
+                    ? "Expired"
+                    : m.status[0] + m.status.slice(1).toLowerCase(),
                 }}
               />
             );
