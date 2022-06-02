@@ -66,6 +66,14 @@ function Markets(props: Props) {
               return totalAPR;
             });
 
+            const nonDollarTvl =
+              m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
+
+            const tvl =
+              (!nonDollarTvl ? "$" : "") +
+              numeral(m.tvl.includes("e-") ? "0" : m.tvl).format("0,0.[0000]") +
+              (nonDollarTvl ? " " + m.assets[0] : "");
+
             return (
               <TableRow
                 key={m.portfolio}
@@ -78,7 +86,7 @@ function Markets(props: Props) {
                       ? Number(m.duration) / 86400 + " Days"
                       : Number(m.duration) / 60 + " Mins",
                   apr_markets: tranchesApr,
-                  tvl: "$100,000",
+                  tvl: tvl,
                   status: "Active",
                 }}
               />
