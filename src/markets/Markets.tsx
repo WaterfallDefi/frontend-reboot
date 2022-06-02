@@ -77,7 +77,7 @@ function Markets(props: Props) {
                     Number(m.duration) / 86400 >= 1
                       ? Number(m.duration) / 86400 + " Days"
                       : Number(m.duration) / 60 + " Mins",
-                  apr: tranchesApr,
+                  apr_markets: tranchesApr,
                   tvl: "$100,000",
                   status: "Active",
                 }}

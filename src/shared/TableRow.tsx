@@ -33,9 +33,9 @@ function TableRow(props: Props) {
               </div>
             );
             break;
-          case "apr":
+          case "apr_markets":
             elements.push(
-              <div className="col apr" key={key}>
+              <div className="col apr_markets" key={key}>
                 <div className="tranche-apr">
                   <span>{data[key].length === 2 ? "Fixed" : "Senior"}</span>
                   <div style={{ color: "orange" }}>
