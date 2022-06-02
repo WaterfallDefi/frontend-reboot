@@ -68,6 +68,9 @@ function TableRow(props: Props) {
               </div>
             );
             break;
+          case "trancheCycle":
+            elements.push();
+            break;
           default:
             elements.push(
               <div className="col" key={key}>
