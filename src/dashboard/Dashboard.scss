@@ -209,9 +209,19 @@ $evenPadding: calc((100vw - 1048px) / 2);
 
         .carousel-slides {
           display: flex;
-          overflow-x: auto;
+          overflow-x: scroll;
           scroll-snap-type: x mandatory;
           scroll-behavior: smooth;
+
+          &::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+          }
+          &::-webkit-scrollbar-thumb {
+            background: $text-color-lightest;
+            border-radius: 10px;
+          }
+
           .slide {
             scroll-snap-align: start;
             flex-shrink: 0;

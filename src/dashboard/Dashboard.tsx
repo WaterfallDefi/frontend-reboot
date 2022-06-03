@@ -96,10 +96,15 @@ function Dashboard(props: Props) {
           <div className="icon-wrapper"></div>
           <div className="carousel-container">
             <div className="carousel-slides">
+              <div className="slide" id="slide1">
+                <div className="block">1</div>
+                <div className="block">1</div>
+                <div className="block">1</div>
+              </div>
               <div className="slide">
-                <div className="block">1</div>
-                <div className="block">1</div>
-                <div className="block">1</div>
+                <div className="block">2</div>
+                <div className="block">2</div>
+                <div className="block">2</div>
               </div>
               <div className="slide">
                 <div className="block">2</div>
@@ -107,6 +112,7 @@ function Dashboard(props: Props) {
                 <div className="block">2</div>
               </div>
             </div>
+            <a href="#slide1">1</a>
           </div>
         </div>
       </div>
