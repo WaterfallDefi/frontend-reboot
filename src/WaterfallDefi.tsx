@@ -51,7 +51,10 @@ function WaterfallDefi() {
       <Routes>
         <Route
           path="/"
-          element={layout(<Dashboard key="dashboard" mode={mode} />, false)}
+          element={layout(
+            <Dashboard key="dashboard" mode={mode} markets={markets} />,
+            false
+          )}
         />
         <Route
           path="/portfolio/markets"

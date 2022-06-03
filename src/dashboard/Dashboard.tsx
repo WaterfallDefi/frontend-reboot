@@ -6,9 +6,11 @@ import { useWTFPriceLP } from "../markets/hooks/useWtfPriceFromLP";
 import numeral from "numeral";
 import { Metamask } from "../header/svgs/Metamask";
 import useTotalTvl from "./hooks/useTotalTvl";
+import { Market } from "../types";
 
 type Props = {
   mode: Mode;
+  markets: Market[];
 };
 
 function Dashboard(props: Props) {
@@ -90,7 +92,14 @@ function Dashboard(props: Props) {
             />
           ) : null}
         </div>
-        <div className="market-carousel"></div>
+        <div className="market-carousel">
+          <div className="icon-wrapper"></div>
+          <div className="carousel-container">
+            <div className="carousel-blocks">
+              <div className="block"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
