@@ -5,7 +5,6 @@ import { Mode } from "../WaterfallDefi";
 import { useWTFPriceLP } from "../markets/hooks/useWtfPriceFromLP";
 import numeral from "numeral";
 import { Metamask } from "../header/svgs/Metamask";
-import { Market } from "../types";
 import useTotalTvl from "./hooks/useTotalTvl";
 
 type Props = {

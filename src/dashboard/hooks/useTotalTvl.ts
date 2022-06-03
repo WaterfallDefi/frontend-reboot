@@ -15,7 +15,6 @@ const getTotalTVL = async () => {
       "https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD&ids=binancecoin,avalanche-2,wrapped-avax,wbnb"
     )
     .json();
-  console.log(result);
 
   const avaxPrice = result["wrapped-avax"]?.usd;
 
