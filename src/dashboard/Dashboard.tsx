@@ -5,6 +5,8 @@ import { Mode } from "../WaterfallDefi";
 import { useWTFPriceLP } from "../markets/hooks/useWtfPriceFromLP";
 import numeral from "numeral";
 import { Metamask } from "../header/svgs/Metamask";
+import { Market } from "../types";
+import useTotalTvl from "./hooks/useTotalTvl";
 
 type Props = {
   mode: Mode;
@@ -16,6 +18,8 @@ function Dashboard(props: Props) {
   const [darkTwitter, setDarkTwitter] = useState(false);
 
   const { price, marketCap } = useWTFPriceLP();
+
+  const totalTvl = useTotalTvl();
 
   useEffect(() => {
     if (mode === Mode.Dark) {
@@ -58,7 +62,7 @@ function Dashboard(props: Props) {
       </div>
       <div className="total-value-locked">
         <div className="text">Total Value Locked</div>
-        <div className="value">$1,500,000</div>
+        <div className="value">${totalTvl}</div>
       </div>
       <div className="info-wrapper">
         <div className="announcements">
