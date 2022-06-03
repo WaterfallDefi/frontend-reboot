@@ -95,8 +95,17 @@ function Dashboard(props: Props) {
         <div className="market-carousel">
           <div className="icon-wrapper"></div>
           <div className="carousel-container">
-            <div className="carousel-blocks">
-              <div className="block"></div>
+            <div className="carousel-slides">
+              <div className="slide">
+                <div className="block">1</div>
+                <div className="block">1</div>
+                <div className="block">1</div>
+              </div>
+              <div className="slide">
+                <div className="block">2</div>
+                <div className="block">2</div>
+                <div className="block">2</div>
+              </div>
             </div>
           </div>
         </div>

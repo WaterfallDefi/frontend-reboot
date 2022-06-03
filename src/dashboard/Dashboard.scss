@@ -207,60 +207,70 @@ $evenPadding: calc((100vw - 1048px) / 2);
         padding-bottom: 12px;
         overflow: hidden;
 
-        .carousel-blocks {
-          .block {
-            height: 420px;
-            display: flex;
-            margin-bottom: 20px;
-            margin-right: 1px;
-            font-size: 14px;
-            background: $base-color;
-            border-radius: 12px;
-            border: solid 1px transparent;
-            background-image: linear-gradient(132.89deg, #fff, #fff),
-              linear-gradient(93.83deg, #e8f7ff 26.54%, #bffeff 70.96%);
-            //dark mode: `linear-gradient(132.89deg,${theme.dark.armyGreen} , ${theme.dark.armyGreen}), linear-gradient(93.83deg, rgba(232, 247, 255, 0.2) 26.54%, rgba(191, 254, 255, 0.2) 70.96%)`
-            background-origin: padding-box, border-box;
-            background-clip: padding-box, border-box;
-            box-shadow: 0px 4px 8px 0px #00000005;
-            overflow: hidden;
-            div {
+        .carousel-slides {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          scroll-behavior: smooth;
+          .slide {
+            scroll-snap-align: start;
+            flex-shrink: 0;
+            width: 100%;
+
+            .block {
+              height: 100px;
               display: flex;
-              align-items: center;
-            }
-            h1 {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-weight: 500;
-              font-size: 18px;
-            }
-            > h1 {
-              width: 40%;
-            }
-            > section {
-              width: 60%;
-            }
-            p {
-              font-weight: 600;
-              font-size: 16px;
-            }
-            &:nth-of-type(1) {
-              h1,
-              p {
-                color: yellow; //temp
+              margin-bottom: 20px;
+              margin-right: 1px;
+              font-size: 14px;
+              background: $base-color;
+              border-radius: 12px;
+              border: solid 2px transparent;
+              background-image: linear-gradient(132.89deg, #fff, #fff),
+                linear-gradient(93.83deg, #e8f7ff 26.54%, #bffeff 70.96%);
+              // `linear-gradient(132.89deg,${theme.dark.armyGreen} , ${theme.dark.armyGreen}), linear-gradient(93.83deg, rgba(232, 247, 255, 0.2) 26.54%, rgba(191, 254, 255, 0.2) 70.96%)`
+              background-origin: padding-box, border-box;
+              background-clip: padding-box, border-box;
+              box-shadow: 0px 4px 8px 0px #00000005;
+              overflow: hidden;
+              div {
+                display: flex;
+                align-items: center;
               }
-            }
-            &:nth-of-type(2) {
-              h1,
-              p {
-                color: green; //temp
+              h1 {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 500;
+                font-size: 18px;
               }
-            }
-            :nth-of-type(3) {
-              h1,
+              > h1 {
+                width: 40%;
+              }
+              > section {
+                width: 60%;
+              }
               p {
-                color: blue; //temp
+                font-weight: 600;
+                font-size: 16px;
+              }
+              &:nth-of-type(1) {
+                h1,
+                p {
+                  color: yellow; //temp
+                }
+              }
+              &:nth-of-type(2) {
+                h1,
+                p {
+                  color: green; //temp
+                }
+              }
+              :nth-of-type(3) {
+                h1,
+                p {
+                  color: blue; //temp
+                }
               }
             }
           }
