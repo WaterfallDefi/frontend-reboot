@@ -2,6 +2,9 @@ import "./Dashboard.scss";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
 import { useEffect, useState } from "react";
 import { Mode } from "../WaterfallDefi";
+import { useWTFPriceLP } from "../markets/hooks/useWtfPriceFromLP";
+import numeral from "numeral";
+import { Metamask } from "../header/svgs/Metamask";
 
 type Props = {
   mode: Mode;
@@ -12,8 +15,9 @@ function Dashboard(props: Props) {
 
   const [darkTwitter, setDarkTwitter] = useState(false);
 
+  const { price, marketCap } = useWTFPriceLP();
+
   useEffect(() => {
-    console.log("wtf");
     if (mode === Mode.Dark) {
       setDarkTwitter(true);
     } else {
@@ -34,14 +38,21 @@ function Dashboard(props: Props) {
         <div className="content">
           <div className="block">
             <span className="title">WTF Price</span>
-            <span className="value">$0.15</span>
+            <span className="value">
+              $ {price ? numeral(price).format("0,0.[00]") : "-"}
+            </span>
           </div>
           <div className="block">
             <span className="title">Market Cap</span>
-            <span className="value">$1,000,000</span>
+            <span className="value">
+              $ {marketCap ? numeral(marketCap).format("0,0") : "-"}
+            </span>
           </div>
           <div className="block">
-            <span className="title"></span>
+            <span className="title" />
+            <div className="icon-group">
+              <Metamask />
+            </div>
           </div>
         </div>
       </div>

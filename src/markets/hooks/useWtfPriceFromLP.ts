@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { useEffect, useState } from "react";
 // import useRefresh from "./useRefresh";
 import ky from "ky";
+import { useIsBrowserTabActive } from "../../hooks/useIsBrowserTabActive";
 
 const getPrice = async () => {
   //BSC price
@@ -10,8 +11,10 @@ const getPrice = async () => {
       "https://api.pancakeswap.info/api/v2/tokens/0xd73f32833b6d5d9c8070c23e599e283a3039823c"
     )
     .json()
-    .then((res) => res);
-  return new BigNumber(pancake?.data?.data?.price).toFixed(2);
+    .then((res: any) => {
+      return res.data.price;
+    });
+  return new BigNumber(pancake).toFixed(2);
 };
 
 const getWTFSupply = async () => {
@@ -31,18 +34,30 @@ const getWTFSupply = async () => {
 export const useWTFPriceLP = () => {
   const [price, setPrice] = useState("");
   const [marketCap, setMarketCap] = useState("");
-  //   const { slowRefresh } = useRefresh(); figure this out later
+
+  const isBrowserTabActiveRef = useIsBrowserTabActive();
+
+  const [refreshCounter, setRefreshCounter] = useState<number>(0);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (isBrowserTabActiveRef.current) {
+        setRefreshCounter((prev) => prev + 1);
+      }
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [isBrowserTabActiveRef]);
+
   useEffect(() => {
     const fetchPrice = async () => {
       const price = await getPrice();
       setPrice(price);
 
       const supply = await getWTFSupply();
-
       setMarketCap(new BigNumber(supply).times(price).toFormat(0).toString());
     };
     fetchPrice();
-  }, []);
+  }, [refreshCounter]);
 
   return { price, marketCap };
 };

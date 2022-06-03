@@ -74,6 +74,18 @@ $evenPadding: calc((100vw - 1048px) / 2);
           line-height: 31.2px;
           font-weight: 600;
         }
+        .icon-group {
+          display: flex;
+          align-items: flex-end;
+          svg {
+            cursor: pointer;
+          }
+          & > svg,
+          & > a {
+            width: 32px;
+            height: 32px;
+          }
+        }
       }
     }
   }
