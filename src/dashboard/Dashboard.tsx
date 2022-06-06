@@ -14,7 +14,7 @@ type Props = {
 };
 
 function Dashboard(props: Props) {
-  const { mode } = props;
+  const { mode, markets } = props;
 
   const [darkTwitter, setDarkTwitter] = useState(false);
 
@@ -33,6 +33,9 @@ function Dashboard(props: Props) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const threeTrancheDisplayTexts = ["Senior", "Mezzanine", "Junior"];
+  const twoTrancheDisplayTexts = ["Fixed", "Variable"];
 
   return (
     <div className={"dashboard-wrapper " + mode}>
@@ -96,23 +99,29 @@ function Dashboard(props: Props) {
           <div className="icon-wrapper"></div>
           <div className="carousel-container">
             <div className="carousel-slides">
-              <div className="slide" id="slide1">
-                <div className="block">1</div>
-                <div className="block">1</div>
-                <div className="block">1</div>
-              </div>
-              <div className="slide">
-                <div className="block">2</div>
-                <div className="block">2</div>
-                <div className="block">2</div>
-              </div>
-              <div className="slide">
-                <div className="block">2</div>
-                <div className="block">2</div>
-                <div className="block">2</div>
-              </div>
+              {markets.map((_market: Market, i) => {
+                if (!_market.isRetired)
+                  return (
+                    <div className="slide" id={"slide" + i}>
+                      <div className="title">{_market.portfolio}</div>
+                      {(_market.trancheCount === 3
+                        ? threeTrancheDisplayTexts
+                        : twoTrancheDisplayTexts
+                      ).map((_trancheText, j) => (
+                        <div className="block">
+                          <h1>{_trancheText}</h1>
+                          <div className="section">
+                            <div className="apr-wrapper">
+                              <span>Total APR</span>
+                              <p>3%</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  );
+              })}
             </div>
-            <a href="#slide1">1</a>
           </div>
         </div>
       </div>
