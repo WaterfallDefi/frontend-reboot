@@ -123,11 +123,11 @@ function Dashboard(props: Props) {
                                   ? "Variable"
                                   : "Fixed"}
                               </span>
-                              <span>trancheApr</span>
+                              <p>3%</p>
                             </div>
                             <div className="apr-wrapper">
                               <span>WTF APR</span>
-                              <span>wtfAPR</span>
+                              <p>3%</p>
                             </div>
                             <div className="line" />
                             <div className="fee"></div>
