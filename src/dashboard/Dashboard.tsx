@@ -1,6 +1,6 @@
 import "./Dashboard.scss";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
-import { useEffect, useState } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import { Mode } from "../WaterfallDefi";
 import { useWTFPriceLP } from "../markets/hooks/useWtfPriceFromLP";
 import numeral from "numeral";
@@ -21,6 +21,8 @@ function Dashboard(props: Props) {
   const { price, marketCap } = useWTFPriceLP();
 
   const totalTvl = useTotalTvl();
+
+  const scrollRefs = useRef(markets.map(() => createRef()));
 
   useEffect(() => {
     if (mode === Mode.Dark) {
@@ -102,7 +104,7 @@ function Dashboard(props: Props) {
               {markets.map((_market: Market, i) => {
                 if (!_market.isRetired)
                   return (
-                    <div className="slide" id={"slide" + i}>
+                    <div className="slide" key={i}>
                       <div className="title">{_market.portfolio}</div>
                       {(_market.trancheCount === 3
                         ? threeTrancheDisplayTexts
@@ -115,6 +117,20 @@ function Dashboard(props: Props) {
                               <span>Total APR</span>
                               <p>3%</p>
                             </div>
+                            <div className="apr-wrapper">
+                              <span>
+                                {j === _market.trancheCount - 1
+                                  ? "Variable"
+                                  : "Fixed"}
+                              </span>
+                              <span>trancheApr</span>
+                            </div>
+                            <div className="apr-wrapper">
+                              <span>WTF APR</span>
+                              <span>wtfAPR</span>
+                            </div>
+                            <div className="line" />
+                            <div className="fee"></div>
                           </div>
                         </div>
                       ))}

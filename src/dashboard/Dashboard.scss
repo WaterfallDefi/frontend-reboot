@@ -201,9 +201,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
       .carousel-container {
         display: flex;
         flex-direction: column;
-        min-width: 100%;
-        max-width: 100%;
-        width: 100%;
+        width: 420px;
         padding-bottom: 12px;
         overflow: hidden;
 
@@ -216,9 +214,11 @@ $evenPadding: calc((100vw - 1048px) / 2);
           &::-webkit-scrollbar {
             width: 10px;
             height: 10px;
+            background: $text-color-lightest;
+            border-radius: 10px;
           }
           &::-webkit-scrollbar-thumb {
-            background: $text-color-lightest;
+            background: $text-color-lighter;
             border-radius: 10px;
           }
 
@@ -259,6 +259,37 @@ $evenPadding: calc((100vw - 1048px) / 2);
               }
               > section {
                 width: 60%;
+                height: 100%;
+                color: $text-color;
+                background: $base-color;
+                padding: 19px 29px;
+
+                .apr-wrapper {
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  margin-bottom: 8px;
+                  line-height: 18.2px;
+                }
+                .line {
+                  height: 1px;
+                  width: 100%;
+                  background: $highlight-color;
+                  margin: 10px 0 14px;
+                  opacity: 0.1;
+                }
+                .fee {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  line-height: 15.6px;
+                  font-size: 12px;
+                  u {
+                    text-decoration: none;
+                    border-bottom: 1px dashed $text-color;
+                  }
+                }
               }
               p {
                 font-weight: 600;
