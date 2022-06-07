@@ -155,7 +155,10 @@ function Dashboard(props: Props) {
                                 <p>{wtfApr}%</p>
                               </div>
                               <div className="line" />
-                              <div className="fee"></div>
+                              <div className="fee">
+                                <span>Withdraw Fee</span>
+                                <span>{_market?.tranches[j].fee}</span>
+                              </div>
                             </div>
                           </div>
                         );
