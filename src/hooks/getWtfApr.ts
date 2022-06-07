@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
-import { Tranche } from "../../types";
-import { Network } from "../../WaterfallDefi";
+import { Tranche } from "../types";
+import { Network } from "../WaterfallDefi";
 
 const BLOCK_TIME = (chainId: Network) => {
   switch (chainId) {

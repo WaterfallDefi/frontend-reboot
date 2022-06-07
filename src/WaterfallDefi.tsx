@@ -33,6 +33,8 @@ function WaterfallDefi() {
     });
   }, []);
 
+  console.log(markets);
+
   const layout = (element: JSX.Element, tutorial: boolean) => [
     <Header
       key="header"

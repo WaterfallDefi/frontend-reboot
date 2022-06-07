@@ -1,12 +1,14 @@
 import "./Dashboard.scss";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
 import { createRef, useEffect, useRef, useState } from "react";
-import { Mode } from "../WaterfallDefi";
-import { useWTFPriceLP } from "../markets/hooks/useWtfPriceFromLP";
+import { Mode, Network } from "../WaterfallDefi";
+import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import numeral from "numeral";
 import { Metamask } from "../header/svgs/Metamask";
 import useTotalTvl from "./hooks/useTotalTvl";
 import { Market } from "../types";
+import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
+import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
 
 type Props = {
   mode: Mode;
@@ -19,10 +21,9 @@ function Dashboard(props: Props) {
   const [darkTwitter, setDarkTwitter] = useState(false);
 
   const { price, marketCap } = useWTFPriceLP();
+  const coingeckoPrices = useCoingeckoPrices(markets);
 
   const totalTvl = useTotalTvl();
-
-  const scrollRefs = useRef(markets.map(() => createRef()));
 
   useEffect(() => {
     if (mode === Mode.Dark) {
@@ -109,31 +110,56 @@ function Dashboard(props: Props) {
                       {(_market.trancheCount === 3
                         ? threeTrancheDisplayTexts
                         : twoTrancheDisplayTexts
-                      ).map((_trancheText, j) => (
-                        <div className="block">
-                          <h1>{_trancheText}</h1>
-                          <div className="section">
-                            <div className="apr-wrapper">
-                              <span>Total APR</span>
-                              <p>3%</p>
+                      ).map((_trancheText, j) => {
+                        const trancheApr: string = _market.tranches[j]?.apy;
+                        const wtfApr = _market
+                          ? getWTFApr(
+                              _market.isAvax ? Network.AVAX : Network.BNB,
+                              formatAllocPoint(
+                                _market?.pools[j],
+                                _market?.totalAllocPoints
+                              ),
+                              _market?.tranches[j],
+                              _market?.duration,
+                              _market?.rewardPerBlock,
+                              price,
+                              _market?.assets,
+                              coingeckoPrices
+                            )
+                          : "-";
+
+                        const netApr =
+                          trancheApr && wtfApr && wtfApr !== null
+                            ? Number(trancheApr) +
+                              Number(numeral(wtfApr).value())
+                            : Number(numeral(trancheApr).value());
+
+                        return (
+                          <div className="block" key={i.toString() + j}>
+                            <h1>{_trancheText}</h1>
+                            <div className="section">
+                              <div className="apr-wrapper">
+                                <span>Total APR</span>
+                                <p>{numeral(netApr).format("0,0.[00]")}%</p>
+                              </div>
+                              <div className="apr-wrapper">
+                                <span>
+                                  {j === _market.trancheCount - 1
+                                    ? "Variable"
+                                    : "Fixed"}
+                                </span>
+                                <p>{trancheApr}%</p>
+                              </div>
+                              <div className="apr-wrapper">
+                                <span>WTF APR</span>
+                                <p>{wtfApr}%</p>
+                              </div>
+                              <div className="line" />
+                              <div className="fee"></div>
                             </div>
-                            <div className="apr-wrapper">
-                              <span>
-                                {j === _market.trancheCount - 1
-                                  ? "Variable"
-                                  : "Fixed"}
-                              </span>
-                              <p>3%</p>
-                            </div>
-                            <div className="apr-wrapper">
-                              <span>WTF APR</span>
-                              <p>3%</p>
-                            </div>
-                            <div className="line" />
-                            <div className="fee"></div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   );
               })}

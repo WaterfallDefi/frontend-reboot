@@ -1,6 +1,6 @@
 import ky from "ky";
 import { useEffect, useState } from "react";
-import { Market } from "../../types";
+import { Market } from "../types";
 
 const getCoingeckoPrices = async () => {
   const result = await ky

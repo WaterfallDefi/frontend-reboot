@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { useEffect, useState } from "react";
 // import useRefresh from "./useRefresh";
 import ky from "ky";
-import { useIsBrowserTabActive } from "../../hooks/useIsBrowserTabActive";
+import { useIsBrowserTabActive } from "../hooks/useIsBrowserTabActive";
 
 const getPrice = async () => {
   //BSC price

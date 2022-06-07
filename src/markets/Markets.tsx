@@ -4,9 +4,9 @@ import TableRow from "../shared/TableRow";
 import { useState } from "react";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { Mode, Network } from "../WaterfallDefi";
-import getWTFApr, { formatAllocPoint } from "./hooks/getWtfApr";
-import { useWTFPriceLP } from "./hooks/useWtfPriceFromLP";
-import { useCoingeckoPrices } from "./hooks/useCoingeckoPrices";
+import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
+import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
+import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
 import numeral from "numeral";
 
 type Props = {
