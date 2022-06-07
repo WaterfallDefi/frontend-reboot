@@ -1,14 +1,38 @@
+import { useEffect, useState } from "react";
+import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
+import { Market } from "../../types";
 import { Hill } from "../svgs/Hill";
+import PortfolioChart from "./PortfolioChart";
 
-type Props = {};
+type Props = {
+  selectedMarket: Market;
+};
 
-const MarketDetail: React.FC<Props> = ({}) => {
+const MarketDetail: React.FC<Props> = (props: Props) => {
+  const { selectedMarket } = props;
+
+  const today = new Date();
+  const twoWeeksAgo = new Date();
+  twoWeeksAgo.setDate(today.getDate() - 14);
+
+  const [APYData, setAPYData] = useState<any[]>([]);
+
+  useEffect(() => {
+    getAPYHourly(twoWeeksAgo.toISOString(), today.toISOString()).then(
+      (res: any) => {
+        setAPYData(res);
+      }
+    );
+  }, []);
+
+  console.log(selectedMarket);
+
   return (
     <div className="market-detail-wrapper">
       <div className="information">
         <div className="block-wrapper">
           <div className="block">
-            <span className="portfolio-name">portfolio name</span>
+            <span className="portfolio-name">{selectedMarket.portfolio}</span>
           </div>
           <div className="block">
             <span className="assets"></span>
@@ -20,12 +44,12 @@ const MarketDetail: React.FC<Props> = ({}) => {
       </div>
       <div className="charts">
         <div className="record-card">
-          <section>
-            <div>Return Principal + Yield</div>
-            <div style={{ padding: "10px 0" }}>$100,000</div>
-            <div>
-              <div className="button">Withdraw All</div>
-              <div className="button">Roll Deposit</div>
+          <div className="section">
+            <div className="label">Return Principal + Yield</div>
+            <div className="rtn-amt">$100,000</div>
+            <div className="buttons">
+              <button>Withdraw All</button>
+              <button>Roll Deposit</button>
             </div>
             <div style={{ marginTop: 10 }}>Autoroll Balance: $100,000</div>
             <div style={{ display: "flex", marginTop: 10 }}>
@@ -40,19 +64,21 @@ const MarketDetail: React.FC<Props> = ({}) => {
                 {/* <switch /> */}
               </div>
             </div>
-          </section>
-          <section>
-            <div>WTF Reward</div>
-            <div>1000 WTF</div>
-            <div>
-              <div className="button">
-                Claim
-                {/* ArrowRight SVG */}
-              </div>
+          </div>
+          <div className="section">
+            <div className="label">WTF Reward</div>
+            <div className="rtn-amt">1000 WTF</div>
+            <div className="buttons">
+              <button>Claim</button>
             </div>
-          </section>
+          </div>
         </div>
-        <div className="block">PortfolioChart</div>
+        <div className="block">
+          <PortfolioChart
+            strategyFarms={selectedMarket.strategyFarms}
+            APYData={APYData}
+          />
+        </div>
         <div className="block">TrancheChart</div>
       </div>
       <div className="deposit">

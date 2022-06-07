@@ -4,7 +4,7 @@ import { Market } from "../types";
 
 type Props = {
   data: any;
-  setSelectedMarket?: React.Dispatch<React.SetStateAction<Market | undefined>>;
+  setSelectedMarket?: () => void;
   openFold?: boolean; //temporary coding to boolean
 };
 
@@ -88,7 +88,7 @@ function TableRow(props: Props) {
       <div
         className={"table-row" + (foldOpen ? " fold-open" : "")}
         onClick={() => {
-          setSelectedMarket && setSelectedMarket(data);
+          setSelectedMarket && setSelectedMarket();
           openFold && setFoldOpen(!foldOpen);
         }}
       >

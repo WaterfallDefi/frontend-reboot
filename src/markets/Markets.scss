@@ -34,12 +34,9 @@
       padding-top: 37px;
 
       .block-wrapper {
-        display: grid;
-        gap: 40px;
-        grid-auto-flow: column;
-        @media screen and (max-width: 768px) {
-          grid-auto-flow: row;
-        }
+        display: flex;
+        flex-direction: column;
+
         .block {
           display: flex;
           flex-direction: column;
@@ -74,45 +71,26 @@
         gap: 20px;
         grid-auto-flow: row;
         position: relative;
-        section {
+
+        .section {
+          background: $base-color;
           padding: 12px 20px 12px 32px;
           min-height: 140px;
-          background: $base-color;
           border-radius: 12px;
+          border-left: 5px solid $highlight-color;
           color: $text-color-lighter;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
           font-size: 12px;
-          :after {
-            content: "";
-            position: absolute;
-            background-color: $highlight-color;
-            top: 12px;
-            left: 0;
-            height: calc(100% - 24px);
-            width: 5px;
-          }
-          button {
-            width: fit-content;
-            padding: 0 12px;
-            font-size: 12px;
-          }
-          div {
-            :nth-of-type(1) {
-              color: $text-color-lighter;
-            }
-            :nth-of-type(2) {
-              color: $highlight-color;
-              font-size: 20px;
-            }
 
-            :nth-of-type(3) {
-              color: $highlight-color;
-              font-size: 12px;
-            }
+          .label {
+            color: $text-color-lighter;
           }
-
+          .rtn-amt {
+            color: $highlight-color;
+            font-size: 20px;
+          }
           .autorolling-label {
             font-size: 18px;
             font-weight: 400;
@@ -120,15 +98,17 @@
             margin-right: 12px;
             padding-top: 4px;
           }
-        }
 
-        .button {
-          border-radius: 4px;
-          height: 28px;
-          font-size: 12px;
+          .buttons {
+            button {
+              border-radius: 4px;
+              height: 28px;
+              font-size: 12px;
 
-          & > svg {
-            margin-left: 5px;
+              & > svg {
+                margin-left: 5px;
+              }
+            }
           }
         }
 

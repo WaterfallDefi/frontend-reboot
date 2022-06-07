@@ -6,7 +6,7 @@ import ky from "ky";
 
 const BIG_TEN = new BigNumber(10);
 
-const getAPYHourly = async (date: string, date2: string) => {
+export const getAPYHourly = async (date: string, date2: string) => {
   let hourly;
   try {
     hourly = await ky

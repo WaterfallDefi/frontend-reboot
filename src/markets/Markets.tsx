@@ -77,7 +77,7 @@ function Markets(props: Props) {
             return (
               <TableRow
                 key={m.portfolio}
-                setSelectedMarket={setSelectedMarket}
+                setSelectedMarket={() => setSelectedMarket(m)}
                 data={{
                   portfolio: m.portfolio,
                   assets: m.assets,
@@ -95,7 +95,7 @@ function Markets(props: Props) {
             );
           })
         : null}
-      {selectedMarket ? <MarketDetail /> : null}
+      {selectedMarket ? <MarketDetail selectedMarket={selectedMarket} /> : null}
     </div>
   );
 }
