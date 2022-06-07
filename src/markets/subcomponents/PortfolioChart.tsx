@@ -13,6 +13,8 @@ type Props = {
   APYData: any[];
 };
 
+const COLORS = ["#FFFFFF", "#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
+
 function PortfolioChart(props: Props) {
   const { strategyFarms, APYData } = props;
 
@@ -33,20 +35,18 @@ function PortfolioChart(props: Props) {
   // const strategyTuple = strategyFarms.map((s) => s.apiKey);
   // const strategyNameTuple = strategyFarms.map((s) => s.farmName);
 
-  const COLORS = ["#FFFFFF", "#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
-
-  console.log(data);
-
   return (
-    <VictoryPie
-      data={data}
-      x="farmName"
-      y="shares"
-      colorScale={COLORS}
-      animate={{
-        easing: "exp",
-      }}
-    />
+    <div className="portfolio-chart">
+      <VictoryPie
+        data={data}
+        labels={[]}
+        y="shares"
+        colorScale={COLORS}
+        animate={{
+          easing: "exp",
+        }}
+      />
+    </div>
   );
 }
 

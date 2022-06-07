@@ -66,6 +66,20 @@
         grid-template-columns: auto;
       }
 
+      .linear-gradient {
+        position: absolute;
+        width: 80%;
+        background: linear-gradient(
+          90deg,
+          rgba(252, 182, 4, 0.8) 14.14%,
+          rgba(3, 161, 75, 0.8) 45.76%,
+          rgba(12, 108, 254, 0.8) 84.73%
+        );
+        filter: blur(369px);
+        transform: matrix(-1, 0, 0, 1, 0, 0);
+        height: 200px;
+      }
+
       .record-card {
         display: grid;
         gap: 20px;
@@ -111,13 +125,45 @@
             }
           }
         }
+      }
+      .block {
+        flex: 1;
+        display: flex;
+        color: $text-color-lighter;
+        background: $base-color;
+        border-radius: 12px;
 
-        .block {
-          flex: 1;
+        .legend {
           display: flex;
-          color: $text-color-lighter;
-          background: $base-color;
-          border-radius: 12px;
+          flex-direction: column;
+          justify-content: center;
+
+          .farm-key {
+            display: flex;
+            flex-direction: column;
+
+            .key-color {
+              width: 40px;
+              height: 40px;
+              border-radius: 5px;
+            }
+            span {
+              margin-bottom: 12px;
+            }
+          }
+        }
+
+        &.tranche-structure {
+          justify-content: end;
+          .tranche-chart {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0 25px 20px 0;
+            .tranche {
+              width: 169px;
+            }
+          }
         }
       }
     }

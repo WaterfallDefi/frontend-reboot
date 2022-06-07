@@ -6,26 +6,6 @@
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "waterfalldefi.png",
-      "type": "image/png",
-      "sizes": "506x253"
-    },
-    {
-      "src": "deposit.png",
-      "type": "image/png",
-      "sizes": "74x74"
-    },
-    {
-      "src": "wait.png",
-      "type": "image/png",
-      "sizes": "74x74"
-    },
-    {
-      "src": "withdraw.png",
-      "type": "image/png",
-      "sizes": "74x74"
     }
   ],
   "start_url": ".",

@@ -3,10 +3,13 @@ import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market } from "../../types";
 import { Hill } from "../svgs/Hill";
 import PortfolioChart from "./PortfolioChart";
+import TrancheStructure from "./TrancheStructure";
 
 type Props = {
   selectedMarket: Market;
 };
+
+const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
   const { selectedMarket } = props;
@@ -25,8 +28,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     );
   }, []);
 
-  console.log(selectedMarket);
-
   return (
     <div className="market-detail-wrapper">
       <div className="information">
@@ -43,6 +44,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <div className="charts">
+        <div className="linear-gradient" />
         <div className="record-card">
           <div className="section">
             <div className="label">Return Principal + Yield</div>
@@ -73,13 +75,27 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
             </div>
           </div>
         </div>
-        <div className="block">
+        <div className="block col">
           <PortfolioChart
             strategyFarms={selectedMarket.strategyFarms}
             APYData={APYData}
           />
+          <div className="legend">
+            {selectedMarket.strategyFarms.map((f, i) => (
+              <div key={f.farmName} className="farm-key">
+                <div
+                  className="key-color"
+                  style={{ backgroundColor: COLORS[i] }}
+                />
+                <span>{f.farmName}</span>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="block">TrancheChart</div>
+        <TrancheStructure
+          tranches={selectedMarket.tranches}
+          totalTranchesTarget={selectedMarket.totalTranchesTarget}
+        />
       </div>
       <div className="deposit">
         <div className="next-cycle-wrapper">
