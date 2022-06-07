@@ -16,14 +16,33 @@ $evenPadding: calc((100vw - 1048px) / 2);
     background: $layer-color;
     position: relative;
     color: $text-color;
+    .banner-img-toggle {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      &:hover {
+        border: 2px solid $highlight-color;
+      }
+    }
     .dash-banner-img {
       position: absolute;
       height: 370px;
       width: 420px;
       right: 0;
       bottom: 56px;
-      background-image: url("./DashboardImage.svg");
-      background-size: contain;
+      &.default {
+        background-image: url("./DashboardImage.svg");
+        background-size: contain;
+      }
+      &.alternate {
+        background-image: url("./DashboardImageAlt.svg");
+        background-size: cover;
+      }
+
       @media screen and (max-width: 876px) {
         display: none;
       }

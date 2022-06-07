@@ -19,6 +19,8 @@ function Dashboard(props: Props) {
   const { mode, markets } = props;
 
   const [darkTwitter, setDarkTwitter] = useState(false);
+  const [backgroundImg, setBackgroundImg] = useState(0);
+  const bgImgs = ["default", "alternate", "none"];
 
   const { price, marketCap } = useWTFPriceLP();
   const coingeckoPrices = useCoingeckoPrices(markets);
@@ -43,7 +45,15 @@ function Dashboard(props: Props) {
   return (
     <div className={"dashboard-wrapper " + mode}>
       <div className="dash-banner">
-        <div className="dash-banner-img" />
+        <div className={"dash-banner-img " + bgImgs[backgroundImg]} />
+        <div
+          className="banner-img-toggle"
+          onClick={() =>
+            backgroundImg === 2
+              ? setBackgroundImg(0)
+              : setBackgroundImg(backgroundImg + 1)
+          }
+        />
         <div className="linear-gradient" />
         <h1>Dashboard</h1>
         <div className="content">
