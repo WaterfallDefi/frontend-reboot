@@ -66,24 +66,28 @@ function TrancheStructure(props: Props) {
 
   return (
     <div className="block tranche-structure">
-      <div className="tranche-chart">
-        {payload.map((t, i) => (
-          <div
-            className="tranche"
-            style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
-          />
-        ))}
-      </div>
-      <div className="legend">
-        {payload.map((t, i) => (
-          <div key={t.name} className="farm-key">
+      <div className="background left-br">
+        <div className="tranche-chart">
+          {payload.map((t, i) => (
             <div
-              className="key-color"
-              style={{ backgroundColor: COLORS[t.name] }}
+              className="tranche"
+              style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
             />
-            <span>{t.name}</span>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+      <div className="background right-br">
+        <div className="legend">
+          {payload.map((t, i) => (
+            <div key={t.name} className="farm-key">
+              <div
+                className="key-color"
+                style={{ backgroundColor: COLORS[t.name] }}
+              />
+              <span>{t.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

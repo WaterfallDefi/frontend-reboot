@@ -130,25 +130,47 @@
         flex: 1;
         display: flex;
         color: $text-color-lighter;
-        background: $base-color;
         border-radius: 12px;
 
-        .legend {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
+        .background {
+          position: relative;
+          top: 0;
+          left: 0;
+          height: 100%;
+          background: $base-color;
 
-          .farm-key {
+          &.left-br {
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+          }
+          &.right-br {
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+          }
+
+          .portfolio-chart {
+            margin-top: 10px;
+          }
+
+          .legend {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            padding-right: 10px;
 
-            .key-color {
-              width: 40px;
-              height: 40px;
-              border-radius: 5px;
-            }
-            span {
-              margin-bottom: 12px;
+            .farm-key {
+              display: flex;
+              flex-direction: column;
+
+              .key-color {
+                width: 40px;
+                height: 40px;
+                border-radius: 5px;
+              }
+              span {
+                margin-bottom: 12px;
+              }
             }
           }
         }
@@ -159,9 +181,9 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: 0 25px 20px 0;
+            margin: 55px 80px 30px 90px;
             .tranche {
-              width: 169px;
+              width: 180px;
             }
           }
         }
@@ -190,13 +212,14 @@
       .top-bar {
         display: flex;
         justify-content: space-between;
+        margin-bottom: 35px;
+
         .step-bar {
           display: grid;
           gap: 10px;
           grid-auto-flow: column;
           width: fit-content;
           align-items: center;
-          margin-bottom: 35px;
           @media screen and (max-width: 1024px) {
             width: 100%;
             padding: 0;
@@ -213,6 +236,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background: $base-color;
+            z-index: 1;
           }
           .step-name {
             font-size: 14px;
@@ -339,6 +364,11 @@
           }
         }
         .approve-card {
+          padding: 25px;
+          background: $base-color;
+          border-radius: 12px;
+          z-index: 1;
+
           .row {
             font-size: 20px;
             line-height: 27px;

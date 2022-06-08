@@ -76,20 +76,24 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           </div>
         </div>
         <div className="block col">
-          <PortfolioChart
-            strategyFarms={selectedMarket.strategyFarms}
-            APYData={APYData}
-          />
-          <div className="legend">
-            {selectedMarket.strategyFarms.map((f, i) => (
-              <div key={f.farmName} className="farm-key">
-                <div
-                  className="key-color"
-                  style={{ backgroundColor: COLORS[i] }}
-                />
-                <span>{f.farmName}</span>
-              </div>
-            ))}
+          <div className="background left-br">
+            <PortfolioChart
+              strategyFarms={selectedMarket.strategyFarms}
+              APYData={APYData}
+            />
+          </div>
+          <div className="background right-br">
+            <div className="legend">
+              {selectedMarket.strategyFarms.map((f, i) => (
+                <div key={f.farmName} className="farm-key">
+                  <div
+                    className="key-color"
+                    style={{ backgroundColor: COLORS[i] }}
+                  />
+                  <span>{f.farmName}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <TrancheStructure
