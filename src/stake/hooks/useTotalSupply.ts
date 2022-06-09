@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useIsBrowserTabActive } from "../../hooks/useIsBrowserTabActive";
 import { Network } from "../../WaterfallDefi";
 import { getContract, getSigner } from "../../hooks/getContract";
-import ERC20Abi from "../../config/abis/WTF.json";
+import ERC20 from "../../config/abis/WTF.json";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
 
@@ -38,7 +38,7 @@ const useTotalSupply = (network: Network, address: string) => {
   const fetchBalance = useCallback(async () => {
     if (!account) return;
     const signer = getSigner();
-    const contract = getContract(ERC20Abi, address, network, signer);
+    const contract = getContract(ERC20.abi, address, network, signer);
     const tokenBalance = await contract.totalSupply();
     const value = formatBalance(tokenBalance.toString());
     setTotalSupply(numeral(value).format("0,0.[0000]"));

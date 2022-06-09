@@ -23,6 +23,8 @@ import { usePendingReward } from "./hooks/usePendingReward";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import useClaimRewards from "./hooks/useClaimRewards";
 import useClaimFeeRewards from "./hooks/useClaimFeeRewards";
+import IncreaseAction from "./subcomponents/IncreaseAction";
+import UnstakeAction from "./subcomponents/UnstakeAction";
 
 const BLOCK_TIME = (chainId: string) => {
   switch (chainId) {
@@ -45,6 +47,11 @@ const actualMultiplier = [
   1.72333333333333, 2.07, 2.49,
 ];
 
+enum StakeKey {
+  Stake = "stake",
+  Unstake = "unstake",
+}
+
 type Props = {
   mode: Mode;
   network: Network;
@@ -52,6 +59,8 @@ type Props = {
 
 function Stake(props: Props) {
   const { mode, network } = props;
+
+  const [activatedKey, setActivatedKey] = useState<StakeKey>(StakeKey.Stake);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -239,7 +248,28 @@ function Stake(props: Props) {
           </div>
         </div>
         <div className="actions">
-          <div className="action"></div>
+          <div className="action">
+            <div className="segment">
+              <div
+                className="segment-block"
+                key="stake"
+                data-activated={activatedKey === "stake"}
+                onClick={() => setActivatedKey(StakeKey.Stake)}
+              >
+                Stake
+              </div>
+              <div
+                className="segment-block"
+                key="unstake"
+                data-activated={activatedKey === "unstake"}
+                onClick={() => setActivatedKey(StakeKey.Unstake)}
+              >
+                Unstake
+              </div>
+            </div>
+            {activatedKey === StakeKey.Stake && <IncreaseAction />}
+            {activatedKey === StakeKey.Unstake && <UnstakeAction />}
+          </div>
           <div className="stake-info">
             <div>
               <div className="veWTF">
