@@ -51,6 +51,11 @@
               color: $highlight-color;
             }
           }
+          .portfolio-name {
+            font-size: 24px;
+            height: 30px;
+            color: $text-color;
+          }
         }
       }
     }
@@ -184,6 +189,23 @@
             margin: 55px 80px 30px 90px;
             .tranche {
               width: 180px;
+              .sold-out {
+                font-size: 14px;
+                width: 75px;
+                height: 30px;
+                border: $highlight-color;
+                color: $highlight-color;
+                box-sizing: border-box;
+                border-radius: 4px;
+                transform: rotate(-30deg);
+                position: absolute;
+                left: -20px;
+                top: -9px;
+                text-align: center;
+                line-height: 30px;
+                background-color: $base-color;
+                z-index: 11;
+              }
             }
           }
         }

@@ -10,12 +10,13 @@ import TrancheStructure from "./TrancheStructure";
 
 type Props = {
   selectedMarket: Market;
+  coingeckoPrices: any;
 };
 
 const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
-  const { selectedMarket } = props;
+  const { selectedMarket, coingeckoPrices } = props;
 
   const [selectedDepositAsset, setSelectedDepositAsset] = useState("BUSD");
   const [simulDeposit, setSimulDeposit] = useState(false);
@@ -34,18 +35,33 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     );
   }, []);
 
+  const [selectDepositAssetModalVisible, setSelectDepositAssetModalVisible] =
+    useState<boolean>(false);
+  const [depositableAssets, setDepositableAssets] = useState<string[]>(
+    selectedMarket.assets
+  );
+
+  const tokens: { addr: string; strategy: string; percent: any }[] | undefined =
+    selectedMarket.tokens;
+
+  const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined =
+    selectedMarket.trancheInvests;
+
   return (
     <div className="market-detail-wrapper">
       <div className="information">
         <div className="block-wrapper">
           <div className="block">
             <span className="portfolio-name">{selectedMarket.portfolio}</span>
+            <span className="listing-date">
+              Listing date: {selectedMarket.listingDate}
+            </span>
           </div>
           <div className="block">
             <span className="assets"></span>
           </div>
           <div className="block">
-            <span className="tvl">$TVL: 10000000</span>
+            <span className="tvl">$TVL: {selectedMarket.tvl}</span>
           </div>
         </div>
       </div>
@@ -78,7 +94,10 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           totalTranchesTarget={selectedMarket.totalTranchesTarget}
         />
       </div>
-      <Deposit />
+      <Deposit
+        selectedMarket={selectedMarket}
+        coingeckoPrices={coingeckoPrices}
+      />
     </div>
   );
 };

@@ -95,7 +95,12 @@ function Markets(props: Props) {
             );
           })
         : null}
-      {selectedMarket ? <MarketDetail selectedMarket={selectedMarket} /> : null}
+      {selectedMarket ? (
+        <MarketDetail
+          selectedMarket={selectedMarket}
+          coingeckoPrices={coingeckoPrices}
+        />
+      ) : null}
     </div>
   );
 }
