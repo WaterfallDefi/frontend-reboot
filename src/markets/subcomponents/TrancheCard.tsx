@@ -92,6 +92,9 @@ function TrancheCard(props: Props) {
     ? tranche.principal
     : (Number(tranche.principal) + Number(tranche.autoPrincipal)).toString();
 
+  console.log(trancheIndex);
+  console.log(["senior", "mezzanine", "junior"][trancheIndex]);
+
   const type: string =
     selectedMarket.trancheCount === 3
       ? ["senior", "mezzanine", "junior"][trancheIndex]
@@ -131,8 +134,9 @@ function TrancheCard(props: Props) {
       <div className="tranche-name">
         <div className="flex-row">
           <div className={"dot " + type} />
+          {type.slice(0, 1).toUpperCase() + type.slice(1)}
         </div>
-        Senior
+        <div className="checkbox" />
       </div>
       <div className={"apr " + type}>APR {trancheApr}%</div>
       <div className="risk-text">{riskText}</div>
