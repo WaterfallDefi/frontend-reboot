@@ -73,6 +73,7 @@ function TrancheCard(props: Props) {
       </div>
       <div className="apr">APR 3.5%</div>
       <div className="risk-text">Low Risk; Fixed</div>
+      <div className="separator" />
       <div className="status">
         <div className="risk-text">TVL: $1</div>
         <div className="remaining">Remaining: 1</div>
