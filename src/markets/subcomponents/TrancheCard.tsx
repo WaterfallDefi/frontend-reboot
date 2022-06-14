@@ -1,4 +1,5 @@
 import { BigNumber } from "bignumber.js";
+import numeral from "numeral";
 import { useMemo } from "react";
 import getWTFApr, { formatAllocPoint } from "../../hooks/getWtfApr";
 import { useWTFPriceLP } from "../../hooks/useWtfPriceFromLP";
@@ -7,6 +8,7 @@ import { Network } from "../../WaterfallDefi";
 
 type Props = {
   selectedMarket: Market;
+  selectedDepositAssetIndex: number;
   tranche: Tranche;
   trancheIndex: number;
   coingeckoPrices: any;
@@ -26,8 +28,32 @@ const compareNum = (
   return _num1.comparedTo(_num2) >= 0 ? true : false;
 };
 
+const getPercentage = (num: string | undefined, total: string | undefined) => {
+  if (!num || !total) return "0";
+  return new BigNumber(num)
+    .dividedBy(new BigNumber(total))
+    .times(100)
+    .toFormat(2)
+    .toString();
+};
+
+const formatNumberSeparator = (num: string) => {
+  return numeral(num).format("0,0.[0000]");
+};
+
+const formatTVL = (num: string | undefined, decimals = 18) => {
+  if (!num) return "- -";
+  return new BigNumber(num).toFormat(4).toString();
+};
+
 function TrancheCard(props: Props) {
-  const { selectedMarket, tranche, trancheIndex, coingeckoPrices } = props;
+  const {
+    selectedMarket,
+    selectedDepositAssetIndex,
+    tranche,
+    trancheIndex,
+    coingeckoPrices,
+  } = props;
   const isSoldout = useMemo(
     () =>
       !selectedMarket.autorollImplemented
@@ -62,23 +88,67 @@ function TrancheCard(props: Props) {
     coingeckoPrices
   );
 
+  const tranchePrincipal: string = !selectedMarket.autorollImplemented
+    ? tranche.principal
+    : (Number(tranche.principal) + Number(tranche.autoPrincipal)).toString();
+
+  const type: string =
+    selectedMarket.trancheCount === 3
+      ? ["senior", "mezzanine", "junior"][trancheIndex]
+      : ["fixed", "variable"][trancheIndex];
+
+  const riskText: string =
+    selectedMarket.trancheCount === 3
+      ? [
+          "Low Risk ; Fixed",
+          "Medium Risk ; Fixed",
+          "Multiple Leverage ; Variable",
+        ][trancheIndex]
+      : ["Low Risk ; Fixed", "Multiple Leverage ; Variable"][trancheIndex];
+
+  const prefix: string =
+    selectedMarket.assets[0] !== "WBNB" && selectedMarket.assets[0] !== "WAVAX"
+      ? "$"
+      : "";
+
+  const decimals: number =
+    selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e"
+      ? 6
+      : 18;
+
+  const tvl: string = formatNumberSeparator(
+    formatTVL(tranchePrincipal, decimals)
+  );
+
+  const suffix: string =
+    selectedMarket.assets[0] === "WBNB" || selectedMarket.assets[0] === "WAVAX"
+      ? selectedMarket.assets[0]
+      : "";
+
   return (
     <div className="tranche one">
       {isSoldout ? <div className="sold-out">Sold Out</div> : null}
       <div className="tranche-name">
         <div className="flex-row">
-          <div className="dot" />
+          <div className={"dot " + type} />
         </div>
         Senior
       </div>
-      <div className="apr">APR 3.5%</div>
-      <div className="risk-text">Low Risk; Fixed</div>
+      <div className={"apr " + type}>APR {trancheApr}%</div>
+      <div className="risk-text">{riskText}</div>
       <div className="separator" />
       <div className="status">
-        <div className="risk-text">TVL: $1</div>
-        <div className="remaining">Remaining: 1</div>
+        <div className="risk-text">TVL: {prefix + tvl + suffix}</div>
+        <div className="remaining">
+          Remaining: {selectedMarket.assets[selectedDepositAssetIndex]}
+        </div>
       </div>
-      <div className="progress-bar"></div>
+      <div
+        className="progress-bar"
+        style={{
+          width: getPercentage(tranchePrincipal, tranche.target),
+        }}
+      />
     </div>
   );
 }

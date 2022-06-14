@@ -105,6 +105,7 @@ function Deposit(props: Props) {
             return (
               <TrancheCard
                 selectedMarket={selectedMarket}
+                selectedDepositAssetIndex={selectedDepositAssetIndex}
                 tranche={t}
                 trancheIndex={i}
                 coingeckoPrices={coingeckoPrices}

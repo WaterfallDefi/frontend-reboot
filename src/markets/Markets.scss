@@ -222,15 +222,15 @@
                     height: 8px;
                     border-radius: 100%;
                     margin-right: 5px;
-                    .senior,
-                    .fixed {
+                    &.senior,
+                    &.fixed {
                       background-color: rgba(252, 182, 4, 0.8);
                     }
-                    .mezzanine {
+                    &.mezzanine {
                       background-color: rgba(3, 161, 75, 0.8);
                     }
-                    .junior,
-                    .variable {
+                    &.junior,
+                    &.variable {
                       background-color: rgba(12, 108, 254, 0.8);
                     }
                   }
@@ -240,15 +240,15 @@
                 font-size: 16px;
                 line-height: 22px;
                 margin: 10px 0;
-                .senior,
-                .fixed {
+                &.senior,
+                &.fixed {
                   color: rgba(252, 182, 4, 0.8);
                 }
-                .mezzanine {
+                &.mezzanine {
                   color: rgba(3, 161, 75, 0.8);
                 }
-                .junior,
-                .variable {
+                &.junior,
+                &.variable {
                   color: rgba(12, 108, 254, 0.8);
                 }
               }
