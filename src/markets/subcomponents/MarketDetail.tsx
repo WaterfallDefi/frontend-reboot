@@ -18,7 +18,7 @@ const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
 const MarketDetail: React.FC<Props> = (props: Props) => {
   const { selectedMarket, coingeckoPrices } = props;
 
-  const [selectedDepositAsset, setSelectedDepositAsset] = useState("BUSD");
+  const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
   const today = new Date();
@@ -97,6 +97,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       <Deposit
         selectedMarket={selectedMarket}
         coingeckoPrices={coingeckoPrices}
+        selectedDepositAssetIndex={selectedDepositAssetIndex}
       />
     </div>
   );
