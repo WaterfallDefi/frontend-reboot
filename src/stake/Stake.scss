@@ -178,7 +178,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
         width: 500px;
         padding: 24px 32px;
         background: $base-color;
-        box-shadow: "0px 8px 40px 0px rgba(0, 108, 253, 0.1)";
+        box-shadow: 0px 8px 40px 0px rgba(0, 108, 253, 0.1);
         border-radius: 12px;
         display: flex;
         flex-direction: column;

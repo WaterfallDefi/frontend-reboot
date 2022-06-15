@@ -1,3 +1,4 @@
+import numeral from "numeral";
 import { useEffect, useState } from "react";
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market } from "../../types";
@@ -12,6 +13,14 @@ type Props = {
 };
 
 const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
+
+const getLockupPeriod = (duration: string) => {
+  const lockupPeriod = Number(duration) / 86400;
+  //for testing
+  return lockupPeriod >= 1
+    ? numeral(lockupPeriod).format("0.[0]") + " Days"
+    : Number(duration) / 60 + " Mins";
+};
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
   const { selectedMarket, coingeckoPrices } = props;
@@ -51,14 +60,35 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         <div className="block-wrapper">
           <div className="block">
             <span className="portfolio-name">{selectedMarket.portfolio}</span>
-            <span className="listing-date">
+            <span className="blocktext listing-date">
               Listing date: {selectedMarket.listingDate}
             </span>
           </div>
           <div className="block">
-            <span className="assets"></span>
+            <div
+              className={
+                "assets" +
+                (selectedMarket.isMulticurrency ? " multicurrency" : "")
+              }
+            >
+              {selectedMarket.assets.map((assetName: string) => [
+                <div
+                  key={assetName + "-img"}
+                  className="coin"
+                  style={{ backgroundImage: `url(/coins/${assetName}.png)` }}
+                />,
+                <span key={assetName + "-span"}>{assetName}</span>,
+              ])}
+            </div>
+            <span className="blocktext">
+              Lock-up period:{" "}
+              {selectedMarket.duration
+                ? getLockupPeriod(selectedMarket.duration)
+                : "-"}
+            </span>
           </div>
           <div className="block">
+            <div />
             <span className="tvl">$TVL: {selectedMarket.tvl}</span>
           </div>
         </div>

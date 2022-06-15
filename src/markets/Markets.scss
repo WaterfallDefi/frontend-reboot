@@ -1,5 +1,14 @@
 @import "../global.scss";
 
+@keyframes grow {
+  from {
+    height: 0;
+  }
+  to {
+    height: 42px;
+  }
+}
+
 .markets-wrapper {
   width: 100%;
   overflow: hidden;
@@ -20,6 +29,7 @@
   .header-row {
     div {
       width: 150px;
+      text-align: right;
     }
   }
 
@@ -35,26 +45,55 @@
 
       .block-wrapper {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
+        gap: 24px;
+        z-index: 1;
+        padding: 12px;
+        border-radius: 12px;
+        background-color: $base-color;
 
         .block {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           font-size: 14px;
-          span:last-child {
+          .blocktext {
             color: $text-color-lighter;
           }
-          :last-child {
-            span:last-child {
-              font-size: 16px;
-              color: $highlight-color;
-            }
+          .tvl {
+            font-size: 16px;
+            color: $highlight-color;
           }
+
           .portfolio-name {
             font-size: 24px;
             height: 30px;
             color: $text-color;
+          }
+
+          .assets {
+            display: flex;
+            font-size: 20px;
+            height: 30px;
+            color: $text-color;
+            padding: 3px;
+            margin-top: 4.2px;
+            border-radius: 5px;
+            transform: translateY(-3px);
+
+            &.multicurrency {
+              cursor: pointer;
+              &:hover {
+                background-color: $text-color-lightest;
+              }
+            }
+
+            .coin {
+              height: 25px;
+              width: 25px;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
           }
         }
       }
@@ -62,7 +101,7 @@
 
     .charts {
       display: grid;
-      padding: 62px 0 20px;
+      padding: 24px 0 20px;
       gap: 20px;
       grid-auto-flow: column;
       grid-template-columns: 30% repeat(2, 1fr);
@@ -123,6 +162,9 @@
               border-radius: 4px;
               height: 28px;
               font-size: 12px;
+              border: 1px solid $text-color-lightest;
+              margin-right: 24px;
+              color: $highlight-color;
 
               & > svg {
                 margin-left: 5px;
@@ -189,6 +231,7 @@
             margin: 55px 80px 30px 90px;
             .tranche-stack {
               width: 180px;
+              animation: grow 0.25s ease-in;
             }
           }
         }

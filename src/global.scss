@@ -71,6 +71,11 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
       width: 25px;
       background-size: cover;
       background-repeat: no-repeat;
+      margin-right: 8px;
+    }
+
+    span {
+      margin-right: 8px;
     }
 
     &.apr_markets {

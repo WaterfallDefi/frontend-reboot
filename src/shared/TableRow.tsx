@@ -46,7 +46,9 @@ function TableRow(props: Props) {
                   <span>
                     {data[key].length === 2 ? "Variable" : "Mezzanine"}
                   </span>
-                  <div style={{ color: "green" }}>
+                  <div
+                    style={{ color: data[key].length === 3 ? "green" : "blue" }}
+                  >
                     {numeral(data[key][1]).format("0,0.[00]")} %
                   </div>
                 </div>

@@ -116,7 +116,13 @@ function Deposit(props: Props) {
             }}
           />
         </div>
-        <div className="active-cycle">Active Cycle</div>
+        <div className="active-cycle">
+          Active Cycle
+          {new Date(
+            Number(selectedMarket.actualStartAt) +
+              Number(selectedMarket.duration)
+          ).toLocaleDateString()}
+        </div>
         <div className="button">Remind Me</div>
       </div>
       <div className="top-bar">
