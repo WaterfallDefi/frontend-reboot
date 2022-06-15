@@ -3,6 +3,7 @@ import { Market } from "../../types";
 import { Hill } from "../svgs/Hill";
 import ApproveCardDefault from "./ApproveCardDefault";
 import TrancheCard from "./TrancheCard";
+import Countdown from "react-countdown";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -10,10 +11,38 @@ type Props = {
   selectedMarket: Market;
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
+  simulDeposit: boolean;
+};
+
+const handleReminder = (startTime: number, endTime: number) => {
+  if (!window || !startTime || !endTime) return;
+  const start =
+    new Date(startTime * 1000).getFullYear() +
+    new Date(startTime * 1000).getMonth() +
+    new Date(startTime * 1000).getDay() +
+    "T" +
+    new Date(startTime * 1000).getHours() +
+    new Date(startTime * 1000).getMinutes();
+  const end =
+    new Date(endTime * 1000).getFullYear() +
+    new Date(endTime * 1000).getMonth() +
+    new Date(endTime * 1000).getDay() +
+    "T" +
+    new Date(endTime * 1000).getHours() +
+    new Date(endTime * 1000).getMinutes();
+  window?.open(
+    `https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Waterfall`,
+    "_blank"
+  );
 };
 
 function Deposit(props: Props) {
-  const { selectedMarket, coingeckoPrices, selectedDepositAssetIndex } = props;
+  const {
+    selectedMarket,
+    coingeckoPrices,
+    selectedDepositAssetIndex,
+    simulDeposit,
+  } = props;
 
   const deposited: BigNumber[] = [];
   const tokens = selectedMarket.tokens;
@@ -62,23 +91,31 @@ function Deposit(props: Props) {
     : [];
   const marketData = selectedMarket;
 
-  //MOMENT.JS -> ??? keep or discard?
-
-  // const handleReminder = (startTime: Number, endTime: Number) => {
-  //   if (!window || !startTime || !endTime) return;
-  //   const start = moment.unix(Number(startTime)).format("YYYYMMDDTHHmm");
-  //   const end = moment.unix(Number(endTime)).format("YYYYMMDDTHHmm");
-  //   window?.open(
-  //     `https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Waterfall`,
-  //     "_blank"
-  //   );
-  // };
-
   return (
     <div className="deposit">
       <div className="next-cycle-wrapper">
         <Hill />
-        <div className="next-cycle">Next Cycle</div>
+        <div className="next-cycle">
+          Next Cycle
+          <Countdown
+            date={
+              (Number(selectedMarket.duration) +
+                Number(selectedMarket.actualStartAt)) *
+              1000
+            }
+            renderer={({ days, hours, minutes, seconds, completed }) => {
+              return (
+                <span>
+                  {!completed && (
+                    <>
+                      {days}D {hours}H {minutes}M {seconds}S
+                    </>
+                  )}
+                </span>
+              );
+            }}
+          />
+        </div>
         <div className="active-cycle">Active Cycle</div>
         <div className="button">Remind Me</div>
       </div>

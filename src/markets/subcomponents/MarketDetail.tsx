@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market } from "../../types";
-import { Hill } from "../svgs/Hill";
-import ApproveCardDefault from "./ApproveCardDefault";
 import ClaimRedeposit from "./ClaimRedeposit";
 import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
@@ -98,6 +96,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         selectedMarket={selectedMarket}
         coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}
+        simulDeposit={simulDeposit}
       />
     </div>
   );

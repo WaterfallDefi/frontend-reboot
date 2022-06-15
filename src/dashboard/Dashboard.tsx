@@ -83,6 +83,7 @@ function Dashboard(props: Props) {
       </div>
       <div className="info-wrapper">
         <div className="announcements">
+          <div className="title">Announcements</div>
           {!darkTwitter ? (
             <TwitterTimelineEmbed
               sourceType="profile"

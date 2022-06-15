@@ -70,6 +70,7 @@ function TrancheStructure(props: Props) {
         <div className="tranche-chart">
           {payload.map((t, i) => (
             <div
+              key={i}
               className="tranche-stack"
               style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
             />
