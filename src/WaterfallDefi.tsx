@@ -24,7 +24,6 @@ export enum Network {
 function WaterfallDefi() {
   const [mode, setMode] = useState<Mode>(Mode.Light);
   const [network, setNetwork] = useState<Network>(Network.AVAX);
-
   const [markets, setMarkets] = useState<Market[]>([]);
 
   useEffect(() => {
@@ -54,7 +53,12 @@ function WaterfallDefi() {
         <Route
           path="/"
           element={layout(
-            <Dashboard key="dashboard" mode={mode} markets={markets} />,
+            <Dashboard
+              key="dashboard"
+              mode={mode}
+              network={network}
+              markets={markets}
+            />,
             false
           )}
         />

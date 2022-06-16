@@ -182,8 +182,6 @@
         }
       }
       .connect-wallet-btn {
-        display: flex;
-        align-items: center;
         border-radius: 8px;
         height: 42px;
         border: 0;
@@ -192,6 +190,11 @@
         font-size: 16px;
         color: $base-color;
         background-color: $highlight-color;
+        cursor: pointer;
+
+        div {
+          margin-top: 8.5px;
+        }
       }
     }
     .dark-icon,

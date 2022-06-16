@@ -13,13 +13,17 @@ import { useIsBrowserTabActive } from "../hooks/useIsBrowserTabActive";
 
 type Props = {
   mode: Mode;
+  network: Network;
   markets: Market[];
 };
 
 function Dashboard(props: Props) {
-  const { mode, markets } = props;
+  const { mode, network, markets } = props;
 
   const carouselRef = useRef<HTMLDivElement>(null);
+  const carouselMarkets = markets.filter((m) =>
+    network === Network.AVAX ? m.isAvax : !m.isAvax
+  );
 
   const isBrowserTabActiveRef = useIsBrowserTabActive();
 
@@ -56,10 +60,13 @@ function Dashboard(props: Props) {
   }, [isBrowserTabActiveRef]);
 
   useEffect(() => {
-    if (carouselRef.current?.scrollLeft !== 2100) {
+    if (carouselRef.current?.scrollLeft !== carouselMarkets.length * 420) {
       carouselRef.current?.scrollBy({ left: 10, behavior: "smooth" });
     } else {
-      carouselRef.current?.scrollBy({ left: -2100, behavior: "smooth" });
+      carouselRef.current?.scrollBy({
+        left: carouselMarkets.length * 420,
+        behavior: "smooth",
+      });
     }
   }, [carouselRef, refreshCounter]);
 
@@ -134,10 +141,14 @@ function Dashboard(props: Props) {
           ) : null}
         </div>
         <div className="market-carousel">
-          <div className="icon-wrapper"></div>
+          <div className="icon-wrapper">
+            <div
+              className={"svg" + (network === Network.AVAX ? " avax" : " bnb")}
+            />
+          </div>
           <div className="carousel-container">
             <div className="carousel-slides" ref={carouselRef}>
-              {markets.map((_market: Market, i) => {
+              {carouselMarkets.map((_market: Market, i) => {
                 if (!_market.isRetired)
                   return (
                     <div className="slide" key={i}>
@@ -203,6 +214,7 @@ function Dashboard(props: Props) {
               })}
             </div>
           </div>
+          <button>Start</button>
         </div>
       </div>
     </div>

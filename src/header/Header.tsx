@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Web3Provider } from "@ethersproject/providers";
 import { Mode, Network } from "../WaterfallDefi";
@@ -36,8 +36,6 @@ function Header(props: Props) {
   const location = useLocation();
 
   const switchNetwork = async (newNetwork: Network) => {
-    const oldNetwork = network;
-    setNetwork(newNetwork);
     if (account) {
       const provider = window.ethereum;
       if (provider?.request) {
@@ -50,13 +48,27 @@ function Header(props: Props) {
               },
             ],
           });
+          setNetwork(newNetwork);
         } catch (error) {
           console.error("Failed to setup the network in Metamask:", error);
-          setNetwork(oldNetwork);
         }
       }
+    } else {
+      setNetwork(newNetwork);
     }
   };
+
+  useEffect(() => {
+    if (window.location.toString().includes("bnb.waterfalldefi.org")) {
+      setNetwork(Network.BNB);
+    } else if (window.location.toString().includes("avax.waterfalldefi.org")) {
+      setNetwork(Network.AVAX);
+    }
+  }, []);
+
+  useEffect(() => {
+    setNetwork(chainId === Network.AVAX ? Network.AVAX : Network.BNB);
+  }, [chainId]);
 
   return (
     <div className={"header-wrapper " + mode}>
@@ -154,7 +166,7 @@ function Header(props: Props) {
             </button>
           ) : (
             <div className="connect-wallet-btn">
-              <span>{formatAccountAddress(account)}</span>
+              <div>{formatAccountAddress(account)}</div>
             </div>
           )}
         </div>
