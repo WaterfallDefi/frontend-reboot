@@ -12,10 +12,11 @@ import numeral from "numeral";
 type Props = {
   mode: Mode;
   markets: Market[];
+  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function Markets(props: Props) {
-  const { mode, markets } = props;
+  const { mode, markets, setConnectWalletModalOpen } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   const { price: wtfPrice } = useWTFPriceLP();
@@ -99,6 +100,7 @@ function Markets(props: Props) {
         <MarketDetail
           selectedMarket={selectedMarket}
           coingeckoPrices={coingeckoPrices}
+          setConnectWalletModalOpen={setConnectWalletModalOpen}
         />
       ) : null}
     </div>

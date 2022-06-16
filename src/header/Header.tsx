@@ -21,17 +21,25 @@ type Props = {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
   network: Network;
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
+  connectWalletModalOpen: boolean;
+  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function Header(props: Props) {
-  const { mode, setMode, network, setNetwork } = props;
+  const {
+    mode,
+    setMode,
+    network,
+    setNetwork,
+    connectWalletModalOpen,
+    setConnectWalletModalOpen,
+  } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
   const { login, logout } = useAuth(network);
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const location = useLocation();
 
@@ -73,10 +81,10 @@ function Header(props: Props) {
   return (
     <div className={"header-wrapper " + mode}>
       <div
-        className={"mask" + (modalOpen ? " visible" : "")}
-        onClick={() => setModalOpen(false)}
+        className={"mask" + (connectWalletModalOpen ? " visible" : "")}
+        onClick={() => setConnectWalletModalOpen(false)}
       />
-      {modalOpen ? <ConnectWalletModal network={network} /> : null}
+      {connectWalletModalOpen ? <ConnectWalletModal network={network} /> : null}
       <div className="pc-left">
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
@@ -159,7 +167,7 @@ function Header(props: Props) {
             <button
               className="connect-wallet-btn"
               onClick={() => {
-                setModalOpen(!modalOpen);
+                setConnectWalletModalOpen(true);
               }}
             >
               Connect Wallet

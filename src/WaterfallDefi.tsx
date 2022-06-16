@@ -25,6 +25,8 @@ function WaterfallDefi() {
   const [mode, setMode] = useState<Mode>(Mode.Light);
   const [network, setNetwork] = useState<Network>(Network.AVAX);
   const [markets, setMarkets] = useState<Market[]>([]);
+  const [connectWalletModalOpen, setConnectWalletModalOpen] =
+    useState<boolean>(false);
 
   useEffect(() => {
     getMarkets(MarketList).then((res) => {
@@ -41,6 +43,8 @@ function WaterfallDefi() {
       setMode={setMode}
       network={network}
       setNetwork={setNetwork}
+      connectWalletModalOpen={connectWalletModalOpen}
+      setConnectWalletModalOpen={setConnectWalletModalOpen}
     />,
     ...(tutorial
       ? [<Tutorial key="tutorial" mode={mode} />, element]
@@ -65,7 +69,12 @@ function WaterfallDefi() {
         <Route
           path="/portfolio/markets"
           element={layout(
-            <Markets key="markets" mode={mode} markets={markets} />,
+            <Markets
+              key="markets"
+              mode={mode}
+              markets={markets}
+              setConnectWalletModalOpen={setConnectWalletModalOpen}
+            />,
             true
           )}
         />

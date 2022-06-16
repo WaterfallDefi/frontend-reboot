@@ -16,7 +16,7 @@ import {
 import { NETWORKS } from "../types";
 import numeral from "numeral";
 import BigNumber from "bignumber.js";
-import useBalance from "./hooks/useBalance";
+import useBalance from "../hooks/useBalance";
 import useTotalSupply from "./hooks/useTotalSupply";
 import useGetLockingWTF from "./hooks/useGetLockingWTF";
 import { usePendingReward } from "./hooks/usePendingReward";

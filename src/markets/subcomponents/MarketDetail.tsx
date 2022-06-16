@@ -15,6 +15,7 @@ import TrancheStructure from "./TrancheStructure";
 type Props = {
   selectedMarket: Market;
   coingeckoPrices: any;
+  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
@@ -28,7 +29,7 @@ const getLockupPeriod = (duration: string) => {
 };
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
-  const { selectedMarket, coingeckoPrices } = props;
+  const { selectedMarket, coingeckoPrices, setConnectWalletModalOpen } = props;
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [simulDeposit, setSimulDeposit] = useState(false);
@@ -152,7 +153,10 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         selectedMarket={selectedMarket}
         coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}
+        setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
         simulDeposit={simulDeposit}
+        setSimulDeposit={setSimulDeposit}
+        setConnectWalletModalOpen={setConnectWalletModalOpen}
         balance={selectedMarket.isMulticurrency ? MCbalance : balance}
       />
     </div>

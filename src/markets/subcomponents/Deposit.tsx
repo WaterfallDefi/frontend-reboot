@@ -5,6 +5,9 @@ import ApproveCardDefault from "./ApproveCardDefault";
 import TrancheCard from "./TrancheCard";
 import Countdown from "react-countdown";
 import dayjs from "dayjs";
+import ApproveCardSimul from "./ApproveCardSimul";
+import { useState } from "react";
+import getRemaining, { getRemainingMulticurrency } from "../hooks/getRemaining";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -12,8 +15,25 @@ type Props = {
   selectedMarket: Market;
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
+  setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
   simulDeposit: boolean;
+  setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
+  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   balance: string | string[];
+};
+
+const compareNum = (
+  num1: string | number | undefined,
+  num2: string | undefined,
+  largerOnly = false
+) => {
+  if (num1 === undefined) return false; //modified, this case will never happen
+  if (num2 === undefined) return false; // ""
+  const _num1 = new BigNumber(num1);
+  const _num2 = new BigNumber(num2);
+
+  if (largerOnly) return _num1.comparedTo(_num2) > 0 ? true : false;
+  return _num1.comparedTo(_num2) >= 0 ? true : false;
 };
 
 const handleReminder = (startTime: number, endTime: number) => {
@@ -49,9 +69,16 @@ function Deposit(props: Props) {
     selectedMarket,
     coingeckoPrices,
     selectedDepositAssetIndex,
+    setSelectedDepositAssetIndex,
     simulDeposit,
+    setSimulDeposit,
+    setConnectWalletModalOpen,
     balance,
   } = props;
+
+  const [selectTrancheIdx, setSelectTrancheIdx] = useState<number | undefined>(
+    undefined
+  );
 
   const deposited: BigNumber[] = [];
   const tokens = selectedMarket.tokens;
@@ -81,6 +108,32 @@ function Deposit(props: Props) {
   const remainingDepositableSimul = maxDeposits.map((md, i) =>
     new BigNumber(md).minus(deposited[i])
   );
+
+  const { remaining, remainingExact } =
+    selectTrancheIdx !== undefined
+      ? !selectedMarket.isMulticurrency
+        ? getRemaining(
+            selectedMarket.tranches[selectTrancheIdx]?.target,
+            !selectedMarket.autorollImplemented
+              ? selectedMarket.tranches[selectTrancheIdx]?.principal
+              : (
+                  Number(selectedMarket.tranches[selectTrancheIdx]?.principal) +
+                  Number(
+                    selectedMarket.tranches[selectTrancheIdx]?.autoPrincipal
+                  )
+                ).toString(),
+            selectedMarket.assets[0] === "USDC" ||
+              selectedMarket.assets[0] === "USDC.e"
+              ? 6
+              : 18
+          )
+        : getRemainingMulticurrency(
+            selectedMarket.tranches[selectTrancheIdx]?.target,
+            selectedMarket.tranches[selectTrancheIdx]?.principal,
+            remainingDepositable
+          )
+      : { remaining: "", remainingExact: "" };
+
   const returnWidth = (assetIndex: number) =>
     deposited[assetIndex]
       ? deposited[assetIndex]
@@ -98,7 +151,6 @@ function Deposit(props: Props) {
   const widths = selectedMarket.isMulticurrency
     ? selectedMarket.assets.map((a, i) => returnWidth(i))
     : [];
-  const marketData = selectedMarket;
 
   return (
     <div className="deposit">
@@ -172,7 +224,40 @@ function Deposit(props: Props) {
             );
           })}
         </div>
-        <ApproveCardDefault />
+        {!simulDeposit ? (
+          <ApproveCardDefault
+            selectedMarket={selectedMarket}
+            selectedDepositAssetIndex={selectedDepositAssetIndex}
+            setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
+            setSimulDeposit={setSimulDeposit}
+            setConnectWalletModalOpen={setConnectWalletModalOpen}
+            selectTrancheIdx={selectTrancheIdx}
+            redepositBalance={balance}
+            remaining={remaining}
+            remainingExact={remainingExact}
+            enabled={selectTrancheIdx !== undefined}
+            isSoldOut={
+              selectTrancheIdx
+                ? !selectedMarket.autorollImplemented
+                  ? compareNum(
+                      selectedMarket.tranches[selectTrancheIdx].principal,
+                      selectedMarket.tranches[selectTrancheIdx].target
+                    )
+                  : compareNum(
+                      Number(
+                        selectedMarket.tranches[selectTrancheIdx].autoPrincipal
+                      ) +
+                        Number(
+                          selectedMarket.tranches[selectTrancheIdx].principal
+                        ),
+                      selectedMarket.tranches[selectTrancheIdx].target
+                    )
+                : false
+            }
+          />
+        ) : (
+          <ApproveCardSimul />
+        )}
       </div>
     </div>
   );
