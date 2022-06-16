@@ -8,6 +8,7 @@ import { Mode } from "../WaterfallDefi";
 import "./MyPortfolio.scss";
 import { useSubgraphQuery } from "./hooks/useSubgraphQuery";
 import numeral from "numeral";
+import NoData from "./svgs/NoData";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -266,6 +267,12 @@ function MyPortfolio(props: Props) {
           );
         });
       })}
+      {userInvestsPayload.length === 0 ? (
+        <div className="no-data">
+          <NoData />
+          <span>No Positions</span>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -126,7 +126,7 @@ function TrancheCard(props: Props) {
       : "";
 
   return (
-    <div className="tranche one">
+    <div className="tranche">
       {isSoldout ? <div className="sold-out">Sold Out</div> : null}
       <div className="tranche-name">
         <div className="flex-row">
@@ -146,12 +146,14 @@ function TrancheCard(props: Props) {
           Remaining: {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
       </div>
-      <div
-        className="progress-bar"
-        style={{
-          width: getPercentage(tranchePrincipal, tranche.target),
-        }}
-      />
+      <div className="progress-bar">
+        <div
+          className={type}
+          style={{
+            width: getPercentage(tranchePrincipal, tranche.target) + "%",
+          }}
+        />
+      </div>
     </div>
   );
 }

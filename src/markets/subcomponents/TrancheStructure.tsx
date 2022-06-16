@@ -1,5 +1,4 @@
 import { BigNumber } from "bignumber.js";
-import { VictoryBar, VictoryPie, VictoryStack } from "victory";
 import { Tranche } from "../../types";
 
 type Props = {
