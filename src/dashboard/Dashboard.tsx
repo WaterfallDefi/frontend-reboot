@@ -1,6 +1,6 @@
 import "./Dashboard.scss";
 import { TwitterTimelineEmbed } from "react-twitter-embed";
-import { createRef, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mode, Network } from "../WaterfallDefi";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import numeral from "numeral";
@@ -9,6 +9,7 @@ import useTotalTvl from "./hooks/useTotalTvl";
 import { Market } from "../types";
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
+import { useIsBrowserTabActive } from "../hooks/useIsBrowserTabActive";
 
 type Props = {
   mode: Mode;
@@ -18,8 +19,14 @@ type Props = {
 function Dashboard(props: Props) {
   const { mode, markets } = props;
 
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const isBrowserTabActiveRef = useIsBrowserTabActive();
+
   const [darkTwitter, setDarkTwitter] = useState(false);
   const [backgroundImg, setBackgroundImg] = useState(0);
+  const [refreshCounter, setRefreshCounter] = useState<number>(0);
+
   const bgImgs = ["default", "alternate", "none"];
 
   const { price, marketCap } = useWTFPriceLP();
@@ -38,6 +45,23 @@ function Dashboard(props: Props) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (isBrowserTabActiveRef.current) {
+        setRefreshCounter((prev) => prev + 1);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isBrowserTabActiveRef]);
+
+  useEffect(() => {
+    if (carouselRef.current?.scrollLeft !== 2100) {
+      carouselRef.current?.scrollBy({ left: 10, behavior: "smooth" });
+    } else {
+      carouselRef.current?.scrollBy({ left: -2100, behavior: "smooth" });
+    }
+  }, [carouselRef, refreshCounter]);
 
   const threeTrancheDisplayTexts = ["Senior", "Mezzanine", "Junior"];
   const twoTrancheDisplayTexts = ["Fixed", "Variable"];
@@ -112,7 +136,7 @@ function Dashboard(props: Props) {
         <div className="market-carousel">
           <div className="icon-wrapper"></div>
           <div className="carousel-container">
-            <div className="carousel-slides">
+            <div className="carousel-slides" ref={carouselRef}>
               {markets.map((_market: Market, i) => {
                 if (!_market.isRetired)
                   return (
