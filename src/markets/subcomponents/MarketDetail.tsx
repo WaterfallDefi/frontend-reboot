@@ -56,6 +56,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="market-detail-wrapper">
+      <div className="back"></div>
       <div className="information">
         <div className="block-wrapper">
           <div className="block">
@@ -95,7 +96,11 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       </div>
       <div className="charts">
         <div className="linear-gradient" />
-        <ClaimRedeposit />
+        <ClaimRedeposit
+          selectedMarket={selectedMarket}
+          coingeckoPrices={coingeckoPrices}
+          selectedDepositAssetIndex={selectedDepositAssetIndex}
+        />
         <div className="block col">
           <div className="background left-br">
             <PortfolioChart

@@ -141,7 +141,10 @@ function TrancheCard(props: Props) {
       <div className="risk-text">{riskText}</div>
       <div className="separator" />
       <div className="status">
-        <div className="risk-text">TVL: {prefix + tvl + suffix}</div>
+        <div className="risk-text">
+          {"TVL: "}
+          {prefix + tvl + suffix}
+        </div>
         <div className="remaining">
           Remaining: {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
