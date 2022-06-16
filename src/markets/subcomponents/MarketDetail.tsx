@@ -1,5 +1,6 @@
 import numeral from "numeral";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market } from "../../types";
 import { Network } from "../../WaterfallDefi";
@@ -7,6 +8,7 @@ import {
   useTrancheBalance,
   useMulticurrencyTrancheBalance,
 } from "../hooks/useTrancheBalance";
+import Arrow from "../svgs/Arrow";
 import ClaimRedeposit from "./ClaimRedeposit";
 import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
@@ -14,6 +16,7 @@ import TrancheStructure from "./TrancheStructure";
 
 type Props = {
   selectedMarket: Market;
+  setSelectedMarket: React.Dispatch<React.SetStateAction<Market | undefined>>;
   coingeckoPrices: any;
   setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -29,7 +32,12 @@ const getLockupPeriod = (duration: string) => {
 };
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
-  const { selectedMarket, coingeckoPrices, setConnectWalletModalOpen } = props;
+  const {
+    selectedMarket,
+    setSelectedMarket,
+    coingeckoPrices,
+    setConnectWalletModalOpen,
+  } = props;
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [simulDeposit, setSimulDeposit] = useState(false);
@@ -77,9 +85,14 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="market-detail-wrapper">
-      <div className="back"></div>
       <div className="information">
         <div className="block-wrapper">
+          <div
+            className="block pointer"
+            onClick={() => setSelectedMarket(undefined)}
+          >
+            <Arrow />
+          </div>
           <div className="block">
             <span className="portfolio-name">{selectedMarket.portfolio}</span>
             <span className="blocktext listing-date">

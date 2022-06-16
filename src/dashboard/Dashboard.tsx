@@ -10,6 +10,7 @@ import { Market } from "../types";
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
 import { useIsBrowserTabActive } from "../hooks/useIsBrowserTabActive";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   mode: Mode;
@@ -19,6 +20,8 @@ type Props = {
 
 function Dashboard(props: Props) {
   const { mode, network, markets } = props;
+
+  const nav = useNavigate();
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const carouselMarkets = markets.filter((m) =>
@@ -214,7 +217,7 @@ function Dashboard(props: Props) {
               })}
             </div>
           </div>
-          <button>Start</button>
+          <button onClick={() => nav("/portfolio/markets")}>Start</button>
         </div>
       </div>
     </div>

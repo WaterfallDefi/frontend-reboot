@@ -99,6 +99,7 @@ function Markets(props: Props) {
       {selectedMarket ? (
         <MarketDetail
           selectedMarket={selectedMarket}
+          setSelectedMarket={setSelectedMarket}
           coingeckoPrices={coingeckoPrices}
           setConnectWalletModalOpen={setConnectWalletModalOpen}
         />

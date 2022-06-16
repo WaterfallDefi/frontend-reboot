@@ -39,11 +39,6 @@
     margin: 0 auto;
     min-height: 100vh;
 
-    .back {
-      width: 69px;
-      height: 69px;
-    }
-
     .information {
       display: flex;
       padding-top: 37px;
@@ -62,6 +57,12 @@
           flex-direction: column;
           justify-content: space-between;
           font-size: 14px;
+
+          &.pointer {
+            cursor: pointer;
+            justify-content: center;
+          }
+
           .blocktext {
             color: $text-color-lighter;
           }
