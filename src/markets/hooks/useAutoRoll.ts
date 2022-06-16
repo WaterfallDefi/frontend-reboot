@@ -44,11 +44,13 @@ const useAutoRoll = (network: Network, trancheMasterAddress: string) => {
   );
 
   const handleGetAutoRoll = useCallback(async () => {
+    if (!account) return;
     const result = await getAutoRoll(contract, account);
     return result;
   }, [account, contract]);
 
   const handleGetAutoRollBalance = useCallback(async () => {
+    if (!account) return;
     const result = await getAutoRollBalance(contract, account);
     return result;
   }, [account, contract]);

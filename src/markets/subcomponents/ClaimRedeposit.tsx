@@ -5,10 +5,6 @@ import { Market } from "../../types";
 import { Network } from "../../WaterfallDefi";
 import useAutoRoll from "../hooks/useAutoRoll";
 import useClaimAll from "../hooks/useClaimAll";
-import {
-  useMulticurrencyTrancheBalance,
-  useTrancheBalance,
-} from "../hooks/useTrancheBalance";
 import useWithdraw from "../hooks/useWithdraw";
 import usePendingWTFReward from "../hooks/usePendingWTFReward";
 import BigNumber from "bignumber.js";
@@ -18,6 +14,7 @@ type Props = {
   selectedMarket: Market;
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
+  balance: string | string[];
 };
 
 const BIG_TEN = new BigNumber(10);
@@ -27,7 +24,12 @@ const formatBigNumber2HexString = (bn: BigNumber) => {
 };
 
 function ClaimRedeposit(props: Props) {
-  const { selectedMarket, coingeckoPrices, selectedDepositAssetIndex } = props;
+  const {
+    selectedMarket,
+    coingeckoPrices,
+    selectedDepositAssetIndex,
+    balance,
+  } = props;
 
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
   const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
@@ -53,20 +55,6 @@ function ClaimRedeposit(props: Props) {
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
     selectedMarket.masterChefAddress
   );
-
-  const { balance, MCbalance, invested } = !selectedMarket.isMulticurrency
-    ? useTrancheBalance(
-        selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-        selectedMarket.address,
-        selectedMarket.abi
-      )
-    : useMulticurrencyTrancheBalance(
-        selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-        selectedMarket.address,
-        selectedMarket.abi,
-        selectedDepositAssetIndex,
-        selectedMarket.assets.length
-      );
 
   const { account } = useWeb3React<Web3Provider>();
 
@@ -119,7 +107,7 @@ function ClaimRedeposit(props: Props) {
     //   })
     // );
     try {
-      await onClaimAll(_lockDurationIfLockNotExists, _lockDurationIfLockExists);
+      // await onClaimAll(_lockDurationIfLockNotExists, _lockDurationIfLockExists);
       // successNotification("Claim Success", "");
     } catch (e) {
       console.error(e);
@@ -150,12 +138,14 @@ function ClaimRedeposit(props: Props) {
     // );
     try {
       if (!balance) return;
-      await onWithdraw(
-        formatBigNumber2HexString(
-          new BigNumber(balance).times(BIG_TEN.pow(18))
-        ),
-        MCbalance ? MCbalance : []
-      );
+      // await onWithdraw(
+      //   formatBigNumber2HexString(
+      //     !(balance instanceof Array)
+      //       ? new BigNumber(balance).times(BIG_TEN.pow(18))
+      //       : new BigNumber(0)
+      //   ),
+      //   balance instanceof Array ? balance : []
+      // );
       // successNotification("Withdraw All Success", "");
     } catch (e) {
       console.error(e);
@@ -188,16 +178,12 @@ function ClaimRedeposit(props: Props) {
         <div className="label">Return Principal + Yield</div>
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
-            ? balance
-              ? numeral(balance).format("0,0.[0000]")
-              : "--"
-            : MCbalance
-            ? numeral(
-                new BigNumber(MCbalance[selectedDepositAssetIndex]).dividedBy(
+            ? numeral(balance).format("0,0.[0000]")
+            : numeral(
+                new BigNumber(balance[selectedDepositAssetIndex]).dividedBy(
                   BIG_TEN.pow(18)
                 )
-              ).format("0,0.[00000]")
-            : "--"}{" "}
+              ).format("0,0.[00000]")}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
         <div className="buttons">

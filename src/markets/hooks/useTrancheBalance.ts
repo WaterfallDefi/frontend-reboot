@@ -7,18 +7,27 @@ import BigNumber from "bignumber.js";
 
 const BIG_TEN = new BigNumber(10);
 
+type BalanceObject = {
+  balance: string;
+  invested: string;
+};
+
+type MCBalanceObject = {
+  MCbalance: string[];
+  MCinvested: string[];
+};
+
 export const useTrancheBalance = (
   network: Network,
   trancheMasterAddress: string,
-  abi: any
+  abi: any,
+  disable: boolean
 ) => {
-  // const [balance, setBalance] = useState(BIG_ZERO);
-  // const [invested, setInvested] = useState(BIG_ZERO);
-  const [result, setResult] = useState({
+  const [result, setResult] = useState<BalanceObject>({
     balance: "",
-    MCbalance: null,
     invested: "",
   });
+
   const { account } = useWeb3React<Web3Provider>();
 
   const signer = getSigner();
@@ -41,7 +50,6 @@ export const useTrancheBalance = (
                 .dividedBy(BIG_TEN.pow(18))
                 .toString()
             : "0",
-          MCbalance: null,
           invested: result.invested
             ? new BigNumber(result.invested?._hex)
                 .dividedBy(BIG_TEN.pow(18))
@@ -52,8 +60,8 @@ export const useTrancheBalance = (
         console.error(e);
       }
     };
-    if (account) fetchBalance();
-  }, [account]);
+    if (account && !disable) fetchBalance();
+  }, [account, disable]);
 
   return result;
 };
@@ -62,22 +70,18 @@ export const useMulticurrencyTrancheBalance = (
   network: Network,
   trancheMasterAddress: string,
   abi: any,
-  currencyIdx: number,
-  tokenCount: number
+  tokenCount: number,
+  disable: boolean
 ) => {
   const preloadedArray: string[] = [];
   for (let index = 0; index < tokenCount; index++) {
     preloadedArray.push("");
   }
-  const [result, setResult] = useState<{
-    balance: string;
-    MCbalance: string[];
-    invested: string[];
-  }>({
-    balance: preloadedArray[0],
+  const [result, setResult] = useState<MCBalanceObject>({
     MCbalance: preloadedArray,
-    invested: preloadedArray,
+    MCinvested: preloadedArray,
   });
+
   const { account } = useWeb3React<Web3Provider>();
   const signer = getSigner();
 
@@ -88,31 +92,24 @@ export const useMulticurrencyTrancheBalance = (
     () => getContract(abi, trancheMasterAddress, network, signer),
     [abi, trancheMasterAddress, network, signer]
   );
-  const fetchBalance = async () => {
-    try {
-      const balanceOf = await trancheMasterContract.balanceOf(account);
 
-      setResult({
-        balance: balanceOf[0].map((b: any) =>
-          new BigNumber(b._hex).dividedBy(BIG_TEN.pow(18)).toString()
-        )[currencyIdx],
-        MCbalance: balanceOf[0].map((b: any) => b._hex),
-        invested: balanceOf[1].map((b: any) =>
-          new BigNumber(b._hex).dividedBy(BIG_TEN.pow(18)).toString()
-        ),
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
   useEffect(() => {
-    if (account) fetchBalance();
-  }, [account]);
+    const fetchBalance = async () => {
+      try {
+        const balanceOf = await trancheMasterContract.balanceOf(account);
 
-  return {
-    balance: result.balance,
-    MCbalance: result.MCbalance,
-    fetchBalance: fetchBalance,
-    invested: result.invested[currencyIdx],
-  };
+        setResult({
+          MCbalance: balanceOf[0].map((b: any) => b._hex),
+          MCinvested: balanceOf[1].map((b: any) =>
+            new BigNumber(b._hex).dividedBy(BIG_TEN.pow(18)).toString()
+          ),
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    if (account && !disable) fetchBalance();
+  }, [account, disable]);
+
+  return result;
 };

@@ -2,6 +2,11 @@ import numeral from "numeral";
 import { useEffect, useState } from "react";
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market } from "../../types";
+import { Network } from "../../WaterfallDefi";
+import {
+  useTrancheBalance,
+  useMulticurrencyTrancheBalance,
+} from "../hooks/useTrancheBalance";
 import ClaimRedeposit from "./ClaimRedeposit";
 import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
@@ -27,6 +32,21 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [simulDeposit, setSimulDeposit] = useState(false);
+
+  const { balance, invested } = useTrancheBalance(
+    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.address,
+    selectedMarket.abi,
+    selectedMarket.isMulticurrency
+  );
+
+  const { MCbalance, MCinvested } = useMulticurrencyTrancheBalance(
+    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.address,
+    selectedMarket.abi,
+    selectedMarket.assets.length,
+    !selectedMarket.isMulticurrency
+  );
 
   const today = new Date();
   const twoWeeksAgo = new Date();
@@ -100,6 +120,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           selectedMarket={selectedMarket}
           coingeckoPrices={coingeckoPrices}
           selectedDepositAssetIndex={selectedDepositAssetIndex}
+          balance={selectedMarket.isMulticurrency ? MCbalance : balance}
         />
         <div className="block col">
           <div className="background left-br">
@@ -132,6 +153,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}
         simulDeposit={simulDeposit}
+        balance={selectedMarket.isMulticurrency ? MCbalance : balance}
       />
     </div>
   );

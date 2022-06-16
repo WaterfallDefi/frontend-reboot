@@ -4,6 +4,7 @@ import { Hill } from "../svgs/Hill";
 import ApproveCardDefault from "./ApproveCardDefault";
 import TrancheCard from "./TrancheCard";
 import Countdown from "react-countdown";
+import dayjs from "dayjs";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -12,6 +13,7 @@ type Props = {
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
   simulDeposit: boolean;
+  balance: string | string[];
 };
 
 const handleReminder = (startTime: number, endTime: number) => {
@@ -36,12 +38,19 @@ const handleReminder = (startTime: number, endTime: number) => {
   );
 };
 
+const formatTimestamp = (num: string | number) => {
+  const format1 = "YYYY/MM/DD HH:mm:ss";
+  const d = parseInt(num + "000");
+  return dayjs(d).format(format1);
+};
+
 function Deposit(props: Props) {
   const {
     selectedMarket,
     coingeckoPrices,
     selectedDepositAssetIndex,
     simulDeposit,
+    balance,
   } = props;
 
   const deposited: BigNumber[] = [];
@@ -118,10 +127,16 @@ function Deposit(props: Props) {
         </div>
         <div className="active-cycle">
           Active Cycle
-          {new Date(
-            Number(selectedMarket.actualStartAt) +
-              Number(selectedMarket.duration)
-          ).toLocaleDateString()}
+          {formatTimestamp(
+            selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0
+          )}{" "}
+          -
+          {formatTimestamp(
+            Number(
+              selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0
+            ) + Number(selectedMarket.duration ? selectedMarket.duration : 0)
+          )}{" "}
+          {selectedMarket.duration}
         </div>
         <div className="button">Remind Me</div>
       </div>
@@ -147,6 +162,7 @@ function Deposit(props: Props) {
           {selectedMarket.tranches.map((t, i) => {
             return (
               <TrancheCard
+                key={i}
                 selectedMarket={selectedMarket}
                 selectedDepositAssetIndex={selectedDepositAssetIndex}
                 tranche={t}
