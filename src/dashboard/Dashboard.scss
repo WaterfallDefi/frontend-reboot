@@ -35,11 +35,11 @@ $evenPadding: calc((100vw - 1048px) / 2);
       right: 0;
       bottom: 56px;
       &.default {
-        background-image: url("./DashboardImage.svg");
+        background-image: url("./svgs/DashboardImage.svg");
         background-size: contain;
       }
       &.alternate {
-        background-image: url("./DashboardImageAlt.svg");
+        background-image: url("./svgs/DashboardImageAlt.svg");
         background-size: cover;
       }
 
@@ -246,6 +246,17 @@ $evenPadding: calc((100vw - 1048px) / 2);
             flex-shrink: 0;
             width: 100%;
 
+            .title {
+              height: 48px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 24px;
+              color: $text-color;
+              font-weight: 500;
+              margin-bottom: 12;
+            }
+
             .block {
               display: flex;
               justify-content: space-between;
@@ -273,6 +284,17 @@ $evenPadding: calc((100vw - 1048px) / 2);
                 justify-content: center;
                 font-weight: 500;
                 font-size: 18px;
+                &.Senior,
+                &.Fixed {
+                  color: rgba(252, 182, 4, 0.8);
+                }
+                &.Mezzanine {
+                  color: rgba(3, 161, 75, 0.8);
+                }
+                &.Junior,
+                &.Variable {
+                  color: rgba(12, 108, 254, 0.8);
+                }
               }
               .section {
                 display: flex;
@@ -280,7 +302,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
                 width: 60%;
                 height: 100%;
                 color: $text-color;
-                background: $base-color;
+                background: rgb(248, 253, 255);
                 padding: 19px 29px;
 
                 .apr-wrapper {

@@ -154,7 +154,7 @@ function Header(props: Props) {
             </button>
           ) : (
             <div className="connect-wallet-btn">
-              {formatAccountAddress(account)}
+              <span>{formatAccountAddress(account)}</span>
             </div>
           )}
         </div>

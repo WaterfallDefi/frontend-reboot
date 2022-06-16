@@ -17,6 +17,14 @@
     padding: 82px 24px 75px;
     max-width: 1248px;
     position: relative;
+
+    .logo-footer {
+      background: url("./svgs/LogoFooter.svg");
+      width: 420px;
+      height: 69px;
+      background-repeat: no-repeat;
+    }
+
     .connect {
       font-size: 14px;
       line-height: 19px;
@@ -30,7 +38,7 @@
       }
       div {
         padding-top: 32px;
-        border-top: 2px solid white;
+        border-top: 2px solid $text-color;
         opacity: 0.8;
       }
     }

@@ -147,7 +147,7 @@ function Dashboard(props: Props) {
 
                         return (
                           <div className="block" key={i.toString() + j}>
-                            <h1>{_trancheText}</h1>
+                            <h1 className={_trancheText}>{_trancheText}</h1>
                             <div className="section">
                               <div className="apr-wrapper">
                                 <span>Total APR</span>
