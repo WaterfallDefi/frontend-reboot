@@ -436,7 +436,6 @@ function ApproveCardDefault(props: Props) {
           ) : (
             <div className="button">
               <button
-                // style={{ height: 56 }}
                 onClick={handleWrapAvax}
                 // loading={depositLoading} //reusing this flag
                 disabled={selectedMarket.isRetired}
@@ -448,7 +447,6 @@ function ApproveCardDefault(props: Props) {
         ) : (
           <div className="button">
             <button
-              // css={{ height: 56 }}
               onClick={handleApprove}
               // loading={approveLoading}
               disabled={selectedMarket.isRetired}

@@ -72,6 +72,7 @@ function WaterfallDefi() {
             <Markets
               key="markets"
               mode={mode}
+              network={network}
               markets={markets}
               setConnectWalletModalOpen={setConnectWalletModalOpen}
             />,

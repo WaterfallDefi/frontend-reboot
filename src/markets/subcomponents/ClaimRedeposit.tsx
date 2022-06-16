@@ -183,7 +183,7 @@ function ClaimRedeposit(props: Props) {
                 new BigNumber(balance[selectedDepositAssetIndex]).dividedBy(
                   BIG_TEN.pow(18)
                 )
-              ).format("0,0.[00000]")}
+              ).format("0,0.[00000]")}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
         <div className="buttons">

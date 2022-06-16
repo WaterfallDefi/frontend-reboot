@@ -359,6 +359,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
         background-color: $highlight-color;
         color: $base-color;
         border: 0;
+        cursor: pointer;
       }
     }
   }

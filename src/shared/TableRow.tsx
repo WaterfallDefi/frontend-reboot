@@ -1,11 +1,17 @@
+import dayjs from "dayjs";
 import numeral from "numeral";
-import React, { useState } from "react";
-import { Market } from "../types";
+import { useState } from "react";
 
 type Props = {
   data: any;
   setSelectedMarket?: () => void;
   openFold?: boolean; //temporary coding to boolean
+};
+
+const formatTimestamp = (num: string | number) => {
+  const format1 = "YYYY/MM/DD HH:mm:ss";
+  const d = parseInt(num + "000");
+  return dayjs(d).format(format1);
 };
 
 function TableRow(props: Props) {
@@ -19,6 +25,13 @@ function TableRow(props: Props) {
         const columnData = data[key];
 
         switch (key) {
+          case "portfolio":
+            elements.push(
+              <div className="col portfolio-name" key={key}>
+                {columnData}
+              </div>
+            );
+            break;
           case "assets":
             elements.push(
               <div className="col" key={key}>
@@ -71,7 +84,34 @@ function TableRow(props: Props) {
             );
             break;
           case "trancheCycle":
-            elements.push();
+            elements.push(
+              <div className="col trancheCycle">
+                {columnData.trancheCycle &&
+                columnData.trancheCycle.state !== 0 ? (
+                  <>
+                    <span>
+                      {formatTimestamp(columnData.trancheCycle.startAt)}
+                    </span>
+                    <span>↓</span>
+                    <span>
+                      {
+                        //multi-farm
+                        formatTimestamp(
+                          columnData.trancheCycle.endAt >
+                            +columnData.trancheCycle.startAt +
+                              +Number(columnData.trancheCycle.duration)
+                            ? columnData.trancheCycle.endAt
+                            : +columnData.trancheCycle.startAt +
+                                +Number(columnData.duration)
+                        )
+                      }
+                    </span>
+                  </>
+                ) : (
+                  "--"
+                )}
+              </div>
+            );
             break;
           default:
             elements.push(

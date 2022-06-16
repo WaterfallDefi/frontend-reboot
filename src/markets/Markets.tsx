@@ -11,16 +11,21 @@ import numeral from "numeral";
 
 type Props = {
   mode: Mode;
+  network: Network;
   markets: Market[];
   setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function Markets(props: Props) {
-  const { mode, markets, setConnectWalletModalOpen } = props;
+  const { mode, network, markets, setConnectWalletModalOpen } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   const { price: wtfPrice } = useWTFPriceLP();
   const coingeckoPrices = useCoingeckoPrices(markets);
+
+  const filtered = markets.filter((m) =>
+    network === Network.AVAX ? m.isAvax : !m.isAvax
+  );
 
   return (
     <div className={"markets-wrapper " + mode}>
