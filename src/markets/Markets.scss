@@ -235,10 +235,15 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: 55px 80px 30px 90px;
+            margin: 62.5px 80px 30px 90px;
             .tranche-stack {
               width: 180px;
               animation: grow 0.25s ease-in;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: $base-color;
+              font-size: 16px;
             }
           }
         }

@@ -62,7 +62,7 @@ function TrancheCard(props: Props) {
             new BigNumber(tranche.autoPrincipal ? tranche.autoPrincipal : "0")
               .plus(new BigNumber(tranche.principal))
               .toString(),
-            tranche.target
+            (Number(tranche.target) - 0.5).toString()
           ),
     [tranche.principal, tranche.target, tranche.autoPrincipal]
   );

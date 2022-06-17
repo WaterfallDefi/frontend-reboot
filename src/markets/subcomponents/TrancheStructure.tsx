@@ -72,7 +72,9 @@ function TrancheStructure(props: Props) {
               key={i}
               className="tranche-stack"
               style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
-            />
+            >
+              <span>{t.value}%</span>
+            </div>
           ))}
         </div>
       </div>

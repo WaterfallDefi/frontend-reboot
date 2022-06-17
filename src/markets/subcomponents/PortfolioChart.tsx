@@ -39,11 +39,20 @@ function PortfolioChart(props: Props) {
     <div className="portfolio-chart">
       <VictoryPie
         data={data}
-        labels={[]}
+        labels={data.map((strat) =>
+          strat.shares === 0 ? "" : (strat.shares * 100).toString() + "%"
+        )}
+        labelRadius={55}
         y="shares"
         colorScale={COLORS}
         animate={{
           easing: "exp",
+        }}
+        style={{
+          labels: {
+            fontSize: 20,
+            fill: "#FFFFFF",
+          },
         }}
       />
     </div>
