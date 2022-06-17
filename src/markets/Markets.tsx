@@ -51,8 +51,8 @@ function Markets(props: Props) {
           </div>
         </div>
       ) : null}
-      {!selectedMarket && markets.length > 0
-        ? markets.map((m: Market) => {
+      {!selectedMarket
+        ? filtered.map((m: Market) => {
             const tranchesApr = m.tranches.map((_t, _i) => {
               const wtfAPR = getWTFApr(
                 m.isAvax ? Network.AVAX : Network.BNB,

@@ -70,7 +70,7 @@ const useApprove = (
   return { onApprove: handleApprove };
 };
 
-export const useMultiApprove = async (
+export const useMultiApprove = (
   network: Network,
   approveTokenAddresses: string[],
   masterChefAddress: string

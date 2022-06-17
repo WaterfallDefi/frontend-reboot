@@ -256,7 +256,38 @@ function Deposit(props: Props) {
             }
           />
         ) : (
-          <ApproveCardSimul />
+          <ApproveCardSimul
+            selectedMarket={selectedMarket}
+            setSimulDeposit={setSimulDeposit}
+            setConnectWalletModalOpen={setConnectWalletModalOpen}
+            selectTrancheIdx={selectTrancheIdx}
+            remainingSimul={
+              selectTrancheIdx !== undefined && selectedMarket.isMulticurrency
+                ? remainingDepositableSimul.map((remainingDepositable) =>
+                    getRemainingMulticurrency(
+                      selectedMarket.tranches[selectTrancheIdx].target,
+                      selectedMarket.tranches[selectTrancheIdx].principal,
+                      remainingDepositable
+                    )
+                  )
+                : selectedMarket.assets.map(() => {
+                    return {
+                      remaining: "",
+                      remainingExact: "",
+                      depositableOrInTranche: "",
+                    };
+                  })
+            }
+            enabled={selectTrancheIdx !== undefined}
+            isSoldOut={
+              selectTrancheIdx
+                ? compareNum(
+                    selectedMarket.tranches[selectTrancheIdx].principal,
+                    selectedMarket.tranches[selectTrancheIdx].target
+                  )
+                : false
+            }
+          />
         )}
       </div>
     </div>

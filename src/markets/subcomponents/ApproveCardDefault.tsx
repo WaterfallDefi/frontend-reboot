@@ -430,9 +430,23 @@ function ApproveCardDefault(props: Props) {
       {account ? (
         approved ? (
           !selectedMarket.wrapAvax ? (
-            <HandleDepositButton />
-          ) : !(Number(balanceInput.toString()) - Number(balance) > 0) ? (
-            <HandleDepositButton />
+            !compareNum(
+              new BigNumber(balanceInput.toString())
+                .minus(
+                  new BigNumber(
+                    balance instanceof Array
+                      ? balance[selectedDepositAssetIndex]
+                      : balance
+                  )
+                )
+                .toString(),
+              "0",
+              true
+            ) ? (
+              <HandleDepositButton />
+            ) : (
+              <div>Not enough!</div>
+            )
           ) : (
             <div className="button">
               <button
