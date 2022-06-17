@@ -32,7 +32,7 @@ const calculateJuniorAPY = (
   decimals = 18
 ) => {
   const juniorTVL = juniorTarget;
-  tranches.map((_t, _i) => {
+  tranches.forEach((_t, _i) => {
     let _apy = new BigNumber(_t.apy);
     _apy = _apy.plus(new BigNumber(100));
     _apy = _apy.dividedBy(new BigNumber(100));
@@ -124,14 +124,14 @@ export const getMarkets = async (payload: Market[]) => {
         expectedAPY = expectedAPY.plus(new BigNumber(1));
         const tranches: Tranche[] = [];
         const decimals = marketData.assets[0] === "USDC" ? 6 : 18;
-        _tranches.map((_t: any, _i: number) => {
+        _tranches.forEach((_t: any, _i: number) => {
           const _target = new BigNumber(_t.target?._hex).dividedBy(
             BIG_TEN.pow(decimals)
           );
           totalTarget = totalTarget.plus(_target);
         });
         totalTarget = totalTarget.times(expectedAPY);
-        _tranches.map((_t: any, _i: number) => {
+        _tranches.forEach((_t: any, _i: number) => {
           const _principal = _t
             ? new BigNumber(_t.principal?._hex).dividedBy(BIG_TEN.pow(decimals))
             : BIG_ZERO;
@@ -221,7 +221,7 @@ export const getMarkets = async (payload: Market[]) => {
         const pools: string[] = [];
         let totalAllocPoints = BIG_ZERO;
         const _pools = poolCallsResponse.slice(0, marketData.trancheCount);
-        _pools.map((_p: any, _i: any) => {
+        _pools.forEach((_p: any, _i: any) => {
           const _allocPoint = _p
             ? new BigNumber(_p?.allocPoint._hex)
             : BIG_ZERO;

@@ -24,17 +24,17 @@ export enum Network {
 function WaterfallDefi() {
   const [mode, setMode] = useState<Mode>(Mode.Light);
   const [network, setNetwork] = useState<Network>(Network.AVAX);
-  const [markets, setMarkets] = useState<Market[]>([]);
+  const [markets, setMarkets] = useState<Market[] | undefined>();
   const [connectWalletModalOpen, setConnectWalletModalOpen] =
     useState<boolean>(false);
 
   useEffect(() => {
-    getMarkets(MarketList).then((res) => {
-      setMarkets(res);
-    });
-  }, []);
-
-  console.log(markets);
+    if (!markets) {
+      getMarkets(MarketList).then((res) => {
+        setMarkets(res);
+      });
+    }
+  }, [markets]);
 
   const layout = (element: JSX.Element, tutorial: boolean) => [
     <Header
@@ -51,6 +51,8 @@ function WaterfallDefi() {
       : [element]),
   ];
 
+  const marketInjection = markets ? markets : [];
+
   return (
     <BrowserRouter>
       <Routes>
@@ -61,7 +63,7 @@ function WaterfallDefi() {
               key="dashboard"
               mode={mode}
               network={network}
-              markets={markets}
+              markets={marketInjection}
             />,
             false
           )}
@@ -73,7 +75,7 @@ function WaterfallDefi() {
               key="markets"
               mode={mode}
               network={network}
-              markets={markets}
+              markets={marketInjection}
               setConnectWalletModalOpen={setConnectWalletModalOpen}
             />,
             true
@@ -82,7 +84,11 @@ function WaterfallDefi() {
         <Route
           path="/portfolio/my-portfolio"
           element={layout(
-            <MyPortfolio key="portfolio" mode={mode} markets={markets} />,
+            <MyPortfolio
+              key="portfolio"
+              mode={mode}
+              markets={marketInjection}
+            />,
             true
           )}
         />

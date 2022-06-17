@@ -1,5 +1,4 @@
 import { useCallback, useMemo } from "react";
-import { useWeb3React } from "@web3-react/core";
 import { Contract } from "@ethersproject/contracts";
 import { getContract, getSigner } from "../../hooks/getContract";
 import { Network } from "../../WaterfallDefi";

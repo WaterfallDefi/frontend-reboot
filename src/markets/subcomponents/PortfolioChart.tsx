@@ -24,13 +24,17 @@ function PortfolioChart(props: Props) {
       return { ...f, shares: 0 };
     }),
   ]);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    setData([
-      { farmName: "", shares: 0, sAddress: "", apiKey: "" },
-      ...strategyFarms,
-    ]);
-  }, []);
+    if (!loaded) {
+      setData([
+        { farmName: "", shares: 0, sAddress: "", apiKey: "" },
+        ...strategyFarms,
+      ]);
+      setLoaded(true);
+    }
+  }, [strategyFarms, loaded]);
 
   // const strategyTuple = strategyFarms.map((s) => s.apiKey);
   // const strategyNameTuple = strategyFarms.map((s) => s.farmName);

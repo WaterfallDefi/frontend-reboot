@@ -68,7 +68,12 @@ function TrancheCard(props: Props) {
               .toString(),
             (Number(tranche.target) - 0.5).toString()
           ),
-    [tranche.principal, tranche.target, tranche.autoPrincipal]
+    [
+      selectedMarket.autorollImplemented,
+      tranche.principal,
+      tranche.target,
+      tranche.autoPrincipal,
+    ]
   );
 
   const trancheApr = tranche.apy;

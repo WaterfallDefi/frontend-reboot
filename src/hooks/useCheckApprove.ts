@@ -1,18 +1,10 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Contract } from "@ethersproject/contracts";
 import BigNumber from "bignumber.js";
 import { getContract, getSigner } from "./getContract";
 import ERC20 from "../config/abis/WTF.json";
 import { Network } from "../WaterfallDefi";
-
-const useERC20Contract = (network: Network, address: string) => {
-  const signer = getSigner();
-  return useMemo(
-    () => getContract(ERC20.abi, address, network, signer),
-    [signer]
-  );
-};
 
 const checkApprove = async (
   contract: Contract,
@@ -36,7 +28,7 @@ const useCheckApprove = (
     if (account)
       return await checkApprove(contract, trancheMasterAddress, account);
     return false;
-  }, [account, contract, approveTokenAddress]);
+  }, [account, contract, trancheMasterAddress]);
 
   return { onCheckApprove: handleCheckApprove };
 };
@@ -64,7 +56,7 @@ export const useCheckApproveAll = (
       }
       return true;
     }
-  }, [account, contracts, approveTokenAddresses]);
+  }, [account, contracts, approveTokenAddresses, trancheMasterAddress]);
 
   return { onCheckApproveAll: handleCheckApproveAll };
 };

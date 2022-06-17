@@ -204,7 +204,7 @@ function Deposit(props: Props) {
         {selectedMarket.isMulticurrency ? (
           <div className="select-deposit-assets">
             {selectedMarket.assets.map((asset, index) => (
-              <div className="select-deposit-asset">
+              <div className="select-deposit-asset" key={asset}>
                 <div
                   className="coin"
                   style={{ backgroundImage: `url(/coins/${asset}.png)` }}

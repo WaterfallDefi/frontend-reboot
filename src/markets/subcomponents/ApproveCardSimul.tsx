@@ -57,7 +57,7 @@ function ApproveCardSimul(props: Props) {
   //user inputs
   const [balanceInputSimul, setBalanceInputSimul] = useState<string[]>([]);
   //state flags
-  const [approved, setApproved] = useState<boolean>(false);
+  const [approved, setApproved] = useState<boolean>();
   const [depositLoading, setDepositLoading] = useState<boolean>(false);
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
   //web3
@@ -114,7 +114,7 @@ function ApproveCardSimul(props: Props) {
             return "#1579FF";
         }
       }),
-    []
+    [selectedMarket.assets]
   );
 
   //validation texts
@@ -126,16 +126,18 @@ function ApproveCardSimul(props: Props) {
 
   //use effects
   useEffect(() => {
-    const checkApproved = async (account: string) => {
-      const approved = await onCheckApproveAll();
-      setApproved(approved ? true : false);
+    const checkApproved = async () => {
+      const check = await onCheckApproveAll();
+      setApproved(check ? true : false);
     };
-    if (account) checkApproved(account);
-  }, [account]);
+    if (account && approved === undefined) checkApproved();
+  }, [account, approved, onCheckApproveAll]);
 
   useEffect(() => {
-    setBalanceInputSimul(selectedMarket.assets.map(() => "0"));
-  }, [enabled]);
+    if (enabled) {
+      setBalanceInputSimul(selectedMarket.assets.map(() => "0"));
+    }
+  }, [enabled, selectedMarket.assets]);
 
   //handlers
   const handleApprove = async () => {
@@ -172,7 +174,7 @@ function ApproveCardSimul(props: Props) {
 
   const validateTextSimul = useMemo(() => {
     const _remainings = remainingSimul.map((r) =>
-      r.remainingExact.replace(/\,/g, "")
+      r.remainingExact.replace(/,/g, "")
     );
     const _balanceInputs = balanceInputSimul;
     const _balances = multicurrencyBalancesWallet.balances;
@@ -181,18 +183,20 @@ function ApproveCardSimul(props: Props) {
       new BigNumber(0)
     );
     const validateTexts = _balanceInputs.map((b, i) => {
+      let toReturn = ""; //falsy
       if (compareNum(b, _balances[i], true)) {
-        return "Insufficient Balance";
+        toReturn = "Insufficient Balance";
       }
       if (compareNum(b, _remainings[i], true)) {
-        return "Maximum deposit amount = {remaining}" + _remainings[i];
+        toReturn = "Maximum deposit amount = {remaining}" + _remainings[i];
       }
       if (
         remainingSimul[i].depositableOrInTranche === "inTranche" &&
         compareNum(_sum.toString(), _remainings[i], true)
       ) {
-        return "Total deposit amount exceeds tranche allowance";
+        toReturn = "Total deposit amount exceeds tranche allowance";
       }
+      return toReturn;
     });
     return validateTexts;
   }, [remainingSimul, balanceInputSimul, multicurrencyBalancesWallet]);
@@ -269,10 +273,10 @@ function ApproveCardSimul(props: Props) {
 
   const handleMaxInputSimul = (index: number) => {
     const _balance = multicurrencyBalancesWallet.balances[index].replace(
-      /\,/g,
+      /,/g,
       ""
     );
-    const _remaining = remainingSimul[index].remaining.replace(/\,/g, "");
+    const _remaining = remainingSimul[index].remaining.replace(/,/g, "");
     const balanceInputSimulCopy = [...balanceInputSimul];
     if (compareNum(_remaining, _balance)) {
       if (_balance) {

@@ -39,7 +39,7 @@ const useBalanceOfOtherAddress = (
     );
     setBalance(numeral(value.toString()).format("0,0.[0000]"));
     setActualBalance(value.toString());
-  }, [account]);
+  }, [account, address, network]);
 
   useEffect(() => {
     fetchBalance();

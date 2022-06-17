@@ -172,7 +172,7 @@ function Stake(props: Props) {
           .toString()
       ).format("0,0.[00]") + "%"
     );
-  }, [VeWTFRatioPercentage, rewardPerBlock]);
+  }, [VeWTFRatioPercentage, rewardPerBlock, lockingWTF, network]);
 
   const data = useMemo(() => {
     return {

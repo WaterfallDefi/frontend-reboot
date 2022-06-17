@@ -54,7 +54,6 @@ const useInvestDirectMCSimul = (
   trancheMasterAddress: string,
   abi: any
 ) => {
-  const { account } = useWeb3React();
   const signer = getSigner();
 
   const contract = getContract(abi, trancheMasterAddress, network, signer);
@@ -65,7 +64,7 @@ const useInvestDirectMCSimul = (
       // dispatch(getMarkets(MarketList));
       return result;
     },
-    [account, contract]
+    [contract]
   );
 
   return { onInvestDirectMCSimul: handleInvestDirectMCSimul };

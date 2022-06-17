@@ -61,7 +61,7 @@ export const useTrancheBalance = (
       }
     };
     if (account && !disable) fetchBalance();
-  }, [account, disable]);
+  }, [account, disable, trancheMasterContract]);
 
   return result;
 };
@@ -95,6 +95,7 @@ export const useMulticurrencyTrancheBalance = (
 
   useEffect(() => {
     const fetchBalance = async () => {
+      console.log("hello");
       try {
         const balanceOf = await trancheMasterContract.balanceOf(account);
 
@@ -109,7 +110,7 @@ export const useMulticurrencyTrancheBalance = (
       }
     };
     if (account && !disable) fetchBalance();
-  }, [account, disable]);
+  }, [account, disable, trancheMasterContract]);
 
   return result;
 };

@@ -13,7 +13,7 @@ const BIG_TEN = new BigNumber(10);
 const useBalance = (network: Network, address: string) => {
   const [balance, setBalance] = useState("0");
   const [actualBalance, setActualBalance] = useState("0");
-  const { account, ...p } = useWeb3React<Web3Provider>();
+  const { account } = useWeb3React<Web3Provider>();
 
   const isBrowserTabActiveRef = useIsBrowserTabActive();
 
@@ -38,7 +38,7 @@ const useBalance = (network: Network, address: string) => {
     );
     setBalance(numeral(value.toString()).format("0,0.[0000]"));
     setActualBalance(value.toString());
-  }, [account]);
+  }, [account, address, network]);
 
   useEffect(() => {
     fetchBalance();
@@ -50,7 +50,7 @@ const useBalance = (network: Network, address: string) => {
 export const useBalances = (network: Network, addresses: string[]) => {
   const [balances, setBalances] = useState<string[]>([]);
   const [actualBalances, setActualBalances] = useState<string[]>([]);
-  const { account, ...p } = useWeb3React<Web3Provider>();
+  const { account } = useWeb3React<Web3Provider>();
 
   const isBrowserTabActiveRef = useIsBrowserTabActive();
 
@@ -77,7 +77,7 @@ export const useBalances = (network: Network, addresses: string[]) => {
     );
     setBalances(values.map((v) => numeral(v.toString()).format("0,0.[0000]")));
     setActualBalances(values.map((v) => v.toString()));
-  }, [account]);
+  }, [account, addresses, network]);
 
   useEffect(() => {
     fetchBalances();

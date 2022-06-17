@@ -115,11 +115,10 @@ export const useStakingPool = (
           params: [account],
         },
       ];
-      const [isPoolActive, pool, user] = await multicall(
-        network,
-        WTFRewards.abi,
-        calls
-      );
+
+      const [isPoolActive, pool, user] = account
+        ? await multicall(network, WTFRewards.abi, calls)
+        : await multicall(network, WTFRewards.abi, calls.slice(0, 2));
 
       const calls2 = [
         {
@@ -188,6 +187,7 @@ export const useStakingPool = (
         rewardPerBlock: rewardPerBlock.toString(),
       });
     };
+
     if (account) fetchBalance();
   }, [tokenAddress, refreshCounter, account, network, earningTokenAddress]);
 

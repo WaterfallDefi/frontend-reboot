@@ -24,17 +24,15 @@ function MyPortfolio(props: Props) {
 
   const [positions, setPositions] = useState<any[]>();
 
-  const subgraph = useSubgraphQuery(
-    undefined, //remove single market subgraph query because... why?? refactor out later
-    account,
-    markets
-  );
+  const subgraph = useSubgraphQuery(account);
 
   useEffect(() => {
-    subgraph.then((res) => {
-      setPositions(res);
-    });
-  }, []);
+    if (!positions) {
+      subgraph.then((res) => {
+        setPositions(res);
+      });
+    }
+  }, [subgraph, positions]);
 
   const _investHistoryResult = positions ? [...positions] : [];
 
@@ -46,7 +44,7 @@ function MyPortfolio(props: Props) {
     const _subgraphResultMarket = _investHistoryResult[marketIdx];
     if (!_subgraphResultMarket) continue;
     const _market = markets[marketIdx];
-    const { userInvests: _userInvests, trancheCycles } = _subgraphResultMarket;
+    const { userInvests: _userInvests } = _subgraphResultMarket;
     const _position = _investHistoryResult[marketIdx];
 
     let userInvests = _userInvests?.filter((_userInvest: UserInvest) => {
@@ -83,7 +81,7 @@ function MyPortfolio(props: Props) {
             : "";
 
           if (
-            _cycle == _market?.cycle &&
+            _cycle === _market?.cycle &&
             (_market?.status === PORTFOLIO_STATUS.PENDING ||
               _market?.status === PORTFOLIO_STATUS.ACTIVE)
           ) {
@@ -122,7 +120,7 @@ function MyPortfolio(props: Props) {
           );
         }
         if (
-          _cycle == _market?.cycle &&
+          _cycle === _market?.cycle &&
           (_market?.status === PORTFOLIO_STATUS.PENDING ||
             _market?.status === PORTFOLIO_STATUS.ACTIVE)
         ) {
@@ -151,7 +149,7 @@ function MyPortfolio(props: Props) {
   }
 
   const userInvestsPayload: { _userInvest: UserInvest[] }[] = [];
-  let filteredCount = 0;
+  // let filteredCount = 0;
   for (
     let marketIdx = 0;
     marketIdx < _investHistoryResult.length;
@@ -162,8 +160,8 @@ function MyPortfolio(props: Props) {
       _investHistoryResult[marketIdx];
     const filtered = _userInvests?.filter((_userInvest: any) => {
       if (!trancheCycles) return false;
-      const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
-      if (_userInvest.principal == "0") return false;
+      // const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+      if (_userInvest.principal.toString() === "0") return false;
 
       //DO FILTERS LATER
 
@@ -182,7 +180,7 @@ function MyPortfolio(props: Props) {
       //   return false;
       return true;
     });
-    filteredCount += filtered.length;
+    // filteredCount += filtered.length;
 
     userInvestsPayload[marketIdx] = { _userInvest: filtered };
   }

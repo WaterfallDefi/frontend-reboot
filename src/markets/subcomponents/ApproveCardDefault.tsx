@@ -45,6 +45,13 @@ const compareNum = (
 const formatNumberSeparator = (num: string) =>
   numeral(num).format("0,0.[0000]");
 
+//validation texts
+const notes = [
+  "When depositing senior, you will get a guaranteed fixed rate. However, your deposit will be locked in the portfolio until this maturity date is reached.",
+  "When depositing mezzanine, you will get a guaranteed fixed rate. However, your deposit will be locked in the portfolio until this maturity date is reached.",
+  "When you deposit Junior, you will get a variable rate. However, depending on market changes and the total APR of your portfolio, your effective APR may be lower. Make sure you fully understand the risks.",
+];
+
 function ApproveCardDefault(props: Props) {
   const {
     selectedMarket,
@@ -65,7 +72,7 @@ function ApproveCardDefault(props: Props) {
   const [balanceInput, setBalanceInput] = useState<string>("0");
 
   //state flags
-  const [approved, setApproved] = useState<boolean>(false);
+  const [approved, setApproved] = useState<boolean | undefined>();
   const [depositLoading, setDepositLoading] = useState<boolean>(false);
   const [approveLoading, setApproveLoading] = useState<boolean>(false);
   //web3
@@ -120,16 +127,7 @@ function ApproveCardDefault(props: Props) {
     network,
     selectedMarket.depositAssetAddresses
   );
-  //drilled in by prop
-  // const { balance: balanceRe } = useTrancheBalance(
-  //   network,
-  //   selectedMarket.address,
-  //   selectedMarket.abi,
-  // );
-  // const multicurrencyBalanceRes = selectedMarket.depositAssetAddresses.map(
-  //   (address, i) =>
-  //     useMulticurrencyTrancheBalance(address, i, selectedMarket.assets.length)
-  // );
+
   const balance =
     isRedeposit === undefined
       ? selectedMarket.isMulticurrency
@@ -149,28 +147,23 @@ function ApproveCardDefault(props: Props) {
             return "#F0B90B";
           case "WAVAX":
             return "#E84142";
-          default:
+          case "TUSD":
             return "#1579FF";
+          default:
+            return "#000000";
         }
       }),
-    []
+    [selectedMarket.assets]
   );
-
-  //validation texts
-  const notes = [
-    "When depositing senior, you will get a guaranteed fixed rate. However, your deposit will be locked in the portfolio until this maturity date is reached.",
-    "When depositing mezzanine, you will get a guaranteed fixed rate. However, your deposit will be locked in the portfolio until this maturity date is reached.",
-    "When you deposit Junior, you will get a variable rate. However, depending on market changes and the total APR of your portfolio, your effective APR may be lower. Make sure you fully understand the risks.",
-  ];
 
   //use effects
   useEffect(() => {
-    const checkApproved = async (account: string) => {
-      const approved = await onCheckApprove();
-      setApproved(approved ? true : false);
+    const checkApproved = async () => {
+      const check = await onCheckApprove();
+      setApproved(check ? true : false);
     };
-    if (account) checkApproved(account);
-  }, [account]);
+    if (account && approved === undefined) checkApproved(); //has signer
+  }, [onCheckApprove, account, approved]);
 
   useEffect(() => {
     setBalanceInput("0");
@@ -210,7 +203,7 @@ function ApproveCardDefault(props: Props) {
   };
 
   const validateText = useMemo(() => {
-    const _remaining = remainingExact.replace(/\,/g, "");
+    const _remaining = remainingExact.replace(/,/g, "");
     const _balanceInput = balanceInput;
     if (compareNum(_balanceInput, actualBalanceWallet, true)) {
       if (!selectedMarket.wrapAvax) return "Insufficient Balance";
@@ -218,7 +211,13 @@ function ApproveCardDefault(props: Props) {
     if (compareNum(_balanceInput, _remaining, true)) {
       return "Maximum deposit amount = " + remaining;
     }
-  }, [balance, remaining, remainingExact, balanceInput]);
+  }, [
+    remaining,
+    remainingExact,
+    balanceInput,
+    actualBalanceWallet,
+    selectedMarket.wrapAvax,
+  ]);
 
   const handleWrapAvax = async () => {
     setDepositLoading(true);
@@ -288,9 +287,9 @@ function ApproveCardDefault(props: Props) {
   const handleMaxInput = () => {
     const _balance =
       balance instanceof Array
-        ? balance[selectedDepositAssetIndex].replace(/\,/g, "")
-        : balance.replace(/\,/g, "");
-    const _remaining = remainingExact.replace(/\,/g, "");
+        ? balance[selectedDepositAssetIndex].replace(/,/g, "")
+        : balance.replace(/,/g, "");
+    const _remaining = remainingExact.replace(/,/g, "");
     if (selectedMarket.wrapAvax) {
       if (_remaining) setBalanceInput(_remaining);
     } else {
@@ -412,6 +411,9 @@ function ApproveCardDefault(props: Props) {
         onChange={handleInputChange}
         disabled={!enabled || isSoldOut}
       />
+      <div className="max-input" onClick={handleMaxInput}>
+        MAX
+      </div>
       <div className="validate-text">{!depositLoading && validateText}</div>
       {selectedMarket.wrapAvax &&
       Number(balanceInput.toString()) - Number(balance) > 0 ? (

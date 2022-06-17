@@ -10,7 +10,7 @@ const useClaimAll = (network: Network, masterChefAddress: string) => {
 
   const masterChefContract = useMemo(
     () => getContract(MasterChef.abi, masterChefAddress, network, signer),
-    [network, signer]
+    [network, signer, masterChefAddress]
   );
   const handleClaimAll = useCallback(
     async (

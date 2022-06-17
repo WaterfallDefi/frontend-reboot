@@ -1,6 +1,5 @@
 import numeral from "numeral";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market } from "../../types";
 import { Network } from "../../WaterfallDefi";
@@ -57,13 +56,12 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     !selectedMarket.isMulticurrency
   );
 
-  const today = new Date();
-  const twoWeeksAgo = new Date();
-  twoWeeksAgo.setDate(today.getDate() - 14);
-
   const [APYData, setAPYData] = useState<any[]>([]);
 
   useEffect(() => {
+    const today = new Date();
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(today.getDate() - 14);
     getAPYHourly(twoWeeksAgo.toISOString(), today.toISOString()).then(
       (res: any) => {
         setAPYData(res);

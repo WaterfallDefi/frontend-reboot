@@ -1,4 +1,4 @@
-import { Market, TrancheCycle, UserInvest } from "../../types";
+import { TrancheCycle, UserInvest } from "../../types";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
 import { MarketList } from "../../config/markets";
@@ -68,9 +68,7 @@ const getSubgraphQuery = async (subgraphURL: string, account: string) => {
 };
 
 export const useSubgraphQuery = async (
-  marketId: string | undefined,
   account: string | null | undefined,
-  markets: Market[],
   decimals = 18
 ) => {
   if (!account) return [];
@@ -80,20 +78,16 @@ export const useSubgraphQuery = async (
 
   for (let marketIdx = 0; marketIdx < MarketList.length; marketIdx++) {
     const p = MarketList[marketIdx];
-    if (
-      marketId === undefined ||
-      (marketId !== undefined && marketId === marketIdx.toString())
-    ) {
-      const res = await getSubgraphQuery(p.subgraphURL, account);
-      //   if (res && res.data.data) subgraphResult[marketIdx] = res.data.data;
-      console.log(res);
-    }
+
+    const res = await getSubgraphQuery(p.subgraphURL, account);
+    //   if (res && res.data.data) subgraphResult[marketIdx] = res.data.data;
+    console.log(res);
   }
   if (subgraphResult.length === 0) return;
   for (let marketIdx = 0; marketIdx < subgraphResult.length; marketIdx++) {
     const _subgraphResult = subgraphResult[marketIdx];
     if (!_subgraphResult) continue;
-    const _market = markets[marketIdx];
+    // const _market = markets[marketIdx];
 
     //all markets appear to have duration 0
     // const _duration = _market.duration || "0";
@@ -106,7 +100,7 @@ export const useSubgraphQuery = async (
       trancheCycles: _trancheCycles,
     };
 
-    const { trancheCycles, tranches, userInvests } = _subgraphResult;
+    const { trancheCycles, userInvests } = _subgraphResult;
     if (trancheCycles) {
       for (let i = 0; i < trancheCycles.length; i++) {
         const { id } = trancheCycles[i];

@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useVeWTFContract from "./useVeWTFContract";
 import BigNumber from "bignumber.js";
-import { useIsBrowserTabActive } from "../../hooks/useIsBrowserTabActive";
 import { Network } from "../../WaterfallDefi";
 
 const BIG_TEN = new BigNumber(10);

@@ -69,7 +69,6 @@ const useInvest = (
   multicurrencyTokenCount: number,
   isUSDC: boolean
 ) => {
-  const { account } = useWeb3React();
   const signer = getSigner();
   const contract = getContract(abi, trancheMasterAddress, network, signer);
 
@@ -86,7 +85,7 @@ const useInvest = (
       // dispatch(getMarkets(MarketList));
       return result;
     },
-    [account, contract]
+    [contract, isUSDC, multicurrencyIdx, multicurrencyTokenCount]
   );
 
   return { onInvest: handleInvest };

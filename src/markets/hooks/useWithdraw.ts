@@ -1,5 +1,4 @@
 import { useCallback, useMemo } from "react";
-import { useWeb3React } from "@web3-react/core";
 import { Network } from "../../WaterfallDefi";
 import { getContract, getSigner } from "../../hooks/getContract";
 
@@ -8,7 +7,7 @@ const useWithdraw = (
   trancheMasterAddress: string,
   abi: any //too many different types of abis (autoroll, avax, multicurrency) this ensures accuracy
 ) => {
-  const { account } = useWeb3React();
+  // const { account } = useWeb3React();
 
   const signer = getSigner();
 
@@ -47,8 +46,10 @@ const useWithdraw = (
       //   dispatch(getMarkets(MarketList));
       //   // account && dispatch(getTrancheBalance({ account }));
       //   market && account && dispatch(getPosition({ market, account }));
+
+      // [account]
     },
-    [account, trancheContract]
+    [trancheContract]
   );
 
   return { onWithdraw: handleWithdraw };

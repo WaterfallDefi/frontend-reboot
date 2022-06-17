@@ -10,7 +10,7 @@ const useERC20Contract = (network: Network, address: string) => {
   const signer = getSigner();
   return useMemo(
     () => getContract(ERC20.abi, address, network, signer),
-    [signer]
+    [signer, network, address]
   );
 };
 
@@ -65,7 +65,7 @@ const useApprove = (
   const contract = useERC20Contract(network, approveTokenAddress);
   const handleApprove = useCallback(async () => {
     if (account) await approve(contract, masterChefAddress);
-  }, [account, approveTokenAddress, contract]);
+  }, [account, approveTokenAddress, contract, masterChefAddress]);
 
   return { onApprove: handleApprove };
 };
@@ -98,7 +98,7 @@ export const useMultiApprove = (
         console.log(e);
       }
     }
-  }, [account, approveTokenAddresses]);
+  }, [account, network, calls]);
 
   return { onMultiApprove: handleMultiApprove };
 };

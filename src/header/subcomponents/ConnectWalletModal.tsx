@@ -22,7 +22,7 @@ function ConnectWalletModal(props: Props) {
     } else {
       window.open("https://metamask.io/");
     }
-  }, []);
+  }, [login]);
 
   return (
     <div className="connect-wallet-modal">

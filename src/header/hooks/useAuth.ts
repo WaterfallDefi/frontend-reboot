@@ -120,7 +120,7 @@ const useAuth = (network: Network) => {
         console.error("cannot connect");
       }
     },
-    [activate]
+    [activate, network]
   );
 
   const logout = useCallback(() => {

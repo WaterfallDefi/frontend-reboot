@@ -5,7 +5,7 @@ import { Contract } from "@ethersproject/contracts";
 import { getContract, getSigner } from "../../hooks/getContract";
 import { Network } from "../../WaterfallDefi";
 
-const getAutoRoll = async (
+const getAutoroll = async (
   contract: Contract,
   account: string | null | undefined
 ) => {
@@ -13,7 +13,7 @@ const getAutoRoll = async (
   return autoRoll.isAuto;
 };
 
-const getAutoRollBalance = async (
+const getAutorollBalance = async (
   contract: Contract,
   account: string | null | undefined
 ) => {
@@ -21,13 +21,13 @@ const getAutoRollBalance = async (
   return autoRollBalance;
 };
 
-const autoRoll = async (contract: Contract, autoState: boolean) => {
+const autoroll = async (contract: Contract, autoState: boolean) => {
   const tx = await contract.switchAuto(autoState);
   const receipt = await tx.wait();
   return receipt.status;
 };
 
-const useAutoRoll = (network: Network, trancheMasterAddress: string) => {
+const useAutoroll = (network: Network, trancheMasterAddress: string) => {
   const { account } = useWeb3React();
 
   const signer = getSigner();
@@ -40,38 +40,38 @@ const useAutoRoll = (network: Network, trancheMasterAddress: string) => {
         network,
         signer
       ),
-    [network, signer]
+    [network, signer, trancheMasterAddress]
   );
 
-  const handleGetAutoRoll = useCallback(async () => {
+  const handleGetAutoroll = useCallback(async () => {
     if (!account) return;
-    const result = await getAutoRoll(contract, account);
+    const result = await getAutoroll(contract, account);
     return result;
   }, [account, contract]);
 
-  const handleGetAutoRollBalance = useCallback(async () => {
+  const handleGetAutorollBalance = useCallback(async () => {
     if (!account) return;
-    const result = await getAutoRollBalance(contract, account);
+    const result = await getAutorollBalance(contract, account);
     return result;
   }, [account, contract]);
 
-  const handleChangeAutoRoll = useCallback(
+  const handleChangeAutoroll = useCallback(
     async (autoState: boolean) => {
       try {
-        const result = await autoRoll(contract, autoState);
+        const result = await autoroll(contract, autoState);
         return result;
       } catch (e) {
         console.log(e);
       }
     },
-    [account, contract]
+    [contract]
   );
 
   return {
-    getAutoRoll: handleGetAutoRoll,
-    changeAutoRoll: handleChangeAutoRoll,
-    getAutoRollBalance: handleGetAutoRollBalance,
+    getAutoroll: handleGetAutoroll,
+    changeAutoroll: handleChangeAutoroll,
+    getAutorollBalance: handleGetAutorollBalance,
   };
 };
 
-export default useAutoRoll;
+export default useAutoroll;

@@ -3,12 +3,12 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
 import { Market } from "../../types";
 import { Network } from "../../WaterfallDefi";
-import useAutoRoll from "../hooks/useAutoRoll";
 import useClaimAll from "../hooks/useClaimAll";
 import useWithdraw from "../hooks/useWithdraw";
 import usePendingWTFReward from "../hooks/usePendingWTFReward";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
+import useAutoroll from "../hooks/useAutoroll";
 
 type Props = {
   selectedMarket: Market;
@@ -36,11 +36,11 @@ function ClaimRedeposit(props: Props) {
   const [showRedeposit, setShowRedeposit] = useState(false);
   const [showClaim, setShowClaim] = useState(false);
 
-  const [autoRoll, setAutoRoll] = useState(false);
-  const [autoRollPending, setAutoRollPending] = useState<boolean>(true);
-  const [autoRollBalance, setAutoRollBalance] = useState("0");
+  const [autoroll, setAutoroll] = useState(false);
+  const [autorollPending, setAutorollPending] = useState<boolean>(true);
+  const [autorollBalance, setAutorollBalance] = useState<string | undefined>();
 
-  const { getAutoRoll, changeAutoRoll, getAutoRollBalance } = useAutoRoll(
+  const { getAutoroll, changeAutoroll, getAutorollBalance } = useAutoroll(
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
     selectedMarket.address
   );
@@ -65,32 +65,38 @@ function ClaimRedeposit(props: Props) {
   );
 
   useEffect(() => {
-    if (selectedMarket.autorollImplemented) {
-      getAutoRoll().then((res) => {
-        setAutoRoll(res);
-        setAutoRollPending(false);
+    if (selectedMarket.autorollImplemented && autorollPending) {
+      getAutoroll().then((res) => {
+        setAutoroll(res);
+        setAutorollPending(false);
       });
     }
-  }, []);
+  }, [selectedMarket.autorollImplemented, getAutoroll, autorollPending]);
 
   useEffect(() => {
-    if (selectedMarket.autorollImplemented) {
-      getAutoRollBalance().then((res) => {
+    if (selectedMarket.autorollImplemented && !autorollBalance) {
+      getAutorollBalance().then((res) => {
         if (res?.invested) {
           let rate = 1;
-          if (selectedMarket?.assets[0] === "WAVAX" && coingeckoPrices) {
-            rate = coingeckoPrices?.["wrapped-avax"]?.usd;
+          if (selectedMarket.assets[0] === "WAVAX" && coingeckoPrices) {
+            rate = coingeckoPrices["wrapped-avax"].usd;
           }
-          const _autoRollBalance = new BigNumber(res?.invested?._hex || "0")
+          const _autoRollBalance = new BigNumber(res.invested._hex || "0")
             .dividedBy(BIG_TEN.pow(18))
             .times(rate)
             .toString();
 
-          setAutoRollBalance(numeral(_autoRollBalance).format("0,0.[00]"));
+          setAutorollBalance(numeral(_autoRollBalance).format("0,0.[00]"));
         }
       });
     }
-  }, [coingeckoPrices]);
+  }, [
+    selectedMarket.autorollImplemented,
+    getAutorollBalance,
+    selectedMarket.assets,
+    coingeckoPrices,
+    autorollBalance,
+  ]);
 
   const claimReward = async (
     _lockDurationIfLockNotExists: string,
@@ -199,7 +205,7 @@ function ClaimRedeposit(props: Props) {
           <button
             onClick={rollDepositPopup}
             disabled={
-              !account || !+balance || selectedMarket?.isRetired || autoRoll
+              !account || !+balance || selectedMarket?.isRetired || autoroll
             }
           >
             Roll Deposit
@@ -207,9 +213,9 @@ function ClaimRedeposit(props: Props) {
         </div>
         {account && selectedMarket.autorollImplemented ? (
           <div>
-            {autoRollBalance !== "0" && (
+            {autorollBalance !== "0" && (
               <div style={{ marginTop: 10 }}>
-                Autoroll Balance: ${autoRollBalance}
+                Autoroll Balance: ${autorollBalance}
               </div>
             )}
             <div style={{ display: "flex", marginTop: 10 }}>

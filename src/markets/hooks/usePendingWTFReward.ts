@@ -42,7 +42,7 @@ const usePendingWTFReward = (
       setTranchesPendingReward(_tranchesPendingReward);
     };
     if (account) fetchBalance();
-  }, [masterChefAddress, account, network]);
+  }, [masterChefAddress, account, network, trancheCount]);
 
   return { totalPendingReward, tranchesPendingReward };
 };
