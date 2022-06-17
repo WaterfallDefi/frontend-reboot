@@ -6,7 +6,7 @@ import { Mode, Network } from "../WaterfallDefi";
 import "./Header.scss";
 import { Dark } from "./svgs/dark";
 import { Light } from "./svgs/light";
-import useAuth from "./hooks/useAuth";
+import useAuth, { useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -67,7 +67,6 @@ function Header(props: Props) {
   };
 
   useEffect(() => {
-    console.log("hi");
     if (window.location.toString().includes("bnb.waterfalldefi.org")) {
       setNetwork(Network.BNB);
     } else if (window.location.toString().includes("avax.waterfalldefi.org")) {
@@ -78,6 +77,8 @@ function Header(props: Props) {
   useEffect(() => {
     setNetwork(chainId === Network.AVAX ? Network.AVAX : Network.BNB);
   }, [chainId, setNetwork]);
+
+  useEagerConnect(network);
 
   return (
     <div className={"header-wrapper " + mode}>

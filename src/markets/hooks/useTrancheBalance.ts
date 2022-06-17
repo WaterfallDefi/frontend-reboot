@@ -95,7 +95,6 @@ export const useMulticurrencyTrancheBalance = (
 
   useEffect(() => {
     const fetchBalance = async () => {
-      console.log("hello");
       try {
         const balanceOf = await trancheMasterContract.balanceOf(account);
 

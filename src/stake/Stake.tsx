@@ -84,10 +84,6 @@ function Stake(props: Props) {
     account
   );
 
-  // const totalLocked = "0";
-  // const maxAPR = "0";
-  // const rewardPerBlock = "0";
-
   const { actualBalance: pendingReward } = useBalanceOfOtherAddress(
     network,
     network === Network.BNB
@@ -97,9 +93,6 @@ function Stake(props: Props) {
       ? MultiSigAddress[NETWORKS.MAINNET]
       : AVAXMultiSigAddress[NETWORKS.MAINNET]
   );
-
-  // const pendingReward = 0;
-  // const pendingRewardWAVAX = 0;
 
   const { actualBalance: pendingRewardWAVAX } = useBalanceOfOtherAddress(
     Network.AVAX,

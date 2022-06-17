@@ -74,7 +74,7 @@ function IncreaseAction(props: Props) {
   } = props;
   const { account } = useWeb3React<Web3Provider>();
 
-  console.log("increase", network, stakingConfig);
+  // console.log("increase", network, stakingConfig);
   const [selectedValue, setSelectedValue] = useState<number>(); //days only
   const [datePickerValue, setDatePickerValue] = useState<Dayjs>();
   const [balanceInput, setBalanceInput] = useState("0");
@@ -92,7 +92,6 @@ function IncreaseAction(props: Props) {
   const { extendLockTime } = useExtendLockTime(network);
   const [approved, setApproved] = useState(false);
   const [locked, setLocked] = useState(false);
-  const [resetSelect, setResetSelect] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
   const [lockWTFRewardsLoading, setLockWTFRewardsLoading] = useState(false);
   const [increaseLockAmountLoading, setIncreaseLockAmountLoading] =
@@ -130,7 +129,7 @@ function IncreaseAction(props: Props) {
   useEffect(() => {
     const checkApproved = async (account: string) => {
       const approved = await onCheckApprove();
-      console.log("approved", approved);
+      // console.log("approved", approved);
       setApproved(approved ? true : false);
     };
     if (account) checkApproved(account);
@@ -162,7 +161,7 @@ function IncreaseAction(props: Props) {
     if (expiryTimestamp === "0") return false;
     return Number(expiryTimestamp) <= timeNow;
   }, [expiryTimestamp]);
-  console.log("isExpired", isExpired);
+  // console.log("isExpired", isExpired);
   const newExpireDate = useMemo(() => {
     if (datePickerValue) {
       return datePickerValue;
@@ -194,7 +193,6 @@ function IncreaseAction(props: Props) {
 
       setSelectedValue(0);
       setDatePickerValue(undefined);
-      setResetSelect(true);
     } catch (e) {
       console.error(e);
     } finally {
@@ -206,7 +204,7 @@ function IncreaseAction(props: Props) {
     if (!fromMasterChef) return;
     if (!claimReward) return;
     if (!locked && !duration) return;
-    console.log("A", duration, locked);
+    // console.log("A", duration, locked);
     const _duration = duration ? duration.toString() : "0";
     setLockWTFRewardsLoading(true);
     try {
@@ -387,12 +385,10 @@ function IncreaseAction(props: Props) {
       // setSelectedValue(undefined);
       setSelectedValue(0);
       setDatePickerValue(undefined);
-      setResetSelect(true);
     }
   };
   const resetLockTime = () => {
     setDatePickerValue(undefined);
-    setResetSelect(true);
     setSelectedValue(undefined);
   };
   const handleMaxLockTime = () => {
@@ -433,7 +429,6 @@ function IncreaseAction(props: Props) {
       // successNotification("Lock & Stake Success", "");
       setSelectedValue(0);
       setDatePickerValue(undefined);
-      setResetSelect(true);
     } catch (e) {
       console.error(e);
     } finally {
@@ -454,7 +449,6 @@ function IncreaseAction(props: Props) {
 
       setSelectedValue(0);
       setDatePickerValue(undefined);
-      setResetSelect(true);
     } catch (e) {
       console.error(e);
     } finally {
@@ -478,13 +472,13 @@ function IncreaseAction(props: Props) {
       expiryTimestamp !== "0"
         ? Number(expiryTimestamp) - Number(startTimestamp) + _duration
         : _duration;
-    console.log(
-      "totalLockTime",
-      totalLockTime,
-      startTimestamp,
-      expiryTimestamp,
-      duration
-    );
+    // console.log(
+    //   "totalLockTime",
+    //   totalLockTime,
+    //   startTimestamp,
+    //   expiryTimestamp,
+    //   duration
+    // );
 
     const _startTimestamp = startTimestamp !== "0" ? startTimestamp : timeNow;
     const maxLockDate = dayjs
@@ -578,7 +572,7 @@ function IncreaseAction(props: Props) {
         type="date"
         className="date-picker"
         onChange={(e) => {
-          setDatePickerValue(new Dayjs(e.target.value));
+          setDatePickerValue(dayjs(e.target.value));
           if (locked) setBalanceInput("0");
         }}
       />
@@ -588,12 +582,10 @@ function IncreaseAction(props: Props) {
             <input
               type="checkbox"
               value={value}
+              checked={selectedValue === value}
               onChange={(e) => {
-                console.log(e);
-                // setSelectedValue(Number(e.target.value));
+                setSelectedValue(Number(e.target.value));
                 setDatePickerValue(undefined);
-                setResetSelect(false);
-
                 if (locked) {
                   setBalanceInput("0");
                 }

@@ -262,18 +262,17 @@ export const getMarkets = async (payload: Market[]) => {
             (res: BigNumber[]) => res[0]
           );
 
-          //!!! PULLING TRANCHECOUNT FROM BACKEND IS POSSIBLE, REPLACE marketData.trancheCount WITH THIS!!!
-          const trancheCount = tranches.length;
-          //!!!
-          console.log(trancheCount);
-
           const trancheInvests = tranches.map((t: Tranche, i: number) =>
             tokenObjs.map(
               (t: Token, j: number) =>
-                trancheInvestsResUnpacked[i + trancheCount * j]
+                trancheInvestsResUnpacked[i + tranches.length * j]
             )
           );
-          marketData = { ...marketData, trancheInvests: trancheInvests };
+          marketData = {
+            ...marketData,
+            trancheInvests: trancheInvests,
+            // trancheCount: tranches.length, ...but why would you need to?
+          };
         }
         return marketData;
       })

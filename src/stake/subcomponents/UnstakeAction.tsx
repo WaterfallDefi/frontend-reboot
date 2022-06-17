@@ -25,7 +25,6 @@ function UnstakeAction(props: Props) {
     account
   );
 
-  const [balanceInput, setBalanceInput] = useState("0");
   const [loading, setLoading] = useState(false);
   const { unstake } = useUnstake(network);
 
@@ -36,23 +35,17 @@ function UnstakeAction(props: Props) {
   }, [expiryTimestamp]);
 
   const handleUnlock = useCallback(async () => {
-    // if (validateText !== undefined && validateText.length > 0) return;
     if (!account) return;
-    // if (Number(balanceInput) <= 0) return;
-
     setLoading(true);
     try {
       await unstake(account);
-      // fetchBalance();
-
-      setBalanceInput("0");
       // successNotification("Unstake Success", "");
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-  }, [account]);
+  }, [account, unstake]);
   return (
     <div className="unstake">
       <div className="label">
@@ -72,9 +65,13 @@ function UnstakeAction(props: Props) {
         <p>Receiving WTF</p>
         <span>{lockingWTF}</span>
       </div>
-      <button onClick={handleUnlock} disabled={!isExpired}>
-        Unlock
-      </button>
+      {loading ? (
+        <div>...</div>
+      ) : (
+        <button onClick={handleUnlock} disabled={!isExpired}>
+          Unlock
+        </button>
+      )}
     </div>
   );
 }
