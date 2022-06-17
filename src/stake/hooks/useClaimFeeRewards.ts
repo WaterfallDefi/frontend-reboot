@@ -35,13 +35,12 @@ const claimFeeRewards = async (contract: Contract) => {
 };
 
 const useClaimFeeRewards = (network: Network) => {
-  const { account } = useWeb3React();
-  const contract = useFeeRewardsContract(network);
+  const contract = useFeeRewardsContract(network); //has signer, doesn't need account
   const handleClaimReward = useCallback(async () => {
     const result = await claimFeeRewards(contract);
     //   dispatch();
     return result;
-  }, [account, contract]);
+  }, [contract]);
 
   return { claimFeeRewards: handleClaimReward };
 };

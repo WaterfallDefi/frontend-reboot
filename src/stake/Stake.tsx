@@ -123,8 +123,6 @@ function Stake(props: Props) {
     fetchLockingWTF,
   } = useGetLockingWTF(network, account);
 
-  console.log("to infinity and beyond");
-
   const pendingWTFRewards = usePendingReward(
     network,
     stakingConfig.rewardTokenAddress,

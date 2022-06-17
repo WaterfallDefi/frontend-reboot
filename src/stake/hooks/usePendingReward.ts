@@ -24,7 +24,7 @@ export const usePendingReward = (
       if (isBrowserTabActiveRef.current) {
         setRefreshCounter((prev) => prev + 1);
       }
-    }, 10000);
+    }, 50000);
     return () => clearInterval(interval);
   }, [isBrowserTabActiveRef]);
 

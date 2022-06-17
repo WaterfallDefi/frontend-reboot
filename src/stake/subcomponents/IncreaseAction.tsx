@@ -512,13 +512,17 @@ function IncreaseAction(props: Props) {
   }, [duration, newExpireDate, account]);
   return (
     <div className="increase">
-      <div className="label">
-        <p>
-          WTF Balance: <span>wtfBalance</span>
-        </p>
-        <div className="max">MAX</div>
-      </div>
-      <input />
+      {!fromMasterChef && (
+        <div className="label">
+          <p>
+            WTF Balance: <span>{wtfBalance}</span>
+          </p>
+          <div className="max" onClick={handleMaxInput}>
+            MAX
+          </div>
+        </div>
+      )}
+      {!fromMasterChef && <input />}
       <div className="label">
         <p>WTF Reward</p>
       </div>
