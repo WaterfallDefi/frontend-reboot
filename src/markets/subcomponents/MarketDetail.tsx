@@ -106,14 +106,22 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 (selectedMarket.isMulticurrency ? " multicurrency" : "")
               }
             >
-              {selectedMarket.assets.map((assetName: string) => [
+              {selectedMarket.assets.map((assetName: string, i) => (
                 <div
-                  key={assetName + "-img"}
-                  className="coin"
-                  style={{ backgroundImage: `url(/coins/${assetName}.png)` }}
-                />,
-                <span key={assetName + "-span"}>{assetName}</span>,
-              ])}
+                  className={
+                    "asset" +
+                    (selectedDepositAssetIndex === i ? " selected" : "")
+                  }
+                  key={assetName}
+                  onClick={() => setSelectedDepositAssetIndex(i)}
+                >
+                  <div
+                    className="coin"
+                    style={{ backgroundImage: `url(/coins/${assetName}.png)` }}
+                  />
+                  <span>{assetName}</span>
+                </div>
+              ))}
             </div>
             <span className="blocktext">
               Lock-up period:{" "}
