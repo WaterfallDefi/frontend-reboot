@@ -97,7 +97,10 @@ function Tutorial(props: Props) {
       {collapsed ? (
         <div
           className="collapse-control uncollapse"
-          onClick={() => setCollapsed(false)}
+          onClick={() => {
+            setCollapsed(false);
+            setInterval(() => window.scrollTo(0, 0), 250);
+          }}
         >
           Tutorial
         </div>

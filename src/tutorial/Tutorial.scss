@@ -194,7 +194,7 @@
           font-size: 14px;
           line-height: 19px;
           text-align: center;
-          color: $text-color-lighter;
+          color: $text-color;
           max-width: 270px;
           margin: 0 auto;
           @media screen and (max-width: 1024px) {
@@ -210,10 +210,13 @@
     right: 24px;
     width: 100%;
     text-align: right;
-    color: $text-color-lighter;
+    color: $text-color;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    &.uncollapse {
+      color: $highlight-color;
+    }
   }
 
   &.dark {

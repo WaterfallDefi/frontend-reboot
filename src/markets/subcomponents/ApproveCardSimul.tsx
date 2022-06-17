@@ -344,6 +344,8 @@ function ApproveCardSimul(props: Props) {
     </div>
   );
 
+  console.log("hello");
+
   return (
     <div className="approve-card">
       {selectedMarket.assets.map((asset, index) => (
@@ -378,17 +380,15 @@ function ApproveCardSimul(props: Props) {
                   : {}
               }
               placeholder=""
-              value={balanceInputSimul[index]}
+              // value={balanceInputSimul[index]}
               onChange={(e) => {
                 handleInputChange(e, asset, index);
               }}
-              // suffix={
-              //   <Max onClick={() => handleMaxInputSimul(index)}>
-              //     {intl.formatMessage({ defaultMessage: "MAX" })}
-              //   </Max>
-              // }
-              disabled={!enabled || isSoldOut} //xyzzy
+              disabled={!enabled || isSoldOut}
             />
+            <div className="max" onClick={() => handleMaxInputSimul(index)}>
+              MAX
+            </div>
           </div>
           <div className="validate-text">
             {!depositLoading && validateTextSimul[index]}

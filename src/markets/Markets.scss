@@ -64,7 +64,7 @@
           }
 
           .blocktext {
-            color: $text-color-lighter;
+            color: $text-color;
           }
           .tvl {
             font-size: 16px;
@@ -72,15 +72,14 @@
           }
 
           .portfolio-name {
-            font-size: 24px;
-            height: 30px;
+            margin-top: 4px;
+            font-size: 30px;
             color: $text-color;
           }
 
           .assets {
             display: flex;
             font-size: 20px;
-            height: 30px;
             color: $text-color;
             padding: 3px;
             margin-top: 4px;
@@ -89,8 +88,9 @@
 
             &.multicurrency {
               .asset {
+                cursor: pointer;
                 &:hover {
-                  background-color: $text-color-light;
+                  background-color: $text-color-lighter;
                 }
               }
             }
@@ -98,7 +98,7 @@
             .asset {
               display: flex;
               margin-right: 12px;
-              padding: 2px;
+              padding: 8px;
               border-radius: 4px;
 
               &.selected {
@@ -155,14 +155,14 @@
           min-height: 140px;
           border-radius: 12px;
           border-left: 5px solid $highlight-color;
-          color: $text-color-lighter;
+          color: $text-color;
           display: flex;
           flex-direction: column;
           justify-content: space-around;
           font-size: 12px;
 
           .label {
-            color: $text-color-lighter;
+            color: $text-color;
           }
           .rtn-amt {
             color: $highlight-color;
@@ -195,7 +195,7 @@
       .block {
         flex: 1;
         display: flex;
-        color: $text-color-lighter;
+        color: $text-color;
         border-radius: 12px;
 
         .background {
@@ -276,7 +276,7 @@
         }
         .active-cycle {
           font-size: 14px;
-          color: $text-color-lighter;
+          color: $text-color;
           margin-top: 13px;
         }
       }
@@ -313,7 +313,7 @@
           }
           .step-name {
             font-size: 14px;
-            color: $text-color-lighter;
+            color: $text-color;
           }
           .line {
             height: 1px;
@@ -340,7 +340,7 @@
             }
             .step-name {
               font-size: 14px;
-              color: $text-color-lighter;
+              color: $text-color;
               .rem-value {
                 font-weight: 800;
                 margin-right: 10;
@@ -349,7 +349,7 @@
             .remaining-depositable-outer {
               width: 160px;
               height: 6px;
-              background-color: $text-color-lighter;
+              background-color: $text-color-lightest;
               border-radius: 4px;
               margin: 9px 20px 0 6px;
               .remaining-depositable-inner {
@@ -426,7 +426,7 @@
             .tranche-name {
               font-size: 14px;
               line-height: 18px;
-              color: $text-color-lighter;
+              color: $text-color;
               display: flex;
               justify-content: space-between;
               align-items: center;
@@ -472,7 +472,7 @@
               font-size: 12px;
               line-height: 125%;
               letter-spacing: -0.015em;
-              color: $text-color-lighter;
+              color: $text-color;
             }
             .status {
               display: flex;
@@ -481,7 +481,7 @@
                 font-size: 12px;
                 line-height: 16px;
                 letter-spacing: -0.015em;
-                color: $text-color-lighter;
+                color: $text-color;
               }
             }
             .progress-bar {
@@ -526,7 +526,7 @@
           .row {
             font-size: 20px;
             line-height: 27px;
-            color: $text-color-lighter;
+            color: $text-color;
             display: flex;
             margin-bottom: 35px;
             justify-content: space-between;
@@ -558,7 +558,7 @@
           .important-notes {
             margin-top: 20px;
             border-radius: 8px;
-            background-color: $text-color-lighter;
+            background-color: $text-color-lightest;
             padding: 20px;
             display: flex;
             min-height: 140px;
@@ -573,7 +573,7 @@
               margin-bottom: 10px;
             }
             & > div:nth-of-type(2) > div:nth-of-type(2) {
-              color: $text-color-lighter;
+              color: $text-color;
             }
           }
           .button {
