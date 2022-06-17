@@ -355,18 +355,19 @@
             box-sizing: border-box;
             border-radius: 8px;
             background: $base-color;
-            &[data-disabled="false"][data-selected="true"] {
+            &.selected {
               border-color: $highlight-color;
               background: $text-color-lighter;
             }
 
-            &[data-disabled="false"] {
-              :hover {
-                background: $text-color-lighter;
-              }
+            :hover {
+              background: $text-color-lighter;
             }
 
-            &[data-disabled="true"] {
+            &.disabled {
+              :hover {
+                background: $base-color;
+              }
               opacity: 0.5;
               cursor: default;
             }

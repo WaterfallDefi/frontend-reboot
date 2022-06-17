@@ -1,6 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import getWTFApr, { formatAllocPoint } from "../../hooks/getWtfApr";
 import { useWTFPriceLP } from "../../hooks/useWtfPriceFromLP";
 import { Market, Tranche } from "../../types";
@@ -11,6 +11,8 @@ type Props = {
   selectedDepositAssetIndex: number;
   tranche: Tranche;
   trancheIndex: number;
+  selected: boolean;
+  setSelectTrancheIdx: React.Dispatch<React.SetStateAction<number | undefined>>;
   coingeckoPrices: any;
 };
 
@@ -52,6 +54,8 @@ function TrancheCard(props: Props) {
     selectedDepositAssetIndex,
     tranche,
     trancheIndex,
+    selected,
+    setSelectTrancheIdx,
     coingeckoPrices,
   } = props;
   const isSoldout = useMemo(
@@ -126,7 +130,14 @@ function TrancheCard(props: Props) {
       : "";
 
   return (
-    <div className="tranche">
+    <div
+      className={
+        "tranche" +
+        (selected ? " selected" : "") +
+        (isSoldout ? " disabled" : "")
+      }
+      onClick={() => !selected && setSelectTrancheIdx(trancheIndex)}
+    >
       {isSoldout ? <div className="sold-out">Sold Out</div> : null}
       <div className="tranche-name">
         <div className="flex-row">

@@ -219,6 +219,8 @@ function Deposit(props: Props) {
                 selectedDepositAssetIndex={selectedDepositAssetIndex}
                 tranche={t}
                 trancheIndex={i}
+                selected={selectTrancheIdx === i}
+                setSelectTrancheIdx={setSelectTrancheIdx}
                 coingeckoPrices={coingeckoPrices}
               />
             );
