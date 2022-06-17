@@ -63,11 +63,14 @@ function Dashboard(props: Props) {
   }, [isBrowserTabActiveRef]);
 
   useEffect(() => {
-    if (carouselRef.current?.scrollLeft !== carouselMarkets.length * 420) {
+    if (
+      carouselRef.current?.scrollLeft !==
+      (carouselMarkets.length - 1) * 420
+    ) {
       carouselRef.current?.scrollBy({ left: 10, behavior: "smooth" });
     } else {
       carouselRef.current?.scrollBy({
-        left: carouselMarkets.length * 420,
+        left: (carouselMarkets.length - 1) * -420,
         behavior: "smooth",
       });
     }
