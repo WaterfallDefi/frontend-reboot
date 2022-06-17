@@ -69,7 +69,7 @@ function WaterfallDefi() {
           )}
         />
         <Route
-          path="/portfolio/markets"
+          path="/markets"
           element={layout(
             <Markets
               key="markets"
@@ -82,7 +82,7 @@ function WaterfallDefi() {
           )}
         />
         <Route
-          path="/portfolio/my-portfolio"
+          path="/portfolio"
           element={layout(
             <MyPortfolio
               key="portfolio"

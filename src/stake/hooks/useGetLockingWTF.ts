@@ -21,6 +21,7 @@ const useGetLockingWTF = (
   const contract = useVeWTFContract(network);
 
   const fetchLockingWTF = async () => {
+    if (!account) return;
     // const result = await contract.getLockedAmount(account);
     const result = await contract.getLockData(account);
     setTotal(

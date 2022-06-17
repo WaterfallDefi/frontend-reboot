@@ -141,7 +141,7 @@ function IncreaseAction(props: Props) {
         const _locked = await onCheckLocked();
         setLocked(_locked);
       };
-      checkLocked();
+      if (account) checkLocked();
     }
   }, [approved, account, onCheckLocked]);
   const handleApprove = async () => {

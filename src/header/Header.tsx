@@ -100,8 +100,8 @@ function Header(props: Props) {
         <div className="menu-block-wrapper">
           <Link
             className="link"
-            to={"/portfolio/markets"}
-            data-selected={location.pathname === "/portfolio/markets"}
+            to={"/markets"}
+            data-selected={location.pathname === "/markets"}
           >
             Markets
           </Link>
@@ -109,8 +109,8 @@ function Header(props: Props) {
         <div className="menu-block-wrapper">
           <Link
             className="link"
-            to={"/portfolio/my-portfolio"}
-            data-selected={location.pathname === "/portfolio/my-portfolio"}
+            to={"/portfolio"}
+            data-selected={location.pathname === "/portfolio"}
           >
             My Portfolio
           </Link>

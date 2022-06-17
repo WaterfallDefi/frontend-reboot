@@ -99,6 +99,8 @@ export const useStakingPool = (
   }, [isBrowserTabActiveRef]);
 
   useEffect(() => {
+    console.log("hello");
+    console.log(account);
     const fetchBalance = async () => {
       const calls = [
         {

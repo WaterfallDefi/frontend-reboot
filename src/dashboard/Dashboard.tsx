@@ -218,7 +218,7 @@ function Dashboard(props: Props) {
               })}
             </div>
           </div>
-          <button onClick={() => nav("/portfolio/markets")}>Start</button>
+          <button onClick={() => nav("/markets")}>Start</button>
         </div>
       </div>
     </div>
