@@ -31,8 +31,7 @@ const useBalanceOfOtherAddress = (
 
   const fetchBalance = useCallback(async () => {
     if (!account) return;
-    const signer = getSigner();
-    const contract = getContract(ERC20.abi, address, network, signer);
+    const contract = getContract(ERC20.abi, address, network);
     const tokenBalance = await contract.balanceOf(account);
     const value = new BigNumber(tokenBalance.toString()).dividedBy(
       BIG_TEN.pow(18)
