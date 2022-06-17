@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Mode } from "../WaterfallDefi";
 import { ArrowLine } from "./svgs/ArrowLine";
@@ -15,13 +15,10 @@ function Tutorial(props: Props) {
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const location = useLocation();
 
-  const scrollToRelevant = useCallback(() => {
-    window.scrollTo(0, collapsed ? 0 : 800);
-  }, [collapsed]);
-
   useEffect(() => {
+    const scrollToRelevant = () => window.scrollTo(0, collapsed ? 0 : 800);
     scrollToRelevant();
-  }, [location]);
+  }, [location, collapsed]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

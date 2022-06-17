@@ -65,7 +65,7 @@ export const useEarningTokenTotalSupply = (
     };
 
     fetchBalance();
-  }, [tokenAddress, refreshCounter]);
+  }, [network, tokenAddress, refreshCounter]);
 
   return totalSupply;
 };
@@ -189,7 +189,7 @@ export const useStakingPool = (
       });
     };
     if (account) fetchBalance();
-  }, [tokenAddress, refreshCounter, account, network]);
+  }, [tokenAddress, refreshCounter, account, network, earningTokenAddress]);
 
   return result;
 };

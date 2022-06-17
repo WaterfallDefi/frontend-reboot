@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { Market } from "../../types";
 import useWrapAVAXContract from "../hooks/useWrapAVAX";
-import useCheckApprove, { useCheckApproveAll } from "../hooks/useCheckApprove";
+import useCheckApprove from "../../hooks/useCheckApprove";
 import { Network } from "../../WaterfallDefi";
 import useApprove from "../hooks/useApprove";
 import useInvestDirect from "../hooks/useInvestDirect";

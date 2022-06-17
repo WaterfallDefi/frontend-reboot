@@ -42,7 +42,7 @@ const useTotalSupply = (network: Network, address: string) => {
     const tokenBalance = await contract.totalSupply();
     const value = formatBalance(tokenBalance.toString());
     setTotalSupply(numeral(value).format("0,0.[0000]"));
-  }, [account]);
+  }, [account, address, network]);
 
   useEffect(() => {
     fetchBalance();

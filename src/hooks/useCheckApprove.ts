@@ -2,9 +2,9 @@ import { useCallback, useMemo } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Contract } from "@ethersproject/contracts";
 import BigNumber from "bignumber.js";
-import { getContract, getSigner } from "../../hooks/getContract";
-import ERC20 from "../../config/abis/WTF.json";
-import { Network } from "../../WaterfallDefi";
+import { getContract, getSigner } from "./getContract";
+import ERC20 from "../config/abis/WTF.json";
+import { Network } from "../WaterfallDefi";
 
 const useERC20Contract = (network: Network, address: string) => {
   const signer = getSigner();

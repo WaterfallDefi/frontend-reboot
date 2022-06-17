@@ -67,16 +67,17 @@ function Header(props: Props) {
   };
 
   useEffect(() => {
+    console.log("hi");
     if (window.location.toString().includes("bnb.waterfalldefi.org")) {
       setNetwork(Network.BNB);
     } else if (window.location.toString().includes("avax.waterfalldefi.org")) {
       setNetwork(Network.AVAX);
     }
-  }, []);
+  }, [setNetwork]);
 
   useEffect(() => {
     setNetwork(chainId === Network.AVAX ? Network.AVAX : Network.BNB);
-  }, [chainId]);
+  }, [chainId, setNetwork]);
 
   return (
     <div className={"header-wrapper " + mode}>

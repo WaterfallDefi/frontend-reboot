@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useEffect, useMemo, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { Market } from "../../types";
-import { useCheckApproveAll } from "../hooks/useCheckApprove";
+import { useCheckApproveAll } from "../../hooks/useCheckApprove";
 import { Network } from "../../WaterfallDefi";
 import { useMultiApprove } from "../hooks/useApprove";
 import useInvestDirectMCSimul from "../hooks/useInvestDirectMCSimul";

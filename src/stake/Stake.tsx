@@ -79,8 +79,8 @@ function Stake(props: Props) {
     rewardPerBlock,
   } = useStakingPool(
     network,
-    stakingConfig?.rewardTokenAddress || "",
-    stakingConfig?.earningTokenAddress || "",
+    stakingConfig.rewardTokenAddress,
+    stakingConfig.earningTokenAddress,
     account
   );
 
@@ -122,6 +122,8 @@ function Stake(props: Props) {
     startTimestamp,
     fetchLockingWTF,
   } = useGetLockingWTF(network, account);
+
+  console.log("to infinity and beyond");
 
   const pendingWTFRewards = usePendingReward(
     network,
@@ -267,7 +269,17 @@ function Stake(props: Props) {
                 Unstake
               </div>
             </div>
-            {activatedKey === StakeKey.Stake && <IncreaseAction />}
+            {activatedKey === StakeKey.Stake && (
+              <IncreaseAction
+                network={network}
+                stakingConfig={stakingConfig}
+                lockingWTF={lockingWTF}
+                expiryTimestamp={expiryTimestamp}
+                startTimestamp={startTimestamp}
+                fetchLockingWTF={fetchLockingWTF}
+                fromMasterChef={false}
+              />
+            )}
             {activatedKey === StakeKey.Unstake && <UnstakeAction />}
           </div>
           <div className="stake-info">

@@ -200,12 +200,30 @@ function Deposit(props: Props) {
           <div className="step">2</div>
           <div className="step-name">Deposit</div>
         </div>
+
         {selectedMarket.isMulticurrency ? (
-          <div className="select-deposit-asset">
-            <div className="step-name">0 Remaining</div>
-            <div className="remaining-depositable-outer">
-              <div className="remaining-depositable-inner" />
-            </div>
+          <div className="select-deposit-assets">
+            {selectedMarket.assets.map((asset, index) => (
+              <div className="select-deposit-asset">
+                <div
+                  className="coin"
+                  style={{ backgroundImage: `url(/coins/${asset}.png)` }}
+                />
+                <div className="step-name">
+                  <span className="rem-value">
+                    {deposited[index].toString()} /{" "}
+                    {maxDeposits[index].toString()}
+                  </span>{" "}
+                  Remaining
+                </div>
+                <div className="remaining-depositable-outer">
+                  <div
+                    className="remaining-depositable-inner"
+                    style={{ width: widths[index] + "%" }}
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         ) : null}
       </div>

@@ -52,7 +52,7 @@ const getTotalTVL = async () => {
         calls
       );
       const _tranches = [t0, t1, t2];
-      _tranches.map((_t, _i) => {
+      _tranches.forEach((_t, _i) => {
         const _principal = _t
           ? new BigNumber(_t.principal?._hex).dividedBy(BIG_TEN.pow(18))
           : BIG_ZERO;

@@ -74,7 +74,7 @@ function Dashboard(props: Props) {
         behavior: "smooth",
       });
     }
-  }, [carouselRef, refreshCounter]);
+  }, [carouselRef, refreshCounter, carouselMarkets.length]);
 
   const threeTrancheDisplayTexts = ["Senior", "Mezzanine", "Junior"];
   const twoTrancheDisplayTexts = ["Fixed", "Variable"];
@@ -155,68 +155,66 @@ function Dashboard(props: Props) {
           <div className="carousel-container">
             <div className="carousel-slides" ref={carouselRef}>
               {carouselMarkets.map((_market: Market, i) => {
-                if (!_market.isRetired)
-                  return (
-                    <div className="slide" key={i}>
-                      <div className="title">{_market.portfolio}</div>
-                      {(_market.trancheCount === 3
-                        ? threeTrancheDisplayTexts
-                        : twoTrancheDisplayTexts
-                      ).map((_trancheText, j) => {
-                        const trancheApr: string = _market.tranches[j]?.apy;
-                        const wtfApr = _market
-                          ? getWTFApr(
-                              _market.isAvax ? Network.AVAX : Network.BNB,
-                              formatAllocPoint(
-                                _market?.pools[j],
-                                _market?.totalAllocPoints
-                              ),
-                              _market?.tranches[j],
-                              _market?.duration,
-                              _market?.rewardPerBlock,
-                              price,
-                              _market?.assets,
-                              coingeckoPrices
-                            )
-                          : "-";
+                return !_market.isRetired ? (
+                  <div className="slide" key={i}>
+                    <div className="title">{_market.portfolio}</div>
+                    {(_market.trancheCount === 3
+                      ? threeTrancheDisplayTexts
+                      : twoTrancheDisplayTexts
+                    ).map((_trancheText, j) => {
+                      const trancheApr: string = _market.tranches[j]?.apy;
+                      const wtfApr = _market
+                        ? getWTFApr(
+                            _market.isAvax ? Network.AVAX : Network.BNB,
+                            formatAllocPoint(
+                              _market?.pools[j],
+                              _market?.totalAllocPoints
+                            ),
+                            _market?.tranches[j],
+                            _market?.duration,
+                            _market?.rewardPerBlock,
+                            price,
+                            _market?.assets,
+                            coingeckoPrices
+                          )
+                        : "-";
 
-                        const netApr =
-                          trancheApr && wtfApr && wtfApr !== null
-                            ? Number(trancheApr) +
-                              Number(numeral(wtfApr).value())
-                            : Number(numeral(trancheApr).value());
+                      const netApr =
+                        trancheApr && wtfApr && wtfApr !== null
+                          ? Number(trancheApr) + Number(numeral(wtfApr).value())
+                          : Number(numeral(trancheApr).value());
 
-                        return (
-                          <div className="block" key={i.toString() + j}>
-                            <h1 className={_trancheText}>{_trancheText}</h1>
-                            <div className="section">
-                              <div className="apr-wrapper">
-                                <span>Total APR</span>
-                                <p>{numeral(netApr).format("0,0.[00]")}%</p>
-                              </div>
-                              <div className="apr-wrapper">
-                                <span>
-                                  {j === _market.trancheCount - 1
-                                    ? "Variable"
-                                    : "Fixed"}
-                                </span>
-                                <p>{trancheApr}%</p>
-                              </div>
-                              <div className="apr-wrapper">
-                                <span>WTF APR</span>
-                                <p>{wtfApr}%</p>
-                              </div>
-                              <div className="line" />
-                              <div className="fee">
-                                <span>Withdraw Fee</span>
-                                <span>{_market?.tranches[j].fee}</span>
-                              </div>
+                      return (
+                        <div className="block" key={i.toString() + j}>
+                          <h1 className={_trancheText}>{_trancheText}</h1>
+                          <div className="section">
+                            <div className="apr-wrapper">
+                              <span>Total APR</span>
+                              <p>{numeral(netApr).format("0,0.[00]")}%</p>
+                            </div>
+                            <div className="apr-wrapper">
+                              <span>
+                                {j === _market.trancheCount - 1
+                                  ? "Variable"
+                                  : "Fixed"}
+                              </span>
+                              <p>{trancheApr}%</p>
+                            </div>
+                            <div className="apr-wrapper">
+                              <span>WTF APR</span>
+                              <p>{wtfApr}%</p>
+                            </div>
+                            <div className="line" />
+                            <div className="fee">
+                              <span>Withdraw Fee</span>
+                              <span>{_market?.tranches[j].fee}</span>
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-                  );
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : null;
               })}
             </div>
           </div>
