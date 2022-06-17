@@ -542,7 +542,13 @@ function IncreaseAction(props: Props) {
       )}
       {validateText && <div className="validation">{validateText}</div>}
       {account && approved && locked && !isExpired && !fromMasterChef && (
-        <button onClick={onIncreaseLockAmount}>Increase Lock Amount</button>
+        <button
+          onClick={() => !increaseLockAmountLoading && onIncreaseLockAmount()}
+        >
+          {!increaseLockAmountLoading
+            ? "Increase Lock Amount"
+            : "Increasing Lock Amount..."}
+        </button>
       )}
       <div className="label" style={{ margin: "15px 0 10px" }}>
         <p>Lock will expire in:</p>
@@ -599,13 +605,21 @@ function IncreaseAction(props: Props) {
         <div className="validate-text">{validateTextLockTime}</div>
       )}
       {account && approved && locked && !isExpired && !fromMasterChef && (
-        <button onClick={onExtendLockTime}>Extend Lock Time</button>
+        <button onClick={() => !extendLockTimeLoading && onExtendLockTime()}>
+          {!extendLockTimeLoading
+            ? "Extend Lock Time"
+            : "Extending Lock Time..."}
+        </button>
       )}
       {account && approved && (!locked || isExpired) && !fromMasterChef && (
-        <button onClick={onConfirm}>Lock & Stake WTF</button>
+        <button onClick={() => !loading && onConfirm()}>
+          {!loading ? "Lock & Stake WTF" : "Staking..."}
+        </button>
       )}
       {account && !approved && (
-        <button onClick={handleApprove}>Approve WTF</button>
+        <button onClick={() => !approveLoading && handleApprove()}>
+          {!approveLoading ? "Approve WTF" : "Approving..."}
+        </button>
       )}
       {!account && <button>Connect Wallet</button>}
       <div className="label">
@@ -623,7 +637,11 @@ function IncreaseAction(props: Props) {
         </div>
       )}
       {account && approved && fromMasterChef && (
-        <button onClick={onConfirmLockWTFRewards}>Confirm</button>
+        <button
+          onClick={() => !lockWTFRewardsLoading && onConfirmLockWTFRewards()}
+        >
+          {!lockWTFRewardsLoading ? "Confirm" : "Locking WTF Rewards..."}
+        </button>
       )}
     </div>
   );

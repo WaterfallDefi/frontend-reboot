@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getContract, getSigner } from "../../hooks/getContract";
+import { getContract } from "../../hooks/getContract";
 import ERC20 from "../../config/abis/WTF.json";
 import { useIsBrowserTabActive } from "../../hooks/useIsBrowserTabActive";
 import { Network } from "../../WaterfallDefi";

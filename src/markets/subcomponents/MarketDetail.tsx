@@ -41,14 +41,16 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
-  const { balance, invested } = useTrancheBalance(
+  const { balance } = useTrancheBalance(
+    //don't need { invested } for now
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
     selectedMarket.address,
     selectedMarket.abi,
     selectedMarket.isMulticurrency
   );
 
-  const { MCbalance, MCinvested } = useMulticurrencyTrancheBalance(
+  const { MCbalance } = useMulticurrencyTrancheBalance(
+    //don't need { MCinvested } for now
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
     selectedMarket.address,
     selectedMarket.abi,

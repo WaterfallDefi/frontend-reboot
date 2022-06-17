@@ -22,7 +22,7 @@ import useGetLockingWTF from "./hooks/useGetLockingWTF";
 import { usePendingReward } from "./hooks/usePendingReward";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import useClaimRewards from "./hooks/useClaimRewards";
-import useClaimFeeRewards from "./hooks/useClaimFeeRewards";
+// import useClaimFeeRewards from "./hooks/useClaimFeeRewards";
 import IncreaseAction from "./subcomponents/IncreaseAction";
 import UnstakeAction from "./subcomponents/UnstakeAction";
 
@@ -39,13 +39,13 @@ const BLOCK_TIME = (chainId: string) => {
   }
 };
 
-const actualMultiplier = [
-  0.00416666666666667, 0.01, 0.01625, 0.0250000000000001, 0.0354166666666666,
-  0.05, 0.0670833333333334, 0.0899999999999999, 0.11625, 0.145833333333333,
-  0.183333333333333, 0.235, 0.2925, 0.361666666666666, 0.44375, 0.54,
-  0.665833333333333, 0.81, 0.981666666666667, 1.18333333333333, 1.435,
-  1.72333333333333, 2.07, 2.49,
-];
+// const actualMultiplier = [
+//   0.00416666666666667, 0.01, 0.01625, 0.0250000000000001, 0.0354166666666666,
+//   0.05, 0.0670833333333334, 0.0899999999999999, 0.11625, 0.145833333333333,
+//   0.183333333333333, 0.235, 0.2925, 0.361666666666666, 0.44375, 0.54,
+//   0.665833333333333, 0.81, 0.981666666666667, 1.18333333333333, 1.435,
+//   1.72333333333333, 2.07, 2.49,
+// ];
 
 enum StakeKey {
   Stake = "stake",
@@ -70,14 +70,7 @@ function Stake(props: Props) {
 
   const stakingConfig = network === Network.BNB ? Stakings[0] : Stakings[1];
 
-  const {
-    totalStaked,
-    isPoolActive,
-    totalLocked,
-    userStaked,
-    maxAPR,
-    rewardPerBlock,
-  } = useStakingPool(
+  const { totalLocked, maxAPR, rewardPerBlock } = useStakingPool(
     network,
     stakingConfig.rewardTokenAddress,
     stakingConfig.earningTokenAddress,
@@ -131,14 +124,15 @@ function Stake(props: Props) {
   const { price: wtfPrice } = useWTFPriceLP();
 
   const { claimRewards } = useClaimRewards(network);
-  const { claimFeeRewards } = useClaimFeeRewards(network);
+  // const { claimFeeRewards } = useClaimFeeRewards(network);
   const [harvestLoading, setHarvestLoading] = useState(false);
-  const [feeRewardsHarvestLoading, setFeeRewardsHarvestLoading] =
-    useState(false);
+  // const [feeRewardsHarvestLoading, setFeeRewardsHarvestLoading] =
+  //   useState(false);
   const onHarvest = async () => {
     setHarvestLoading(true);
     try {
       const result = await claimRewards();
+      console.log(result);
       // fetchBalance();
       // setBalanceInput(0);
       // fetchLockingWTF();
@@ -175,56 +169,56 @@ function Stake(props: Props) {
     );
   }, [VeWTFRatioPercentage, rewardPerBlock, lockingWTF, network]);
 
-  const data = useMemo(() => {
-    return {
-      labels: [
-        "1 Month",
-        "2 Months",
-        "3 Months",
-        "4 Months",
-        "5 Months",
-        "6 Months",
-        "7 Months",
-        "8 Months",
-        "9 Months",
-        "10 Months",
-        "11 Months",
-        "12 Months",
-        "13 Months",
-        "14 Months",
-        "15 Months",
-        "16 Months",
-        "17 Months",
-        "18 Months",
-        "19 Months",
-        "20 Months",
-        "21 Months",
-        "22 Months",
-        "23 Months",
-        "24 Months",
-      ],
-      datasets: [
-        {
-          label: "veWTF Predicted APR",
-          fill: false,
-          backgroundColor: "#0066FF",
-          borderColor: "#0066FF",
-          pointBorderColor: "#0066FF",
-          pointBackgroundColor: "#fff",
-          pointBorderWidth: 1,
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "#0066FF",
-          pointHoverBorderColor: "rgba(220,220,220,1)",
-          pointHoverBorderWidth: 2,
-          pointRadius: 1,
-          pointHitRadius: 10,
-          data: actualMultiplier.map((e) => {
-            return numeral((e * (numeral(maxAPR).value() || 0)) / 2.49).value();
-          }),
-        },
-      ],
-    };
-  }, [maxAPR]);
+  // const data = useMemo(() => {
+  //   return {
+  //     labels: [
+  //       "1 Month",
+  //       "2 Months",
+  //       "3 Months",
+  //       "4 Months",
+  //       "5 Months",
+  //       "6 Months",
+  //       "7 Months",
+  //       "8 Months",
+  //       "9 Months",
+  //       "10 Months",
+  //       "11 Months",
+  //       "12 Months",
+  //       "13 Months",
+  //       "14 Months",
+  //       "15 Months",
+  //       "16 Months",
+  //       "17 Months",
+  //       "18 Months",
+  //       "19 Months",
+  //       "20 Months",
+  //       "21 Months",
+  //       "22 Months",
+  //       "23 Months",
+  //       "24 Months",
+  //     ],
+  //     datasets: [
+  //       {
+  //         label: "veWTF Predicted APR",
+  //         fill: false,
+  //         backgroundColor: "#0066FF",
+  //         borderColor: "#0066FF",
+  //         pointBorderColor: "#0066FF",
+  //         pointBackgroundColor: "#fff",
+  //         pointBorderWidth: 1,
+  //         pointHoverRadius: 5,
+  //         pointHoverBackgroundColor: "#0066FF",
+  //         pointHoverBorderColor: "rgba(220,220,220,1)",
+  //         pointHoverBorderWidth: 2,
+  //         pointRadius: 1,
+  //         pointHitRadius: 10,
+  //         data: actualMultiplier.map((e) => {
+  //           return numeral((e * (numeral(maxAPR).value() || 0)) / 2.49).value();
+  //         }),
+  //       },
+  //     ],
+  //   };
+  // }, [maxAPR]);
 
   return (
     <div className={"stake-wrapper " + mode}>
@@ -241,11 +235,26 @@ function Stake(props: Props) {
         </div>
         <div className="total">
           <div>
-            Total WTF Locked: {numeral(totalLocked).format("0,0.[0000]")}
+            <div>
+              Total WTF Locked: {numeral(totalLocked).format("0,0.[0000]")}
+            </div>
+            <div>
+              Total veWTF Minted:{" "}
+              {numeral(_VeWTFTotalSupply).format("0,0.[0000]")}
+            </div>
           </div>
-          <div>
-            Total veWTF Minted:{" "}
-            {numeral(_VeWTFTotalSupply).format("0,0.[0000]")}
+          <div className="est-reward-pool">
+            <span className="bold">Estimated Reward Pool</span>
+            <span className={network === Network.AVAX ? "dai" : "busd"}>
+              {_pendingReward}
+              {network === Network.AVAX ? " DAI.e" : " BUSD"}
+            </span>
+            {network === Network.AVAX && (
+              <span className="wavax">
+                {_pendingRewardWAVAX}
+                {" WAVAX"}
+              </span>
+            )}
           </div>
         </div>
         <div className="actions">
@@ -316,7 +325,9 @@ function Stake(props: Props) {
                     : ""}{" "}
                   (1 WTF= $ {wtfPrice})
                 </span>
-                <button onClick={onHarvest}>Harvest</button>
+                <button onClick={() => !harvestLoading && onHarvest()}>
+                  {!harvestLoading ? "Harvest" : "Harvesting..."}
+                </button>
               </div>
             </div>
             <div /> {/* wtf, lap... */}

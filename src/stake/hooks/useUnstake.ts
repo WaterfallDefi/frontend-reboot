@@ -1,6 +1,4 @@
 import { useCallback } from "react";
-import { useWeb3React } from "@web3-react/core";
-
 import { Contract } from "@ethersproject/contracts";
 import useVeWTFContract from "./useVeWTFContract";
 import { Network } from "../../WaterfallDefi";
@@ -13,7 +11,6 @@ const unstake = async (contract: Contract, account: string) => {
 };
 
 const useUnstake = (network: Network) => {
-  const { account } = useWeb3React();
   const contract = useVeWTFContract(network);
   const handleUnstake = useCallback(
     async (account: string) => {
@@ -21,7 +18,7 @@ const useUnstake = (network: Network) => {
       //   dispatch();
       return result;
     },
-    [account, contract]
+    [contract]
   );
 
   return { unstake: handleUnstake };

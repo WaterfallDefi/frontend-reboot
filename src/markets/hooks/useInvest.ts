@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { useWeb3React } from "@web3-react/core";
 import { Contract } from "@ethersproject/contracts";
 import { utils, BigNumber } from "ethers";
 import { getContract, getSigner } from "../../hooks/getContract";
