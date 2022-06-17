@@ -136,7 +136,9 @@ function TrancheCard(props: Props) {
         (selected ? " selected" : "") +
         (isSoldout ? " disabled" : "")
       }
-      onClick={() => !selected && setSelectTrancheIdx(trancheIndex)}
+      onClick={() =>
+        !selected && !isSoldout && setSelectTrancheIdx(trancheIndex)
+      }
     >
       {isSoldout ? <div className="sold-out">Sold Out</div> : null}
       <div className="tranche-name">

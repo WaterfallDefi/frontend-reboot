@@ -357,7 +357,7 @@
             background: $base-color;
             &.selected {
               border-color: $highlight-color;
-              background: $text-color-lighter;
+              background: $text-color-lightest;
             }
 
             :hover {
