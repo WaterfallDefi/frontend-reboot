@@ -1,8 +1,8 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Contract } from "@ethersproject/contracts";
 import { utils, BigNumber } from "ethers";
 import { getContract, getSigner } from "../../hooks/getContract";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 const invest = async (
   contract: Contract,
@@ -10,7 +10,8 @@ const invest = async (
   selectTrancheIdx: string,
   multicurrencyIdx: number,
   multicurrencyTokenCount: number,
-  isUSDC: boolean
+  isUSDC: boolean,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const _amount = !isUSDC
     ? utils.parseEther(amount)
@@ -27,35 +28,28 @@ const invest = async (
     _amountArray[multicurrencyIdx] = BigNumber.from(_amount.toString());
     tx = await contract.invest(selectTrancheIdx, [..._amountArray], false);
   }
-  // dispatch(
-  //   setConfirmModal({
-  //     isOpen: true,
-  //     txn: tx.hash,
-  //     status: "SUBMITTED",
-  //     pendingMessage: "Deposit Submitted",
-  //   })
-  // );
-  // return tx.hash;
+  setModal({
+    state: Modal.Txn,
+    txn: tx.hash,
+    status: "SUBMITTED",
+    message: "Deposit Submitted",
+  });
   const receipt = await tx.wait();
 
   if (receipt.status) {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "COMPLETED",
-    //     pendingMessage: "Deposit Success",
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "COMPLETED",
+      message: "Deposit Success",
+    });
   } else {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "REJECTED",
-    //     pendingMessage: "Deposit Failed",
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "REJECTED",
+      message: "Deposit Failed",
+    });
   }
   return receipt.status;
 };
@@ -66,7 +60,8 @@ const useInvest = (
   abi: any,
   multicurrencyIdx: number,
   multicurrencyTokenCount: number,
-  isUSDC: boolean
+  isUSDC: boolean,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const signer = getSigner();
   const contract = getContract(abi, trancheMasterAddress, network, signer);
@@ -79,8 +74,10 @@ const useInvest = (
         selectTrancheIdx,
         multicurrencyIdx,
         multicurrencyTokenCount,
-        isUSDC
+        isUSDC,
+        setModal
       );
+      //TODO: update markets - it's just setMarkets(undefined)
       // dispatch(getMarkets(MarketList));
       return result;
     },

@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { Contract } from "@ethersproject/contracts";
 import { utils, BigNumber } from "ethers";
 import { getContract, getSigner } from "../../hooks/getContract";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 const invest = async (
   contract: Contract,
@@ -10,7 +10,8 @@ const invest = async (
   selectTrancheIdx: string,
   multicurrencyIdx: number,
   multicurrencyTokenCount: number,
-  isUSDC: boolean
+  isUSDC: boolean,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const _amount = !isUSDC
     ? utils.parseEther(amount).toString()
@@ -34,34 +35,28 @@ const invest = async (
     );
   }
 
-  // dispatch(
-  //   setConfirmModal({
-  //     isOpen: true,
-  //     txn: tx.hash,
-  //     status: "SUBMITTED",
-  //     pendingMessage: "Deposit Submitted",
-  //   })
-  // );
+  setModal({
+    state: Modal.Txn,
+    txn: tx.hash,
+    status: "SUBMITTED",
+    message: "Deposit Submitted",
+  });
   const receipt = await tx.wait();
 
   if (receipt.status) {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "COMPLETED",
-    //     pendingMessage: "Deposit Success",
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "COMPLETED",
+      message: "Deposit Success",
+    });
   } else {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "REJECTED",
-    //     pendingMessage: "Deposit Failed",
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "REJECTED",
+      message: "Deposit Failed",
+    });
   }
   return receipt.status;
 };
@@ -72,17 +67,13 @@ const useInvestDirect = (
   abi: any,
   multicurrencyIdx: number,
   multicurrencyTokenCount: number,
-  isUSDC: boolean
+  isUSDC: boolean,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const signer = getSigner();
 
   const contract = getContract(abi, trancheMasterAddress, network, signer);
-  // let contract: Contract;
-  // if (multicurrencyIdx === -1) {
-  //   contract = useTrancheMasterContract(trancheMasterAddress);
-  // } else {
-  //   contract = useMulticurrencyTrancheMasterContract(trancheMasterAddress);
-  // }
+
   const handleInvestDirect = useCallback(
     async (amount: string, selectTrancheIdx: string) => {
       const result = await invest(
@@ -91,7 +82,8 @@ const useInvestDirect = (
         selectTrancheIdx,
         multicurrencyIdx,
         multicurrencyTokenCount,
-        isUSDC
+        isUSDC,
+        setModal
       );
       // dispatch(getMarkets(MarketList));
       return result;

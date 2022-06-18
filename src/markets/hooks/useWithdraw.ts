@@ -1,11 +1,12 @@
 import { useCallback, useMemo } from "react";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import { getContract, getSigner } from "../../hooks/getContract";
 
 const useWithdraw = (
   network: Network,
   trancheMasterAddress: string,
-  abi: any //too many different types of abis (autoroll, avax, multicurrency) this ensures accuracy
+  abi: any, //too many different types of abis (autoroll, avax, multicurrency) this ensures accuracy,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   // const { account } = useWeb3React();
 
@@ -23,23 +24,19 @@ const useWithdraw = (
       );
       const receipt = await tx.wait();
       if (receipt.status) {
-        // dispatch(
-        //   setConfirmModal({
-        //     isOpen: true,
-        //     txn: tx.hash,
-        //     status: "COMPLETED",
-        //     pendingMessage: "Withdraw Success"
-        //   })
-        // );
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "COMPLETED",
+          message: "Withdraw Success",
+        });
       } else {
-        // dispatch(
-        //   setConfirmModal({
-        //     isOpen: true,
-        //     txn: tx.hash,
-        //     status: "REJECTED",
-        //     pendingMessage: "Withdraw Failed"
-        //   })
-        // );
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "REJECTED",
+          message: "Withdraw Failed",
+        });
       }
 
       //TO DO: refresh markets

@@ -139,6 +139,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           coingeckoPrices={coingeckoPrices}
           selectedDepositAssetIndex={selectedDepositAssetIndex}
           balance={selectedMarket.isMulticurrency ? MCbalance : balance}
+          setModal={setModal}
         />
         {/* must keep this external HTML structure for PortfolioChart because of z-index issues */}
         <div className="block col">

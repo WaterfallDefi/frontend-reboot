@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
 import { Market } from "../../types";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useClaimAll from "../hooks/useClaimAll";
 import useWithdraw from "../hooks/useWithdraw";
 import usePendingWTFReward from "../hooks/usePendingWTFReward";
@@ -15,6 +15,7 @@ type Props = {
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
   balance: string | string[];
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
 const BIG_TEN = new BigNumber(10);
@@ -29,6 +30,7 @@ function ClaimRedeposit(props: Props) {
     coingeckoPrices,
     selectedDepositAssetIndex,
     balance,
+    setModal,
   } = props;
 
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
@@ -48,7 +50,8 @@ function ClaimRedeposit(props: Props) {
   const { onWithdraw } = useWithdraw(
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
     selectedMarket.address,
-    selectedMarket.abi
+    selectedMarket.abi,
+    setModal
   );
 
   const { onClaimAll } = useClaimAll(
@@ -104,27 +107,23 @@ function ClaimRedeposit(props: Props) {
   ) => {
     setClaimRewardLoading(true);
 
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: undefined,
-    //     status: "PENDING",
-    //     pendingMessage: intl.formatMessage({ defaultMessage: "Claiming " }),
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Claiming ",
+    });
     try {
       // await onClaimAll(_lockDurationIfLockNotExists, _lockDurationIfLockExists);
       // successNotification("Claim Success", "");
     } catch (e) {
       console.error(e);
-      // dispatch(
-      //   setConfirmModal({
-      //     isOpen: true,
-      //     txn: undefined,
-      //     status: "REJECTED",
-      //     pendingMessage: intl.formatMessage({ defaultMessage: "Claim Fail " }),
-      //   })
-      // );
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Claim Fail ",
+      });
     } finally {
       setShowClaim(false);
 
@@ -134,38 +133,31 @@ function ClaimRedeposit(props: Props) {
   const withdrawAll = async () => {
     setWithdrawAllLoading(true);
 
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: undefined,
-    //     status: "PENDING",
-    //     pendingMessage: intl.formatMessage({ defaultMessage: "Withdrawing" }),
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Withdrawing",
+    });
     try {
       if (!balance) return;
-      // await onWithdraw(
-      //   formatBigNumber2HexString(
-      //     !(balance instanceof Array)
-      //       ? new BigNumber(balance).times(BIG_TEN.pow(18))
-      //       : new BigNumber(0)
-      //   ),
-      //   balance instanceof Array ? balance : []
-      // );
+      await onWithdraw(
+        formatBigNumber2HexString(
+          !(balance instanceof Array)
+            ? new BigNumber(balance).times(BIG_TEN.pow(18))
+            : new BigNumber(0)
+        ),
+        balance instanceof Array ? balance : []
+      );
       // successNotification("Withdraw All Success", "");
     } catch (e) {
       console.error(e);
-
-      // dispatch(
-      //   setConfirmModal({
-      //     isOpen: true,
-      //     txn: undefined,
-      //     status: "REJECTED",
-      //     pendingMessage: intl.formatMessage({
-      //       defaultMessage: "Withdraw Fail ",
-      //     }),
-      //   })
-      // );
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Withdraw Fail ",
+      });
     } finally {
       setWithdrawAllLoading(false);
     }

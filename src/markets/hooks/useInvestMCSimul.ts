@@ -2,46 +2,41 @@ import { useCallback } from "react";
 import { Contract } from "@ethersproject/contracts";
 import { utils, BigNumber } from "ethers";
 import { getContract, getSigner } from "../../hooks/getContract";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 const _invest = async (
   contract: Contract,
   amount: string[],
-  selectTrancheIdx: string
+  selectTrancheIdx: string,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const _amount = amount.map((a) =>
     BigNumber.from(utils.parseEther(a).toString())
   );
   const tx = await contract.invest(selectTrancheIdx, _amount, false);
-  // dispatch(
-  //   setConfirmModal({
-  //     isOpen: true,
-  //     txn: tx.hash,
-  //     status: "SUBMITTED",
-  //     pendingMessage: "Deposit Submitted",
-  //   })
-  // );
+  setModal({
+    state: Modal.Txn,
+    txn: tx.hash,
+    status: "SUBMITTED",
+    message: "Deposit Submitted",
+  });
 
   const receipt = await tx.wait();
 
   if (receipt.status) {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "COMPLETED",
-    //     pendingMessage: "Deposit Success",
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "COMPLETED",
+      message: "Deposit Success",
+    });
   } else {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "REJECTED",
-    //     pendingMessage: "Deposit Failed",
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "REJECTED",
+      message: "Deposit Failed",
+    });
   }
   return receipt.status;
 };
@@ -49,13 +44,19 @@ const _invest = async (
 const useInvestMCSimul = (
   network: Network,
   trancheMasterAddress: string,
-  abi: any
+  abi: any,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const signer = getSigner();
   const contract = getContract(abi, trancheMasterAddress, network, signer);
   const handleInvestMCSimul = useCallback(
     async (amount: string[], selectTrancheIdx: string) => {
-      const result = await _invest(contract, amount, selectTrancheIdx);
+      const result = await _invest(
+        contract,
+        amount,
+        selectTrancheIdx,
+        setModal
+      );
       // dispatch(getMarkets(MarketList));
       return result;
     },

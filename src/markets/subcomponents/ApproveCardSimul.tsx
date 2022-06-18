@@ -82,12 +82,14 @@ function ApproveCardSimul(props: Props) {
   const { onInvestDirectMCSimul } = useInvestDirectMCSimul(
     network,
     selectedMarket.address,
-    selectedMarket.abi
+    selectedMarket.abi,
+    setModal
   );
   const { onInvestMCSimul } = useInvestMCSimul(
     network,
     selectedMarket.address,
-    selectedMarket.abi
+    selectedMarket.abi,
+    setModal
   );
 
   //balance hooks
@@ -142,14 +144,12 @@ function ApproveCardSimul(props: Props) {
   //handlers
   const handleApprove = async () => {
     setApproveLoading(true);
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: undefined,
-    //     status: "PENDING",
-    //     pendingMessage: intl.formatMessage({ defaultMessage: "Approving " }),
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Approving",
+    });
     try {
       await onMultiApprove();
       // successNotification("Approve Success", "");
@@ -157,16 +157,12 @@ function ApproveCardSimul(props: Props) {
     } catch (e) {
       console.error(e);
 
-      // dispatch(
-      //   setConfirmModal({
-      //     isOpen: true,
-      //     txn: undefined,
-      //     status: "REJECTED",
-      //     pendingMessage: intl.formatMessage({
-      //       defaultMessage: "Approve Fail ",
-      //     }),
-      //   })
-      // );
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Approve Fail ",
+      });
     } finally {
       setApproveLoading(false);
     }
@@ -223,24 +219,17 @@ function ApproveCardSimul(props: Props) {
     if (selectTrancheIdx === undefined) return;
 
     setDepositLoading(true);
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: undefined,
-    //     status: "PENDING",
-    //     pendingMessage: balanceInputSimul
-    //       .map(
-    //         (b) =>
-    //           intl.formatMessage({ defaultMessage: "Depositing " }) +
-    //           " " +
-    //           b +
-    //           " " +
-    //           data.assets[selectedDepositAssetIndex] +
-    //           ", "
-    //       )
-    //       .join(),
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: balanceInputSimul
+        .map(
+          (b, i) =>
+            "Depositing " + " " + b + " " + selectedMarket.assets[i] + ", "
+        )
+        .join(),
+    });
     const _amount = balanceInputSimul; //feels like .toString() is unnecessary if it's already typed? - 0xA
     try {
       const success = !isRedeposit
@@ -255,16 +244,12 @@ function ApproveCardSimul(props: Props) {
       setBalanceInputSimul([]);
       multicurrencyBalancesWallet.fetchBalances();
     } catch (e) {
-      // dispatch(
-      //   setConfirmModal({
-      //     isOpen: true,
-      //     txn: undefined,
-      //     status: "REJECTED",
-      //     pendingMessage: intl.formatMessage({
-      //       defaultMessage: "Deposit Fail ",
-      //     }),
-      //   })
-      // );
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Deposit Fail ",
+      });
       console.error(e);
     } finally {
       setDepositLoading(false);

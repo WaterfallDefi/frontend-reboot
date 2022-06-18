@@ -106,7 +106,9 @@ function ApproveCardDefault(props: Props) {
     selectedMarket.abi,
     selectedMarket.isMulticurrency ? selectedDepositAssetIndex : -1,
     selectedMarket.assets.length,
-    selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e"
+    selectedMarket.assets[0] === "USDC" ||
+      selectedMarket.assets[0] === "USDC.e",
+    setModal
   );
   const { onInvest } = useInvest(
     network,
@@ -114,7 +116,9 @@ function ApproveCardDefault(props: Props) {
     selectedMarket.abi,
     selectedMarket.isMulticurrency ? selectedDepositAssetIndex : -1,
     selectedMarket.assets.length,
-    selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e"
+    selectedMarket.assets[0] === "USDC" ||
+      selectedMarket.assets[0] === "USDC.e",
+    setModal
   );
 
   //balance hooks
@@ -173,14 +177,12 @@ function ApproveCardDefault(props: Props) {
   //handlers
   const handleApprove = async () => {
     setApproveLoading(true);
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: undefined,
-    //     status: "PENDING",
-    //     pendingMessage: intl.formatMessage({ defaultMessage: "Approving " }),
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Approving",
+    });
     try {
       await onApprove();
       // successNotification("Approve Success", "");
@@ -188,16 +190,12 @@ function ApproveCardDefault(props: Props) {
     } catch (e) {
       console.error(e);
 
-      // dispatch(
-      //   setConfirmModal({
-      //     isOpen: true,
-      //     txn: undefined,
-      //     status: "REJECTED",
-      //     pendingMessage: intl.formatMessage({
-      //       defaultMessage: "Approve Fail ",
-      //     }),
-      //   })
-      // );
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Approve Fail ",
+      });
     } finally {
       setApproveLoading(false);
     }
@@ -238,19 +236,17 @@ function ApproveCardDefault(props: Props) {
     if (selectTrancheIdx === undefined) return;
 
     setDepositLoading(true);
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: undefined,
-    //     status: "PENDING",
-    //     pendingMessage:
-    //       intl.formatMessage({ defaultMessage: "Depositing " }) +
-    //       " " +
-    //       balanceInput +
-    //       " " +
-    //       data.assets[selectedDepositAssetIndex],
-    //   })
-    // );
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message:
+        "Depositing " +
+        balanceInput +
+        " " +
+        selectedMarket.assets[selectedDepositAssetIndex],
+    });
     const amount = balanceInput.toString();
     try {
       const success = !isRedeposit
@@ -266,19 +262,15 @@ function ApproveCardDefault(props: Props) {
       !selectedMarket.isMulticurrency
         ? fetchBalance()
         : multicurrencyBalancesWallet.fetchBalances();
+      //TODO: update trancheBalance
       // if (account) dispatch(getTrancheBalance({ account }));
     } catch (e) {
-      // dispatch(
-      //   setConfirmModal({
-      //     isOpen: true,
-      //     txn: undefined,
-      //     status: "REJECTED",
-      //     pendingMessage: intl.formatMessage({
-      //       defaultMessage: "Deposit Fail ",
-      //     }),
-      //   })
-      // );
-      // successNotification("Deposit Fail", "");
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Deposit Fail ",
+      });
       console.error(e);
     } finally {
       setDepositLoading(false);
