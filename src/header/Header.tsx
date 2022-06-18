@@ -39,6 +39,7 @@ function Header(props: Props) {
 
   const switchNetwork = async (newNetwork: Network) => {
     if (account) {
+      let success: boolean = false;
       const provider = window.ethereum;
       if (provider?.request) {
         try {
@@ -50,25 +51,18 @@ function Header(props: Props) {
               },
             ],
           });
-          setNetwork(newNetwork);
+          success = true;
         } catch (error) {
           console.error("Failed to setup the network in Metamask:", error);
+        } finally {
+          success && setNetwork(newNetwork);
         }
       }
-    } else {
-      setNetwork(newNetwork);
     }
   };
 
   useEffect(() => {
-    if (window.location.toString().includes("bnb.waterfalldefi.org")) {
-      setNetwork(Network.BNB);
-    } else if (window.location.toString().includes("avax.waterfalldefi.org")) {
-      setNetwork(Network.AVAX);
-    }
-  }, [setNetwork]);
-
-  useEffect(() => {
+    console.log("calling setNetwork useEffect");
     setNetwork(chainId === Network.AVAX ? Network.AVAX : Network.BNB);
   }, [chainId, setNetwork]);
 
