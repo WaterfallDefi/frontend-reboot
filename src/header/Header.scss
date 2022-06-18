@@ -13,7 +13,7 @@
   align-items: center;
   background: $base-color;
 
-  .connect-wallet-modal {
+  .modal {
     position: fixed;
     top: 69px;
     width: 420px;
@@ -22,38 +22,83 @@
     padding: 16px;
     background: $base-color;
 
-    .connect-wallet-title {
+    .modal-title {
       color: $text-color;
       font-weight: 600;
       font-size: 16px;
       margin-bottom: 14px;
     }
-    .connect-wallet-section {
+    section {
       display: flex;
       flex-direction: column;
-      .agreement {
-        padding: 16px;
-        background-color: $text-color-lightest;
-        border-radius: 12px;
-        color: $text-color;
-        font-weight: 600;
+    }
+
+    &.connect-wallet {
+      section {
+        .agreement {
+          padding: 16px;
+          background-color: $text-color-lightest;
+          border-radius: 12px;
+          color: $text-color;
+          font-weight: 600;
+        }
+        .connect {
+          padding: 0 16px;
+          height: 48px;
+          border-radius: 12px;
+          border: 1px solid $text-color;
+          background-color: $text-color-lightest;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 16px;
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 16px;
+          color: $text-color;
+          &:hover {
+            border-color: $highlight-color;
+          }
+        }
       }
-      .connect {
-        padding: 0 16px;
-        height: 48px;
-        border-radius: 12px;
-        border: 1px solid $text-color;
-        background-color: $text-color-lightest;
+    }
+
+    &.transaction {
+      top: 25%;
+      align-items: center;
+      justify-content: space-between;
+
+      section {
+        width: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: space-between;
-        margin-top: 16px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 16px;
-        color: $text-color;
-        &:hover {
-          border-color: $highlight-color;
+        font-weight: 500;
+
+        h1 {
+          font-size: 18px;
+          color: 1px solid $text-color;
+          margin-bottom: 17px;
+        }
+        p {
+          font-size: 14px;
+          color: 1px solid $text-color-lighter;
+          margin-bottom: 16px;
+        }
+        & > span {
+          font-weight: 400;
+          font-size: 12px;
+          color: $text-color;
+        }
+        a {
+          border-bottom: 1px solid $highlight-color;
+          line-height: 1;
+          margin-bottom: 20px;
+        }
+        button {
+          width: 100%;
+          height: 44px;
         }
       }
     }

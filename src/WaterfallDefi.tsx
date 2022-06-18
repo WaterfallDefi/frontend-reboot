@@ -21,12 +21,24 @@ export enum Network {
   BNB = 56,
 }
 
+export enum Modal {
+  None = 0,
+  Txn = 1,
+  ConnectWallet = 2,
+}
+
+export type ModalProps = {
+  state: Modal;
+  txn?: string;
+  status?: string;
+  message?: string;
+};
+
 function WaterfallDefi() {
   const [mode, setMode] = useState<Mode>(Mode.Light);
   const [network, setNetwork] = useState<Network>(Network.AVAX);
   const [markets, setMarkets] = useState<Market[] | undefined>();
-  const [connectWalletModalOpen, setConnectWalletModalOpen] =
-    useState<boolean>(false);
+  const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
 
   useEffect(() => {
     if (!markets) {
@@ -43,8 +55,8 @@ function WaterfallDefi() {
       setMode={setMode}
       network={network}
       setNetwork={setNetwork}
-      connectWalletModalOpen={connectWalletModalOpen}
-      setConnectWalletModalOpen={setConnectWalletModalOpen}
+      modal={modal}
+      setModal={setModal}
     />,
     ...(tutorial
       ? [<Tutorial key="tutorial" mode={mode} />, element]
@@ -76,7 +88,7 @@ function WaterfallDefi() {
               mode={mode}
               network={network}
               markets={marketInjection}
-              setConnectWalletModalOpen={setConnectWalletModalOpen}
+              setModal={setModal}
             />,
             true
           )}

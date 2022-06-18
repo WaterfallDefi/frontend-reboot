@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Web3Provider } from "@ethersproject/providers";
-import { Mode, Network } from "../WaterfallDefi";
+import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
 import "./Header.scss";
 import { Dark } from "./svgs/dark";
 import { Light } from "./svgs/light";
@@ -21,19 +21,12 @@ type Props = {
   setMode: React.Dispatch<React.SetStateAction<Mode>>;
   network: Network;
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
-  connectWalletModalOpen: boolean;
-  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  modal: ModalProps;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
 function Header(props: Props) {
-  const {
-    mode,
-    setMode,
-    network,
-    setNetwork,
-    connectWalletModalOpen,
-    setConnectWalletModalOpen,
-  } = props;
+  const { mode, setMode, network, setNetwork, modal, setModal } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
@@ -83,10 +76,12 @@ function Header(props: Props) {
   return (
     <div className={"header-wrapper " + mode}>
       <div
-        className={"mask" + (connectWalletModalOpen ? " visible" : "")}
-        onClick={() => setConnectWalletModalOpen(false)}
+        className={"mask" + (modal.state !== Modal.None ? " visible" : "")}
+        onClick={() => setModal({ state: Modal.None })}
       />
-      {connectWalletModalOpen ? <ConnectWalletModal network={network} /> : null}
+      {modal.state === Modal.ConnectWallet ? (
+        <ConnectWalletModal network={network} />
+      ) : null}
       <div className="pc-left">
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
@@ -169,7 +164,7 @@ function Header(props: Props) {
             <button
               className="connect-wallet-btn"
               onClick={() => {
-                setConnectWalletModalOpen(true);
+                setModal({ state: Modal.ConnectWallet });
               }}
             >
               Connect Wallet

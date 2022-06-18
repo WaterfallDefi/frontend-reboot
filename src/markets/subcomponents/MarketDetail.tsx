@@ -2,7 +2,7 @@ import numeral from "numeral";
 import React, { useEffect, useState } from "react";
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market } from "../../types";
-import { Network } from "../../WaterfallDefi";
+import { ModalProps, Network } from "../../WaterfallDefi";
 import {
   useTrancheBalance,
   useMulticurrencyTrancheBalance,
@@ -17,7 +17,7 @@ type Props = {
   selectedMarket: Market;
   setSelectedMarket: React.Dispatch<React.SetStateAction<Market | undefined>>;
   coingeckoPrices: any;
-  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
 const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
@@ -31,12 +31,8 @@ const getLockupPeriod = (duration: string) => {
 };
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
-  const {
-    selectedMarket,
-    setSelectedMarket,
-    coingeckoPrices,
-    setConnectWalletModalOpen,
-  } = props;
+  const { selectedMarket, setSelectedMarket, coingeckoPrices, setModal } =
+    props;
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [simulDeposit, setSimulDeposit] = useState(false);
@@ -178,7 +174,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
         simulDeposit={simulDeposit}
         setSimulDeposit={setSimulDeposit}
-        setConnectWalletModalOpen={setConnectWalletModalOpen}
+        setModal={setModal}
         balance={selectedMarket.isMulticurrency ? MCbalance : balance}
       />
     </div>

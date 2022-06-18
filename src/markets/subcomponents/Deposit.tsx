@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import ApproveCardSimul from "./ApproveCardSimul";
 import { useState } from "react";
 import getRemaining, { getRemainingMulticurrency } from "../hooks/getRemaining";
+import { ModalProps } from "../../WaterfallDefi";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -18,7 +19,7 @@ type Props = {
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
   simulDeposit: boolean;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
-  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   balance: string | string[];
 };
 
@@ -72,7 +73,7 @@ function Deposit(props: Props) {
     setSelectedDepositAssetIndex,
     simulDeposit,
     setSimulDeposit,
-    setConnectWalletModalOpen,
+    setModal,
     balance,
   } = props;
 
@@ -250,7 +251,7 @@ function Deposit(props: Props) {
             selectedDepositAssetIndex={selectedDepositAssetIndex}
             setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
             setSimulDeposit={setSimulDeposit}
-            setConnectWalletModalOpen={setConnectWalletModalOpen}
+            setModal={setModal}
             selectTrancheIdx={selectTrancheIdx}
             redepositBalance={balance}
             remaining={remaining}
@@ -279,7 +280,7 @@ function Deposit(props: Props) {
           <ApproveCardSimul
             selectedMarket={selectedMarket}
             setSimulDeposit={setSimulDeposit}
-            setConnectWalletModalOpen={setConnectWalletModalOpen}
+            setModal={setModal}
             selectTrancheIdx={selectTrancheIdx}
             remainingSimul={
               selectTrancheIdx !== undefined && selectedMarket.isMulticurrency

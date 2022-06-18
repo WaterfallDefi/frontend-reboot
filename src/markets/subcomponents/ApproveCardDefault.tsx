@@ -4,7 +4,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { Market } from "../../types";
 import useWrapAVAXContract from "../hooks/useWrapAVAX";
 import useCheckApprove from "../../hooks/useCheckApprove";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useApprove from "../hooks/useApprove";
 import useInvestDirect from "../hooks/useInvestDirect";
 import useInvest from "../hooks/useInvest";
@@ -18,7 +18,7 @@ type Props = {
   selectedDepositAssetIndex: number;
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
-  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   selectTrancheIdx: number | undefined;
   redepositBalance: string | string[];
   remaining: string;
@@ -58,7 +58,7 @@ function ApproveCardDefault(props: Props) {
     selectedDepositAssetIndex,
     setSelectedDepositAssetIndex,
     setSimulDeposit,
-    setConnectWalletModalOpen,
+    setModal,
     selectTrancheIdx,
     redepositBalance,
     remaining,
@@ -475,7 +475,7 @@ function ApproveCardDefault(props: Props) {
         <div className="button">
           <button
             onClick={() => {
-              setConnectWalletModalOpen(true);
+              setModal({ state: Modal.ConnectWallet });
             }}
           >
             Connect wallet

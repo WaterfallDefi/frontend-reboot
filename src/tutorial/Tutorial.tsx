@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { Mode } from "../WaterfallDefi";
 import { ArrowLine } from "./svgs/ArrowLine";
 import { Boxes } from "./svgs/Boxes";
@@ -13,16 +12,6 @@ type Props = {
 function Tutorial(props: Props) {
   const { mode } = props;
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const location = useLocation();
-
-  useEffect(() => {
-    const scrollToRelevant = () => window.scrollTo(0, collapsed ? 0 : 800);
-    scrollToRelevant();
-  }, [location, collapsed]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <div
@@ -99,7 +88,6 @@ function Tutorial(props: Props) {
           className="collapse-control uncollapse"
           onClick={() => {
             setCollapsed(false);
-            setInterval(() => window.scrollTo(0, 0), 250);
           }}
         >
           Tutorial

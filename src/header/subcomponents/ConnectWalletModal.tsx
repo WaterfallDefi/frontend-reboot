@@ -25,9 +25,9 @@ function ConnectWalletModal(props: Props) {
   }, [login]);
 
   return (
-    <div className="connect-wallet-modal">
-      <title className="connect-wallet-title">Connect Wallet</title>
-      <section className="connect-wallet-section">
+    <div className="modal connect-wallet">
+      <title className="modal-title">Connect Wallet</title>
+      <section className="connect-wallet">
         <div className="agreement">
           By connecting a wallet, you agree to{" "}
           <span className="terms">Terms of Service</span> and acknowledge that

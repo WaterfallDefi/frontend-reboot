@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { Market } from "../../types";
 import { useCheckApproveAll } from "../../hooks/useCheckApprove";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import { useMultiApprove } from "../hooks/useApprove";
 import useInvestDirectMCSimul from "../hooks/useInvestDirectMCSimul";
 import useInvestMCSimul from "../hooks/useInvestMCSimul";
@@ -14,7 +14,7 @@ import numeral from "numeral";
 type Props = {
   selectedMarket: Market;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
-  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   selectTrancheIdx: number | undefined;
   remainingSimul: {
     remaining: string;
@@ -47,7 +47,7 @@ function ApproveCardSimul(props: Props) {
   const {
     selectedMarket,
     setSimulDeposit,
-    setConnectWalletModalOpen,
+    setModal,
     selectTrancheIdx,
     remainingSimul,
     enabled,
@@ -344,8 +344,6 @@ function ApproveCardSimul(props: Props) {
     </div>
   );
 
-  console.log("hello");
-
   return (
     <div className="approve-card">
       {selectedMarket.assets.map((asset, index) => (
@@ -431,7 +429,7 @@ function ApproveCardSimul(props: Props) {
         <div className="button">
           <button
             onClick={() => {
-              setConnectWalletModalOpen(true);
+              setModal({ state: Modal.ConnectWallet });
             }}
           >
             Connect wallet

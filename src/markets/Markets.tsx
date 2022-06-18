@@ -3,7 +3,7 @@ import { Market } from "../types";
 import TableRow from "../shared/TableRow";
 import { useState } from "react";
 import MarketDetail from "./subcomponents/MarketDetail";
-import { Mode, Network } from "../WaterfallDefi";
+import { ModalProps, Mode, Network } from "../WaterfallDefi";
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
@@ -13,11 +13,11 @@ type Props = {
   mode: Mode;
   network: Network;
   markets: Market[];
-  setConnectWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
 function Markets(props: Props) {
-  const { mode, network, markets, setConnectWalletModalOpen } = props;
+  const { mode, network, markets, setModal } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   const { price: wtfPrice } = useWTFPriceLP();
@@ -106,7 +106,7 @@ function Markets(props: Props) {
           selectedMarket={selectedMarket}
           setSelectedMarket={setSelectedMarket}
           coingeckoPrices={coingeckoPrices}
-          setConnectWalletModalOpen={setConnectWalletModalOpen}
+          setModal={setModal}
         />
       ) : null}
     </div>
