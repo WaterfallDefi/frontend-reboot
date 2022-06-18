@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Blog from "./Blog";
 import { MarketList } from "./config/markets";
 import Dashboard from "./dashboard/Dashboard";
 import Footer from "./footer/Footer";
@@ -116,6 +117,7 @@ function WaterfallDefi() {
             false
           )}
         />
+        <Route path="/blog" element={layout(<Blog />, false)} />
       </Routes>
       <Footer mode={mode} />
     </BrowserRouter>

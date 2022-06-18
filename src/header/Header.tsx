@@ -129,6 +129,15 @@ function Header(props: Props) {
             User Guide
           </a>
         </div>
+        <div className="menu-block-wrapper">
+          <Link
+            className="link"
+            to={"/blog"}
+            data-selected={location.pathname === "/blog"}
+          >
+            Blog
+          </Link>
+        </div>
       </div>
       <div className="mobile-left"></div>
       <div className="right">
