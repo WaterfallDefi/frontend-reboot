@@ -1,8 +1,8 @@
-import { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { Contract } from "@ethersproject/contracts";
 import { utils } from "ethers";
-import { Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import { getContract, getSigner, multicall } from "../../hooks/getContract";
 import ERC20 from "../../config/abis/WTF.json";
 
@@ -14,7 +14,11 @@ const useERC20Contract = (network: Network, address: string) => {
   );
 };
 
-const approve = async (contract: Contract, address: string) => {
+const approve = async (
+  contract: Contract,
+  address: string,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
+) => {
   const tx = await contract.approve(
     address,
     //USDC
@@ -23,35 +27,28 @@ const approve = async (contract: Contract, address: string) => {
       ? utils.parseUnits("999999999", 6)
       : utils.parseEther("999999999").toString()
   );
-  // dispatch(
-  //   setConfirmModal({
-  //     isOpen: true,
-  //     txn: tx.hash,
-  //     status: "SUBMITTED",
-  //     pendingMessage: "Approve Submitted"
-  //   })
-  // );
-  // return tx.hash;
+  setModal({
+    state: Modal.Txn,
+    txn: tx.hash,
+    status: "SUBMITTED",
+    message: "Approve Submitted",
+  });
   const receipt = await tx.wait();
 
   if (receipt.status) {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "COMPLETED",
-    //     pendingMessage: "Approve Success"
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "COMPLETED",
+      message: "Approve Success",
+    });
   } else {
-    // dispatch(
-    //   setConfirmModal({
-    //     isOpen: true,
-    //     txn: tx.hash,
-    //     status: "REJECTED",
-    //     pendingMessage: "Approve Failed"
-    //   })
-    // );
+    setModal({
+      state: Modal.Txn,
+      txn: tx.hash,
+      status: "REJECTED",
+      message: "Approve Failed",
+    });
   }
   return receipt.status;
 };
@@ -59,12 +56,13 @@ const approve = async (contract: Contract, address: string) => {
 const useApprove = (
   network: Network,
   approveTokenAddress: string,
-  masterChefAddress: string
+  masterChefAddress: string,
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const { account } = useWeb3React();
   const contract = useERC20Contract(network, approveTokenAddress);
   const handleApprove = useCallback(async () => {
-    if (account) await approve(contract, masterChefAddress);
+    if (account) await approve(contract, masterChefAddress, setModal);
   }, [account, approveTokenAddress, contract, masterChefAddress]);
 
   return { onApprove: handleApprove };

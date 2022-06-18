@@ -1,9 +1,9 @@
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { Network } from "../../WaterfallDefi";
+import { ModalProps, Network } from "../../WaterfallDefi";
 import { NETWORKS, StakingConfig } from "../../types";
 import dayjs, { Dayjs } from "dayjs";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useBalance from "../../hooks/useBalance";
 import {
   VeWTFAddressAVAX,
@@ -29,6 +29,7 @@ type Props = {
   startTimestamp: string;
   fetchLockingWTF: () => void;
   fromMasterChef: boolean;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   wtfRewardsBalance?: string;
   totalVeWTF?: string;
   rewardPerBlock?: string;
@@ -67,6 +68,7 @@ function IncreaseAction(props: Props) {
     startTimestamp,
     fetchLockingWTF,
     fromMasterChef,
+    setModal,
     wtfRewardsBalance,
     totalVeWTF,
     rewardPerBlock,
@@ -123,7 +125,8 @@ function IncreaseAction(props: Props) {
       : WTFAddressAVAX[NETWORKS.MAINNET],
     network === Network.BNB
       ? VeWTFAddressBNB[NETWORKS.MAINNET]
-      : VeWTFAddressAVAX[NETWORKS.MAINNET]
+      : VeWTFAddressAVAX[NETWORKS.MAINNET],
+    setModal
   );
 
   useEffect(() => {

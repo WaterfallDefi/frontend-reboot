@@ -387,15 +387,7 @@
               border-color: $highlight-color;
               background: $text-color-lightest;
             }
-
-            :hover {
-              background: $text-color-lighter;
-            }
-
             &.disabled {
-              :hover {
-                background: $base-color;
-              }
               opacity: 0.5;
               cursor: default;
             }

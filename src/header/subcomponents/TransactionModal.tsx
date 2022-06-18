@@ -4,33 +4,35 @@ import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 type Props = {
   network: Network;
   txn: string;
-  status: Status;
-  pendingMessage: string;
+  status: string;
+  message: string;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
-enum Status {
+enum ModalStatus {
   Pending = "PENDING",
   Submitted = "SUBMITTED",
   Rejected = "REJECTED",
   Completed = "COMPLETED",
+  Error = "ERROR",
+  MissingModalProps = "",
 }
 
 function TransactionModal(props: Props) {
-  const { network, txn, status, pendingMessage, setModal } = props;
+  const { network, txn, status, message, setModal } = props;
 
   const InnerElement = () => {
     switch (status) {
-      case Status.Pending:
+      case ModalStatus.Pending.valueOf():
         return (
           <section className="transaction">
             <h1>Waiting For Confirmation</h1>
-            <p>{pendingMessage}</p>
+            <p>{message}</p>
             <span>Confirm this transaction in your wallet</span>
           </section>
         );
 
-      case Status.Submitted:
+      case ModalStatus.Submitted.valueOf():
         return (
           <section className="transaction">
             <h1>Transaction Submitted</h1>
@@ -52,7 +54,7 @@ function TransactionModal(props: Props) {
             </button>
           </section>
         );
-      case Status.Rejected:
+      case ModalStatus.Rejected.valueOf():
         return (
           <section className="transaction">
             <h1>Transaction Completed</h1>
@@ -74,10 +76,29 @@ function TransactionModal(props: Props) {
             </button>
           </section>
         );
-      case Status.Completed:
+      case ModalStatus.Completed.valueOf():
         return (
           <section className="transaction">
             <h1>Transaction Rejected</h1>
+            <button onClick={() => setModal({ state: Modal.None })}>
+              Dismiss
+            </button>
+          </section>
+        );
+      case ModalStatus.Error.valueOf():
+        return (
+          <section className="transaction">
+            <h1>Error</h1>
+            <button onClick={() => setModal({ state: Modal.None })}>
+              Dismiss
+            </button>
+          </section>
+        );
+      case ModalStatus.MissingModalProps.valueOf():
+      default:
+        return (
+          <section className="transaction">
+            <h1>Error: Missing Modal Props</h1>
             <button onClick={() => setModal({ state: Modal.None })}>
               Dismiss
             </button>

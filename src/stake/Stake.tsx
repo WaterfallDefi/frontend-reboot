@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { useEffect, useMemo, useState } from "react";
-import { Mode, Network } from "../WaterfallDefi";
+import React, { useEffect, useMemo, useState } from "react";
+import { ModalProps, Mode, Network } from "../WaterfallDefi";
 import "./Stake.scss";
 import Stakings from "../config/staking";
 import { useStakingPool } from "./hooks/useStaking";
@@ -55,10 +55,11 @@ enum StakeKey {
 type Props = {
   mode: Mode;
   network: Network;
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
 function Stake(props: Props) {
-  const { mode, network } = props;
+  const { mode, network, setModal } = props;
 
   const [activatedKey, setActivatedKey] = useState<StakeKey>(StakeKey.Stake);
 
@@ -286,6 +287,7 @@ function Stake(props: Props) {
                 startTimestamp={startTimestamp}
                 fetchLockingWTF={fetchLockingWTF}
                 fromMasterChef={false}
+                setModal={setModal}
               />
             )}
             {activatedKey === StakeKey.Unstake && (

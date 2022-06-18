@@ -8,6 +8,7 @@ import { Dark } from "./svgs/dark";
 import { Light } from "./svgs/light";
 import useAuth, { useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
+import TransactionModal from "./subcomponents/TransactionModal";
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
 
@@ -81,6 +82,15 @@ function Header(props: Props) {
       />
       {modal.state === Modal.ConnectWallet ? (
         <ConnectWalletModal network={network} />
+      ) : null}
+      {modal.state === Modal.Txn ? (
+        <TransactionModal
+          network={network}
+          txn={modal.txn ? modal.txn : ""}
+          status={modal.status ? modal.status : ""}
+          message={modal.message ? modal.message : ""}
+          setModal={setModal}
+        />
       ) : null}
       <div className="pc-left">
         <div className="waterfalldefi" />

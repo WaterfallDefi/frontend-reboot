@@ -96,7 +96,8 @@ function ApproveCardDefault(props: Props) {
     !selectedMarket.isMulticurrency
       ? depositAddress
       : selectedMarket.depositAssetAddresses[selectedDepositAssetIndex],
-    selectedMarket.address
+    selectedMarket.address,
+    setModal
   );
 
   const { onInvestDirect } = useInvestDirect(

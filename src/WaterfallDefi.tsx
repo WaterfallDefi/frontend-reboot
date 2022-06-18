@@ -107,7 +107,12 @@ function WaterfallDefi() {
         <Route
           path="/stake"
           element={layout(
-            <Stake key="stake" mode={mode} network={network} />,
+            <Stake
+              key="stake"
+              mode={mode}
+              network={network}
+              setModal={setModal}
+            />,
             false
           )}
         />
