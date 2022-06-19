@@ -16,6 +16,7 @@ type Props = {
   selectedDepositAssetIndex: number;
   balance: string | string[];
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  flexGrow: boolean;
 };
 
 const BIG_TEN = new BigNumber(10);
@@ -31,6 +32,7 @@ function ClaimRedeposit(props: Props) {
     selectedDepositAssetIndex,
     balance,
     setModal,
+    flexGrow,
   } = props;
 
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
@@ -171,7 +173,7 @@ function ClaimRedeposit(props: Props) {
   };
 
   return (
-    <div className="claim-redeposit">
+    <div className={"claim-redeposit" + (flexGrow ? " flexGrow" : "")}>
       <div className="section">
         <div className="label">Return Principal + Yield</div>
         <div className="rtn-amt">

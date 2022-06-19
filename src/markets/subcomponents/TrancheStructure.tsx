@@ -4,6 +4,7 @@ import { Tranche } from "../../types";
 type Props = {
   tranches: Tranche[];
   totalTranchesTarget: string;
+  wipeRight: boolean;
 };
 
 const getPercentage = (num: string | undefined, total: string | undefined) => {
@@ -24,7 +25,7 @@ const COLORS: { [key: string]: string } = {
 };
 
 function TrancheStructure(props: Props) {
-  const { tranches, totalTranchesTarget } = props;
+  const { tranches, totalTranchesTarget, wipeRight } = props;
 
   const payload =
     tranches.length === 3
@@ -64,7 +65,11 @@ function TrancheStructure(props: Props) {
         ];
 
   return (
-    <div className="block tranche-structure">
+    <div
+      className={
+        "chart-block tranche-structure" + (wipeRight ? " wipe-right" : "")
+      }
+    >
       <div className="background left-br">
         <div className="tranche-chart">
           {payload.map((t, i) => (

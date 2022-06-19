@@ -229,7 +229,12 @@ function Deposit(props: Props) {
         ) : null}
       </div>
       <div className="deposit-item">
-        <div className="tranches">
+        <div
+          className={
+            "tranches" +
+            (selectedMarket.trancheCount === 2 ? " two-tranches" : "")
+          }
+        >
           {selectedMarket.tranches.map((t, i) => {
             return (
               <TrancheCard

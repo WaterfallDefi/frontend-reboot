@@ -1,16 +1,18 @@
 import numeral from "numeral";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
-import { Market } from "../../types";
+import { Market, StrategyFarm } from "../../types";
 import { ModalProps, Network } from "../../WaterfallDefi";
 import {
   useTrancheBalance,
   useMulticurrencyTrancheBalance,
 } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
+import Pie from "../svgs/Pie";
 import ClaimRedeposit from "./ClaimRedeposit";
 import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
+import StrategyChart from "./StrategyChart";
 import TrancheStructure from "./TrancheStructure";
 
 type Props = {
@@ -35,6 +37,9 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     props;
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
+  const [selectedStrategy, setSelectedStrategy] = useState<
+    StrategyFarm | undefined
+  >();
   const [simulDeposit, setSimulDeposit] = useState(false);
 
   const { balance } = useTrancheBalance(
@@ -67,8 +72,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     );
   }, []);
 
-  const [selectDepositAssetModalVisible, setSelectDepositAssetModalVisible] =
-    useState<boolean>(false);
   const [depositableAssets, setDepositableAssets] = useState<string[]>(
     selectedMarket.assets
   );
@@ -79,23 +82,29 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined =
     selectedMarket.trancheInvests;
 
+  const stratChartData = useMemo(() => {
+    return (
+      selectedStrategy && APYData.map((apy) => apy[selectedStrategy.apiKey])
+    );
+  }, [APYData, selectedStrategy]);
+
   return (
     <div className="market-detail-wrapper">
       <div className="information">
         <div className="block-wrapper">
           <div
-            className="block pointer"
+            className="info-block pointer"
             onClick={() => setSelectedMarket(undefined)}
           >
             <Arrow />
           </div>
-          <div className="block">
+          <div className="info-block">
             <span className="portfolio-name">{selectedMarket.portfolio}</span>
             <span className="blocktext listing-date">
               Listing date: {selectedMarket.listingDate}
             </span>
           </div>
-          <div className="block">
+          <div className="info-block">
             <div
               className={
                 "assets" +
@@ -126,7 +135,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 : "-"}
             </span>
           </div>
-          <div className="block">
+          <div className="info-block">
             <div />
             <span className="tvl">$TVL: {selectedMarket.tvl}</span>
           </div>
@@ -140,19 +149,51 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           selectedDepositAssetIndex={selectedDepositAssetIndex}
           balance={selectedMarket.isMulticurrency ? MCbalance : balance}
           setModal={setModal}
+          flexGrow={!selectedStrategy}
         />
         {/* must keep this external HTML structure for PortfolioChart because of z-index issues */}
-        <div className="block col">
-          <div className="background left-br">
-            <PortfolioChart
-              strategyFarms={selectedMarket.strategyFarms}
-              APYData={APYData}
-            />
+        <div className="chart-block portfolio-block">
+          <div className="background left-br dbl-chart">
+            {!stratChartData && !selectedStrategy ? (
+              <PortfolioChart
+                strategyFarms={selectedMarket.strategyFarms}
+                setSelectedStrategy={setSelectedStrategy}
+              />
+            ) : stratChartData ? (
+              <StrategyChart
+                data={stratChartData}
+                strategy={selectedStrategy}
+              />
+            ) : (
+              <div>Loading...</div>
+            )}
           </div>
           <div className="background right-br">
             <div className="legend">
+              <div
+                className={
+                  "chart-toggle" + (!selectedStrategy ? " selected" : "")
+                }
+                onClick={() =>
+                  selectedStrategy
+                    ? setSelectedStrategy(undefined)
+                    : setSelectedStrategy(selectedMarket.strategyFarms[0])
+                }
+              >
+                <Pie />
+              </div>
               {selectedMarket.strategyFarms.map((f, i) => (
-                <div key={f.farmName} className="farm-key">
+                <div
+                  key={f.farmName}
+                  className={
+                    "farm-key" +
+                    (selectedStrategy &&
+                    selectedStrategy.farmName === f.farmName
+                      ? " selected"
+                      : "")
+                  }
+                  onClick={() => setSelectedStrategy(f)}
+                >
                   <div
                     className="key-color"
                     style={{ backgroundColor: COLORS[i] }}
@@ -166,6 +207,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         <TrancheStructure
           tranches={selectedMarket.tranches}
           totalTranchesTarget={selectedMarket.totalTranchesTarget}
+          wipeRight={selectedStrategy !== undefined}
         />
       </div>
       <Deposit
