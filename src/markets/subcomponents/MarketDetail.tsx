@@ -40,6 +40,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const [selectedStrategy, setSelectedStrategy] = useState<
     StrategyFarm | undefined
   >();
+  const [stratChartColor, setStratChartColor] = useState<string>("");
   const [simulDeposit, setSimulDeposit] = useState(false);
 
   const { balance } = useTrancheBalance(
@@ -72,19 +73,25 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     );
   }, []);
 
-  const [depositableAssets, setDepositableAssets] = useState<string[]>(
-    selectedMarket.assets
-  );
+  // const [depositableAssets, setDepositableAssets] = useState<string[]>(
+  //   selectedMarket.assets
+  // );
 
-  const tokens: { addr: string; strategy: string; percent: any }[] | undefined =
-    selectedMarket.tokens;
+  // const tokens: { addr: string; strategy: string; percent: any }[] | undefined =
+  //   selectedMarket.tokens;
 
-  const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined =
-    selectedMarket.trancheInvests;
+  // const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined =
+  //   selectedMarket.trancheInvests;
 
   const stratChartData = useMemo(() => {
     return (
-      selectedStrategy && APYData.map((apy) => apy[selectedStrategy.apiKey])
+      selectedStrategy &&
+      APYData.map((apy) => {
+        return {
+          x: apy.timestamp,
+          y: Number(apy[selectedStrategy.apiKey]) * 100,
+        };
+      })
     );
   }, [APYData, selectedStrategy]);
 
@@ -151,7 +158,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           setModal={setModal}
           flexGrow={!selectedStrategy}
         />
-        {/* must keep this external HTML structure for PortfolioChart because of z-index issues */}
         <div className="chart-block portfolio-block">
           <div className="background left-br dbl-chart">
             {!stratChartData && !selectedStrategy ? (
@@ -163,6 +169,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
               <StrategyChart
                 data={stratChartData}
                 strategy={selectedStrategy}
+                color={stratChartColor}
               />
             ) : (
               <div>Loading...</div>
@@ -186,13 +193,16 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 <div
                   key={f.farmName}
                   className={
-                    "farm-key" +
+                    "farm-key strategy-select" +
                     (selectedStrategy &&
                     selectedStrategy.farmName === f.farmName
                       ? " selected"
                       : "")
                   }
-                  onClick={() => setSelectedStrategy(f)}
+                  onClick={() => {
+                    setSelectedStrategy(f);
+                    setStratChartColor(COLORS[i]);
+                  }}
                 >
                   <div
                     className="key-color"

@@ -10,6 +10,7 @@ import { StrategyFarm } from "../../types";
 type Props = {
   data: any[] | undefined;
   strategy: StrategyFarm | undefined;
+  color: string;
 };
 
 enum Timescale {
@@ -19,7 +20,7 @@ enum Timescale {
 }
 
 const StrategyChart = (props: Props) => {
-  const { data, strategy } = props;
+  const { data, strategy, color } = props;
   // const [chartWidth, setChartWidth] = useState<number>(window.innerWidth * 0.6);
   const [hoverYield, setHoverYield] = useState<string>();
 
@@ -27,7 +28,7 @@ const StrategyChart = (props: Props) => {
     <div className="strategy-chart">
       {hoverYield && (
         <span className="hoverPrice" key="hoverPrice">
-          {hoverYield}%
+          {hoverYield}
         </span>
       )}
       <VictoryChart
@@ -35,9 +36,13 @@ const StrategyChart = (props: Props) => {
         containerComponent={
           data && (
             <VictoryVoronoiContainer
-              labels={({ datum }) => (Number(datum._y) * 100).toFixed(0) + "%"}
+              labels={({ datum }) => datum._y.toFixed(1) + "%:"}
               onActivated={(points) =>
-                setHoverYield(Number(points[0]._y * 100).toFixed(2))
+                setHoverYield(
+                  points[0]._y.toFixed(2) +
+                    "% - " +
+                    new Date(points[0]._x).toLocaleDateString()
+                )
               }
               activateLabels={false}
             />
@@ -46,20 +51,20 @@ const StrategyChart = (props: Props) => {
       >
         <VictoryAxis
           scale="time"
-          tickCount={3}
+          tickCount={13}
           style={{
             tickLabels: {
               fontSize: 10,
             },
           }}
           tickFormat={(t) =>
-            new Date(t).toLocaleDateString() +
-            ", " +
-            new Date(t).toLocaleTimeString()
+            new Date(t).getDate() + "/" + (new Date(t).getMonth() + 1)
           }
         />
         <VictoryAxis scale="linear" dependentAxis tickCount={10} />
-        {data && <VictoryLine data={data} />}
+        {data && (
+          <VictoryLine data={data} style={{ data: { stroke: color } }} />
+        )}
       </VictoryChart>
     </div>
   );

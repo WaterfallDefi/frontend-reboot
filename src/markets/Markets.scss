@@ -224,6 +224,7 @@
               position: absolute;
               top: 12px;
               left: 12px;
+              font-size: 30px;
             }
           }
 
@@ -243,6 +244,7 @@
               right: 12px;
               padding: 5px;
               border-radius: 5px;
+              cursor: pointer;
             }
 
             .farm-key {
@@ -252,6 +254,14 @@
               padding: 5px;
               border-radius: 5px;
               margin-bottom: 12px;
+
+              &.strategy-select {
+                cursor: pointer;
+                &:hover {
+                  background: $text-color-lightest;
+                  opacity: 0.5;
+                }
+              }
 
               .key-color {
                 width: 40px;
