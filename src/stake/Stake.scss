@@ -36,7 +36,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
         font-weight: 300;
         font-size: 40px;
         line-height: 52px;
-        color: $text-color;
+        color: $highlight-color;
       }
     }
     .total {
@@ -46,11 +46,12 @@ $evenPadding: calc((100vw - 1072px) / 2);
       margin: 20px 0 32px;
       font-size: 16px;
       line-height: 21px;
-      color: $text-color;
+      color: $text-color-lighter;
       .est-reward-pool {
         display: flex;
         flex-direction: column;
         color: $highlight-color;
+        text-align: right;
         .bold {
           font-weight: 600;
         }
@@ -79,6 +80,25 @@ $evenPadding: calc((100vw - 1072px) / 2);
         flex-direction: column;
       }
       .stake-info {
+        .stake-info-inner {
+          .veWTF {
+            & .stake-wtf {
+              border-radius: 8px;
+              padding: 16px;
+              background: $layer-color;
+              display: grid;
+              gap: 10px;
+              div {
+                display: flex;
+                flex-direction: column;
+                span {
+                  font-size: 12px;
+                }
+              }
+            }
+          }
+        }
+
         padding-top: 24px;
         max-width: 100%;
 

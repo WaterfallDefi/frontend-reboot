@@ -25,7 +25,10 @@ const StrategyChart = (props: Props) => {
   const [hoverYield, setHoverYield] = useState<string>();
 
   return (
-    <div className="strategy-chart">
+    <div
+      className="strategy-chart"
+      onMouseLeave={() => setHoverYield(undefined)}
+    >
       {hoverYield && (
         <span className="hoverPrice" key="hoverPrice">
           {hoverYield}

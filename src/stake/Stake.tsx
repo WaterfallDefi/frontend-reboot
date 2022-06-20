@@ -1,30 +1,49 @@
-import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
-import React, { useEffect, useMemo, useState } from "react";
-import { ModalProps, Mode, Network } from "../WaterfallDefi";
-import "./Stake.scss";
-import Stakings from "../config/staking";
-import { useStakingPool } from "./hooks/useStaking";
-import useBalanceOfOtherAddress from "./hooks/useBalanceOfOtherAddress";
+import './Stake.scss';
+
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import BigNumber from 'bignumber.js';
+import numeral from 'numeral';
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryLine,
+  VictoryVoronoiContainer,
+} from 'victory';
+
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
 import {
   AVAXMultiSigAddress,
   BUSDAddress,
   DaiEPendingRewardLiquidFillChartAddress,
   MultiSigAddress,
   WAVAXDepositAddress,
-} from "../config/address";
-import { NETWORKS } from "../types";
-import numeral from "numeral";
-import BigNumber from "bignumber.js";
-import useBalance from "../hooks/useBalance";
-import useTotalSupply from "./hooks/useTotalSupply";
-import useGetLockingWTF from "./hooks/useGetLockingWTF";
-import { usePendingReward } from "./hooks/usePendingReward";
-import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
-import useClaimRewards from "./hooks/useClaimRewards";
+} from '../config/address';
+import Stakings from '../config/staking';
+import useBalance from '../hooks/useBalance';
+import { useWTFPriceLP } from '../hooks/useWtfPriceFromLP';
+import { NETWORKS } from '../types';
+import {
+  ModalProps,
+  Mode,
+  Network,
+} from '../WaterfallDefi';
+import useBalanceOfOtherAddress from './hooks/useBalanceOfOtherAddress';
+import useClaimRewards from './hooks/useClaimRewards';
+import useGetLockingWTF from './hooks/useGetLockingWTF';
+import { usePendingReward } from './hooks/usePendingReward';
+import { useStakingPool } from './hooks/useStaking';
+import useTotalSupply from './hooks/useTotalSupply';
+import IncreaseAction from './subcomponents/IncreaseAction';
+import UnstakeAction from './subcomponents/UnstakeAction';
+
 // import useClaimFeeRewards from "./hooks/useClaimFeeRewards";
-import IncreaseAction from "./subcomponents/IncreaseAction";
-import UnstakeAction from "./subcomponents/UnstakeAction";
 
 const BLOCK_TIME = (chainId: string) => {
   switch (chainId) {
@@ -39,13 +58,13 @@ const BLOCK_TIME = (chainId: string) => {
   }
 };
 
-// const actualMultiplier = [
-//   0.00416666666666667, 0.01, 0.01625, 0.0250000000000001, 0.0354166666666666,
-//   0.05, 0.0670833333333334, 0.0899999999999999, 0.11625, 0.145833333333333,
-//   0.183333333333333, 0.235, 0.2925, 0.361666666666666, 0.44375, 0.54,
-//   0.665833333333333, 0.81, 0.981666666666667, 1.18333333333333, 1.435,
-//   1.72333333333333, 2.07, 2.49,
-// ];
+const actualMultiplier = [
+  0.00416666666666667, 0.01, 0.01625, 0.0250000000000001, 0.0354166666666666,
+  0.05, 0.0670833333333334, 0.0899999999999999, 0.11625, 0.145833333333333,
+  0.183333333333333, 0.235, 0.2925, 0.361666666666666, 0.44375, 0.54,
+  0.665833333333333, 0.81, 0.981666666666667, 1.18333333333333, 1.435,
+  1.72333333333333, 2.07, 2.49,
+];
 
 enum StakeKey {
   Stake = "stake",
@@ -172,32 +191,6 @@ function Stake(props: Props) {
 
   // const data = useMemo(() => {
   //   return {
-  //     labels: [
-  //       "1 Month",
-  //       "2 Months",
-  //       "3 Months",
-  //       "4 Months",
-  //       "5 Months",
-  //       "6 Months",
-  //       "7 Months",
-  //       "8 Months",
-  //       "9 Months",
-  //       "10 Months",
-  //       "11 Months",
-  //       "12 Months",
-  //       "13 Months",
-  //       "14 Months",
-  //       "15 Months",
-  //       "16 Months",
-  //       "17 Months",
-  //       "18 Months",
-  //       "19 Months",
-  //       "20 Months",
-  //       "21 Months",
-  //       "22 Months",
-  //       "23 Months",
-  //       "24 Months",
-  //     ],
   //     datasets: [
   //       {
   //         label: "veWTF Predicted APR",
@@ -220,6 +213,14 @@ function Stake(props: Props) {
   //     ],
   //   };
   // }, [maxAPR]);
+
+  const data = useMemo(
+    () =>
+      actualMultiplier.map((e) => {
+        return numeral((e * (numeral(maxAPR).value() || 0)) / 2.49).value();
+      }),
+    [maxAPR]
+  );
 
   return (
     <div className={"stake-wrapper " + mode}>
@@ -295,7 +296,7 @@ function Stake(props: Props) {
             )}
           </div>
           <div className="stake-info">
-            <div>
+            <div className="stake-info-inner">
               <div className="veWTF">
                 <p>Your veWTF</p>
                 <p>
@@ -310,7 +311,7 @@ function Stake(props: Props) {
                     ).format("0,0.[0000]")} WTF)`}
                 </span>
                 <span>{VeWTFRatio && VeWTFRatio}% of veWTF ownership</span>
-                <div>Stake WTF get veWTF</div>
+                <div className="stake-wtf">Stake WTF get veWTF</div>
               </div>
               <div className="WTF-reward">
                 <p>WTF Reward</p>
@@ -332,12 +333,35 @@ function Stake(props: Props) {
                 </button>
               </div>
             </div>
-            <div /> {/* wtf, lap... */}
-            <div>
+            <div className="separator" />
+            <div className="stake-graph">
               <div>veWTF - Locking Period vs Predicted APR</div>
-              {/* line chart */}
+              <VictoryChart
+                containerComponent={
+                  <VictoryVoronoiContainer
+                    labels={({ datum }) => datum._y}
+                    activateLabels={false}
+                  />
+                }
+              >
+                <VictoryAxis
+                  tickCount={12}
+                  tickValues={[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23]}
+                  label={"Months"}
+                />
+                <VictoryAxis
+                  scale="linear"
+                  dependentAxis
+                  tickCount={6}
+                  label={"APR%"}
+                />
+                <VictoryLine
+                  data={data}
+                  style={{ data: { stroke: "#0066FF" } }}
+                />
+              </VictoryChart>
             </div>
-            <div>
+            <div className="your-stake">
               <p>Your info</p>
               <section>
                 <span>Your stake</span>

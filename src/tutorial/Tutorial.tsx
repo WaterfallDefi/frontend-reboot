@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Mode } from "../WaterfallDefi";
 import { ArrowLine } from "./svgs/ArrowLine";
 import { Boxes } from "./svgs/Boxes";
