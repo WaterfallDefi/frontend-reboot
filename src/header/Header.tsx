@@ -37,7 +37,7 @@ function Header(props: Props) {
 
   const location = useLocation();
 
-  const switchNetwork = async (newNetwork: Network) => {
+  const switchNetwork = async (network: Network) => {
     if (account) {
       let success: boolean = false;
       const provider = window.ethereum;
@@ -47,7 +47,7 @@ function Header(props: Props) {
             method: "wallet_switchEthereumChain",
             params: [
               {
-                chainId: `0x${newNetwork.toString(16)}`,
+                chainId: `0x${network.toString(16)}`,
               },
             ],
           });
@@ -55,14 +55,15 @@ function Header(props: Props) {
         } catch (error) {
           console.error("Failed to setup the network in Metamask:", error);
         } finally {
-          success && setNetwork(newNetwork);
+          success && setNetwork(network);
         }
       }
+    } else {
+      setNetwork(network);
     }
   };
 
   useEffect(() => {
-    console.log("calling setNetwork useEffect");
     setNetwork(chainId === Network.AVAX ? Network.AVAX : Network.BNB);
   }, [chainId, setNetwork]);
 

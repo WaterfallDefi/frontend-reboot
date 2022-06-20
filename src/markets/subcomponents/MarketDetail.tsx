@@ -122,7 +122,9 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 <div
                   className={
                     "asset" +
-                    (selectedDepositAssetIndex === i ? " selected" : "")
+                    (!simulDeposit && selectedDepositAssetIndex === i
+                      ? " selected"
+                      : "")
                   }
                   key={assetName}
                   onClick={() => setSelectedDepositAssetIndex(i)}
@@ -134,6 +136,14 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                   <span>{assetName}</span>
                 </div>
               ))}
+              {selectedMarket.isMulticurrency && (
+                <div
+                  className={"multi asset" + (simulDeposit ? " selected" : "")}
+                  onClick={() => setSimulDeposit(true)}
+                >
+                  Multi
+                </div>
+              )}
             </div>
             <span className="blocktext">
               Lock-up period:{" "}

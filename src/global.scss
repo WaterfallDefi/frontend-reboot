@@ -59,6 +59,9 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
   background-color: $layer-color;
   margin: 0 20px 16px 20px;
   cursor: pointer;
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 
   .col {
     display: flex;
