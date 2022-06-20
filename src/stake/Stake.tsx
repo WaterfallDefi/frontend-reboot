@@ -42,6 +42,7 @@ import { useStakingPool } from './hooks/useStaking';
 import useTotalSupply from './hooks/useTotalSupply';
 import IncreaseAction from './subcomponents/IncreaseAction';
 import UnstakeAction from './subcomponents/UnstakeAction';
+import WTFToken from './svgs/WTFToken';
 
 // import useClaimFeeRewards from "./hooks/useClaimFeeRewards";
 
@@ -238,21 +239,33 @@ function Stake(props: Props) {
         <div className="total">
           <div>
             <div>
-              Total WTF Locked: {numeral(totalLocked).format("0,0.[0000]")}
+              Total WTF Locked: <WTFToken />
+              {numeral(totalLocked).format("0,0.[0000]")}
             </div>
             <div>
-              Total veWTF Minted:{" "}
+              Total veWTF Minted: <WTFToken />{" "}
               {numeral(_VeWTFTotalSupply).format("0,0.[0000]")}
             </div>
           </div>
           <div className="est-reward-pool">
             <span className="bold">Estimated Reward Pool</span>
-            <span className={network === Network.AVAX ? "dai" : "busd"}>
+            <div className={"pendingReward"}>
+              <div
+                className={
+                  "coin " + (network === Network.AVAX ? " dai" : " busd")
+                }
+              />
               {_pendingReward}
               {network === Network.AVAX ? " DAI.e" : " BUSD"}
-            </span>
+            </div>
             {network === Network.AVAX && (
               <span className="wavax">
+                <div
+                  className="coin"
+                  style={{
+                    backgroundImage: "url(../../dashboard/svgs/AVAX.svg)",
+                  }}
+                />
                 {_pendingRewardWAVAX}
                 {" WAVAX"}
               </span>
@@ -316,7 +329,10 @@ function Stake(props: Props) {
               <div className="WTF-reward">
                 <p>WTF Reward</p>
                 <div>
-                  <p>{pendingWTFRewards}</p>
+                  <p>
+                    <WTFToken />
+                    {pendingWTFRewards}
+                  </p>
                 </div>
                 <span>
                   ${" "}
@@ -326,10 +342,15 @@ function Stake(props: Props) {
                           parseFloat(wtfPrice.replace(/,/g, "").toString())
                       ).format("0,0.[00]")
                     : ""}{" "}
-                  (1 WTF= $ {wtfPrice})
+                  (1 <WTFToken /> WTF= $ {wtfPrice})
                 </span>
-                <button onClick={() => !harvestLoading && onHarvest()}>
-                  {!harvestLoading ? "Harvest" : "Harvesting..."}
+                <button
+                  onClick={() => !harvestLoading && onHarvest()}
+                  className={
+                    "harvest-btn" + (harvestLoading ? " harvesting" : "")
+                  }
+                >
+                  {!harvestLoading ? "Harvest" : "Harvesting..."}&nbsp;&nbsp;🐳
                 </button>
               </div>
             </div>
@@ -366,6 +387,7 @@ function Stake(props: Props) {
               <section>
                 <span>Your stake</span>
                 <span>
+                  <WTFToken />
                   {lockingWTF !== "0"
                     ? numeral(lockingWTF).format("0,0.[0000]")
                     : "-"}{" "}

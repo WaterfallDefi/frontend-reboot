@@ -1,25 +1,40 @@
-import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
-import { ModalProps, Network } from "../../WaterfallDefi";
-import { NETWORKS, StakingConfig } from "../../types";
-import dayjs, { Dayjs } from "dayjs";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import useBalance from "../../hooks/useBalance";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import BigNumber from 'bignumber.js';
+import dayjs, { Dayjs } from 'dayjs';
+import numeral from 'numeral';
+
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
 import {
   VeWTFAddressAVAX,
   VeWTFAddressBNB,
   WTFAddressAVAX,
   WTFAddressBNB,
-} from "../../config/address";
-import useIncreaseLockAmount from "../hooks/useIncreaseLockAmount";
-import useExtendLockTime from "../hooks/useExtendLockTime";
-import useLockAndStakeWTF from "../hooks/useLockAndStakeWTF";
-import useCheckApprove from "../../hooks/useCheckApprove";
-import useApprove from "../../markets/hooks/useApprove";
-import useCheckLocked from "../hooks/useCheckLocked";
-import BigNumber from "bignumber.js";
-import { getMultiplier } from "../multiplier";
-import numeral from "numeral";
+} from '../../config/address';
+import useAuth from '../../header/hooks/useAuth';
+import useBalance from '../../hooks/useBalance';
+import useCheckApprove from '../../hooks/useCheckApprove';
+import useApprove from '../../markets/hooks/useApprove';
+import {
+  NETWORKS,
+  StakingConfig,
+} from '../../types';
+import {
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
+import useCheckLocked from '../hooks/useCheckLocked';
+import useExtendLockTime from '../hooks/useExtendLockTime';
+import useIncreaseLockAmount from '../hooks/useIncreaseLockAmount';
+import useLockAndStakeWTF from '../hooks/useLockAndStakeWTF';
+import { getMultiplier } from '../multiplier';
 
 type Props = {
   stakingConfig: StakingConfig;
@@ -75,6 +90,7 @@ function IncreaseAction(props: Props) {
     claimReward,
   } = props;
   const { account } = useWeb3React<Web3Provider>();
+  const { login } = useAuth(network);
 
   // console.log("increase", network, stakingConfig);
   const [selectedValue, setSelectedValue] = useState<number>(); //days only
@@ -624,7 +640,9 @@ function IncreaseAction(props: Props) {
           {!approveLoading ? "Approve WTF" : "Approving..."}
         </button>
       )}
-      {!account && <button>Connect Wallet</button>}
+      {!account && (
+        <button onClick={() => login("injected")}>Connect Wallet</button>
+      )}
       <div className="label">
         <p>Convert Ratio</p>
         <span>{!validateText && !validateTextLockTime && convertRatio}</span>
