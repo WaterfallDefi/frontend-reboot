@@ -1,26 +1,25 @@
-import { useState } from "react";
+import { useState } from 'react';
+
 import {
   VictoryAxis,
   VictoryChart,
   VictoryLine,
   VictoryVoronoiContainer,
-} from "victory";
-import { StrategyFarm } from "../../types";
+} from 'victory';
 
 type Props = {
   data: any[] | undefined;
-  strategy: StrategyFarm | undefined;
   color: string;
 };
 
-enum Timescale {
-  Day = 0,
-  Week = 1,
-  TwoWeeks = 2,
-}
+// enum Timescale {
+//   Day = 0,
+//   Week = 1,
+//   TwoWeeks = 2,
+// }
 
 const StrategyChart = (props: Props) => {
-  const { data, strategy, color } = props;
+  const { data, color } = props;
   // const [chartWidth, setChartWidth] = useState<number>(window.innerWidth * 0.6);
   const [hoverYield, setHoverYield] = useState<string>();
 

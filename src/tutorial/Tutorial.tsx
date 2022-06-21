@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { Mode } from "../WaterfallDefi";
-import { ArrowLine } from "./svgs/ArrowLine";
-import { Boxes } from "./svgs/Boxes";
-import { Mountain } from "./svgs/Mountain";
-import "./Tutorial.scss";
+import './Tutorial.scss';
+
+import { useState } from 'react';
+
+import { Mode } from '../WaterfallDefi';
+import { ArrowLine } from './svgs/ArrowLine';
+import { Boxes } from './svgs/Boxes';
+import { Mountain } from './svgs/Mountain';
 
 type Props = {
   mode: Mode;

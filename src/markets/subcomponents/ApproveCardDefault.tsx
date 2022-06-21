@@ -1,17 +1,28 @@
-import { useWeb3React } from "@web3-react/core";
-import React, { useEffect, useMemo, useState } from "react";
-import { Web3Provider } from "@ethersproject/providers";
-import { Market } from "../../types";
-import useWrapAVAXContract from "../hooks/useWrapAVAX";
-import useCheckApprove from "../../hooks/useCheckApprove";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
-import useApprove from "../hooks/useApprove";
-import useInvestDirect from "../hooks/useInvestDirect";
-import useInvest from "../hooks/useInvest";
-import useBalance, { useBalances } from "../../hooks/useBalance";
-import numeral from "numeral";
-import BigNumber from "bignumber.js";
-import { parseEther } from "ethers/lib/utils";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import BigNumber from 'bignumber.js';
+import { parseEther } from 'ethers/lib/utils';
+import numeral from 'numeral';
+
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
+import useBalance, { useBalances } from '../../hooks/useBalance';
+import useCheckApprove from '../../hooks/useCheckApprove';
+import { Market } from '../../types';
+import {
+  Modal,
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
+import useApprove from '../hooks/useApprove';
+import useInvest from '../hooks/useInvest';
+import useInvestDirect from '../hooks/useInvestDirect';
+import useWrapAVAXContract from '../hooks/useWrapAVAX';
 
 type Props = {
   selectedMarket: Market;
@@ -456,11 +467,10 @@ function ApproveCardDefault(props: Props) {
         ) : (
           <div className="button">
             <button
-              onClick={handleApprove}
-              // loading={approveLoading}
+              onClick={() => !approveLoading && handleApprove()}
               disabled={selectedMarket.isRetired}
             >
-              Approve
+              {!approveLoading ? "Approve" : "Approving..."}
             </button>
           </div>
         )

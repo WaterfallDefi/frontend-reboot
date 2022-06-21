@@ -1,8 +1,16 @@
-import { useCallback, useMemo } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { getContract, getSigner } from "../../hooks/getContract";
-import MasterChef from "../../config/abis/MasterChef.json";
-import { Network } from "../../WaterfallDefi";
+import {
+  useCallback,
+  useMemo,
+} from 'react';
+
+import { useWeb3React } from '@web3-react/core';
+
+import MasterChef from '../../config/abis/MasterChef.json';
+import {
+  getContract,
+  getSigner,
+} from '../../hooks/getContract';
+import { Network } from '../../WaterfallDefi';
 
 const useClaimAll = (network: Network, masterChefAddress: string) => {
   const { account } = useWeb3React();

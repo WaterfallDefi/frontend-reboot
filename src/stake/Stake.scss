@@ -58,7 +58,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
         .pendingReward {
           display: flex;
           color: #f0b90b;
-          justify-content: end;
+          justify-content: flex-end;
           .coin {
             height: 27px;
             width: 27px;

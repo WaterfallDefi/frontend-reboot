@@ -1,19 +1,31 @@
-import numeral from "numeral";
-import React, { useEffect, useMemo, useState } from "react";
-import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
-import { Market, StrategyFarm } from "../../types";
-import { ModalProps, Network } from "../../WaterfallDefi";
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import numeral from 'numeral';
+
+import { getAPYHourly } from '../../myportfolio/hooks/useSubgraphQuery';
 import {
-  useTrancheBalance,
+  Market,
+  StrategyFarm,
+} from '../../types';
+import {
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
+import {
   useMulticurrencyTrancheBalance,
-} from "../hooks/useTrancheBalance";
-import Arrow from "../svgs/Arrow";
-import Pie from "../svgs/Pie";
-import ClaimRedeposit from "./ClaimRedeposit";
-import Deposit from "./Deposit";
-import PortfolioChart from "./PortfolioChart";
-import StrategyChart from "./StrategyChart";
-import TrancheStructure from "./TrancheStructure";
+  useTrancheBalance,
+} from '../hooks/useTrancheBalance';
+import Arrow from '../svgs/Arrow';
+import Pie from '../svgs/Pie';
+import ClaimRedeposit from './ClaimRedeposit';
+import Deposit from './Deposit';
+import PortfolioChart from './PortfolioChart';
+import StrategyChart from './StrategyChart';
+import TrancheStructure from './TrancheStructure';
 
 type Props = {
   selectedMarket: Market;
@@ -176,11 +188,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 setSelectedStrategy={setSelectedStrategy}
               />
             ) : stratChartData ? (
-              <StrategyChart
-                data={stratChartData}
-                strategy={selectedStrategy}
-                color={stratChartColor}
-              />
+              <StrategyChart data={stratChartData} color={stratChartColor} />
             ) : (
               <div>Loading...</div>
             )}

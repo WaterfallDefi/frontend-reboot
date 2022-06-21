@@ -1,15 +1,26 @@
-import { useWeb3React } from "@web3-react/core";
-import { useEffect, useMemo, useState } from "react";
-import { Web3Provider } from "@ethersproject/providers";
-import { Market } from "../../types";
-import { useCheckApproveAll } from "../../hooks/useCheckApprove";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
-import { useMultiApprove } from "../hooks/useApprove";
-import useInvestDirectMCSimul from "../hooks/useInvestDirectMCSimul";
-import useInvestMCSimul from "../hooks/useInvestMCSimul";
-import { useBalances } from "../../hooks/useBalance";
-import BigNumber from "bignumber.js";
-import numeral from "numeral";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import BigNumber from 'bignumber.js';
+import numeral from 'numeral';
+
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
+import { useBalances } from '../../hooks/useBalance';
+import { useCheckApproveAll } from '../../hooks/useCheckApprove';
+import { Market } from '../../types';
+import {
+  Modal,
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
+import { useMultiApprove } from '../hooks/useApprove';
+import useInvestDirectMCSimul from '../hooks/useInvestDirectMCSimul';
+import useInvestMCSimul from '../hooks/useInvestMCSimul';
 
 type Props = {
   selectedMarket: Market;
@@ -225,8 +236,7 @@ function ApproveCardSimul(props: Props) {
       status: "PENDING",
       message: balanceInputSimul
         .map(
-          (b, i) =>
-            "Depositing " + " " + b + " " + selectedMarket.assets[i] + ", "
+          (b, i) => "Depositing " + b + " " + selectedMarket.assets[i] + ", "
         )
         .join(),
     });
@@ -402,11 +412,10 @@ function ApproveCardSimul(props: Props) {
         ) : (
           <div className="button">
             <button
-              onClick={handleApprove}
-              // loading={approveLoading}
+              onClick={() => !approveLoading && handleApprove}
               disabled={selectedMarket.isRetired}
             >
-              Approve
+              {!approveLoading ? "Approve" : "Approving..."}
             </button>
           </div>
         )

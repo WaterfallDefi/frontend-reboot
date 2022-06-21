@@ -1,10 +1,24 @@
-import React, { useCallback, useMemo } from "react";
-import { useWeb3React } from "@web3-react/core";
-import { Contract } from "@ethersproject/contracts";
-import { utils } from "ethers";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
-import { getContract, getSigner, multicall } from "../../hooks/getContract";
-import ERC20 from "../../config/abis/WTF.json";
+import React, {
+  useCallback,
+  useMemo,
+} from 'react';
+
+import { utils } from 'ethers';
+
+import { Contract } from '@ethersproject/contracts';
+import { useWeb3React } from '@web3-react/core';
+
+import ERC20 from '../../config/abis/WTF.json';
+import {
+  getContract,
+  getSigner,
+  multicall,
+} from '../../hooks/getContract';
+import {
+  Modal,
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
 
 const useERC20Contract = (network: Network, address: string) => {
   const signer = getSigner();
@@ -63,7 +77,7 @@ const useApprove = (
   const contract = useERC20Contract(network, approveTokenAddress);
   const handleApprove = useCallback(async () => {
     if (account) await approve(contract, masterChefAddress, setModal);
-  }, [account, approveTokenAddress, contract, masterChefAddress]);
+  }, [account, contract, masterChefAddress, setModal]);
 
   return { onApprove: handleApprove };
 };

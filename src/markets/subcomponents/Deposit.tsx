@@ -1,14 +1,16 @@
-import BigNumber from "bignumber.js";
-import { Market } from "../../types";
-import { Hill } from "../svgs/Hill";
-import ApproveCardDefault from "./ApproveCardDefault";
-import TrancheCard from "./TrancheCard";
-import Countdown from "react-countdown";
-import dayjs from "dayjs";
-import ApproveCardSimul from "./ApproveCardSimul";
-import { useState } from "react";
-import getRemaining, { getRemainingMulticurrency } from "../hooks/getRemaining";
-import { ModalProps } from "../../WaterfallDefi";
+import { useState } from 'react';
+
+import BigNumber from 'bignumber.js';
+import dayjs from 'dayjs';
+import Countdown from 'react-countdown';
+
+import { Market } from '../../types';
+import { ModalProps } from '../../WaterfallDefi';
+import getRemaining, { getRemainingMulticurrency } from '../hooks/getRemaining';
+import { Hill } from '../svgs/Hill';
+import ApproveCardDefault from './ApproveCardDefault';
+import ApproveCardSimul from './ApproveCardSimul';
+import TrancheCard from './TrancheCard';
 
 const BIG_TEN = new BigNumber(10);
 
@@ -146,9 +148,6 @@ function Deposit(props: Props) {
           .multipliedBy(100)
           .toString()
       : 0;
-  const width = selectedMarket.isMulticurrency
-    ? returnWidth(selectedDepositAssetIndex)
-    : 1;
   const widths = selectedMarket.isMulticurrency
     ? selectedMarket.assets.map((a, i) => returnWidth(i))
     : [];
@@ -191,7 +190,18 @@ function Deposit(props: Props) {
           )}{" "}
           {selectedMarket.duration}
         </div>
-        <div className="button">Remind Me</div>
+        <div
+          className="button"
+          onClick={() =>
+            handleReminder(
+              Number(selectedMarket.actualStartAt),
+              Number(selectedMarket.actualStartAt) +
+                Number(selectedMarket.duration)
+            )
+          }
+        >
+          Remind Me
+        </div>
       </div>
       <div className="top-bar">
         <div className="step-bar">

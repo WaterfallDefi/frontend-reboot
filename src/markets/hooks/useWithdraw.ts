@@ -1,6 +1,17 @@
-import { useCallback, useMemo } from "react";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
-import { getContract, getSigner } from "../../hooks/getContract";
+import {
+  useCallback,
+  useMemo,
+} from 'react';
+
+import {
+  getContract,
+  getSigner,
+} from '../../hooks/getContract';
+import {
+  Modal,
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
 
 const useWithdraw = (
   network: Network,
@@ -46,7 +57,7 @@ const useWithdraw = (
 
       // [account]
     },
-    [trancheContract]
+    [trancheContract, setModal]
   );
 
   return { onWithdraw: handleWithdraw };

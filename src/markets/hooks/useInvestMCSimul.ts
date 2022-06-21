@@ -1,8 +1,21 @@
-import { useCallback } from "react";
-import { Contract } from "@ethersproject/contracts";
-import { utils, BigNumber } from "ethers";
-import { getContract, getSigner } from "../../hooks/getContract";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { useCallback } from 'react';
+
+import {
+  BigNumber,
+  utils,
+} from 'ethers';
+
+import { Contract } from '@ethersproject/contracts';
+
+import {
+  getContract,
+  getSigner,
+} from '../../hooks/getContract';
+import {
+  Modal,
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
 
 const _invest = async (
   contract: Contract,
@@ -60,7 +73,7 @@ const useInvestMCSimul = (
       // dispatch(getMarkets(MarketList));
       return result;
     },
-    [contract]
+    [contract, setModal]
   );
 
   return { onInvestMCSimul: handleInvestMCSimul };
