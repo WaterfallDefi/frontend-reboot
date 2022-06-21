@@ -133,6 +133,8 @@ function ApproveCardDefault(props: Props) {
   );
 
   //balance hooks
+  const [balancesFetched, setBalancesFetched] = useState<boolean>(false);
+
   const {
     balance: balanceWallet,
     fetchBalance,
@@ -174,12 +176,25 @@ function ApproveCardDefault(props: Props) {
 
   //use effects
   useEffect(() => {
+    if (!balancesFetched) {
+      fetchBalance();
+      multicurrencyBalancesWallet.fetchBalances();
+      setBalancesFetched(true);
+    }
+  }, [
+    balancesFetched,
+    fetchBalance,
+    multicurrencyBalancesWallet.fetchBalances,
+    setBalancesFetched,
+  ]);
+
+  useEffect(() => {
     const checkApproved = async () => {
       const check = await onCheckApprove();
       setApproved(check ? true : false);
     };
-    if (account && approved === undefined) checkApproved(); //has signer
-  }, [onCheckApprove, account, approved]);
+    if (account) checkApproved(); //has signer
+  }, [onCheckApprove, account]);
 
   useEffect(() => {
     setBalanceInput("0");

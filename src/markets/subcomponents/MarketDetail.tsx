@@ -11,14 +11,7 @@ import {
   Market,
   StrategyFarm,
 } from '../../types';
-import {
-  ModalProps,
-  Network,
-} from '../../WaterfallDefi';
-import {
-  useMulticurrencyTrancheBalance,
-  useTrancheBalance,
-} from '../hooks/useTrancheBalance';
+import { ModalProps } from '../../WaterfallDefi';
 import Arrow from '../svgs/Arrow';
 import Pie from '../svgs/Pie';
 import ClaimRedeposit from './ClaimRedeposit';
@@ -55,22 +48,26 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const [stratChartColor, setStratChartColor] = useState<string>("");
   const [simulDeposit, setSimulDeposit] = useState(false);
 
-  const { balance } = useTrancheBalance(
-    //don't need { invested } for now
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-    selectedMarket.address,
-    selectedMarket.abi,
-    selectedMarket.isMulticurrency
-  );
+  // const { balance } = useTrancheBalance(
+  //   //don't need { invested } for now
+  //   selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+  //   selectedMarket.address,
+  //   selectedMarket.abi,
+  //   selectedMarket.isMulticurrency
+  // );
 
-  const { MCbalance } = useMulticurrencyTrancheBalance(
-    //don't need { MCinvested } for now
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-    selectedMarket.address,
-    selectedMarket.abi,
-    selectedMarket.assets.length,
-    !selectedMarket.isMulticurrency
-  );
+  const balance = "0";
+
+  // const { MCbalance } = useMulticurrencyTrancheBalance(
+  //   //don't need { MCinvested } for now
+  //   selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+  //   selectedMarket.address,
+  //   selectedMarket.abi,
+  //   selectedMarket.assets.length,
+  //   !selectedMarket.isMulticurrency
+  // );
+
+  const MCbalance: any[] = [];
 
   const [APYData, setAPYData] = useState<any[]>([]);
 

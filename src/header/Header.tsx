@@ -1,14 +1,30 @@
-import { useWeb3React } from "@web3-react/core";
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Web3Provider } from "@ethersproject/providers";
-import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
-import "./Header.scss";
-import { Dark } from "./svgs/dark";
-import { Light } from "./svgs/light";
-import useAuth, { useEagerConnect } from "./hooks/useAuth";
-import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
-import TransactionModal from "./subcomponents/TransactionModal";
+import './Header.scss';
+
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  Link,
+  useLocation,
+} from 'react-router-dom';
+
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
+import {
+  Modal,
+  ModalProps,
+  Mode,
+  Network,
+} from '../WaterfallDefi';
+import useAuth, { useEagerConnect } from './hooks/useAuth';
+import ConnectWalletModal from './subcomponents/ConnectWalletModal';
+import TransactionModal from './subcomponents/TransactionModal';
+import { Dark } from './svgs/dark';
+import { Light } from './svgs/light';
+
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
 
@@ -64,8 +80,11 @@ function Header(props: Props) {
   };
 
   useEffect(() => {
-    setNetwork(chainId === Network.AVAX ? Network.AVAX : Network.BNB);
-  }, [chainId, setNetwork]);
+    console.log("network useEffect");
+    if (chainId && chainId.toString() !== Network[network]) {
+      setNetwork(chainId);
+    }
+  }, [chainId, network, setNetwork]);
 
   useEagerConnect(network);
 
