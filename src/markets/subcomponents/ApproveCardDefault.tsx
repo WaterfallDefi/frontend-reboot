@@ -180,7 +180,7 @@ function ApproveCardDefault(props: Props) {
     [selectedMarket.assets]
   );
 
-  //use effects
+  // // use effects
   // useEffect(() => {
   //   if (!balancesFetched) {
   //     fetchBalance();
