@@ -12,7 +12,10 @@ import { useWeb3React } from '@web3-react/core';
 
 import ERC20 from '../config/abis/WTF.json';
 import { Network } from '../WaterfallDefi';
-import { getContract } from './getContract';
+import {
+  getContract,
+  multicall,
+} from './getContract';
 
 const BIG_TEN = new BigNumber(10);
 
@@ -74,13 +77,31 @@ export const useBalances = (network: Network, addresses: string[]) => {
 
   const fetchBalances = useCallback(async () => {
     if (!account) return;
-    const contracts = addresses.map((a) => getContract(ERC20.abi, a, network));
-    const tokenBalances = await contracts.map((c) => c.balanceOf(account));
-    const values = tokenBalances.map((tb) =>
-      new BigNumber(tb.toString()).dividedBy(BIG_TEN.pow(18))
+
+    const calls = addresses.map((a) => {
+      return {
+        address: a,
+        name: "balanceOf",
+        params: [account],
+      };
+    });
+
+    const [...tokenBalances] = await multicall(network, ERC20.abi, calls);
+
+    const bignumbers = tokenBalances.map((tb: BigNumber[]) => tb[0]);
+
+    setBalances(
+      bignumbers.map((v: any) =>
+        numeral(
+          new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()
+        ).format("0,0.[0000]")
+      )
     );
-    setBalances(values.map((v) => numeral(v.toString()).format("0,0.[0000]")));
-    setActualBalances(values.map((v) => v.toString()));
+    setActualBalances(
+      bignumbers.map((v: any) =>
+        new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()
+      )
+    );
   }, [account, addresses, network]);
 
   useEffect(() => {
