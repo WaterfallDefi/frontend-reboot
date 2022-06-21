@@ -30,6 +30,7 @@ import useBalance from '../hooks/useBalance';
 import { useWTFPriceLP } from '../hooks/useWtfPriceFromLP';
 import { NETWORKS } from '../types';
 import {
+  Modal,
   ModalProps,
   Mode,
   Network,
@@ -153,13 +154,15 @@ function Stake(props: Props) {
     setHarvestLoading(true);
     try {
       const result = await claimRewards();
-      console.log(result);
-      // fetchBalance();
-      // setBalanceInput(0);
-      // fetchLockingWTF();
-      // successNotification("Claim Reward Success", "");
-
-      //TO DO: SUCCESS MODAL
+      const receipt = await result.wait();
+      console.log(receipt);
+      fetchLockingWTF();
+      setModal({
+        state: Modal.Txn,
+        txn: result.hash,
+        status: "COMPLETED",
+        message: "Claim Reward Success",
+      });
     } catch (e) {
       console.error(e);
     } finally {
