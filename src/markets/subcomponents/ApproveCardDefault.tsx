@@ -146,6 +146,10 @@ function ApproveCardDefault(props: Props) {
     selectedMarket.depositAssetAddresses
   );
 
+  // selectedMarket.isMulticurrency
+  //   ? multicurrencyBalancesWallet.fetchBalances()
+  //   : fetchBalance();
+
   const balance =
     isRedeposit === undefined
       ? selectedMarket.isMulticurrency
@@ -156,6 +160,8 @@ function ApproveCardDefault(props: Props) {
       : redepositBalance instanceof Array
       ? redepositBalance.map((rdb) => numeral(rdb).format("0,0.[0000]"))
       : numeral(redepositBalance).format("0,0.[0000]");
+
+  console.log(balance);
 
   const tokenButtonColors = useMemo(
     () =>
@@ -175,18 +181,18 @@ function ApproveCardDefault(props: Props) {
   );
 
   //use effects
-  useEffect(() => {
-    if (!balancesFetched) {
-      fetchBalance();
-      multicurrencyBalancesWallet.fetchBalances();
-      setBalancesFetched(true);
-    }
-  }, [
-    balancesFetched,
-    fetchBalance,
-    multicurrencyBalancesWallet.fetchBalances,
-    setBalancesFetched,
-  ]);
+  // useEffect(() => {
+  //   if (!balancesFetched) {
+  //     fetchBalance();
+  //     multicurrencyBalancesWallet.fetchBalances();
+  //     setBalancesFetched(true);
+  //   }
+  // }, [
+  //   balancesFetched,
+  //   fetchBalance,
+  //   multicurrencyBalancesWallet,
+  //   setBalancesFetched,
+  // ]);
 
   useEffect(() => {
     const checkApproved = async () => {

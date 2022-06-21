@@ -6,12 +6,22 @@ import React, {
 
 import numeral from 'numeral';
 
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
 import { getAPYHourly } from '../../myportfolio/hooks/useSubgraphQuery';
 import {
   Market,
   StrategyFarm,
 } from '../../types';
-import { ModalProps } from '../../WaterfallDefi';
+import {
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
+import {
+  useMulticurrencyTrancheBalance,
+  useTrancheBalance,
+} from '../hooks/useTrancheBalance';
 import Arrow from '../svgs/Arrow';
 import Pie from '../svgs/Pie';
 import ClaimRedeposit from './ClaimRedeposit';
@@ -41,6 +51,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const { selectedMarket, setSelectedMarket, coingeckoPrices, setModal } =
     props;
 
+  const { account } = useWeb3React<Web3Provider>();
+
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [selectedStrategy, setSelectedStrategy] = useState<
     StrategyFarm | undefined
@@ -48,26 +60,31 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const [stratChartColor, setStratChartColor] = useState<string>("");
   const [simulDeposit, setSimulDeposit] = useState(false);
 
-  // const { balance } = useTrancheBalance(
-  //   //don't need { invested } for now
-  //   selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-  //   selectedMarket.address,
-  //   selectedMarket.abi,
-  //   selectedMarket.isMulticurrency
-  // );
+  const { balance, fetchBalance } = useTrancheBalance(
+    //don't need { invested } for now
+    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.address,
+    selectedMarket.abi,
+    selectedMarket.isMulticurrency
+  );
 
-  const balance = "0";
+  const { MCbalance, fetchMCBalance } = useMulticurrencyTrancheBalance(
+    //don't need { MCinvested } for now
+    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.address,
+    selectedMarket.abi,
+    selectedMarket.assets.length,
+    !selectedMarket.isMulticurrency
+  );
 
-  // const { MCbalance } = useMulticurrencyTrancheBalance(
-  //   //don't need { MCinvested } for now
-  //   selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-  //   selectedMarket.address,
-  //   selectedMarket.abi,
-  //   selectedMarket.assets.length,
-  //   !selectedMarket.isMulticurrency
-  // );
+  useEffect(() => {
+    account && selectedMarket.isMulticurrency
+      ? fetchMCBalance()
+      : fetchBalance();
+  }, [account, fetchMCBalance, fetchBalance, selectedMarket.isMulticurrency]);
 
-  const MCbalance: any[] = [];
+  console.log(balance);
+  console.log(MCbalance);
 
   const [APYData, setAPYData] = useState<any[]>([]);
 
