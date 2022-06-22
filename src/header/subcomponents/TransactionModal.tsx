@@ -1,5 +1,10 @@
-import React from "react";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import React from 'react';
+
+import {
+  Modal,
+  ModalProps,
+  Network,
+} from '../../WaterfallDefi';
 
 type Props = {
   network: Network;
@@ -13,6 +18,7 @@ enum ModalStatus {
   Pending = "PENDING",
   Submitted = "SUBMITTED",
   Rejected = "REJECTED",
+  Reverted = "REVERTED",
   Completed = "COMPLETED",
   Error = "ERROR",
   MissingModalProps = "",
@@ -57,7 +63,16 @@ function TransactionModal(props: Props) {
       case ModalStatus.Rejected.valueOf():
         return (
           <section className="transaction">
-            <h1>Transaction Completed</h1>
+            <h1>Transaction Rejected</h1>
+            <button onClick={() => setModal({ state: Modal.None })}>
+              Close
+            </button>
+          </section>
+        );
+      case ModalStatus.Reverted.valueOf():
+        return (
+          <section className="transaction">
+            <h1>Transaction Reverted</h1>
             <a
               href={`${
                 network === Network.BNB
@@ -79,7 +94,20 @@ function TransactionModal(props: Props) {
       case ModalStatus.Completed.valueOf():
         return (
           <section className="transaction">
-            <h1>Transaction Rejected</h1>
+            <h1>Transaction Completed</h1>
+            <a
+              href={`${
+                network === Network.BNB
+                  ? "https://bscscan.com"
+                  : "https://snowtrace.io"
+              }/tx/${txn}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {network === Network.BNB
+                ? "View on BSCScan"
+                : "View on Snowtrace"}
+            </a>
             <button onClick={() => setModal({ state: Modal.None })}>
               Dismiss
             </button>
@@ -89,6 +117,7 @@ function TransactionModal(props: Props) {
         return (
           <section className="transaction">
             <h1>Error</h1>
+            <p>{message}</p>
             <button onClick={() => setModal({ state: Modal.None })}>
               Dismiss
             </button>

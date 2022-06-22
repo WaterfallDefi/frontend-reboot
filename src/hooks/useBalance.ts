@@ -41,8 +41,6 @@ const useBalance = (network: Network, address: string) => {
     if (!account) return;
     const contract = getContract(ERC20.abi, address, network);
     const tokenBalance = await contract.balanceOf(account);
-    console.log("tokenBalance");
-    console.log(tokenBalance);
     const value = new BigNumber(tokenBalance.toString()).dividedBy(
       BIG_TEN.pow(18)
     );

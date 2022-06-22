@@ -115,7 +115,6 @@ export const useMulticurrencyTrancheBalance = (
   }, [abi, account, network, trancheMasterAddress]);
 
   useEffect(() => {
-    console.log("firing get balance use effect");
     if (account && !disable) fetchMCBalance();
   }, [account, disable, fetchMCBalance]);
 

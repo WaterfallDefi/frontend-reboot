@@ -83,9 +83,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       : fetchBalance();
   }, [account, fetchMCBalance, fetchBalance, selectedMarket.isMulticurrency]);
 
-  console.log(balance);
-  console.log(MCbalance);
-
   const [APYData, setAPYData] = useState<any[]>([]);
 
   useEffect(() => {

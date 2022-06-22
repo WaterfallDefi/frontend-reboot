@@ -80,7 +80,6 @@ function Header(props: Props) {
   };
 
   useEffect(() => {
-    console.log("network useEffect");
     if (chainId && chainId.toString() !== Network[network]) {
       setNetwork(chainId);
     }

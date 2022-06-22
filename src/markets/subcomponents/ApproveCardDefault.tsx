@@ -161,8 +161,6 @@ function ApproveCardDefault(props: Props) {
       ? redepositBalance.map((rdb) => numeral(rdb).format("0,0.[0000]"))
       : numeral(redepositBalance).format("0,0.[0000]");
 
-  console.log(balance);
-
   const tokenButtonColors = useMemo(
     () =>
       selectedMarket.assets.map((a) => {
@@ -209,24 +207,17 @@ function ApproveCardDefault(props: Props) {
   //handlers
   const handleApprove = async () => {
     setApproveLoading(true);
-    setModal({
-      state: Modal.Txn,
-      txn: undefined,
-      status: "PENDING",
-      message: "Approving",
-    });
     try {
-      await onApprove();
-      // successNotification("Approve Success", "");
-      setApproved(true);
+      const receipt = await onApprove();
+      if (receipt.status === 1) {
+        setApproved(true);
+      }
     } catch (e) {
-      console.error(e);
-
       setModal({
         state: Modal.Txn,
         txn: undefined,
         status: "REJECTED",
-        message: "Approve Fail ",
+        message: "Approve Failed: " + JSON.stringify(e),
       });
     } finally {
       setApproveLoading(false);

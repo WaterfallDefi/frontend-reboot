@@ -48,8 +48,7 @@ const approve = async (
     message: "Approve Submitted",
   });
   const receipt = await tx.wait();
-
-  if (receipt.status) {
+  if (receipt.status === 1) {
     setModal({
       state: Modal.Txn,
       txn: tx.hash,
@@ -60,11 +59,11 @@ const approve = async (
     setModal({
       state: Modal.Txn,
       txn: tx.hash,
-      status: "REJECTED",
-      message: "Approve Failed",
+      status: "REVERTED",
+      message: undefined,
     });
   }
-  return receipt.status;
+  return receipt;
 };
 
 const useApprove = (
@@ -74,10 +73,15 @@ const useApprove = (
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const { account } = useWeb3React();
+
   const contract = useERC20Contract(network, approveTokenAddress);
+
   const handleApprove = useCallback(async () => {
-    if (account) await approve(contract, masterChefAddress, setModal);
-  }, [account, contract, masterChefAddress, setModal]);
+    if (account) {
+      const receipt = await approve(contract, masterChefAddress, setModal);
+      return receipt;
+    }
+  }, [account, contract, masterChefAddress]);
 
   return { onApprove: handleApprove };
 };
