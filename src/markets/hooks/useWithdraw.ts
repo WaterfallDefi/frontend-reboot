@@ -34,7 +34,7 @@ const useWithdraw = (
         multicurrencyAmount ? multicurrencyAmount : amount
       );
       const receipt = await tx.wait();
-      if (receipt.status) {
+      if (receipt.status === 1) {
         setModal({
           state: Modal.Txn,
           txn: tx.hash,
@@ -45,7 +45,7 @@ const useWithdraw = (
         setModal({
           state: Modal.Txn,
           txn: tx.hash,
-          status: "REJECTED",
+          status: "REVERTED",
           message: "Withdraw Failed",
         });
       }
