@@ -132,9 +132,6 @@ function ApproveCardDefault(props: Props) {
     setModal
   );
 
-  //balance hooks
-  const [balancesFetched, setBalancesFetched] = useState<boolean>(false);
-
   const {
     balance: balanceWallet,
     fetchBalance,
@@ -145,10 +142,6 @@ function ApproveCardDefault(props: Props) {
     network,
     selectedMarket.depositAssetAddresses
   );
-
-  // selectedMarket.isMulticurrency
-  //   ? multicurrencyBalancesWallet.fetchBalances()
-  //   : fetchBalance();
 
   const balance =
     isRedeposit === undefined
@@ -177,20 +170,6 @@ function ApproveCardDefault(props: Props) {
       }),
     [selectedMarket.assets]
   );
-
-  // // use effects
-  // useEffect(() => {
-  //   if (!balancesFetched) {
-  //     fetchBalance();
-  //     multicurrencyBalancesWallet.fetchBalances();
-  //     setBalancesFetched(true);
-  //   }
-  // }, [
-  //   balancesFetched,
-  //   fetchBalance,
-  //   multicurrencyBalancesWallet,
-  //   setBalancesFetched,
-  // ]);
 
   useEffect(() => {
     const checkApproved = async () => {
@@ -227,7 +206,7 @@ function ApproveCardDefault(props: Props) {
   const validateText = useMemo(() => {
     const _remaining = remainingExact.replace(/,/g, "");
     const _balanceInput = balanceInput;
-    if (compareNum(_balanceInput, actualBalanceWallet, true)) {
+    if (compareNum(_balanceInput, actualBalanceWallet, false)) {
       if (!selectedMarket.wrapAvax) return "Insufficient Balance";
     }
     if (compareNum(_balanceInput, _remaining, true)) {
@@ -272,14 +251,9 @@ function ApproveCardDefault(props: Props) {
     });
     const amount = balanceInput.toString();
     try {
-      const success = !isRedeposit
+      !isRedeposit
         ? await onInvestDirect(amount, selectTrancheIdx.toString())
         : await onInvest(amount, selectTrancheIdx.toString());
-      if (success) {
-        // successNotification("Deposit Success", "");
-      } else {
-        // successNotification("Deposit Fail", "");
-      }
       setDepositLoading(false);
       setBalanceInput("0");
       !selectedMarket.isMulticurrency
@@ -287,12 +261,12 @@ function ApproveCardDefault(props: Props) {
         : multicurrencyBalancesWallet.fetchBalances();
       //TODO: update trancheBalance
       // if (account) dispatch(getTrancheBalance({ account }));
-    } catch (e) {
+    } catch (e: any) {
       setModal({
         state: Modal.Txn,
         txn: undefined,
-        status: "REJECTED",
-        message: "Deposit Fail ",
+        status: "ERROR",
+        message: "Deposit Fail " + e.toString(),
       });
       console.error(e);
     } finally {

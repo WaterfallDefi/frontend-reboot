@@ -49,7 +49,7 @@ const invest = async (
   });
   const receipt = await tx.wait();
 
-  if (receipt.status) {
+  if (receipt.status === 1) {
     setModal({
       state: Modal.Txn,
       txn: tx.hash,

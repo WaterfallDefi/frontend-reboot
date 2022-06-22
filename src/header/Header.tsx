@@ -99,9 +99,9 @@ function Header(props: Props) {
       {modal.state === Modal.Txn ? (
         <TransactionModal
           network={network}
-          txn={modal.txn ? modal.txn : ""}
-          status={modal.status ? modal.status : ""}
-          message={modal.message ? modal.message : ""}
+          txn={modal.txn}
+          status={modal.status}
+          message={modal.message}
           setModal={setModal}
         />
       ) : null}

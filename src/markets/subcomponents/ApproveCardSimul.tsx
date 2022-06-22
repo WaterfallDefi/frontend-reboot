@@ -143,8 +143,8 @@ function ApproveCardSimul(props: Props) {
       const check = await onCheckApproveAll();
       setApproved(check ? true : false);
     };
-    if (account && approved === undefined) checkApproved();
-  }, [account, approved, onCheckApproveAll]);
+    if (account) checkApproved();
+  }, [account, onCheckApproveAll]);
 
   useEffect(() => {
     if (enabled) {

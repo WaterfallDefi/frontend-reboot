@@ -55,8 +55,7 @@ const invest = async (
     message: "Deposit Submitted",
   });
   const receipt = await tx.wait();
-
-  if (receipt.status) {
+  if (receipt.status === 1) {
     setModal({
       state: Modal.Txn,
       txn: tx.hash,
@@ -67,7 +66,7 @@ const invest = async (
     setModal({
       state: Modal.Txn,
       txn: tx.hash,
-      status: "REJECTED",
+      status: "REVERTED",
       message: "Deposit Failed",
     });
   }

@@ -8,9 +8,9 @@ import {
 
 type Props = {
   network: Network;
-  txn: string;
-  status: string;
-  message: string;
+  txn?: string;
+  status?: string;
+  message?: string;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
@@ -42,19 +42,21 @@ function TransactionModal(props: Props) {
         return (
           <section className="transaction">
             <h1>Transaction Submitted</h1>
-            <a
-              href={`${
-                network === Network.BNB
-                  ? "https://bscscan.com"
-                  : "https://snowtrace.io"
-              }/tx/${txn}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {network === Network.BNB
-                ? "View on BSCScan"
-                : "View on Snowtrace"}
-            </a>
+            {txn && (
+              <a
+                href={`${
+                  network === Network.BNB
+                    ? "https://bscscan.com"
+                    : "https://snowtrace.io"
+                }/tx/${txn}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {network === Network.BNB
+                  ? "View on BSCScan"
+                  : "View on Snowtrace"}
+              </a>
+            )}
             <button onClick={() => setModal({ state: Modal.None })}>
               Close
             </button>
@@ -73,19 +75,21 @@ function TransactionModal(props: Props) {
         return (
           <section className="transaction">
             <h1>Transaction Reverted</h1>
-            <a
-              href={`${
-                network === Network.BNB
-                  ? "https://bscscan.com"
-                  : "https://snowtrace.io"
-              }/tx/${txn}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {network === Network.BNB
-                ? "View on BSCScan"
-                : "View on Snowtrace"}
-            </a>
+            {txn && (
+              <a
+                href={`${
+                  network === Network.BNB
+                    ? "https://bscscan.com"
+                    : "https://snowtrace.io"
+                }/tx/${txn}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {network === Network.BNB
+                  ? "View on BSCScan"
+                  : "View on Snowtrace"}
+              </a>
+            )}
             <button onClick={() => setModal({ state: Modal.None })}>
               Close
             </button>
@@ -95,19 +99,21 @@ function TransactionModal(props: Props) {
         return (
           <section className="transaction">
             <h1>Transaction Completed</h1>
-            <a
-              href={`${
-                network === Network.BNB
-                  ? "https://bscscan.com"
-                  : "https://snowtrace.io"
-              }/tx/${txn}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {network === Network.BNB
-                ? "View on BSCScan"
-                : "View on Snowtrace"}
-            </a>
+            {txn && (
+              <a
+                href={`${
+                  network === Network.BNB
+                    ? "https://bscscan.com"
+                    : "https://snowtrace.io"
+                }/tx/${txn}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {network === Network.BNB
+                  ? "View on BSCScan"
+                  : "View on Snowtrace"}
+              </a>
+            )}
             <button onClick={() => setModal({ state: Modal.None })}>
               Dismiss
             </button>
@@ -117,7 +123,7 @@ function TransactionModal(props: Props) {
         return (
           <section className="transaction">
             <h1>Error</h1>
-            <p>{message}</p>
+            {message && <p>{message}</p>}
             <button onClick={() => setModal({ state: Modal.None })}>
               Dismiss
             </button>
