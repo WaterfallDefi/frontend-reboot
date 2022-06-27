@@ -30,6 +30,7 @@ type Props = {
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   selectTrancheIdx: number | undefined;
   redepositBalance: string | string[];
   remaining: string;
@@ -70,6 +71,7 @@ function ApproveCardDefault(props: Props) {
     setSelectedDepositAssetIndex,
     setSimulDeposit,
     setModal,
+    setMarkets,
     selectTrancheIdx,
     redepositBalance,
     remaining,
@@ -119,7 +121,8 @@ function ApproveCardDefault(props: Props) {
     selectedMarket.assets.length,
     selectedMarket.assets[0] === "USDC" ||
       selectedMarket.assets[0] === "USDC.e",
-    setModal
+    setModal,
+    setMarkets
   );
   const { onInvest } = useInvest(
     network,
@@ -129,7 +132,8 @@ function ApproveCardDefault(props: Props) {
     selectedMarket.assets.length,
     selectedMarket.assets[0] === "USDC" ||
       selectedMarket.assets[0] === "USDC.e",
-    setModal
+    setModal,
+    setMarkets
   );
 
   const {

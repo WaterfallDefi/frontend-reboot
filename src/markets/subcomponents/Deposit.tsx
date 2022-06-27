@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import BigNumber from 'bignumber.js';
 import dayjs from 'dayjs';
@@ -22,6 +22,7 @@ type Props = {
   simulDeposit: boolean;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   balance: string | string[];
 };
 
@@ -76,6 +77,7 @@ function Deposit(props: Props) {
     simulDeposit,
     setSimulDeposit,
     setModal,
+    setMarkets,
     balance,
   } = props;
 
@@ -267,6 +269,7 @@ function Deposit(props: Props) {
             setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
             setSimulDeposit={setSimulDeposit}
             setModal={setModal}
+            setMarkets={setMarkets}
             selectTrancheIdx={selectTrancheIdx}
             redepositBalance={balance}
             remaining={remaining}

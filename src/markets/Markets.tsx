@@ -1,23 +1,31 @@
-import "./Markets.scss";
-import { Market } from "../types";
-import TableRow from "../shared/TableRow";
-import { useState } from "react";
-import MarketDetail from "./subcomponents/MarketDetail";
-import { ModalProps, Mode, Network } from "../WaterfallDefi";
-import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
-import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
-import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
-import numeral from "numeral";
+import './Markets.scss';
+
+import React, { useState } from 'react';
+
+import numeral from 'numeral';
+
+import getWTFApr, { formatAllocPoint } from '../hooks/getWtfApr';
+import { useCoingeckoPrices } from '../hooks/useCoingeckoPrices';
+import { useWTFPriceLP } from '../hooks/useWtfPriceFromLP';
+import TableRow from '../shared/TableRow';
+import { Market } from '../types';
+import {
+  ModalProps,
+  Mode,
+  Network,
+} from '../WaterfallDefi';
+import MarketDetail from './subcomponents/MarketDetail';
 
 type Props = {
   mode: Mode;
   network: Network;
   markets: Market[];
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
 function Markets(props: Props) {
-  const { mode, network, markets, setModal } = props;
+  const { mode, network, markets, setMarkets, setModal } = props;
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   const { price: wtfPrice } = useWTFPriceLP();
@@ -107,6 +115,7 @@ function Markets(props: Props) {
           setSelectedMarket={setSelectedMarket}
           coingeckoPrices={coingeckoPrices}
           setModal={setModal}
+          setMarkets={setMarkets}
         />
       ) : null}
     </div>

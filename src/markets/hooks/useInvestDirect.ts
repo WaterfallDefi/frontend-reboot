@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import {
   BigNumber,
@@ -11,6 +11,7 @@ import {
   getContract,
   getSigner,
 } from '../../hooks/getContract';
+import { Market } from '../../types';
 import {
   Modal,
   ModalProps,
@@ -80,7 +81,8 @@ const useInvestDirect = (
   multicurrencyIdx: number,
   multicurrencyTokenCount: number,
   isUSDC: boolean,
-  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>,
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>
 ) => {
   const signer = getSigner();
 
@@ -97,7 +99,7 @@ const useInvestDirect = (
         isUSDC,
         setModal
       );
-      // dispatch(getMarkets(MarketList));
+      setMarkets(undefined);
       return result;
     },
     [contract, isUSDC, multicurrencyIdx, multicurrencyTokenCount, setModal]

@@ -11,6 +11,7 @@ import {
   getContract,
   getSigner,
 } from '../../hooks/getContract';
+import { Market } from '../../types';
 import {
   Modal,
   ModalProps,
@@ -74,7 +75,8 @@ const useInvest = (
   multicurrencyIdx: number,
   multicurrencyTokenCount: number,
   isUSDC: boolean,
-  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>,
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>
 ) => {
   const signer = getSigner();
   const contract = getContract(abi, trancheMasterAddress, network, signer);
@@ -91,7 +93,7 @@ const useInvest = (
         setModal
       );
       //TODO: update markets - it's just setMarkets(undefined)
-      // dispatch(getMarkets(MarketList));
+      setMarkets(undefined);
       return result;
     },
     [contract, isUSDC, multicurrencyIdx, multicurrencyTokenCount, setModal]

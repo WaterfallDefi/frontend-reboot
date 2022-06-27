@@ -35,6 +35,7 @@ type Props = {
   setSelectedMarket: React.Dispatch<React.SetStateAction<Market | undefined>>;
   coingeckoPrices: any;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
@@ -48,8 +49,13 @@ const getLockupPeriod = (duration: string) => {
 };
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
-  const { selectedMarket, setSelectedMarket, coingeckoPrices, setModal } =
-    props;
+  const {
+    selectedMarket,
+    setSelectedMarket,
+    coingeckoPrices,
+    setModal,
+    setMarkets,
+  } = props;
 
   const { account } = useWeb3React<Web3Provider>();
 
@@ -257,6 +263,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         simulDeposit={simulDeposit}
         setSimulDeposit={setSimulDeposit}
         setModal={setModal}
+        setMarkets={setMarkets}
         balance={selectedMarket.isMulticurrency ? MCbalance : balance}
       />
     </div>
