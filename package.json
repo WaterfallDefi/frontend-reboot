@@ -32,8 +32,7 @@
     "typescript": "^4.4.2",
     "victory": "^36.4.1",
     "web-vitals": "^2.1.0",
-    "web3": "^1.7.3",
-    "web3-react": "^5.0.5"
+    "web3": "^1.7.3"
   },
   "scripts": {
     "start": "react-scripts start",
