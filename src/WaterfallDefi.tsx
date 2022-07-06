@@ -110,6 +110,7 @@ function WaterfallDefi() {
             <MyPortfolio
               key="portfolio"
               mode={mode}
+              network={network}
               markets={marketInjection}
             />,
             true

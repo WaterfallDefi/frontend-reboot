@@ -1,8 +1,12 @@
-import { TrancheCycle, UserInvest } from "../../types";
-import BigNumber from "bignumber.js";
-import numeral from "numeral";
-import { MarketList } from "../../config/markets";
-import ky from "ky";
+import BigNumber from 'bignumber.js';
+import ky from 'ky';
+import numeral from 'numeral';
+
+import { MarketList } from '../../config/markets';
+import {
+  TrancheCycle,
+  UserInvest,
+} from '../../types';
 
 const BIG_TEN = new BigNumber(10);
 
@@ -28,9 +32,10 @@ export const getAPYHourly = async (date: string, date2: string) => {
 const getSubgraphQuery = async (subgraphURL: string, account: string) => {
   let res;
   try {
-    res = await ky.post(subgraphURL, {
-      json: {
-        query: `{
+    res = await ky
+      .post(subgraphURL, {
+        json: {
+          query: `{
             trancheCycles(first:1000,orderBy: id, orderDirection: asc) {
               id
               cycle
@@ -59,8 +64,9 @@ const getSubgraphQuery = async (subgraphURL: string, account: string) => {
               harvestAt
             }
           }`,
-      },
-    });
+        },
+      })
+      .json();
   } catch (e) {
     console.error(e);
   }
@@ -79,9 +85,8 @@ export const useSubgraphQuery = async (
   for (let marketIdx = 0; marketIdx < MarketList.length; marketIdx++) {
     const p = MarketList[marketIdx];
 
-    const res = await getSubgraphQuery(p.subgraphURL, account);
-    //   if (res && res.data.data) subgraphResult[marketIdx] = res.data.data;
-    console.log(res);
+    const res: any = await getSubgraphQuery(p.subgraphURL, account);
+    subgraphResult[marketIdx] = res.data;
   }
   if (subgraphResult.length === 0) return;
   for (let marketIdx = 0; marketIdx < subgraphResult.length; marketIdx++) {
