@@ -34,20 +34,24 @@ function MyPortfolio(props: Props) {
   let _investHistoryResult: any[];
   let userInvestsPayload: { _userInvest: UserInvest[] }[] = [];
 
-  const positions = usePositions(
-    network,
-    markets.filter((m) => !m.isAvax)
-  );
+  const positions = usePositions(network, markets);
 
   subgraph.then((res) => {
     subgraphQueryResult = res;
+    console.log("subgraphQueryResult");
+    console.log(subgraphQueryResult);
 
     _investHistoryResult = subgraphQueryResult.length > 0 ? [...subgraphQueryResult] : [];
 
     for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
       const _subgraphResultMarket = subgraphQueryResult[marketIdx];
       if (!_subgraphResultMarket) continue;
-      const _market = markets[marketIdx];
+
+      const _markets = markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax));
+
+      //THIS IS THE CULPRIT
+      const _market = _markets[marketIdx];
+
       const { userInvests: _userInvests } = _subgraphResultMarket;
       const _position = positions[marketIdx];
 
@@ -61,11 +65,11 @@ function MyPortfolio(props: Props) {
       const _MCprincipals: string[][] = [];
 
       if (_position) {
+        console.log(_market.portfolio);
+        console.log(_position);
         //single currency
         if (!_market.isMulticurrency) {
           for (let i = 0; i < _position.length; i++) {
-            console.log(_market);
-            console.log(_position);
             //single currency cycle
             _cycle = new BigNumber(_position[i][0]._hex).toString();
 
