@@ -287,7 +287,7 @@ function MyPortfolio(props: Props) {
 
               return (
                 <TableRow
-                  key={_market.portfolio}
+                  key={__idx}
                   data={{
                     portfolio: _market.portfolio,
                     assets: _market.assets,
