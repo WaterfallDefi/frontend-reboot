@@ -73,7 +73,7 @@ const getSubgraphQuery = async (subgraphURL: string, account: string) => {
   return res;
 };
 
-export const useSubgraphQuery = async (
+export const fetchSubgraphQuery = async (
   account: string | null | undefined,
   decimals = 18
 ) => {
