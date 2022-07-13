@@ -40,6 +40,7 @@ function MyPortfolio(props: Props) {
 
   const [userInvestsPayload, setUserInvestsPayload] =
     useState<{ userInvests: UserInvest[]; trancheCycles: any; network: Network }[]>();
+  const [filtered, setFiltered] = useState<number>(0);
 
   const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
   const [selectedTranche, setSelectedTranche] = useState(-1);
@@ -160,35 +161,35 @@ function MyPortfolio(props: Props) {
           _investHistoryResult[marketIdx].network = _market.isAvax ? Network.AVAX : Network.BNB;
         }
         //DO FILTERS LATER
-        // let filteredCount = 0;
-        // for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
-        //   if (!_investHistoryResult[marketIdx]) continue;
-        //   const { userInvests: _userInvests, trancheCycles } = _investHistoryResult[marketIdx];
-        //   const filtered = _userInvests?.filter((_userInvest: any) => {
-        //     if (!trancheCycles) return false;
-        //     const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
-        //     if (_userInvest.principal.toString() === "0") return false;
+        let filteredCount = 0;
+        for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
+          if (!_investHistoryResult[marketIdx]) continue;
+          const { userInvests: _userInvests, trancheCycles } = _investHistoryResult[marketIdx];
+          const filtered = _userInvests?.filter((_userInvest: any) => {
+            if (!trancheCycles) return false;
+            const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+            if (_userInvest.principal.toString() === "0") return false;
 
-        //     if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
-        //     if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset)) return false;
-        //     if (
-        //       selectedStatus > -1 &&
-        //       trancheCycles[trancheCycleId] &&
-        //       selectedStatus !== trancheCycles[trancheCycleId].state
-        //     )
-        //       return false;
-        //     return true;
-        //   });
-        //   filteredCount += filtered.length;
+            if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
+            if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset)) return false;
+            if (
+              selectedStatus > -1 &&
+              trancheCycles[trancheCycleId] &&
+              selectedStatus !== trancheCycles[trancheCycleId].state
+            )
+              return false;
+            return true;
+          });
+          filteredCount += filtered.length;
 
-        //   _investHistoryResult[marketIdx] = { _userInvest: filtered };
-        // }
-
+          _investHistoryResult[marketIdx] = { _userInvest: filtered };
+        }
+        setFiltered(filteredCount);
         setUserInvestsPayload(_investHistoryResult);
         setLoaded(true);
       });
     }
-  }, [markets, network, account, positions, loaded]);
+  }, [markets, network, account, positions, selectedStatus, selectedAsset, selectedTranche, loaded]);
 
   console.log("userInvestsPayload");
   console.log(userInvestsPayload);
@@ -288,7 +289,7 @@ function MyPortfolio(props: Props) {
               );
             });
           })}
-      {userInvestsPayload && userInvestsPayload.length === 0 ? (
+      {filtered === 0 ? (
         <div className="no-data">
           <NoData />
           <span>No Positions</span>
