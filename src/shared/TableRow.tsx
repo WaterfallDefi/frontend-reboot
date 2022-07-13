@@ -51,26 +51,18 @@ function TableRow(props: Props) {
               <div className="col apr_markets" key={key}>
                 <div className="tranche-apr">
                   <span>{data[key].length === 2 ? "Fixed" : "Senior"}</span>
-                  <div style={{ color: "orange" }}>
-                    {numeral(data[key][0]).format("0,0.[00]")} %
-                  </div>
+                  <div style={{ color: "orange" }}>{numeral(data[key][0]).format("0,0.[00]")} %</div>
                 </div>
                 <div className="tranche-apr">
-                  <span>
-                    {data[key].length === 2 ? "Variable" : "Mezzanine"}
-                  </span>
-                  <div
-                    style={{ color: data[key].length === 3 ? "green" : "blue" }}
-                  >
+                  <span>{data[key].length === 2 ? "Variable" : "Mezzanine"}</span>
+                  <div style={{ color: data[key].length === 3 ? "green" : "blue" }}>
                     {numeral(data[key][1]).format("0,0.[00]")} %
                   </div>
                 </div>
                 {data[key].length === 3 ? (
                   <div className="tranche-apr">
                     <span>Junior</span>
-                    <div style={{ color: "blue" }}>
-                      {numeral(data[key][2]).format("0,0.[00]")} %
-                    </div>
+                    <div style={{ color: "blue" }}>{numeral(data[key][2]).format("0,0.[00]")} %</div>
                   </div>
                 ) : null}
               </div>
@@ -85,24 +77,19 @@ function TableRow(props: Props) {
             break;
           case "trancheCycle":
             elements.push(
-              <div className="col trancheCycle">
-                {columnData.trancheCycle &&
-                columnData.trancheCycle.state !== 0 ? (
+              <div className="col trancheCycle" key={key}>
+                {columnData.trancheCycle && columnData.trancheCycle.state !== 0 ? (
                   <>
-                    <span>
-                      {formatTimestamp(columnData.trancheCycle.startAt)}
-                    </span>
+                    <span>{formatTimestamp(columnData.trancheCycle.startAt)}</span>
                     <span>↓</span>
                     <span>
                       {
                         //multi-farm
                         formatTimestamp(
                           columnData.trancheCycle.endAt >
-                            +columnData.trancheCycle.startAt +
-                              +Number(columnData.trancheCycle.duration)
+                            +columnData.trancheCycle.startAt + +Number(columnData.trancheCycle.duration)
                             ? columnData.trancheCycle.endAt
-                            : +columnData.trancheCycle.startAt +
-                                +Number(columnData.duration)
+                            : +columnData.trancheCycle.startAt + +Number(columnData.duration)
                         )
                       }
                     </span>
@@ -163,13 +150,12 @@ function TableRow(props: Props) {
               {/* Union */}
               <div>
                 <p>
-                  After maturity, you can choose to withdraw all the principal +
-                  yield. The platform will charge a fee of (principal + all
-                  yield in the current period) x
+                  After maturity, you can choose to withdraw all the principal + yield. The platform will charge a fee
+                  of (principal + all yield in the current period) x
                 </p>
                 <p>
-                  You can also select roll-deposit to the next cycle, and you
-                  can change the Tranche and amount during Roll-deposit.
+                  You can also select roll-deposit to the next cycle, and you can change the Tranche and amount during
+                  Roll-deposit.
                 </p>
               </div>
             </div>

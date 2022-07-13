@@ -17,6 +17,13 @@ import { usePositions } from "./hooks/usePositions";
 
 const BIG_TEN = new BigNumber(10);
 
+const STATUSES: { name: string; value: string; status: number }[] = [
+  { name: "All", value: "ALL", status: -1 },
+  { name: "Pending", value: "PENDING", status: 0 },
+  { name: "Active", value: "ACTIVE", status: 1 },
+  { name: "Matured", value: "EXPIRED", status: 2 },
+];
+
 type Props = {
   mode: Mode;
   network: Network;
@@ -31,7 +38,12 @@ function MyPortfolio(props: Props) {
 
   const positions = usePositions(network, markets);
 
-  const [userInvestsPayload, setUserInvestsPayload] = useState<{ userInvests: UserInvest[]; trancheCycles: any }[]>();
+  const [userInvestsPayload, setUserInvestsPayload] =
+    useState<{ userInvests: UserInvest[]; trancheCycles: any; network: Network }[]>();
+
+  const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
+  const [selectedTranche, setSelectedTranche] = useState(-1);
+  const [selectedStatus, setSelectedStatus] = useState(-1);
 
   useEffect(() => {
     if (!account) setLoaded(true);
@@ -49,8 +61,8 @@ function MyPortfolio(props: Props) {
           const _subgraphResultMarket = subgraphQueryResult[marketIdx];
           if (!_subgraphResultMarket) continue;
 
-          const _markets = markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax));
-
+          // const _markets = markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax));
+          const _markets = markets;
           const _market = _markets[marketIdx];
 
           const { userInvests: _userInvests } = _subgraphResultMarket;
@@ -145,6 +157,7 @@ function MyPortfolio(props: Props) {
             }
           }
           _investHistoryResult[marketIdx].userInvests = userInvests;
+          _investHistoryResult[marketIdx].network = _market.isAvax ? Network.AVAX : Network.BNB;
         }
         //DO FILTERS LATER
         // let filteredCount = 0;
@@ -153,27 +166,22 @@ function MyPortfolio(props: Props) {
         //   const { userInvests: _userInvests, trancheCycles } = _investHistoryResult[marketIdx];
         //   const filtered = _userInvests?.filter((_userInvest: any) => {
         //     if (!trancheCycles) return false;
-        // const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
-        // if (_userInvest.principal.toString() === "0") return false;
+        //     const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+        //     if (_userInvest.principal.toString() === "0") return false;
 
-        // if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche)
-        //   return false;
-        // if (
-        //   selectedAsset !== "ALL" &&
-        //   !markets[marketIdx].assets.includes(selectedAsset)
-        // )
-        //   return false;
-        // if (
-        //   selectedStatus > -1 &&
-        //   trancheCycles[trancheCycleId] &&
-        //   selectedStatus !== trancheCycles[trancheCycleId].state
-        // )
-        //   return false;
-        //   return true;
-        // });
-        // filteredCount += filtered.length;
+        //     if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
+        //     if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset)) return false;
+        //     if (
+        //       selectedStatus > -1 &&
+        //       trancheCycles[trancheCycleId] &&
+        //       selectedStatus !== trancheCycles[trancheCycleId].state
+        //     )
+        //       return false;
+        //     return true;
+        //   });
+        //   filteredCount += filtered.length;
 
-        //   userInvestsPayload[marketIdx] = { _userInvest: filtered };
+        //   _investHistoryResult[marketIdx] = { _userInvest: filtered };
         // }
 
         setUserInvestsPayload(_investHistoryResult);
@@ -182,10 +190,31 @@ function MyPortfolio(props: Props) {
     }
   }, [markets, network, account, positions, loaded]);
 
-  // return <div></div>;
+  console.log("userInvestsPayload");
+  console.log(userInvestsPayload);
 
   return loaded ? (
     <div className={"my-portfolio-wrapper " + mode}>
+      <div className="filters">
+        <select>
+          {STATUSES.map((s) => (
+            <option onClick={() => setSelectedStatus(s.status)}>{s.name}</option>
+          ))}
+        </select>
+        <select>
+          {network === Network.AVAX && <option onClick={() => setSelectedAsset("DAI.e")}>DAI.e</option>}
+          {network === Network.AVAX && <option onClick={() => setSelectedAsset("WAVAX")}>WAVAX</option>}
+          {network === Network.BNB && <option onClick={() => setSelectedAsset("BUSD")}>BUSD</option>}
+          {network === Network.BNB && <option onClick={() => setSelectedAsset("WBNB")}>WBNB</option>}
+          {network === Network.BNB && <option onClick={() => setSelectedAsset("USDT")}>USDT</option>}
+        </select>
+        <select>
+          <option onClick={() => setSelectedTranche(-1)}>All</option>
+          <option onClick={() => setSelectedTranche(0)}>Senior</option>
+          <option onClick={() => setSelectedTranche(1)}>Mezzanine</option>
+          <option onClick={() => setSelectedTranche(2)}>Junior</option>
+        </select>
+      </div>
       <div className="header-row">
         <div className="header first">
           <span>Portfolio Name</span>
@@ -213,50 +242,52 @@ function MyPortfolio(props: Props) {
         </div>
       </div>
       {userInvestsPayload &&
-        userInvestsPayload.map((_userInvestMarket, __idx) => {
-          const { userInvests, trancheCycles } = _userInvestMarket;
+        userInvestsPayload
+          // .filter((m) => m.network === network)
+          .map((_userInvestMarket, __idx) => {
+            const { userInvests, trancheCycles } = _userInvestMarket;
 
-          return userInvests.map((_userInvest: UserInvest, _idx: number) => {
-            const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+            return userInvests.map((_userInvest: UserInvest, _idx: number) => {
+              const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
 
-            const trancheCycle = trancheCycles[trancheCycleId];
+              const trancheCycle = trancheCycles[trancheCycleId];
 
-            const _market = markets[__idx];
+              const _market = markets[__idx];
 
-            const tranchesDisplayText =
-              _market.trancheCount === 3 ? ["Senior", "Mezzanine", "Junior"] : ["Fixed", "Variable"];
+              const tranchesDisplayText =
+                _market.trancheCount === 3 ? ["Senior", "Mezzanine", "Junior"] : ["Fixed", "Variable"];
 
-            const status =
-              trancheCycle.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING
-                ? PORTFOLIO_STATUS.PENDING
-                : Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1
-                ? PORTFOLIO_STATUS.ACTIVE
-                : (Number(_market.cycle) !== trancheCycle?.cycle && trancheCycle?.state === 1) ||
-                  trancheCycle?.state === 2
-                ? "MATURED"
-                : "";
+              const status =
+                trancheCycle.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING
+                  ? PORTFOLIO_STATUS.PENDING
+                  : Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1
+                  ? PORTFOLIO_STATUS.ACTIVE
+                  : (Number(_market.cycle) !== trancheCycle?.cycle && trancheCycle?.state === 1) ||
+                    trancheCycle?.state === 2
+                  ? "MATURED"
+                  : "";
 
-            return (
-              <TableRow
-                key={_market.portfolio}
-                data={{
-                  portfolio: _market.portfolio,
-                  assets: _market.assets,
-                  trancheCycle: {
-                    trancheCycle: trancheCycle.state !== 0 ? trancheCycle : "--",
-                    duration: _market.duration,
-                  },
-                  tranche: tranchesDisplayText[_userInvest.tranche],
-                  apr_portfolio: "asdf",
-                  principal: !_market.isMulticurrency ? _userInvest.principal : _userInvest.MCprincipal,
-                  status: status,
-                  yield: "asdf",
-                }}
-                openFold={true}
-              />
-            );
-          });
-        })}
+              return (
+                <TableRow
+                  key={_market.portfolio}
+                  data={{
+                    portfolio: _market.portfolio,
+                    assets: _market.assets,
+                    trancheCycle: {
+                      trancheCycle: trancheCycle.state !== 0 ? trancheCycle : "--",
+                      duration: _market.duration,
+                    },
+                    tranche: tranchesDisplayText[_userInvest.tranche],
+                    apr_portfolio: "asdf",
+                    principal: !_market.isMulticurrency ? _userInvest.principal : _userInvest.MCprincipal,
+                    status: status,
+                    yield: "asdf",
+                  }}
+                  openFold={true}
+                />
+              );
+            });
+          })}
       {userInvestsPayload && userInvestsPayload.length === 0 ? (
         <div className="no-data">
           <NoData />
