@@ -38,8 +38,8 @@ function MyPortfolio(props: Props) {
 
   const positions = usePositions(network, markets);
 
-  const [userInvestsPayload, setUserInvestsPayload] =
-    useState<{ userInvests: UserInvest[]; trancheCycles: any; network: Network }[]>();
+  const [userInvestsPayload, setUserInvestsPayload] = useState<{ userInvests: UserInvest[]; trancheCycles: any }[]>();
+  const [filteredPayload, setFilteredPayload] = useState<{ userInvests: UserInvest[]; trancheCycles: any }[]>();
   const [filtered, setFiltered] = useState<number>(0);
 
   const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
@@ -62,8 +62,7 @@ function MyPortfolio(props: Props) {
           const _subgraphResultMarket = subgraphQueryResult[marketIdx];
           if (!_subgraphResultMarket) continue;
 
-          // const _markets = markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax));
-          const _markets = markets;
+          const _markets = markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax));
           const _market = _markets[marketIdx];
 
           const { userInvests: _userInvests } = _subgraphResultMarket;
@@ -80,6 +79,9 @@ function MyPortfolio(props: Props) {
 
           let _cycle;
           const _MCprincipals: string[][] = [];
+
+          console.log("_position");
+          console.log(_position);
 
           if (_position) {
             //single currency
@@ -133,9 +135,11 @@ function MyPortfolio(props: Props) {
                 );
               }
               if (
-                _cycle === _market.cycle &&
-                (_market.status === PORTFOLIO_STATUS.PENDING || _market.status === PORTFOLIO_STATUS.ACTIVE)
+                _cycle === _market?.cycle &&
+                (_market?.status === PORTFOLIO_STATUS.PENDING || _market?.status === PORTFOLIO_STATUS.ACTIVE)
               ) {
+                console.log("MC principals");
+                console.log(_MCprincipals);
                 userInvests = [
                   ..._MCprincipals.map((p, ti) => {
                     return {
@@ -158,41 +162,53 @@ function MyPortfolio(props: Props) {
             }
           }
           _investHistoryResult[marketIdx].userInvests = userInvests;
-          _investHistoryResult[marketIdx].network = _market.isAvax ? Network.AVAX : Network.BNB;
         }
-        //DO FILTERS LATER
-        let filteredCount = 0;
-        for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
-          if (!_investHistoryResult[marketIdx]) continue;
-          const { userInvests: _userInvests, trancheCycles } = _investHistoryResult[marketIdx];
-          const filtered = _userInvests?.filter((_userInvest: any) => {
-            if (!trancheCycles) return false;
-            const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
-            if (_userInvest.principal.toString() === "0") return false;
-
-            if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
-            if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset)) return false;
-            if (
-              selectedStatus > -1 &&
-              trancheCycles[trancheCycleId] &&
-              selectedStatus !== trancheCycles[trancheCycleId].state
-            )
-              return false;
-            return true;
-          });
-          filteredCount += filtered.length;
-
-          _investHistoryResult[marketIdx] = { _userInvest: filtered };
-        }
-        setFiltered(filteredCount);
         setUserInvestsPayload(_investHistoryResult);
         setLoaded(true);
       });
     }
-  }, [markets, network, account, positions, selectedStatus, selectedAsset, selectedTranche, loaded]);
+  }, [markets, network, account, positions, loaded]);
+
+  useEffect(() => {
+    if (!userInvestsPayload) return;
+    let filteredCount = 0;
+    const _investHistoryResult = [...userInvestsPayload];
+    for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
+      if (!_investHistoryResult[marketIdx]) continue;
+      const { userInvests: _userInvests, trancheCycles } = _investHistoryResult[marketIdx];
+      const filtered = _userInvests?.filter((_userInvest: any) => {
+        //you have to filter in both places, becasue the first is simply to filter for the chain multicall, this one is to filter for render
+        if (
+          (markets[marketIdx].isAvax && network === Network.BNB) ||
+          (!markets[marketIdx].isAvax && network === Network.AVAX)
+        )
+          return false;
+        if (!trancheCycles) return false;
+        const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+        // if (_userInvest?.principal.toString() === "0") return false;
+        if (
+          selectedStatus > -1 &&
+          trancheCycles[trancheCycleId] &&
+          selectedStatus !== trancheCycles[trancheCycleId].state
+        )
+          return false;
+        if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
+        if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset)) return false;
+
+        return true;
+      });
+      filteredCount += filtered.length;
+
+      _investHistoryResult[marketIdx] = { ..._investHistoryResult[marketIdx], userInvests: filtered };
+    }
+    setFilteredPayload(_investHistoryResult);
+    setFiltered(filteredCount);
+  }, [markets, network, selectedStatus, selectedTranche, selectedAsset, userInvestsPayload]);
 
   console.log("userInvestsPayload");
   console.log(userInvestsPayload);
+  console.log("filteredPayload");
+  console.log(filteredPayload);
 
   return loaded ? (
     <div className={"my-portfolio-wrapper " + mode}>
@@ -203,6 +219,7 @@ function MyPortfolio(props: Props) {
           ))}
         </select>
         <select>
+          <option onClick={() => setSelectedAsset("ALL")}>All</option>
           {network === Network.AVAX && <option onClick={() => setSelectedAsset("DAI.e")}>DAI.e</option>}
           {network === Network.AVAX && <option onClick={() => setSelectedAsset("WAVAX")}>WAVAX</option>}
           {network === Network.BNB && <option onClick={() => setSelectedAsset("BUSD")}>BUSD</option>}
@@ -242,8 +259,8 @@ function MyPortfolio(props: Props) {
           <span>Yield</span>
         </div>
       </div>
-      {userInvestsPayload &&
-        userInvestsPayload
+      {filteredPayload &&
+        filteredPayload
           // .filter((m) => m.network === network)
           .map((_userInvestMarket, __idx) => {
             const { userInvests, trancheCycles } = _userInvestMarket;
