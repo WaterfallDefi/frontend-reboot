@@ -100,6 +100,30 @@ function TableRow(props: Props) {
               </div>
             );
             break;
+          case "yield":
+            //typeof array returns "object"
+            console.log("typeof");
+            console.log(typeof columnData.yield);
+            if (typeof columnData.yield === "object") {
+              console.log("yield");
+              console.log(columnData.yield);
+              elements.push(
+                <div className="col" key={key}>
+                  {columnData.yield.map((y: any, i: number) => (
+                    <div key={i}>
+                      {y} {columnData.assets[i]}
+                    </div>
+                  ))}
+                </div>
+              );
+            } else {
+              elements.push(
+                <div className="col" key={key}>
+                  {columnData.yield}
+                </div>
+              );
+            }
+            break;
           default:
             elements.push(
               <div className="col" key={key}>

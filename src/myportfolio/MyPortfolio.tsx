@@ -14,6 +14,7 @@ import { Mode, Network } from "../WaterfallDefi";
 import { fetchSubgraphQuery } from "./hooks/useSubgraphQuery";
 import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
+import { getEstimateYield } from "./hooks/getEstimateYield";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -205,11 +206,6 @@ function MyPortfolio(props: Props) {
     setFiltered(filteredCount);
   }, [markets, network, selectedStatus, selectedTranche, selectedAsset, userInvestsPayload]);
 
-  console.log("userInvestsPayload");
-  console.log(userInvestsPayload);
-  console.log("filteredPayload");
-  console.log(filteredPayload);
-
   return loaded ? (
     <div className={"my-portfolio-wrapper " + mode}>
       <div className="filters">
@@ -285,6 +281,32 @@ function MyPortfolio(props: Props) {
                   ? "MATURED"
                   : "";
 
+              const isCurrentCycle = _market && _market.cycle === _userInvest.cycle.toString();
+
+              const trancheAPY = isCurrentCycle ? _market.tranches[_userInvest.tranche].apy : _userInvest.earningsAPY;
+
+              const isActiveCycle = Number(_market.cycle) === trancheCycle.cycle && trancheCycle.state === 1;
+
+              const estimateYield = getEstimateYield(
+                _userInvest.principal,
+                trancheAPY,
+                trancheCycle.startAt,
+                isActiveCycle
+              );
+
+              console.log("estimateYield");
+              console.log(estimateYield);
+
+              const multicurrencyEstimateYield =
+                _market.isMulticurrency && _userInvest.MCprincipal
+                  ? _userInvest.MCprincipal.map((p) =>
+                      getEstimateYield(p, trancheAPY, trancheCycle.startAt, isActiveCycle)
+                    )
+                  : [];
+
+              console.log("multicurrencyEstimateYield");
+              console.log(multicurrencyEstimateYield.toString());
+
               console.log(trancheCycle);
 
               return (
@@ -301,7 +323,16 @@ function MyPortfolio(props: Props) {
                     apr_portfolio: "asdf",
                     principal: !_market.isMulticurrency ? _userInvest.principal : _userInvest.MCprincipal,
                     status: status,
-                    yield: "asdf",
+                    yield: {
+                      yield:
+                        trancheCycle.state !== 2
+                          ? !_market.isMulticurrency
+                            ? estimateYield
+                            : multicurrencyEstimateYield
+                          : undefined,
+                      assets: _market.assets,
+                      interest: _userInvest.interest,
+                    },
                   }}
                   openFold={true}
                 />
