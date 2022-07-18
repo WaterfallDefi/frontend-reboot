@@ -285,6 +285,8 @@ function MyPortfolio(props: Props) {
                   ? "MATURED"
                   : "";
 
+              console.log(trancheCycle);
+
               return (
                 <TableRow
                   key={__idx}
@@ -292,7 +294,7 @@ function MyPortfolio(props: Props) {
                     portfolio: _market.portfolio,
                     assets: _market.assets,
                     trancheCycle: {
-                      trancheCycle: trancheCycle.state !== 0 ? trancheCycle : "--",
+                      trancheCycle: trancheCycle.state !== 0 ? trancheCycle : undefined,
                       duration: _market.duration,
                     },
                     tranche: tranchesDisplayText[_userInvest.tranche],

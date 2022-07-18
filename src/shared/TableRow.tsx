@@ -78,7 +78,7 @@ function TableRow(props: Props) {
           case "trancheCycle":
             elements.push(
               <div className="col trancheCycle" key={key}>
-                {columnData.trancheCycle && columnData.trancheCycle.state !== 0 ? (
+                {columnData.trancheCycle ? (
                   <>
                     <span>{formatTimestamp(columnData.trancheCycle.startAt)}</span>
                     <span>↓</span>
