@@ -195,7 +195,7 @@ function ClaimRedeposit(props: Props) {
               <div className="control">
                 {!autorollPending ? (
                   <button
-                    className="claim-redep-btn"
+                    className="autoroll-btn"
                     disabled={awaitingAutorollConfirm}
                     onClick={() => {
                       setAwaitingAutorollConfirm(true);

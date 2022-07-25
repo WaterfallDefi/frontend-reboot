@@ -174,22 +174,26 @@
             color: $highlight-color;
           }
 
-          .claim-redep-btn {
-            border-radius: 4px;
-            height: 28px;
-            font-size: 14px;
-            border: 1px solid $text-color-lightest;
-            margin-right: 24px;
-            color: $highlight-color;
-            cursor: pointer;
+          .buttons {
+            display: flex;
+            justify-content: space-between;
 
-            & > svg {
-              margin-left: 5px;
-            }
+            button {
+              border-radius: 4px;
+              height: 28px;
+              font-size: 14px;
+              border: 1px solid $text-color-lightest;
+              color: $highlight-color;
+              cursor: pointer;
 
-            &:disabled {
-              color: $text-color-lightest;
-              cursor: auto;
+              & > svg {
+                margin-left: 5px;
+              }
+
+              &:disabled {
+                color: $text-color-lightest;
+                cursor: auto;
+              }
             }
           }
 
@@ -205,6 +209,23 @@
                 background-color: "#FFFFFF";
                 border-radius: 10;
                 width: 100%;
+
+                .autoroll-btn {
+                  width: 100%;
+                  border-radius: 4px;
+                  height: 28px;
+                  font-size: 14px;
+                  border: 1px solid $text-color-lightest;
+                  margin-right: 24px;
+                  background-color: $highlight-color;
+                  color: $base-color;
+                  cursor: pointer;
+
+                  &:disabled {
+                    background-color: $text-color-lightest;
+                    cursor: auto;
+                  }
+                }
               }
             }
           }
