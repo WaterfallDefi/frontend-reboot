@@ -1,28 +1,20 @@
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from "react";
 
-import BigNumber from 'bignumber.js';
-import { parseEther } from 'ethers/lib/utils';
-import numeral from 'numeral';
+import BigNumber from "bignumber.js";
+import { parseEther } from "ethers/lib/utils";
+import numeral from "numeral";
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 
-import useBalance, { useBalances } from '../../hooks/useBalance';
-import useCheckApprove from '../../hooks/useCheckApprove';
-import { Market } from '../../types';
-import {
-  Modal,
-  ModalProps,
-  Network,
-} from '../../WaterfallDefi';
-import useApprove from '../hooks/useApprove';
-import useInvest from '../hooks/useInvest';
-import useInvestDirect from '../hooks/useInvestDirect';
-import useWrapAVAXContract from '../hooks/useWrapAVAX';
+import useBalance, { useBalances } from "../../hooks/useBalance";
+import useCheckApprove from "../../hooks/useCheckApprove";
+import { Market } from "../../types";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import useApprove from "../hooks/useApprove";
+import useInvest from "../hooks/useInvest";
+import useInvestDirect from "../hooks/useInvestDirect";
+import useWrapAVAXContract from "../hooks/useWrapAVAX";
 
 type Props = {
   selectedMarket: Market;
@@ -40,11 +32,7 @@ type Props = {
   isRedeposit?: boolean;
 };
 
-const compareNum = (
-  num1: string | number | undefined,
-  num2: string | undefined,
-  largerOnly = false
-) => {
+const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
   if (num1 === undefined) return;
   if (num2 === undefined) return;
   const _num1 = new BigNumber(num1);
@@ -54,8 +42,7 @@ const compareNum = (
   return _num1.comparedTo(_num2) >= 0 ? true : false;
 };
 
-const formatNumberSeparator = (num: string) =>
-  numeral(num).format("0,0.[0000]");
+const formatNumberSeparator = (num: string) => numeral(num).format("0,0.[0000]");
 
 //validation texts
 const notes = [
@@ -98,17 +85,11 @@ function ApproveCardDefault(props: Props) {
   const depositAddress = !selectedMarket.isMulticurrency
     ? selectedMarket.depositAssetAddress
     : selectedMarket.depositAssetAddresses[selectedDepositAssetIndex];
-  const { onCheckApprove } = useCheckApprove(
-    network,
-    depositAddress,
-    selectedMarket.address
-  );
+  const { onCheckApprove } = useCheckApprove(network, depositAddress, selectedMarket.address);
 
   const { onApprove } = useApprove(
     network,
-    !selectedMarket.isMulticurrency
-      ? depositAddress
-      : selectedMarket.depositAssetAddresses[selectedDepositAssetIndex],
+    !selectedMarket.isMulticurrency ? depositAddress : selectedMarket.depositAssetAddresses[selectedDepositAssetIndex],
     selectedMarket.address,
     setModal
   );
@@ -119,8 +100,7 @@ function ApproveCardDefault(props: Props) {
     selectedMarket.abi,
     selectedMarket.isMulticurrency ? selectedDepositAssetIndex : -1,
     selectedMarket.assets.length,
-    selectedMarket.assets[0] === "USDC" ||
-      selectedMarket.assets[0] === "USDC.e",
+    selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e",
     setModal,
     setMarkets
   );
@@ -130,8 +110,7 @@ function ApproveCardDefault(props: Props) {
     selectedMarket.abi,
     selectedMarket.isMulticurrency ? selectedDepositAssetIndex : -1,
     selectedMarket.assets.length,
-    selectedMarket.assets[0] === "USDC" ||
-      selectedMarket.assets[0] === "USDC.e",
+    selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e",
     setModal,
     setMarkets
   );
@@ -142,17 +121,12 @@ function ApproveCardDefault(props: Props) {
     actualBalance: actualBalanceWallet,
   } = useBalance(network, depositAddress);
 
-  const multicurrencyBalancesWallet = useBalances(
-    network,
-    selectedMarket.depositAssetAddresses
-  );
+  const multicurrencyBalancesWallet = useBalances(network, selectedMarket.depositAssetAddresses);
 
   const balance =
     isRedeposit === undefined
       ? selectedMarket.isMulticurrency
-        ? multicurrencyBalancesWallet.balances.map((mcb) =>
-            numeral(mcb).format("0,0.[0000]")
-          )
+        ? multicurrencyBalancesWallet.balances.map((mcb) => numeral(mcb).format("0,0.[0000]"))
         : numeral(balanceWallet).format("0,0.[0000]")
       : redepositBalance instanceof Array
       ? redepositBalance.map((rdb) => numeral(rdb).format("0,0.[0000]"))
@@ -216,13 +190,7 @@ function ApproveCardDefault(props: Props) {
     if (compareNum(_balanceInput, _remaining, true)) {
       return "Maximum deposit amount = " + remaining;
     }
-  }, [
-    remaining,
-    remainingExact,
-    balanceInput,
-    actualBalanceWallet,
-    selectedMarket.wrapAvax,
-  ]);
+  }, [remaining, remainingExact, balanceInput, actualBalanceWallet, selectedMarket.wrapAvax]);
 
   const handleWrapAvax = async () => {
     setDepositLoading(true);
@@ -247,11 +215,7 @@ function ApproveCardDefault(props: Props) {
       state: Modal.Txn,
       txn: undefined,
       status: "PENDING",
-      message:
-        "Depositing " +
-        balanceInput +
-        " " +
-        selectedMarket.assets[selectedDepositAssetIndex],
+      message: "Depositing " + balanceInput + " " + selectedMarket.assets[selectedDepositAssetIndex],
     });
     const amount = balanceInput.toString();
     try {
@@ -260,9 +224,7 @@ function ApproveCardDefault(props: Props) {
         : await onInvest(amount, selectTrancheIdx.toString());
       setDepositLoading(false);
       setBalanceInput("0");
-      !selectedMarket.isMulticurrency
-        ? fetchBalance()
-        : multicurrencyBalancesWallet.fetchBalances();
+      !selectedMarket.isMulticurrency ? fetchBalance() : multicurrencyBalancesWallet.fetchBalances();
       //TODO: update trancheBalance
       // if (account) dispatch(getTrancheBalance({ account }));
     } catch (e: any) {
@@ -280,9 +242,7 @@ function ApproveCardDefault(props: Props) {
 
   const handleMaxInput = () => {
     const _balance =
-      balance instanceof Array
-        ? balance[selectedDepositAssetIndex].replace(/,/g, "")
-        : balance.replace(/,/g, "");
+      balance instanceof Array ? balance[selectedDepositAssetIndex].replace(/,/g, "") : balance.replace(/,/g, "");
     const _remaining = remainingExact.replace(/,/g, "");
     if (selectedMarket.wrapAvax) {
       if (_remaining) setBalanceInput(_remaining);
@@ -299,10 +259,7 @@ function ApproveCardDefault(props: Props) {
     const { value } = e.target;
     if (value.match("^[0-9]*[.]?[0-9]*$") != null) {
       const d = value.split(".");
-      if (
-        d.length === 2 &&
-        d[1].length > (selectedMarket.assets[0] !== "USDC" ? 18 : 6)
-      ) {
+      if (d.length === 2 && d[1].length > (selectedMarket.assets[0] !== "USDC" ? 18 : 6)) {
         return;
       }
       const _input1 = d[0].length > 1 ? d[0].replace(/^0+/, "") : d[0];
@@ -318,9 +275,7 @@ function ApproveCardDefault(props: Props) {
       <button
         style={{ height: 56 }}
         onClick={handleDeposit}
-        disabled={
-          !enabled || isSoldOut || !balanceInput || selectedMarket?.isRetired
-        }
+        disabled={!enabled || isSoldOut || !balanceInput || selectedMarket?.isRetired}
       >
         Deposit
       </button>
@@ -330,23 +285,16 @@ function ApproveCardDefault(props: Props) {
   return (
     <div className="approve-card">
       <div className="row">
+        <div>{isRedeposit ? "Total Roll-deposit Amount" : "Wallet Balance"}</div>
         <div>
-          {isRedeposit ? "Total Roll-deposit Amount" : "Wallet Balance"}
-        </div>
-        <div>
-          {formatNumberSeparator(
-            balance instanceof Array
-              ? balance[selectedDepositAssetIndex]
-              : balance
-          )}{" "}
+          {formatNumberSeparator(balance instanceof Array ? balance[selectedDepositAssetIndex] : balance)}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
       </div>
       <div className="row">
         <div>Remaining</div>
         <div>
-          {formatNumberSeparator(remaining)}{" "}
-          {selectedMarket.assets[selectedDepositAssetIndex]}
+          {formatNumberSeparator(remaining)} {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
       </div>
       {selectedMarket.wrapAvax &&
@@ -356,10 +304,7 @@ function ApproveCardDefault(props: Props) {
         <div className="row">
           <div>AVAX Wrapped On Deposit:</div>
           <div>
-            {formatNumberSeparator(
-              (Number(balanceInput.toString()) - Number(balance)).toString()
-            )}{" "}
-            AVAX to WAVAX
+            {formatNumberSeparator((Number(balanceInput.toString()) - Number(balance)).toString())} AVAX to WAVAX
           </div>
         </div>
       ) : null}
@@ -381,10 +326,7 @@ function ApproveCardDefault(props: Props) {
                 {a}
               </button>
             ))}
-            <button
-              style={{ color: "#1579FF" }}
-              onClick={() => setSimulDeposit(true)}
-            >
+            <button style={{ color: "#1579FF" }} onClick={() => setSimulDeposit(true)}>
               Multi
             </button>
           </div>
@@ -409,32 +351,24 @@ function ApproveCardDefault(props: Props) {
         MAX
       </div>
       <div className="validate-text">{!depositLoading && validateText}</div>
-      {selectedMarket.wrapAvax &&
-      Number(balanceInput.toString()) - Number(balance) > 0 ? (
+      {selectedMarket.wrapAvax && Number(balanceInput.toString()) - Number(balance) > 0 ? (
         <div className="validate-text">
-          Please make sure you have enough AVAX to wrap, or else the transaction
-          will fail!
+          Please make sure you have enough AVAX to wrap, or else the transaction will fail!
         </div>
       ) : null}
-      {selectTrancheIdx && (
+      {selectTrancheIdx ? (
         <div className="important-notes">
           <div>Important Notes</div>
           <div>{selectTrancheIdx !== undefined && notes[selectTrancheIdx]}</div>
         </div>
-      )}
+      ) : null}
 
       {account ? (
         approved ? (
           !selectedMarket.wrapAvax ? (
             !compareNum(
               new BigNumber(balanceInput.toString())
-                .minus(
-                  new BigNumber(
-                    balance instanceof Array
-                      ? balance[selectedDepositAssetIndex]
-                      : balance
-                  )
-                )
+                .minus(new BigNumber(balance instanceof Array ? balance[selectedDepositAssetIndex] : balance))
                 .toString(),
               "0",
               true
@@ -456,10 +390,7 @@ function ApproveCardDefault(props: Props) {
           )
         ) : (
           <div className="button">
-            <button
-              onClick={() => !approveLoading && handleApprove()}
-              disabled={selectedMarket.isRetired}
-            >
+            <button onClick={() => !approveLoading && handleApprove()} disabled={selectedMarket.isRetired}>
               {!approveLoading ? "Approve" : "Approving..."}
             </button>
           </div>
@@ -476,15 +407,14 @@ function ApproveCardDefault(props: Props) {
         </div>
       )}
 
-      {selectTrancheIdx && enabled && (
+      {selectTrancheIdx && enabled ? (
         <div className="redemption-fee">
-          {selectTrancheIdx === 0 ||
-          (selectedMarket.trancheCount === 3 && selectTrancheIdx === 1)
+          {selectTrancheIdx === 0 || (selectedMarket.trancheCount === 3 && selectTrancheIdx === 1)
             ? "Withdrawal Fee: All principal + yield of the current cycle * "
             : "Withdrawal Fee: All yield of the current cycle * "}
           <span>{selectedMarket.tranches[selectTrancheIdx] + "%"}</span>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
