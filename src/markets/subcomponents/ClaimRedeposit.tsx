@@ -169,6 +169,7 @@ function ClaimRedeposit(props: Props) {
         </div>
         <div className="buttons">
           <button
+            className="claim-redep-btn"
             onClick={() => {
               withdrawAll();
             }}
@@ -177,24 +178,24 @@ function ClaimRedeposit(props: Props) {
           >
             Withdraw All
           </button>
-          <button onClick={rollDepositPopup} disabled={!account || !+balance || selectedMarket?.isRetired || autoroll}>
+          <button
+            className="claim-redep-btn"
+            onClick={rollDepositPopup}
+            disabled={!account || !+balance || selectedMarket?.isRetired || autoroll}
+          >
             Roll Deposit
           </button>
         </div>
         {account && selectedMarket.autorollImplemented ? (
-          <div>
-            {autorollBalance !== "0" && <div style={{ marginTop: 10 }}>Autoroll Balance: ${autorollBalance}</div>}
-            <div style={{ display: "flex", marginTop: 10 }}>
-              <label className="autorolling-label">Auto Rolling</label>
-              <div
-                style={{
-                  padding: 1.5,
-                  backgroundColor: "#FFFFFF",
-                  borderRadius: 10,
-                }}
-              >
+          <div className="autoroll-controls">
+            {autorollBalance !== "0" ? (
+              <div className="autoroll-balance">Autoroll Balance: ${autorollBalance}</div>
+            ) : null}
+            <div className="control-wrapper">
+              <div className="control">
                 {!autorollPending ? (
                   <button
+                    className="claim-redep-btn"
                     disabled={awaitingAutorollConfirm}
                     onClick={() => {
                       setAwaitingAutorollConfirm(true);

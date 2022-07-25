@@ -173,24 +173,38 @@
           .rtn-amt {
             color: $highlight-color;
           }
-          .autorolling-label {
-            font-weight: 400;
+
+          .claim-redep-btn {
+            border-radius: 4px;
+            height: 28px;
+            font-size: 14px;
+            border: 1px solid $text-color-lightest;
+            margin-right: 24px;
             color: $highlight-color;
-            margin-right: 12px;
-            padding-top: 4px;
+            cursor: pointer;
+
+            & > svg {
+              margin-left: 5px;
+            }
+
+            &:disabled {
+              color: $text-color-lightest;
+              cursor: auto;
+            }
           }
 
-          .buttons {
-            button {
-              border-radius: 4px;
-              height: 28px;
-              font-size: 14px;
-              border: 1px solid $text-color-lightest;
-              margin-right: 24px;
-              color: $highlight-color;
-
-              & > svg {
-                margin-left: 5px;
+          .autoroll-controls {
+            .autoroll-balance {
+              margin-top: 10px;
+            }
+            .control-wrapper {
+              display: flex;
+              margin-top: 10px;
+              .control {
+                padding: 1.5px;
+                background-color: "#FFFFFF";
+                border-radius: 10;
+                width: 100%;
               }
             }
           }
@@ -627,11 +641,7 @@
             margin-top: 20px;
             & button {
               width: 100%;
-              background: linear-gradient(
-                360deg,
-                rgb(21, 121, 255) 0%,
-                rgb(21, 123, 255) 100%
-              );
+              background: linear-gradient(360deg, rgb(21, 121, 255) 0%, rgb(21, 123, 255) 100%);
               color: rgb(255, 255, 255);
               border-radius: 8px;
               border: 0px;
