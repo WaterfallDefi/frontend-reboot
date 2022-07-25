@@ -26,14 +26,7 @@ const formatBigNumber2HexString = (bn: BigNumber) => {
 };
 
 function ClaimRedeposit(props: Props) {
-  const {
-    selectedMarket,
-    coingeckoPrices,
-    selectedDepositAssetIndex,
-    balance,
-    setModal,
-    flexGrow,
-  } = props;
+  const { selectedMarket, coingeckoPrices, selectedDepositAssetIndex, balance, setModal, flexGrow } = props;
 
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
   const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
@@ -42,6 +35,7 @@ function ClaimRedeposit(props: Props) {
 
   const [autoroll, setAutoroll] = useState(false);
   const [autorollPending, setAutorollPending] = useState<boolean>(true);
+  const [awaitingAutorollConfirm, setAwaitingAutorollConfirm] = useState<boolean>(false);
   const [autorollBalance, setAutorollBalance] = useState<string | undefined>();
 
   const { getAutoroll, changeAutoroll, getAutorollBalance } = useAutoroll(
@@ -95,18 +89,9 @@ function ClaimRedeposit(props: Props) {
         }
       });
     }
-  }, [
-    selectedMarket.autorollImplemented,
-    getAutorollBalance,
-    selectedMarket.assets,
-    coingeckoPrices,
-    autorollBalance,
-  ]);
+  }, [selectedMarket.autorollImplemented, getAutorollBalance, selectedMarket.assets, coingeckoPrices, autorollBalance]);
 
-  const claimReward = async (
-    _lockDurationIfLockNotExists: string,
-    _lockDurationIfLockExists: string
-  ) => {
+  const claimReward = async (_lockDurationIfLockNotExists: string, _lockDurationIfLockExists: string) => {
     setClaimRewardLoading(true);
 
     setModal({
@@ -145,9 +130,7 @@ function ClaimRedeposit(props: Props) {
       if (!balance) return;
       await onWithdraw(
         formatBigNumber2HexString(
-          !(balance instanceof Array)
-            ? new BigNumber(balance).times(BIG_TEN.pow(18))
-            : new BigNumber(0)
+          !(balance instanceof Array) ? new BigNumber(balance).times(BIG_TEN.pow(18)) : new BigNumber(0)
         ),
         balance instanceof Array ? balance : []
       );
@@ -179,11 +162,9 @@ function ClaimRedeposit(props: Props) {
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
             ? numeral(balance).format("0,0.[0000]")
-            : numeral(
-                new BigNumber(balance[selectedDepositAssetIndex]).dividedBy(
-                  BIG_TEN.pow(18)
-                )
-              ).format("0,0.[00000]")}{" "}
+            : numeral(new BigNumber(balance[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(18))).format(
+                "0,0.[00000]"
+              )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
         <div className="buttons">
@@ -196,22 +177,13 @@ function ClaimRedeposit(props: Props) {
           >
             Withdraw All
           </button>
-          <button
-            onClick={rollDepositPopup}
-            disabled={
-              !account || !+balance || selectedMarket?.isRetired || autoroll
-            }
-          >
+          <button onClick={rollDepositPopup} disabled={!account || !+balance || selectedMarket?.isRetired || autoroll}>
             Roll Deposit
           </button>
         </div>
         {account && selectedMarket.autorollImplemented ? (
           <div>
-            {autorollBalance !== "0" && (
-              <div style={{ marginTop: 10 }}>
-                Autoroll Balance: ${autorollBalance}
-              </div>
-            )}
+            {autorollBalance !== "0" && <div style={{ marginTop: 10 }}>Autoroll Balance: ${autorollBalance}</div>}
             <div style={{ display: "flex", marginTop: 10 }}>
               <label className="autorolling-label">Auto Rolling</label>
               <div
@@ -221,8 +193,22 @@ function ClaimRedeposit(props: Props) {
                   borderRadius: 10,
                 }}
               >
-                {/* !autorollPending */}
-                {/* <switch /> */}
+                {!autorollPending ? (
+                  <button
+                    disabled={awaitingAutorollConfirm}
+                    onClick={() => {
+                      setAwaitingAutorollConfirm(true);
+                      changeAutoroll(!autoroll).then((res) => {
+                        getAutoroll().then((res2) => {
+                          setAutoroll(res2);
+                          setAwaitingAutorollConfirm(false);
+                        });
+                      });
+                    }}
+                  >
+                    {autoroll ? "Stop Autoroll" : "Start Autoroll"}
+                  </button>
+                ) : null}
               </div>
             </div>
           </div>
@@ -232,11 +218,7 @@ function ClaimRedeposit(props: Props) {
         <div className="label">WTF Reward</div>
         <div className="rtn-amt">
           {totalPendingReward
-            ? numeral(
-                new BigNumber(totalPendingReward.toString()).dividedBy(
-                  BIG_TEN.pow(18)
-                )
-              ).format("0,0.[0000]")
+            ? numeral(new BigNumber(totalPendingReward.toString()).dividedBy(BIG_TEN.pow(18))).format("0,0.[0000]")
             : "--"}{" "}
           WTF
         </div>
