@@ -479,7 +479,7 @@
 
           .tranche {
             padding: 20px;
-            height: 100%;
+            min-height: 270px;
             position: relative;
             cursor: pointer;
             border: $highlight-color-dark 2px solid;
