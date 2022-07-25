@@ -157,7 +157,7 @@
 
         .section {
           background: $base-color;
-          padding: 12px 20px 12px 32px;
+          padding: 12px 32px;
           min-height: 140px;
           border-radius: 12px;
           border-left: 5px solid $highlight-color;
@@ -217,15 +217,30 @@
                   font-size: 14px;
                   border: 1px solid $text-color-lightest;
                   margin-right: 24px;
-                  background-color: $highlight-color;
+
                   color: $base-color;
                   cursor: pointer;
-
+                  &.start {
+                    background-color: $highlight-color;
+                  }
+                  &.stop {
+                    background-color: $text-color-lighter;
+                  }
                   &:disabled {
                     background-color: $text-color-lightest;
                     cursor: auto;
                   }
                 }
+              }
+            }
+            .autoroll-lbl {
+              font-size: 14px;
+              font-weight: 600;
+              &.on {
+                color: $highlight-color;
+              }
+              &.off {
+                color: $text-color-lighter;
               }
             }
           }
@@ -467,13 +482,13 @@
             height: 100%;
             position: relative;
             cursor: pointer;
-            border: $text-color-lightest 2px solid;
+            border: $highlight-color-dark 2px solid;
             box-sizing: border-box;
             border-radius: 8px;
             background: $base-color;
             &.selected {
               border-color: $highlight-color;
-              background: $text-color-lightest;
+              background: $layer-color;
             }
             &.disabled {
               opacity: 0.5;
@@ -590,8 +605,8 @@
               }
             }
             .separator {
-              background: $text-color-lightest;
-              height: 2px;
+              background: $highlight-color-dark;
+              height: 1px;
               margin: 40px 0px;
             }
           }
@@ -600,7 +615,7 @@
           padding: 25px;
           background: $base-color;
           border-radius: 12px;
-          border: $text-color-lightest 2px solid;
+          border: $highlight-color-dark 2px solid;
           z-index: 1;
 
           .row {
@@ -617,8 +632,8 @@
             }
           }
           .separator {
-            background: $text-color-lightest;
-            height: 2px;
+            background: $highlight-color-dark;
+            height: 1px;
             margin: 40px 0px;
           }
           input {
@@ -638,10 +653,10 @@
           .important-notes {
             margin-top: 20px;
             border-radius: 8px;
-            background-color: $text-color-lightest;
+            background-color: $layer-color;
             padding: 20px;
             display: flex;
-            min-height: 140px;
+            min-height: 69px;
 
             & > div:nth-of-type(1) {
               color: $highlight-color;
@@ -654,6 +669,9 @@
             }
             & > div:nth-of-type(2) > div:nth-of-type(2) {
               color: $text-color;
+            }
+            &.placeholder {
+              background-color: $base-color;
             }
           }
           .button {
@@ -679,6 +697,7 @@
             }
           }
           .redemption-fee {
+            min-height: 22px;
             color: $text-color-lightest;
             margin-top: 10px;
             text-align: center;

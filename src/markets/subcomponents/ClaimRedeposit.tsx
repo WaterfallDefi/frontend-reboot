@@ -195,7 +195,7 @@ function ClaimRedeposit(props: Props) {
               <div className="control">
                 {!autorollPending ? (
                   <button
-                    className="autoroll-btn"
+                    className={"autoroll-btn " + (autoroll ? "stop" : "start")}
                     disabled={awaitingAutorollConfirm}
                     onClick={() => {
                       setAwaitingAutorollConfirm(true);
@@ -212,6 +212,9 @@ function ClaimRedeposit(props: Props) {
                 ) : null}
               </div>
             </div>
+            <span className={"autoroll-lbl " + (autoroll ? "on" : "off")}>
+              {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
+            </span>
           </div>
         ) : null}
       </div>

@@ -356,12 +356,14 @@ function ApproveCardDefault(props: Props) {
           Please make sure you have enough AVAX to wrap, or else the transaction will fail!
         </div>
       ) : null}
-      {selectTrancheIdx ? (
+      {selectTrancheIdx !== undefined ? (
         <div className="important-notes">
           <div>Important Notes</div>
-          <div>{selectTrancheIdx !== undefined && notes[selectTrancheIdx]}</div>
+          <div>{notes[selectTrancheIdx]}</div>
         </div>
-      ) : null}
+      ) : (
+        <div className="important-notes placeholder" />
+      )}
 
       {account ? (
         approved ? (
@@ -412,9 +414,11 @@ function ApproveCardDefault(props: Props) {
           {selectTrancheIdx === 0 || (selectedMarket.trancheCount === 3 && selectTrancheIdx === 1)
             ? "Withdrawal Fee: All principal + yield of the current cycle * "
             : "Withdrawal Fee: All yield of the current cycle * "}
-          <span>{selectedMarket.tranches[selectTrancheIdx] + "%"}</span>
+          <span>{selectedMarket.tranches[selectTrancheIdx].fee + "%"}</span>
         </div>
-      ) : null}
+      ) : (
+        <div className="redemption-fee" />
+      )}
     </div>
   );
 }

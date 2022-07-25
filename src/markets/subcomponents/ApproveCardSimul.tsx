@@ -1,26 +1,18 @@
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { useEffect, useMemo, useState } from "react";
 
-import BigNumber from 'bignumber.js';
-import numeral from 'numeral';
+import BigNumber from "bignumber.js";
+import numeral from "numeral";
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 
-import { useBalances } from '../../hooks/useBalance';
-import { useCheckApproveAll } from '../../hooks/useCheckApprove';
-import { Market } from '../../types';
-import {
-  Modal,
-  ModalProps,
-  Network,
-} from '../../WaterfallDefi';
-import { useMultiApprove } from '../hooks/useApprove';
-import useInvestDirectMCSimul from '../hooks/useInvestDirectMCSimul';
-import useInvestMCSimul from '../hooks/useInvestMCSimul';
+import { useBalances } from "../../hooks/useBalance";
+import { useCheckApproveAll } from "../../hooks/useCheckApprove";
+import { Market } from "../../types";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { useMultiApprove } from "../hooks/useApprove";
+import useInvestDirectMCSimul from "../hooks/useInvestDirectMCSimul";
+import useInvestMCSimul from "../hooks/useInvestMCSimul";
 
 type Props = {
   selectedMarket: Market;
@@ -37,14 +29,9 @@ type Props = {
   isRedeposit?: boolean;
 };
 
-const formatNumberSeparator = (num: string) =>
-  numeral(num).format("0,0.[0000]");
+const formatNumberSeparator = (num: string) => numeral(num).format("0,0.[0000]");
 
-const compareNum = (
-  num1: string | number | undefined,
-  num2: string | undefined,
-  largerOnly = false
-) => {
+const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
   if (num1 === undefined) return;
   if (num2 === undefined) return;
   const _num1 = new BigNumber(num1);
@@ -84,11 +71,7 @@ function ApproveCardSimul(props: Props) {
     selectedMarket.address
   );
 
-  const { onMultiApprove } = useMultiApprove(
-    network,
-    selectedMarket.depositAssetAddresses,
-    selectedMarket.address
-  );
+  const { onMultiApprove } = useMultiApprove(network, selectedMarket.depositAssetAddresses, selectedMarket.address);
 
   const { onInvestDirectMCSimul } = useInvestDirectMCSimul(
     network,
@@ -96,18 +79,10 @@ function ApproveCardSimul(props: Props) {
     selectedMarket.abi,
     setModal
   );
-  const { onInvestMCSimul } = useInvestMCSimul(
-    network,
-    selectedMarket.address,
-    selectedMarket.abi,
-    setModal
-  );
+  const { onInvestMCSimul } = useInvestMCSimul(network, selectedMarket.address, selectedMarket.abi, setModal);
 
   //balance hooks
-  const multicurrencyBalancesWallet = useBalances(
-    network,
-    selectedMarket.depositAssetAddresses
-  );
+  const multicurrencyBalancesWallet = useBalances(network, selectedMarket.depositAssetAddresses);
 
   //drilled in by prop
   // const multicurrencyBalanceRes = selectedMarket.depositAssetAddresses.map(
@@ -180,15 +155,10 @@ function ApproveCardSimul(props: Props) {
   };
 
   const validateTextSimul = useMemo(() => {
-    const _remainings = remainingSimul.map((r) =>
-      r.remainingExact.replace(/,/g, "")
-    );
+    const _remainings = remainingSimul.map((r) => r.remainingExact.replace(/,/g, ""));
     const _balanceInputs = balanceInputSimul;
     const _balances = multicurrencyBalancesWallet.balances;
-    const _sum: BigNumber = balanceInputSimul.reduce(
-      (acc, next) => acc.plus(new BigNumber(next)),
-      new BigNumber(0)
-    );
+    const _sum: BigNumber = balanceInputSimul.reduce((acc, next) => acc.plus(new BigNumber(next)), new BigNumber(0));
     const validateTexts = _balanceInputs.map((b, i) => {
       let toReturn = ""; //falsy
       if (compareNum(b, _balances[i], true)) {
@@ -221,9 +191,7 @@ function ApproveCardSimul(props: Props) {
   // };
 
   const handleDepositSimul = async () => {
-    const _invalids: boolean[] =
-      validateTextSimul &&
-      validateTextSimul.map((v) => (v ? v.length > 0 : false));
+    const _invalids: boolean[] = validateTextSimul && validateTextSimul.map((v) => (v ? v.length > 0 : false));
     if (_invalids.some((v) => v)) return;
     const _invalids2: boolean[] = balanceInputSimul.map((b) => Number(b) < 0);
     if (_invalids2.some((v) => v)) return;
@@ -234,11 +202,7 @@ function ApproveCardSimul(props: Props) {
       state: Modal.Txn,
       txn: undefined,
       status: "PENDING",
-      message: balanceInputSimul
-        .map(
-          (b, i) => "Depositing " + b + " " + selectedMarket.assets[i] + ", "
-        )
-        .join(),
+      message: balanceInputSimul.map((b, i) => "Depositing " + b + " " + selectedMarket.assets[i] + ", ").join(),
     });
     const _amount = balanceInputSimul; //feels like .toString() is unnecessary if it's already typed? - 0xA
     try {
@@ -267,10 +231,7 @@ function ApproveCardSimul(props: Props) {
   };
 
   const handleMaxInputSimul = (index: number) => {
-    const _balance = multicurrencyBalancesWallet.balances[index].replace(
-      /,/g,
-      ""
-    );
+    const _balance = multicurrencyBalancesWallet.balances[index].replace(/,/g, "");
     const _remaining = remainingSimul[index].remaining.replace(/,/g, "");
     const balanceInputSimulCopy = [...balanceInputSimul];
     if (compareNum(_remaining, _balance)) {
@@ -282,13 +243,10 @@ function ApproveCardSimul(props: Props) {
       if (_remaining) {
         if (remainingSimul[index].depositableOrInTranche === "inTranche") {
           const _sum: BigNumber = balanceInputSimulCopy.reduce(
-            (acc, next, i) =>
-              i !== index ? acc.plus(new BigNumber(next)) : acc,
+            (acc, next, i) => (i !== index ? acc.plus(new BigNumber(next)) : acc),
             new BigNumber(0)
           );
-          const _remainingInTranche = new BigNumber(_remaining)
-            .minus(_sum)
-            .toString();
+          const _remainingInTranche = new BigNumber(_remaining).minus(_sum).toString();
           balanceInputSimulCopy[index] = _remainingInTranche;
           setBalanceInputSimul(balanceInputSimulCopy);
         } else {
@@ -299,18 +257,11 @@ function ApproveCardSimul(props: Props) {
     }
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    asset: string,
-    index: number
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, asset: string, index: number) => {
     const { value } = e.target;
     if (value.match("^[0-9]*[.]?[0-9]*$") != null) {
       const d = value.split(".");
-      if (
-        d.length === 2 &&
-        d[1].length > (asset === "USDC" || asset === "USDC.e" ? 6 : 18)
-      ) {
+      if (d.length === 2 && d[1].length > (asset === "USDC" || asset === "USDC.e" ? 6 : 18)) {
         return;
       }
       const _input1 = d[0].length > 1 ? d[0].replace(/^0+/, "") : d[0];
@@ -327,12 +278,7 @@ function ApproveCardSimul(props: Props) {
       <button
         style={{ height: 56 }}
         onClick={handleDepositSimul}
-        disabled={
-          !enabled ||
-          isSoldOut ||
-          balanceInputSimul.length === 0 ||
-          selectedMarket.isRetired
-        }
+        disabled={!enabled || isSoldOut || balanceInputSimul.length === 0 || selectedMarket.isRetired}
       >
         Deposit
       </button>
@@ -345,15 +291,9 @@ function ApproveCardSimul(props: Props) {
         <div key={asset}>
           <div style={{ marginTop: index !== 0 ? 50 : 0 }}>
             <div className="row">
+              <div>{isRedeposit ? "Total Roll-deposit Amount" : "Wallet Balance"}</div>
               <div>
-                {isRedeposit ? "Total Roll-deposit Amount" : "Wallet Balance"}
-              </div>
-              <div>
-                {formatNumberSeparator(
-                  numeral(multicurrencyBalancesWallet.balances[index]).format(
-                    "0,0.[0000]"
-                  )
-                )}{" "}
+                {formatNumberSeparator(numeral(multicurrencyBalancesWallet.balances[index]).format("0,0.[0000]"))}{" "}
                 {asset}
               </div>
             </div>
@@ -367,11 +307,7 @@ function ApproveCardSimul(props: Props) {
               <div>{asset}</div>
             </div>
             <input
-              style={
-                !depositLoading && validateTextSimul[index]
-                  ? { borderColor: "red" }
-                  : {}
-              }
+              style={!depositLoading && validateTextSimul[index] ? { borderColor: "red" } : {}}
               placeholder=""
               // value={balanceInputSimul[index]}
               onChange={(e) => {
@@ -383,27 +319,20 @@ function ApproveCardSimul(props: Props) {
               MAX
             </div>
           </div>
-          <div className="validate-text">
-            {!depositLoading && validateTextSimul[index]}
-          </div>
+          <div className="validate-text">{!depositLoading && validateTextSimul[index]}</div>
         </div>
       ))}
-      {selectTrancheIdx && (
+      {selectTrancheIdx !== undefined ? (
         <div className="important-notes">
           <div>Important Notes</div>
-          <div>{selectTrancheIdx !== undefined && notes[selectTrancheIdx]}</div>
+          <div>{notes[selectTrancheIdx]}</div>
         </div>
-      )}
+      ) : null}
 
       {account ? (
         approved ? (
           balanceInputSimul.some(
-            (b, i) =>
-              !compareNum(
-                new BigNumber(b.toString()).minus(new BigNumber(b)).toString(),
-                "0",
-                true
-              )
+            (b, i) => !compareNum(new BigNumber(b.toString()).minus(new BigNumber(b)).toString(), "0", true)
           ) ? (
             <HandleDepositButton />
           ) : (
@@ -411,10 +340,7 @@ function ApproveCardSimul(props: Props) {
           )
         ) : (
           <div className="button">
-            <button
-              onClick={() => !approveLoading && handleApprove}
-              disabled={selectedMarket.isRetired}
-            >
+            <button onClick={() => !approveLoading && handleApprove} disabled={selectedMarket.isRetired}>
               {!approveLoading ? "Approve" : "Approving..."}
             </button>
           </div>
@@ -431,14 +357,15 @@ function ApproveCardSimul(props: Props) {
         </div>
       )}
 
-      {selectTrancheIdx && enabled && (
+      {selectTrancheIdx && enabled ? (
         <div className="redemption-fee">
-          {selectTrancheIdx === 0 ||
-          (selectedMarket.trancheCount === 3 && selectTrancheIdx === 1)
+          {selectTrancheIdx === 0 || (selectedMarket.trancheCount === 3 && selectTrancheIdx === 1)
             ? "Withdrawal Fee: All principal + yield of the current cycle * "
             : "Withdrawal Fee: All yield of the current cycle * "}
-          <span>{selectedMarket.tranches[selectTrancheIdx] + "%"}</span>
+          <span>{selectedMarket.tranches[selectTrancheIdx].fee + "%"}</span>
         </div>
+      ) : (
+        <div className="redemption-fee" />
       )}
     </div>
   );
