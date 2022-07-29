@@ -337,18 +337,20 @@ function ApproveCardDefault(props: Props) {
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
       </div>
-      <input
-        type="number"
-        style={!depositLoading && validateText ? { borderColor: "red" } : {}}
-        placeholder=""
-        step={0.1}
-        min={0}
-        value={balanceInput}
-        onChange={handleInputChange}
-        disabled={!enabled || isSoldOut}
-      />
-      <div className="max-input" onClick={handleMaxInput}>
-        MAX
+      <div className="input-wrapper">
+        <div className="max-input" onClick={handleMaxInput}>
+          <span>MAX</span>
+        </div>
+        <input
+          type="number"
+          style={!depositLoading && validateText ? { borderColor: "red" } : {}}
+          placeholder=""
+          step={0.1}
+          min={0}
+          value={balanceInput}
+          onChange={handleInputChange}
+          disabled={!enabled || isSoldOut}
+        />
       </div>
       <div className="validate-text">{!depositLoading && validateText}</div>
       {selectedMarket.wrapAvax && Number(balanceInput.toString()) - Number(balance) > 0 ? (

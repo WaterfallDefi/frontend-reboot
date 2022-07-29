@@ -2,6 +2,14 @@ import dayjs from "dayjs";
 import numeral from "numeral";
 import { useState } from "react";
 
+const COLORS: { [key: string]: string } = {
+  Senior: "#FCB500",
+  Mezzanine: "#00A14A",
+  Junior: "#0066FF",
+  Fixed: "#FCB500",
+  Variable: "#0066FF",
+};
+
 type Props = {
   data: any;
   setSelectedMarket?: () => void;
@@ -68,6 +76,30 @@ function TableRow(props: Props) {
               </div>
             );
             break;
+          case "apr_portfolio":
+            elements.push(
+              <div className="col apr_portfolio" key={key}>
+                <div className="apr-wrapper">
+                  <div>
+                    <section>
+                      <span className="title">Total APR:</span>
+                      <span className="total" style={{ color: COLORS[data[key].trancheName] }}>
+                        {data[key].totalAPR} %
+                      </span>
+                    </section>
+                    <section>
+                      <span className="title">{data[key].trancheName} APR:</span>
+                      <span>{data[key].APR} %</span>
+                    </section>
+                    <section>
+                      <span className="title">WTF APR:</span>
+                      <span>{data[key].wtfAPR}</span>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            );
+            break;
           case "status":
             elements.push(
               <div className="col" key={key}>
@@ -102,11 +134,11 @@ function TableRow(props: Props) {
             break;
           case "yield":
             //typeof array returns "object"
-            console.log("typeof");
-            console.log(typeof columnData.yield);
+            // console.log("typeof");
+            // console.log(typeof columnData.yield);
             if (typeof columnData.yield === "object") {
-              console.log("yield");
-              console.log(columnData.yield);
+              // console.log("yield");
+              // console.log(columnData.yield);
               elements.push(
                 <div className="col" key={key}>
                   {columnData.yield.map((y: any, i: number) => (
@@ -120,6 +152,19 @@ function TableRow(props: Props) {
               elements.push(
                 <div className="col" key={key}>
                   {columnData.yield}
+                </div>
+              );
+            }
+            break;
+          case "principal":
+            // console.log(data[key]);
+            // console.log(typeof data[key].principal);
+            if (typeof data[key].principal === "object") {
+              elements.push(
+                <div className="col" key={key}>
+                  {data[key].map((p: any, i: number) => (
+                    <span key={i}>{p.value + " " + data[key].assets[i]}</span>
+                  ))}
                 </div>
               );
             }

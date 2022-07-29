@@ -15,6 +15,8 @@ import { fetchSubgraphQuery } from "./hooks/useSubgraphQuery";
 import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
 import { getEstimateYield } from "./hooks/getEstimateYield";
+import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
+import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -34,10 +36,14 @@ type Props = {
 function MyPortfolio(props: Props) {
   const { mode, network, markets } = props;
   const { account } = useWeb3React<Web3Provider>();
+  const { price: wtfPrice } = useWTFPriceLP();
 
   const [loaded, setLoaded] = useState<boolean>(false);
 
   const positions = usePositions(network, markets);
+
+  // console.log("POSITIONS!!");
+  // console.log(positions);
 
   const [userInvestsPayload, setUserInvestsPayload] = useState<{ userInvests: UserInvest[]; trancheCycles: any }[]>();
   const [filteredPayload, setFilteredPayload] = useState<{ userInvests: UserInvest[]; trancheCycles: any }[]>();
@@ -48,7 +54,7 @@ function MyPortfolio(props: Props) {
   const [selectedStatus, setSelectedStatus] = useState(-1);
 
   useEffect(() => {
-    if (!account) setLoaded(true);
+    if (!account) setLoaded(true); //???
     if (!loaded) {
       const subgraph = fetchSubgraphQuery(account);
 
@@ -81,8 +87,8 @@ function MyPortfolio(props: Props) {
           let _cycle;
           const _MCprincipals: string[][] = [];
 
-          console.log("_position");
-          console.log(_position);
+          // console.log("_position");
+          // console.log(_position);
 
           if (_position) {
             //single currency
@@ -139,8 +145,8 @@ function MyPortfolio(props: Props) {
                 _cycle === _market?.cycle &&
                 (_market?.status === PORTFOLIO_STATUS.PENDING || _market?.status === PORTFOLIO_STATUS.ACTIVE)
               ) {
-                console.log("MC principals");
-                console.log(_MCprincipals);
+                // console.log("MC principals");
+                // console.log(_MCprincipals);
                 userInvests = [
                   ..._MCprincipals.map((p, ti) => {
                     return {
@@ -294,9 +300,6 @@ function MyPortfolio(props: Props) {
                 isActiveCycle
               );
 
-              console.log("estimateYield");
-              console.log(estimateYield);
-
               const multicurrencyEstimateYield =
                 _market.isMulticurrency && _userInvest.MCprincipal
                   ? _userInvest.MCprincipal.map((p) =>
@@ -304,10 +307,23 @@ function MyPortfolio(props: Props) {
                     )
                   : [];
 
-              console.log("multicurrencyEstimateYield");
-              console.log(multicurrencyEstimateYield.toString());
+              const wtfAPY = isCurrentCycle
+                ? getWTFApr(
+                    network,
+                    formatAllocPoint(_market.pools[_userInvest.tranche], _market.totalAllocPoints),
+                    _market.tranches[_userInvest.tranche],
+                    _market.duration,
+                    _market.rewardPerBlock,
+                    wtfPrice,
+                    _market.assets
+                  )
+                : "-";
 
-              console.log(trancheCycle);
+              const netAPY = wtfAPY !== "-" ? Number(trancheAPY) + Number(numeral(wtfAPY).value()) : trancheAPY;
+
+              // console.log("END OF THE WORLD PARTY");
+              // console.log(_userInvest.principal);
+              // console.log(_userInvest.MCprincipal);
 
               return (
                 <TableRow
@@ -320,8 +336,16 @@ function MyPortfolio(props: Props) {
                       duration: _market.duration,
                     },
                     tranche: tranchesDisplayText[_userInvest.tranche],
-                    apr_portfolio: "asdf",
-                    principal: !_market.isMulticurrency ? _userInvest.principal : _userInvest.MCprincipal,
+                    apr_portfolio: {
+                      totalAPR: numeral(netAPY).format("0,0.[0000]"),
+                      trancheName: tranchesDisplayText[_userInvest.tranche],
+                      APR: numeral(trancheAPY).format("0,0.[0000]"),
+                      wtfAPR: wtfAPY !== "-" ? wtfAPY + " %" : "Unavailable",
+                    },
+                    principal: {
+                      principal: !_market.isMulticurrency ? _userInvest.principal : _userInvest.MCprincipal,
+                      assets: _market.assets,
+                    },
                     status: status,
                     yield: {
                       yield:

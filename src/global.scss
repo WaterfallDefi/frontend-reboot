@@ -125,6 +125,38 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
       }
     }
 
+    &.apr_portfolio {
+      display: grid;
+      gap: 20px;
+      grid-auto-flow: column;
+      h1 {
+        font-weight: 500;
+      }
+      & > p {
+        width: 70px;
+      }
+      & > div {
+        display: grid;
+        gap: 7px;
+        grid-auto-flow: row;
+        font-size: 12px;
+        section {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title {
+            color: $text-color;
+          }
+          span {
+            color: $text-color;
+          }
+          p {
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
     &.trancheCycle {
       display: grid;
       gap: 5px;

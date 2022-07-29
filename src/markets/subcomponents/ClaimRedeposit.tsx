@@ -147,9 +147,11 @@ function ClaimRedeposit(props: Props) {
       setWithdrawAllLoading(false);
     }
   };
+  //*XYZZY* TODO: ROLL DEPOSIT POP UP
   const rollDepositPopup = () => {
     setShowRedeposit(!showRedeposit);
   };
+  //*XYZZY* TODO: CLAIM POP UP
   const claimPopup = () => {
     if (totalPendingReward !== "0") setShowClaim(!showClaim);
     // setShowClaim(!showClaim);
