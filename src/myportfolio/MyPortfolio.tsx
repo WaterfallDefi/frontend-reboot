@@ -40,10 +40,7 @@ function MyPortfolio(props: Props) {
 
   const [loaded, setLoaded] = useState<boolean>(false);
 
-  const positions = usePositions(network, markets);
-
-  // console.log("POSITIONS!!");
-  // console.log(positions);
+  const positions = usePositions(markets);
 
   const [userInvestsPayload, setUserInvestsPayload] = useState<{ userInvests: UserInvest[]; trancheCycles: any }[]>();
   const [filteredPayload, setFilteredPayload] = useState<{ userInvests: UserInvest[]; trancheCycles: any }[]>();
@@ -54,7 +51,7 @@ function MyPortfolio(props: Props) {
   const [selectedStatus, setSelectedStatus] = useState(-1);
 
   useEffect(() => {
-    if (!account) setLoaded(true); //???
+    if (!account) setLoaded(true); //figure out how to reset loaded logic when account logged in, another useEffect?
     if (!loaded) {
       const subgraph = fetchSubgraphQuery(account);
 
@@ -67,10 +64,10 @@ function MyPortfolio(props: Props) {
 
         for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
           const _subgraphResultMarket = subgraphQueryResult[marketIdx];
+
           if (!_subgraphResultMarket) continue;
 
-          const _markets = markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax));
-          const _market = _markets[marketIdx];
+          const _market = markets[marketIdx];
 
           const { userInvests: _userInvests } = _subgraphResultMarket;
 
@@ -87,9 +84,6 @@ function MyPortfolio(props: Props) {
           let _cycle;
           const _MCprincipals: string[][] = [];
 
-          // console.log("_position");
-          // console.log(_position);
-
           if (_position) {
             //single currency
             if (!_market.isMulticurrency) {
@@ -98,14 +92,14 @@ function MyPortfolio(props: Props) {
                 _cycle = new BigNumber(_position[i][0]._hex).toString();
 
                 //single currency, i = individual tranche
-                const _principal = !_market?.isMulticurrency
+                const _principal = !_market.isMulticurrency
                   ? numeral(new BigNumber(_position[i][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
                       "0,0.[0000]"
                     )
                   : "";
 
                 if (
-                  _cycle === _market?.cycle &&
+                  _cycle === _market.cycle &&
                   (_market?.status === PORTFOLIO_STATUS.PENDING || _market?.status === PORTFOLIO_STATUS.ACTIVE)
                 ) {
                   userInvests = [
@@ -117,6 +111,7 @@ function MyPortfolio(props: Props) {
                       investAt: 0,
                       owner: "",
                       principal: _principal,
+                      MCprincipal: [],
                       tranche: i,
                       interest: "0",
                       earningsAPY: "NaN",
@@ -142,11 +137,9 @@ function MyPortfolio(props: Props) {
                 );
               }
               if (
-                _cycle === _market?.cycle &&
-                (_market?.status === PORTFOLIO_STATUS.PENDING || _market?.status === PORTFOLIO_STATUS.ACTIVE)
+                _cycle === _market.cycle &&
+                (_market.status === PORTFOLIO_STATUS.PENDING || _market.status === PORTFOLIO_STATUS.ACTIVE)
               ) {
-                // console.log("MC principals");
-                // console.log(_MCprincipals);
                 userInvests = [
                   ..._MCprincipals.map((p, ti) => {
                     return {
@@ -156,7 +149,7 @@ function MyPortfolio(props: Props) {
                       id: "",
                       investAt: 0,
                       owner: "",
-                      principal: null,
+                      principal: undefined,
                       MCprincipal: p,
                       tranche: ti,
                       interest: "0",
@@ -170,9 +163,12 @@ function MyPortfolio(props: Props) {
           }
           _investHistoryResult[marketIdx].userInvests = userInvests;
         }
+        console.log(_investHistoryResult);
         setUserInvestsPayload(_investHistoryResult);
-        setLoaded(true);
       });
+    }
+    if (positions.length === markets.length) {
+      setLoaded(true); //this loaded condition works kinda for now, but also not really
     }
   }, [markets, network, account, positions, loaded]);
 
@@ -184,7 +180,7 @@ function MyPortfolio(props: Props) {
       if (!_investHistoryResult[marketIdx]) continue;
       const { userInvests: _userInvests, trancheCycles } = _investHistoryResult[marketIdx];
       const filtered = _userInvests?.filter((_userInvest: any) => {
-        //you have to filter in both places, becasue the first is simply to filter for the chain multicall, this one is to filter for render
+        //even though we're loading positions for both chains at once, this is to filter the render (change later?)
         if (
           (markets[marketIdx].isAvax && network === Network.BNB) ||
           (!markets[marketIdx].isAvax && network === Network.AVAX)
@@ -262,107 +258,98 @@ function MyPortfolio(props: Props) {
         </div>
       </div>
       {filteredPayload &&
-        filteredPayload
-          // .filter((m) => m.network === network)
-          .map((_userInvestMarket, __idx) => {
-            const { userInvests, trancheCycles } = _userInvestMarket;
+        filteredPayload.map((_userInvestMarket, __idx) => {
+          const { userInvests, trancheCycles } = _userInvestMarket;
 
-            return userInvests.map((_userInvest: UserInvest, _idx: number) => {
-              const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+          return userInvests.map((_userInvest: UserInvest, _idx: number) => {
+            const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
 
-              const trancheCycle = trancheCycles[trancheCycleId];
+            const trancheCycle = trancheCycles[trancheCycleId];
 
-              const _market = markets[__idx];
+            const _market = markets[__idx];
 
-              const tranchesDisplayText =
-                _market.trancheCount === 3 ? ["Senior", "Mezzanine", "Junior"] : ["Fixed", "Variable"];
+            const tranchesDisplayText =
+              _market.trancheCount === 3 ? ["Senior", "Mezzanine", "Junior"] : ["Fixed", "Variable"];
 
-              const status =
-                trancheCycle.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING
-                  ? PORTFOLIO_STATUS.PENDING
-                  : Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1
-                  ? PORTFOLIO_STATUS.ACTIVE
-                  : (Number(_market.cycle) !== trancheCycle?.cycle && trancheCycle?.state === 1) ||
-                    trancheCycle?.state === 2
-                  ? "MATURED"
-                  : "";
+            const status =
+              trancheCycle?.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING
+                ? PORTFOLIO_STATUS.PENDING
+                : Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1
+                ? PORTFOLIO_STATUS.ACTIVE
+                : (Number(_market.cycle) !== trancheCycle?.cycle && trancheCycle?.state === 1) ||
+                  trancheCycle?.state === 2
+                ? "MATURED"
+                : "";
 
-              const isCurrentCycle = _market && _market.cycle === _userInvest.cycle.toString();
+            const isCurrentCycle = _market && _market.cycle === _userInvest.cycle.toString();
 
-              const trancheAPY = isCurrentCycle ? _market.tranches[_userInvest.tranche].apy : _userInvest.earningsAPY;
+            const trancheAPY = isCurrentCycle ? _market.tranches[_userInvest.tranche].apy : _userInvest.earningsAPY;
 
-              const isActiveCycle = Number(_market.cycle) === trancheCycle.cycle && trancheCycle.state === 1;
+            const isActiveCycle = Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1;
 
-              const estimateYield = getEstimateYield(
-                _userInvest.principal,
-                trancheAPY,
-                trancheCycle.startAt,
-                isActiveCycle
-              );
+            const estimateYield = getEstimateYield(
+              _userInvest.principal,
+              trancheAPY,
+              trancheCycle?.startAt,
+              isActiveCycle
+            );
 
-              const multicurrencyEstimateYield =
-                _market.isMulticurrency && _userInvest.MCprincipal
-                  ? _userInvest.MCprincipal.map((p) =>
-                      getEstimateYield(p, trancheAPY, trancheCycle.startAt, isActiveCycle)
-                    )
-                  : [];
+            const multicurrencyEstimateYield = _userInvest.MCprincipal.map((p) =>
+              getEstimateYield(p, trancheAPY, trancheCycle?.startAt, isActiveCycle)
+            );
 
-              const wtfAPY = isCurrentCycle
-                ? getWTFApr(
-                    network,
-                    formatAllocPoint(_market.pools[_userInvest.tranche], _market.totalAllocPoints),
-                    _market.tranches[_userInvest.tranche],
-                    _market.duration,
-                    _market.rewardPerBlock,
-                    wtfPrice,
-                    _market.assets
-                  )
-                : "-";
+            const wtfAPY = isCurrentCycle
+              ? getWTFApr(
+                  network,
+                  formatAllocPoint(_market.pools[_userInvest.tranche], _market.totalAllocPoints),
+                  _market.tranches[_userInvest.tranche],
+                  _market.duration,
+                  _market.rewardPerBlock,
+                  wtfPrice,
+                  _market.assets
+                )
+              : "-";
 
-              const netAPY = wtfAPY !== "-" ? Number(trancheAPY) + Number(numeral(wtfAPY).value()) : trancheAPY;
+            const netAPY = wtfAPY !== "-" ? Number(trancheAPY) + Number(numeral(wtfAPY).value()) : trancheAPY;
 
-              // console.log("END OF THE WORLD PARTY");
-              // console.log(_userInvest.principal);
-              // console.log(_userInvest.MCprincipal);
-
-              return (
-                <TableRow
-                  key={__idx}
-                  data={{
-                    portfolio: _market.portfolio,
+            return (
+              <TableRow
+                key={__idx.toString() + "-" + _idx}
+                data={{
+                  portfolio: _market.portfolio,
+                  assets: _market.assets,
+                  trancheCycle: {
+                    trancheCycle: trancheCycle?.state !== 0 ? trancheCycle : undefined,
+                    duration: _market.duration,
+                  },
+                  tranche: tranchesDisplayText[_userInvest.tranche],
+                  apr_portfolio: {
+                    totalAPR: numeral(netAPY).format("0,0.[0000]"),
+                    trancheName: tranchesDisplayText[_userInvest.tranche],
+                    APR: numeral(trancheAPY).format("0,0.[0000]"),
+                    wtfAPR: wtfAPY !== "-" ? wtfAPY + " %" : "Unavailable",
+                  },
+                  principal: {
+                    principal: _market.isMulticurrency ? _userInvest.MCprincipal : _userInvest.principal,
                     assets: _market.assets,
-                    trancheCycle: {
-                      trancheCycle: trancheCycle.state !== 0 ? trancheCycle : undefined,
-                      duration: _market.duration,
-                    },
-                    tranche: tranchesDisplayText[_userInvest.tranche],
-                    apr_portfolio: {
-                      totalAPR: numeral(netAPY).format("0,0.[0000]"),
-                      trancheName: tranchesDisplayText[_userInvest.tranche],
-                      APR: numeral(trancheAPY).format("0,0.[0000]"),
-                      wtfAPR: wtfAPY !== "-" ? wtfAPY + " %" : "Unavailable",
-                    },
-                    principal: {
-                      principal: !_market.isMulticurrency ? _userInvest.principal : _userInvest.MCprincipal,
-                      assets: _market.assets,
-                    },
-                    status: status,
-                    yield: {
-                      yield:
-                        trancheCycle.state !== 2
-                          ? !_market.isMulticurrency
-                            ? estimateYield
-                            : multicurrencyEstimateYield
-                          : undefined,
-                      assets: _market.assets,
-                      interest: _userInvest.interest,
-                    },
-                  }}
-                  openFold={true}
-                />
-              );
-            });
-          })}
+                  },
+                  status: status,
+                  yield: {
+                    yield:
+                      trancheCycle?.state !== 2
+                        ? !_market.isMulticurrency
+                          ? estimateYield
+                          : multicurrencyEstimateYield
+                        : undefined,
+                    assets: _market.assets,
+                    interest: _userInvest.interest,
+                  },
+                }}
+                openFold={true}
+              />
+            );
+          });
+        })}
       {filtered === 0 ? (
         <div className="no-data">
           <NoData />

@@ -172,6 +172,7 @@ export const fetchSubgraphQuery = async (
               .toFormat(4)
               .toString()
           ).format("0,0.[0000]"),
+          MCprincipal: [],
           tranche,
           interest: numeral(
             interest.dividedBy(BIG_TEN.pow(decimals)).toFormat(4).toString()

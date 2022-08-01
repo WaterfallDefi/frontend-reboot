@@ -157,12 +157,10 @@ function TableRow(props: Props) {
             }
             break;
           case "principal":
-            // console.log(data[key]);
-            // console.log(typeof data[key].principal);
             if (typeof data[key].principal === "object") {
               elements.push(
                 <div className="col" key={key}>
-                  {data[key].map((p: any, i: number) => (
+                  {data[key].principal.map((p: any, i: number) => (
                     <span key={i}>{p.value + " " + data[key].assets[i]}</span>
                   ))}
                 </div>

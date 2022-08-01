@@ -112,7 +112,7 @@ export type UserInvest = {
   tranche: number;
   interest: string;
   earningsAPY: string;
-  MCprincipal?: string[];
+  MCprincipal: string[];
 };
 
 export type EthersCall = {

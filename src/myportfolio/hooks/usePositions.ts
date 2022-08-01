@@ -5,35 +5,31 @@ import { useEffect, useState } from "react";
 import { multicall } from "../../hooks/getContract";
 import { Network } from "../../WaterfallDefi";
 
-export const usePositions = (network: Network, marketList: Market[]) => {
+export const usePositions = (marketList: Market[]) => {
   const { account } = useWeb3React<Web3Provider>();
   // const { slowRefresh } = useRefresh();
   const [result, setResult] = useState<any>([]);
 
-  const [filteredMarketList] = useState<Market[]>(
-    network === Network.AVAX ? marketList.filter((m) => m.isAvax) : marketList.filter((m) => !m.isAvax)
-  );
-
   useEffect(() => {
     const fetchBalance = async () => {
       const _result = [];
-      for (let i = 0; i < filteredMarketList.length; i++) {
-        const calls = !filteredMarketList[i].isMulticurrency
+      for (let i = 0; i < marketList.length; i++) {
+        const calls = !marketList[i].isMulticurrency
           ? [
               {
-                address: filteredMarketList[i].address,
+                address: marketList[i].address,
                 name: "userInvest",
                 params: [account, 0],
               },
               {
-                address: filteredMarketList[i].address,
+                address: marketList[i].address,
                 name: "userInvest",
                 params: [account, 1],
               },
-              ...(filteredMarketList[i].trancheCount === 3
+              ...(marketList[i].trancheCount === 3
                 ? [
                     {
-                      address: filteredMarketList[i].address,
+                      address: marketList[i].address,
                       name: "userInvest",
                       params: [account, 2],
                     },
@@ -41,28 +37,28 @@ export const usePositions = (network: Network, marketList: Market[]) => {
                 : []),
             ]
           : [];
-        if (filteredMarketList[i].isMulticurrency) {
+        if (marketList[i].isMulticurrency) {
           calls.push({
-            address: filteredMarketList[i].address,
+            address: marketList[i].address,
             name: "userCycle",
             params: [account],
           });
-          filteredMarketList[i].depositAssetAddresses.forEach((a) => {
+          marketList[i].depositAssetAddresses.forEach((a) => {
             calls.push(
               {
-                address: filteredMarketList[i].address,
+                address: marketList[i].address,
                 name: "userInvest",
                 params: [account, 0, a],
               },
               {
-                address: filteredMarketList[i].address,
+                address: marketList[i].address,
                 name: "userInvest",
                 params: [account, 1, a],
               },
-              ...(filteredMarketList[i].trancheCount === 3
+              ...(marketList[i].trancheCount === 3
                 ? [
                     {
-                      address: filteredMarketList[i].address,
+                      address: marketList[i].address,
                       name: "userInvest",
                       params: [account, 2, a],
                     },
@@ -71,15 +67,14 @@ export const usePositions = (network: Network, marketList: Market[]) => {
             );
           });
         }
-        const userInvest = await multicall(network, filteredMarketList[i].abi, calls);
+        const userInvest = await multicall(marketList[i].isAvax ? Network.AVAX : Network.BNB, marketList[i].abi, calls);
         // _result.push(userInvest);
         _result[i] = userInvest;
       }
-
       setResult(_result);
     };
     if (account) fetchBalance();
-  }, [network, filteredMarketList, account]);
+  }, [account, marketList]);
 
   return result;
 };
