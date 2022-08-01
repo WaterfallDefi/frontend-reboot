@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import BigNumber from 'bignumber.js';
-import dayjs from 'dayjs';
-import Countdown from 'react-countdown';
+import BigNumber from "bignumber.js";
+import dayjs from "dayjs";
+import Countdown from "react-countdown";
 
-import { Market } from '../../types';
-import { ModalProps } from '../../WaterfallDefi';
-import getRemaining, { getRemainingMulticurrency } from '../hooks/getRemaining';
-import { Hill } from '../svgs/Hill';
-import ApproveCardDefault from './ApproveCardDefault';
-import ApproveCardSimul from './ApproveCardSimul';
-import TrancheCard from './TrancheCard';
+import { Market } from "../../types";
+import { ModalProps } from "../../WaterfallDefi";
+import getRemaining, { getRemainingMulticurrency } from "../hooks/getRemaining";
+import { Hill } from "../svgs/Hill";
+import ApproveCardDefault from "./ApproveCardDefault";
+import ApproveCardSimul from "./ApproveCardSimul";
+import TrancheCard from "./TrancheCard";
 
 const BIG_TEN = new BigNumber(10);
 
 type Props = {
+  isRedeposit: boolean;
   selectedMarket: Market;
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
@@ -26,11 +27,7 @@ type Props = {
   balance: string | string[];
 };
 
-const compareNum = (
-  num1: string | number | undefined,
-  num2: string | undefined,
-  largerOnly = false
-) => {
+const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
   if (num1 === undefined) return false; //modified, this case will never happen
   if (num2 === undefined) return false; // ""
   const _num1 = new BigNumber(num1);
@@ -56,10 +53,7 @@ const handleReminder = (startTime: number, endTime: number) => {
     "T" +
     new Date(endTime * 1000).getHours() +
     new Date(endTime * 1000).getMinutes();
-  window?.open(
-    `https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Waterfall`,
-    "_blank"
-  );
+  window?.open(`https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Waterfall`, "_blank");
 };
 
 const formatTimestamp = (num: string | number) => {
@@ -70,6 +64,7 @@ const formatTimestamp = (num: string | number) => {
 
 function Deposit(props: Props) {
   const {
+    isRedeposit,
     selectedMarket,
     coingeckoPrices,
     selectedDepositAssetIndex,
@@ -81,23 +76,16 @@ function Deposit(props: Props) {
     balance,
   } = props;
 
-  const [selectTrancheIdx, setSelectTrancheIdx] = useState<number | undefined>(
-    undefined
-  );
+  const [selectTrancheIdx, setSelectTrancheIdx] = useState<number | undefined>(undefined);
 
   const deposited: BigNumber[] = [];
   const tokens = selectedMarket.tokens;
-  const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined =
-    selectedMarket.trancheInvests;
+  const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined = selectedMarket.trancheInvests;
   if (trancheInvest) {
     selectedMarket.assets.forEach((a, i) =>
       deposited.push(
         trancheInvest
-          .reduce(
-            (acc: BigNumber, next) =>
-              acc.plus(new BigNumber(next[i].hex.toString())),
-            new BigNumber(0)
-          )
+          .reduce((acc: BigNumber, next) => acc.plus(new BigNumber(next[i].hex.toString())), new BigNumber(0))
           .dividedBy(BIG_TEN.pow(18))
       )
     );
@@ -107,12 +95,10 @@ function Deposit(props: Props) {
       new BigNumber(t.percent.hex).dividedBy(BIG_TEN.pow(5))
     )
   );
-  const remainingDepositable = new BigNumber(
-    maxDeposits[selectedDepositAssetIndex]
-  ).minus(deposited[selectedDepositAssetIndex]);
-  const remainingDepositableSimul = maxDeposits.map((md, i) =>
-    new BigNumber(md).minus(deposited[i])
+  const remainingDepositable = new BigNumber(maxDeposits[selectedDepositAssetIndex]).minus(
+    deposited[selectedDepositAssetIndex]
   );
+  const remainingDepositableSimul = maxDeposits.map((md, i) => new BigNumber(md).minus(deposited[i]));
 
   const { remaining, remainingExact } =
     selectTrancheIdx !== undefined
@@ -123,14 +109,9 @@ function Deposit(props: Props) {
               ? selectedMarket.tranches[selectTrancheIdx]?.principal
               : (
                   Number(selectedMarket.tranches[selectTrancheIdx]?.principal) +
-                  Number(
-                    selectedMarket.tranches[selectTrancheIdx]?.autoPrincipal
-                  )
+                  Number(selectedMarket.tranches[selectTrancheIdx]?.autoPrincipal)
                 ).toString(),
-            selectedMarket.assets[0] === "USDC" ||
-              selectedMarket.assets[0] === "USDC.e"
-              ? 6
-              : 18
+            selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e" ? 6 : 18
           )
         : getRemainingMulticurrency(
             selectedMarket.tranches[selectTrancheIdx]?.target,
@@ -142,17 +123,11 @@ function Deposit(props: Props) {
   const returnWidth = (assetIndex: number) =>
     deposited[assetIndex]
       ? deposited[assetIndex]
-          .dividedBy(
-            tokens.length > 0
-              ? maxDeposits[assetIndex].toString()
-              : new BigNumber(1)
-          )
+          .dividedBy(tokens.length > 0 ? maxDeposits[assetIndex].toString() : new BigNumber(1))
           .multipliedBy(100)
           .toString()
       : 0;
-  const widths = selectedMarket.isMulticurrency
-    ? selectedMarket.assets.map((a, i) => returnWidth(i))
-    : [];
+  const widths = selectedMarket.isMulticurrency ? selectedMarket.assets.map((a, i) => returnWidth(i)) : [];
 
   return (
     <div className="deposit">
@@ -161,11 +136,7 @@ function Deposit(props: Props) {
         <div className="next-cycle">
           Next Cycle
           <Countdown
-            date={
-              (Number(selectedMarket.duration) +
-                Number(selectedMarket.actualStartAt)) *
-              1000
-            }
+            date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt)) * 1000}
             renderer={({ days, hours, minutes, seconds, completed }) => {
               return (
                 <span>
@@ -181,14 +152,10 @@ function Deposit(props: Props) {
         </div>
         <div className="active-cycle">
           Active Cycle
+          {formatTimestamp(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0)} -
           {formatTimestamp(
-            selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0
-          )}{" "}
-          -
-          {formatTimestamp(
-            Number(
-              selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0
-            ) + Number(selectedMarket.duration ? selectedMarket.duration : 0)
+            Number(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0) +
+              Number(selectedMarket.duration ? selectedMarket.duration : 0)
           )}{" "}
           {selectedMarket.duration}
         </div>
@@ -197,8 +164,7 @@ function Deposit(props: Props) {
           onClick={() =>
             handleReminder(
               Number(selectedMarket.actualStartAt),
-              Number(selectedMarket.actualStartAt) +
-                Number(selectedMarket.duration)
+              Number(selectedMarket.actualStartAt) + Number(selectedMarket.duration)
             )
           }
         >
@@ -218,22 +184,15 @@ function Deposit(props: Props) {
           <div className="select-deposit-assets">
             {selectedMarket.assets.map((asset, index) => (
               <div className="select-deposit-asset" key={asset}>
-                <div
-                  className="coin"
-                  style={{ backgroundImage: `url(/coins/${asset}.png)` }}
-                />
+                <div className="coin" style={{ backgroundImage: `url(/coins/${asset}.png)` }} />
                 <div className="step-name">
                   <span className="rem-value">
-                    {deposited[index].toString()} /{" "}
-                    {maxDeposits[index].toString()}
+                    {deposited[index].toString()} / {maxDeposits[index].toString()}
                   </span>{" "}
                   Remaining
                 </div>
                 <div className="remaining-depositable-outer">
-                  <div
-                    className="remaining-depositable-inner"
-                    style={{ width: widths[index] + "%" }}
-                  />
+                  <div className="remaining-depositable-inner" style={{ width: widths[index] + "%" }} />
                 </div>
               </div>
             ))}
@@ -241,12 +200,7 @@ function Deposit(props: Props) {
         ) : null}
       </div>
       <div className="deposit-item">
-        <div
-          className={
-            "tranches" +
-            (selectedMarket.trancheCount === 2 ? " two-tranches" : "")
-          }
-        >
+        <div className={"tranches" + (selectedMarket.trancheCount === 2 ? " two-tranches" : "")}>
           {selectedMarket.tranches.map((t, i) => {
             return (
               <TrancheCard
@@ -264,6 +218,7 @@ function Deposit(props: Props) {
         </div>
         {!simulDeposit ? (
           <ApproveCardDefault
+            isRedeposit={isRedeposit}
             selectedMarket={selectedMarket}
             selectedDepositAssetIndex={selectedDepositAssetIndex}
             setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
@@ -283,12 +238,8 @@ function Deposit(props: Props) {
                       selectedMarket.tranches[selectTrancheIdx].target
                     )
                   : compareNum(
-                      Number(
-                        selectedMarket.tranches[selectTrancheIdx].autoPrincipal
-                      ) +
-                        Number(
-                          selectedMarket.tranches[selectTrancheIdx].principal
-                        ),
+                      Number(selectedMarket.tranches[selectTrancheIdx].autoPrincipal) +
+                        Number(selectedMarket.tranches[selectTrancheIdx].principal),
                       selectedMarket.tranches[selectTrancheIdx].target
                     )
                 : false
@@ -296,6 +247,7 @@ function Deposit(props: Props) {
           />
         ) : (
           <ApproveCardSimul
+            isRedeposit={isRedeposit}
             selectedMarket={selectedMarket}
             setSimulDeposit={setSimulDeposit}
             setModal={setModal}

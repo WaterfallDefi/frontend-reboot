@@ -1,29 +1,19 @@
-import './Header.scss';
+import "./Header.scss";
 
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from "react";
 
-import {
-  Link,
-  useLocation,
-} from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 
-import {
-  Modal,
-  ModalProps,
-  Mode,
-  Network,
-} from '../WaterfallDefi';
-import useAuth, { useEagerConnect } from './hooks/useAuth';
-import ConnectWalletModal from './subcomponents/ConnectWalletModal';
-import TransactionModal from './subcomponents/TransactionModal';
-import { Dark } from './svgs/dark';
-import { Light } from './svgs/light';
+import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
+import useAuth, { useEagerConnect } from "./hooks/useAuth";
+import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
+import TransactionModal from "./subcomponents/TransactionModal";
+import { Dark } from "./svgs/dark";
+import { Light } from "./svgs/light";
+import RedepositModal from "./subcomponents/RedepositModal";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -93,9 +83,7 @@ function Header(props: Props) {
         className={"mask" + (modal.state !== Modal.None ? " visible" : "")}
         onClick={() => setModal({ state: Modal.None })}
       />
-      {modal.state === Modal.ConnectWallet ? (
-        <ConnectWalletModal network={network} />
-      ) : null}
+      {modal.state === Modal.ConnectWallet ? <ConnectWalletModal network={network} /> : null}
       {modal.state === Modal.Txn ? (
         <TransactionModal
           network={network}
@@ -105,55 +93,46 @@ function Header(props: Props) {
           setModal={setModal}
         />
       ) : null}
+      {modal.state === Modal.Redeposit && modal.redepositProps ? (
+        <RedepositModal
+          selectedMarket={modal.redepositProps.selectedMarket}
+          selectedDepositAssetIndex={modal.redepositProps.selectedDepositAssetIndex}
+          balance={modal.redepositProps.balance}
+          simulDeposit={modal.redepositProps.simulDeposit}
+          coingeckoPrices={modal.redepositProps.coingeckoPrices}
+          setSelectedDepositAssetIndex={modal.redepositProps.setSelectedDepositAssetIndex}
+          setSimulDeposit={modal.redepositProps.setSimulDeposit}
+          setModal={modal.redepositProps.setModal}
+          setMarkets={modal.redepositProps.setMarkets}
+        />
+      ) : null}
       <div className="pc-left">
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
-          <Link
-            className="link"
-            to={"/"}
-            data-selected={location.pathname === "/"}
-          >
+          <Link className="link" to={"/"} data-selected={location.pathname === "/"}>
             Dashboard
           </Link>
         </div>
         <div className="menu-block-wrapper">
-          <Link
-            className="link"
-            to={"/markets"}
-            data-selected={location.pathname === "/markets"}
-          >
+          <Link className="link" to={"/markets"} data-selected={location.pathname === "/markets"}>
             Markets
           </Link>
         </div>
         <div className="menu-block-wrapper">
-          <Link
-            className="link"
-            to={"/portfolio"}
-            data-selected={location.pathname === "/portfolio"}
-          >
+          <Link className="link" to={"/portfolio"} data-selected={location.pathname === "/portfolio"}>
             My Portfolio
           </Link>
         </div>
         <div className="menu-block-wrapper">
-          <Link
-            className="link"
-            to={"/stake"}
-            data-selected={location.pathname === "/stake"}
-          >
+          <Link className="link" to={"/stake"} data-selected={location.pathname === "/stake"}>
             Stake
           </Link>
         </div>
         <div className="menu-block-wrapper">
-          <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">
-            User Guide
-          </a>
+          <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
         </div>
         <div className="menu-block-wrapper">
-          <Link
-            className="link"
-            to={"/blog"}
-            data-selected={location.pathname === "/blog"}
-          >
+          <Link className="link" to={"/blog"} data-selected={location.pathname === "/blog"}>
             Blog
           </Link>
         </div>
@@ -166,27 +145,17 @@ function Header(props: Props) {
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
-            <div
-              className={
-                "network" + (network === Network.AVAX ? " avax" : " bnb")
-              }
-            >
+            <div className={"network" + (network === Network.AVAX ? " avax" : " bnb")}>
               <div className="dropdown-triangle">▼</div>
               {network === Network.AVAX ? "AVAX" : "BNB"}
             </div>
             {dropdownOpen ? (
               network === Network.AVAX ? (
-                <div
-                  className="network bnb option"
-                  onClick={() => switchNetwork(Network.BNB)}
-                >
+                <div className="network bnb option" onClick={() => switchNetwork(Network.BNB)}>
                   BNB
                 </div>
               ) : (
-                <div
-                  className="network avax option"
-                  onClick={() => switchNetwork(Network.AVAX)}
-                >
+                <div className="network avax option" onClick={() => switchNetwork(Network.AVAX)}>
                   AVAX
                 </div>
               )

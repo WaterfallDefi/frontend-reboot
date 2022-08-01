@@ -17,6 +17,7 @@ import useInvestDirect from "../hooks/useInvestDirect";
 import useWrapAVAXContract from "../hooks/useWrapAVAX";
 
 type Props = {
+  isRedeposit: boolean;
   selectedMarket: Market;
   selectedDepositAssetIndex: number;
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -29,7 +30,6 @@ type Props = {
   remainingExact: string;
   enabled: boolean;
   isSoldOut: boolean;
-  isRedeposit?: boolean;
 };
 
 const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {

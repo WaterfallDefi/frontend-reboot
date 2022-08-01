@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -28,6 +28,7 @@ export enum Modal {
   None = 0,
   Txn = 1,
   ConnectWallet = 2,
+  Redeposit = 3,
 }
 
 export type ModalProps = {
@@ -35,6 +36,17 @@ export type ModalProps = {
   txn?: string;
   status?: string;
   message?: string;
+  redepositProps?: {
+    selectedMarket: Market;
+    selectedDepositAssetIndex: number;
+    balance: string;
+    simulDeposit: boolean;
+    coingeckoPrices: any;
+    setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
+    setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
+    setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+    setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
+  };
 };
 
 function WaterfallDefi() {
