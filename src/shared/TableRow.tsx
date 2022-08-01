@@ -58,19 +58,19 @@ function TableRow(props: Props) {
             elements.push(
               <div className="col apr_markets" key={key}>
                 <div className="tranche-apr">
-                  <span>{data[key].length === 2 ? "Fixed" : "Senior"}</span>
-                  <div style={{ color: "orange" }}>{numeral(data[key][0]).format("0,0.[00]")} %</div>
+                  <span>{columnData.length === 2 ? "Fixed" : "Senior"}</span>
+                  <div style={{ color: "orange" }}>{numeral(columnData[0]).format("0,0.[00]")} %</div>
                 </div>
                 <div className="tranche-apr">
-                  <span>{data[key].length === 2 ? "Variable" : "Mezzanine"}</span>
-                  <div style={{ color: data[key].length === 3 ? "green" : "blue" }}>
-                    {numeral(data[key][1]).format("0,0.[00]")} %
+                  <span>{columnData.length === 2 ? "Variable" : "Mezzanine"}</span>
+                  <div style={{ color: columnData.length === 3 ? "green" : "blue" }}>
+                    {numeral(columnData[1]).format("0,0.[00]")} %
                   </div>
                 </div>
-                {data[key].length === 3 ? (
+                {columnData.length === 3 ? (
                   <div className="tranche-apr">
                     <span>Junior</span>
-                    <div style={{ color: "blue" }}>{numeral(data[key][2]).format("0,0.[00]")} %</div>
+                    <div style={{ color: "blue" }}>{numeral(columnData[2]).format("0,0.[00]")} %</div>
                   </div>
                 ) : null}
               </div>
@@ -83,17 +83,17 @@ function TableRow(props: Props) {
                   <div>
                     <section>
                       <span className="title">Total APR:</span>
-                      <span className="total" style={{ color: COLORS[data[key].trancheName] }}>
-                        {data[key].totalAPR} %
+                      <span className="total" style={{ color: COLORS[columnData.trancheName] }}>
+                        {columnData.totalAPR} %
                       </span>
                     </section>
                     <section>
-                      <span className="title">{data[key].trancheName} APR:</span>
-                      <span>{data[key].APR} %</span>
+                      <span className="title">{columnData.trancheName} APR:</span>
+                      <span>{columnData.APR} %</span>
                     </section>
                     <section>
                       <span className="title">WTF APR:</span>
-                      <span>{data[key].wtfAPR}</span>
+                      <span>{columnData.wtfAPR}</span>
                     </section>
                   </div>
                 </div>
@@ -133,42 +133,51 @@ function TableRow(props: Props) {
             );
             break;
           case "yield":
-            //typeof array returns "object"
-            // console.log("typeof");
-            // console.log(typeof columnData.yield);
             if (typeof columnData.yield === "object") {
-              // console.log("yield");
-              // console.log(columnData.yield);
               elements.push(
-                <div className="col" key={key}>
+                <div className="col yield" key={key}>
                   {columnData.yield.map((y: any, i: number) => (
-                    <div key={i}>
-                      {y} {columnData.assets[i]}
+                    <div className="mc-yield" key={i}>
+                      <span>{y}</span>
+                      <div
+                        key={columnData.assets[i] + "-img"}
+                        className="coin"
+                        style={{ backgroundImage: `url(/coins/${columnData.assets[i]}.png)` }}
+                      />
+                      <span key={columnData.assets[i] + "-span"}>{columnData.assets[i]}</span>
                     </div>
                   ))}
                 </div>
               );
             } else {
               elements.push(
-                <div className="col" key={key}>
+                <div className="col yield" key={key}>
                   {columnData.yield}
                 </div>
               );
             }
             break;
           case "principal":
-            if (data[key].assets.length > 1) {
+            if (columnData.assets.length > 1) {
               elements.push(
-                <div className="col" key={key}>
-                  {data[key].MCprincipal.map((p: any, i: number) => (
-                    <span key={i}>{p + " " + data[key].assets[i]}</span>
+                <div className="col principal" key={key}>
+                  {columnData.MCprincipal.map((p: any, i: number) => (
+                    <div className="mc-principal" key={i}>
+                      <span>{p}</span>
+                      <div
+                        key={columnData.assets[i] + "-img"}
+                        className="coin"
+                        style={{ backgroundImage: `url(/coins/${columnData.assets[i]}.png)` }}
+                      />
+                      <span key={columnData.assets[i] + "-span"}>{columnData.assets[i]}</span>
+                    </div>
                   ))}
                 </div>
               );
             } else {
               elements.push(
-                <div className="col" key={key}>
-                  <span>{data[key].principal + " " + data[key].assets[0]}</span>
+                <div className="col principal" key={key}>
+                  <span>{columnData.principal + " " + columnData.assets[0]}</span>
                 </div>
               );
             }

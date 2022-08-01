@@ -167,6 +167,26 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
       }
     }
 
+    &.principal {
+      display: flex;
+      flex-direction: column;
+      .mc-principal {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+      }
+    }
+
+    &.yield {
+      display: flex;
+      flex-direction: column;
+      .mc-yield {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+      }
+    }
+
     .coin {
       height: 25px;
       width: 25px;

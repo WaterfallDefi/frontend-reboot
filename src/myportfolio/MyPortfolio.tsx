@@ -9,7 +9,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import TableRow from "../shared/TableRow";
-import { Market, PORTFOLIO_STATUS, TrancheCycle, UserInvest } from "../types";
+import { Market, PORTFOLIO_STATUS, UserInvest } from "../types";
 import { Mode, Network } from "../WaterfallDefi";
 import { fetchSubgraphQuery } from "./hooks/useSubgraphQuery";
 import NoData from "./svgs/NoData";
@@ -179,8 +179,10 @@ function MyPortfolio(props: Props) {
     <div className={"my-portfolio-wrapper " + mode}>
       <div className="filters">
         <select>
-          {STATUSES.map((s) => (
-            <option onClick={() => setSelectedStatus(s.status)}>{s.name}</option>
+          {STATUSES.map((s, i) => (
+            <option key={i} onClick={() => setSelectedStatus(s.status)}>
+              {s.name}
+            </option>
           ))}
         </select>
         <select>
@@ -281,9 +283,6 @@ function MyPortfolio(props: Props) {
               : "-";
 
             const netAPY = wtfAPY !== "-" ? Number(trancheAPY) + Number(numeral(wtfAPY).value()) : trancheAPY;
-
-            console.log("userInvest.MCprincipal");
-            console.log(_userInvest.MCprincipal);
 
             return (
               <TableRow
