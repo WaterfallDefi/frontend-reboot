@@ -157,12 +157,18 @@ function TableRow(props: Props) {
             }
             break;
           case "principal":
-            if (typeof data[key].principal === "object") {
+            if (data[key].assets.length > 1) {
               elements.push(
                 <div className="col" key={key}>
-                  {data[key].principal.map((p: any, i: number) => (
-                    <span key={i}>{p.value + " " + data[key].assets[i]}</span>
+                  {data[key].MCprincipal.map((p: any, i: number) => (
+                    <span key={i}>{p + " " + data[key].assets[i]}</span>
                   ))}
+                </div>
+              );
+            } else {
+              elements.push(
+                <div className="col" key={key}>
+                  <span>{data[key].principal + " " + data[key].assets[0]}</span>
                 </div>
               );
             }
