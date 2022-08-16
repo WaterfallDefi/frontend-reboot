@@ -16,8 +16,6 @@ type Props = {
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
-const BIG_TEN = new BigNumber(10);
-
 function RedepositModal(props: Props) {
   const {
     selectedMarket,
@@ -30,34 +28,6 @@ function RedepositModal(props: Props) {
     setModal,
     setMarkets,
   } = props;
-
-  const deposited: BigNumber[] = [];
-
-  const tokens = selectedMarket.tokens;
-
-  const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined = selectedMarket.trancheInvests;
-
-  if (trancheInvest) {
-    selectedMarket.assets.forEach((a, i) =>
-      deposited.push(
-        trancheInvest
-          .reduce((acc: BigNumber, next) => acc.plus(new BigNumber(next[i].hex.toString())), new BigNumber(0))
-          .dividedBy(BIG_TEN.pow(18))
-      )
-    );
-  }
-
-  const maxDeposits = tokens.map((t) =>
-    new BigNumber(selectedMarket.totalTranchesTarget).multipliedBy(
-      new BigNumber(t.percent.hex).dividedBy(BIG_TEN.pow(5))
-    )
-  );
-
-  const remainingDepositable = new BigNumber(maxDeposits[selectedDepositAssetIndex]).minus(
-    deposited[selectedDepositAssetIndex]
-  );
-
-  const remainingDepositableSimul = maxDeposits.map((md, i) => new BigNumber(md).minus(deposited[i]));
 
   return (
     <div className="modal redeposit">
