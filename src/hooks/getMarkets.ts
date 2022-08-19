@@ -153,8 +153,7 @@ export const getMarkets = async (payload: Market[]) => {
             ? new BigNumber(_t.target?._hex).dividedBy(BIG_TEN.pow(decimals))
             : BIG_ZERO;
 
-          //MAY GAMEPLAN
-          //TODO: add logic to handle falls that have all variable tranches
+          //BONUS: add logic to handle falls that have all variable tranches, not just 2 or 3, although why would we ever need that
 
           const _apy =
             _t && _i !== _tranches.length - 1
