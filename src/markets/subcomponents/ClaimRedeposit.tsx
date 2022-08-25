@@ -11,6 +11,7 @@ import numeral from "numeral";
 import useAutoroll from "../hooks/useAutoroll";
 
 type Props = {
+  network: Network;
   selectedMarket: Market;
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
@@ -31,6 +32,7 @@ const formatBigNumber2HexString = (bn: BigNumber) => {
 
 function ClaimRedeposit(props: Props) {
   const {
+    network,
     selectedMarket,
     coingeckoPrices,
     selectedDepositAssetIndex,
@@ -45,7 +47,6 @@ function ClaimRedeposit(props: Props) {
 
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
   const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
-  const [showClaim, setShowClaim] = useState(false);
 
   const [autoroll, setAutoroll] = useState(false);
   const [autorollPending, setAutorollPending] = useState<boolean>(true);
@@ -126,8 +127,6 @@ function ClaimRedeposit(props: Props) {
         message: "Claim Fail ",
       });
     } finally {
-      setShowClaim(false);
-
       setClaimRewardLoading(false);
     }
   };
@@ -161,7 +160,7 @@ function ClaimRedeposit(props: Props) {
       setWithdrawAllLoading(false);
     }
   };
-  //*XYZZY* TODO: ROLL DEPOSIT POP UP
+
   const rollDepositPopup = () => {
     setModal({
       state: Modal.Redeposit,
@@ -178,10 +177,18 @@ function ClaimRedeposit(props: Props) {
       },
     });
   };
-  //*XYZZY* TODO: CLAIM POP UP
+
   const claimPopup = () => {
-    if (totalPendingReward !== "0") setShowClaim(!showClaim);
-    // setShowClaim(!showClaim);
+    setModal({
+      state: Modal.Claim,
+      claimProps: {
+        network: network,
+        selectedMarket: selectedMarket,
+        balance: totalPendingReward,
+        setModal: setModal,
+        claimReward: claimReward,
+      },
+    });
   };
 
   return (

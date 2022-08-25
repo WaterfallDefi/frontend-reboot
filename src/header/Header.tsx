@@ -14,6 +14,7 @@ import TransactionModal from "./subcomponents/TransactionModal";
 import { Dark } from "./svgs/dark";
 import { Light } from "./svgs/light";
 import RedepositModal from "./subcomponents/RedepositModal";
+import ClaimModal from "./subcomponents/ClaimModal";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -104,6 +105,15 @@ function Header(props: Props) {
           setSimulDeposit={modal.redepositProps.setSimulDeposit}
           setModal={modal.redepositProps.setModal}
           setMarkets={modal.redepositProps.setMarkets}
+        />
+      ) : null}
+      {modal.state === Modal.Claim && modal.claimProps ? (
+        <ClaimModal
+          network={modal.claimProps.network}
+          selectedMarket={modal.claimProps.selectedMarket}
+          balance={modal.claimProps.balance}
+          setModal={modal.claimProps.setModal}
+          claimReward={modal.claimProps.claimReward}
         />
       ) : null}
       <div className="pc-left">

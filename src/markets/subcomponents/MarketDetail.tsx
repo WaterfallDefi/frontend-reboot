@@ -142,6 +142,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       <div className="charts">
         <div className="linear-gradient" />
         <ClaimRedeposit
+          network={selectedMarket.isAvax ? Network.AVAX : Network.BNB}
           selectedMarket={selectedMarket}
           coingeckoPrices={coingeckoPrices}
           selectedDepositAssetIndex={selectedDepositAssetIndex}

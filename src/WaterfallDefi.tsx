@@ -29,6 +29,7 @@ export enum Modal {
   Txn = 1,
   ConnectWallet = 2,
   Redeposit = 3,
+  Claim = 4,
 }
 
 export type ModalProps = {
@@ -46,6 +47,13 @@ export type ModalProps = {
     setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
     setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
     setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
+  };
+  claimProps?: {
+    network: Network;
+    selectedMarket: Market;
+    balance: string;
+    setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+    claimReward: (_lockDurationIfLockNotExists: string, _lockDurationIfLockExists: string) => Promise<void>;
   };
 };
 
