@@ -146,7 +146,11 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           coingeckoPrices={coingeckoPrices}
           selectedDepositAssetIndex={selectedDepositAssetIndex}
           balance={selectedMarket.isMulticurrency ? MCbalance : balance}
+          simulDeposit={simulDeposit}
           setModal={setModal}
+          setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
+          setSimulDeposit={setSimulDeposit}
+          setMarkets={setMarkets}
           flexGrow={!selectedStrategy}
         />
         <div className="chart-block portfolio-block">

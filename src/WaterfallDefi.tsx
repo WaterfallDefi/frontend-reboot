@@ -39,7 +39,7 @@ export type ModalProps = {
   redepositProps?: {
     selectedMarket: Market;
     selectedDepositAssetIndex: number;
-    balance: string;
+    balance: string | string[];
     simulDeposit: boolean;
     coingeckoPrices: any;
     setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;

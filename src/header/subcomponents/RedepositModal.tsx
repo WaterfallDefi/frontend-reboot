@@ -1,5 +1,4 @@
 import { Market } from "../../types";
-import BigNumber from "bignumber.js";
 import Deposit from "../../markets/subcomponents/Deposit";
 import React from "react";
 import { ModalProps } from "../../WaterfallDefi";
@@ -7,7 +6,7 @@ import { ModalProps } from "../../WaterfallDefi";
 type Props = {
   selectedMarket: Market;
   selectedDepositAssetIndex: number;
-  balance: string;
+  balance: string | string[];
   simulDeposit: boolean;
   coingeckoPrices: any;
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;

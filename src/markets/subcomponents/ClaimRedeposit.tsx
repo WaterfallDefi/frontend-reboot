@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Market } from "../../types";
 import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useClaimAll from "../hooks/useClaimAll";
@@ -15,7 +15,11 @@ type Props = {
   coingeckoPrices: any;
   selectedDepositAssetIndex: number;
   balance: string | string[];
+  simulDeposit: boolean;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
+  setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   flexGrow: boolean;
 };
 
@@ -26,11 +30,21 @@ const formatBigNumber2HexString = (bn: BigNumber) => {
 };
 
 function ClaimRedeposit(props: Props) {
-  const { selectedMarket, coingeckoPrices, selectedDepositAssetIndex, balance, setModal, flexGrow } = props;
+  const {
+    selectedMarket,
+    coingeckoPrices,
+    selectedDepositAssetIndex,
+    balance,
+    simulDeposit,
+    setModal,
+    setSelectedDepositAssetIndex,
+    setSimulDeposit,
+    setMarkets,
+    flexGrow,
+  } = props;
 
   const [claimRewardLoading, setClaimRewardLoading] = useState(false);
   const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
-  const [showRedeposit, setShowRedeposit] = useState(false);
   const [showClaim, setShowClaim] = useState(false);
 
   const [autoroll, setAutoroll] = useState(false);
@@ -149,7 +163,20 @@ function ClaimRedeposit(props: Props) {
   };
   //*XYZZY* TODO: ROLL DEPOSIT POP UP
   const rollDepositPopup = () => {
-    setShowRedeposit(!showRedeposit);
+    setModal({
+      state: Modal.Redeposit,
+      redepositProps: {
+        selectedMarket: selectedMarket,
+        selectedDepositAssetIndex: selectedDepositAssetIndex,
+        balance: balance,
+        simulDeposit: simulDeposit,
+        coingeckoPrices: coingeckoPrices,
+        setSelectedDepositAssetIndex: setSelectedDepositAssetIndex,
+        setSimulDeposit: setSimulDeposit,
+        setModal: setModal,
+        setMarkets: setMarkets,
+      },
+    });
   };
   //*XYZZY* TODO: CLAIM POP UP
   const claimPopup = () => {
