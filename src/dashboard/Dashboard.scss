@@ -138,8 +138,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
       font-weight: 600;
       border-radius: 16px;
       border: solid 1px transparent;
-      background-image: linear-gradient(132.89deg, #fff, #fff),
-        linear-gradient(90deg, #4ac9ff 0%, #167bff 98.68%);
+      background-image: linear-gradient(132.89deg, #fff, #fff), linear-gradient(90deg, #4ac9ff 0%, #167bff 98.68%);
       background-origin: padding-box, border-box;
       background-clip: padding-box, border-box;
       box-shadow: 0px 4px 10px 0px #187eff33;
@@ -165,6 +164,8 @@ $evenPadding: calc((100vw - 1048px) / 2);
       grid-template-rows: 1fr 1fr;
     }
     .announcements {
+      height: 825px;
+      overflow-y: hidden;
       border-radius: 24px;
       background: $base-color;
       filter: drop-shadow(0px 4px 20px rgba(0, 108, 253, 0.04));
@@ -176,6 +177,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
       }
       .title {
         height: 75px;
+        padding: 12px 0;
         display: flex;
         align-items: center;
         border-bottom: 1px solid $text-color-lighter;

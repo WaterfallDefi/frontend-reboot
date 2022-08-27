@@ -67,7 +67,8 @@ function ClaimRedeposit(props: Props) {
 
   const { onClaimAll } = useClaimAll(
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-    selectedMarket.masterChefAddress
+    selectedMarket.masterChefAddress,
+    setModal
   );
 
   const { account } = useWeb3React<Web3Provider>();
