@@ -251,6 +251,7 @@ function Deposit(props: Props) {
             selectedMarket={selectedMarket}
             setSimulDeposit={setSimulDeposit}
             setModal={setModal}
+            setMarkets={setMarkets}
             selectTrancheIdx={selectTrancheIdx}
             remainingSimul={
               selectTrancheIdx !== undefined && selectedMarket.isMulticurrency

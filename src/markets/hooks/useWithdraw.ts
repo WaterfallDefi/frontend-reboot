@@ -1,4 +1,4 @@
-import {
+import React, {
   useCallback,
   useMemo,
 } from 'react';
@@ -7,6 +7,7 @@ import {
   getContract,
   getSigner,
 } from '../../hooks/getContract';
+import { Market } from '../../types';
 import {
   Modal,
   ModalProps,
@@ -17,7 +18,8 @@ const useWithdraw = (
   network: Network,
   trancheMasterAddress: string,
   abi: any, //too many different types of abis (autoroll, avax, multicurrency) this ensures accuracy,
-  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>,
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>
 ) => {
   // const { account } = useWeb3React();
 
@@ -50,6 +52,7 @@ const useWithdraw = (
         });
       }
 
+      setMarkets(undefined);
       //TO DO: refresh markets
       //   dispatch(getMarkets(MarketList));
       //   // account && dispatch(getTrancheBalance({ account }));
@@ -57,7 +60,7 @@ const useWithdraw = (
 
       // [account]
     },
-    [trancheContract, setModal]
+    [trancheContract, setModal, setMarkets]
   );
 
   return { onWithdraw: handleWithdraw };

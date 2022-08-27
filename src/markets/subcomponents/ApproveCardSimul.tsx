@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
@@ -18,6 +18,7 @@ type Props = {
   selectedMarket: Market;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   selectTrancheIdx: number | undefined;
   remainingSimul: {
     remaining: string;
@@ -46,6 +47,7 @@ function ApproveCardSimul(props: Props) {
     selectedMarket,
     setSimulDeposit,
     setModal,
+    setMarkets,
     selectTrancheIdx,
     remainingSimul,
     enabled,
@@ -77,9 +79,16 @@ function ApproveCardSimul(props: Props) {
     network,
     selectedMarket.address,
     selectedMarket.abi,
-    setModal
+    setModal,
+    setMarkets
   );
-  const { onInvestMCSimul } = useInvestMCSimul(network, selectedMarket.address, selectedMarket.abi, setModal);
+  const { onInvestMCSimul } = useInvestMCSimul(
+    network,
+    selectedMarket.address,
+    selectedMarket.abi,
+    setModal,
+    setMarkets
+  );
 
   //balance hooks
   const multicurrencyBalancesWallet = useBalances(network, selectedMarket.depositAssetAddresses);

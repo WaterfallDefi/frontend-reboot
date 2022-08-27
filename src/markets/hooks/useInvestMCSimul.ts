@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import {
   BigNumber,
@@ -16,6 +16,7 @@ import {
   ModalProps,
   Network,
 } from '../../WaterfallDefi';
+import { Market } from '../../types';
 
 const _invest = async (
   contract: Contract,
@@ -58,7 +59,8 @@ const useInvestMCSimul = (
   network: Network,
   trancheMasterAddress: string,
   abi: any,
-  setModal: React.Dispatch<React.SetStateAction<ModalProps>>
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>,
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>
 ) => {
   const signer = getSigner();
   const contract = getContract(abi, trancheMasterAddress, network, signer);
@@ -70,10 +72,10 @@ const useInvestMCSimul = (
         selectTrancheIdx,
         setModal
       );
-      // dispatch(getMarkets(MarketList));
+      setMarkets(undefined)
       return result;
     },
-    [contract, setModal]
+    [contract, setModal, setMarkets]
   );
 
   return { onInvestMCSimul: handleInvestMCSimul };

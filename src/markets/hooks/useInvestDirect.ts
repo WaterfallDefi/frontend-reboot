@@ -102,7 +102,7 @@ const useInvestDirect = (
       setMarkets(undefined);
       return result;
     },
-    [contract, isUSDC, multicurrencyIdx, multicurrencyTokenCount, setModal]
+    [contract, isUSDC, multicurrencyIdx, multicurrencyTokenCount, setModal, setMarkets]
   );
 
   return { onInvestDirect: handleInvestDirect };

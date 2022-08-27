@@ -62,7 +62,8 @@ function ClaimRedeposit(props: Props) {
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
     selectedMarket.address,
     selectedMarket.abi,
-    setModal
+    setModal,
+    setMarkets
   );
 
   const { onClaimAll } = useClaimAll(

@@ -95,7 +95,7 @@ const useInvest = (
       setMarkets(undefined);
       return result;
     },
-    [contract, isUSDC, multicurrencyIdx, multicurrencyTokenCount, setModal]
+    [contract, isUSDC, multicurrencyIdx, multicurrencyTokenCount, setModal, setMarkets]
   );
 
   return { onInvest: handleInvest };
