@@ -183,7 +183,6 @@ function ClaimRedeposit(props: Props) {
       state: Modal.Claim,
       claimProps: {
         network: network,
-        selectedMarket: selectedMarket,
         balance: totalPendingReward,
         setModal: setModal,
         claimReward: claimReward,

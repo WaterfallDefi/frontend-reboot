@@ -50,7 +50,6 @@ export type ModalProps = {
   };
   claimProps?: {
     network: Network;
-    selectedMarket: Market;
     balance: string;
     setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
     claimReward: (_lockDurationIfLockNotExists: string, _lockDurationIfLockExists: string) => Promise<void>;

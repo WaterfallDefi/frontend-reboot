@@ -110,7 +110,6 @@ function Header(props: Props) {
       {modal.state === Modal.Claim && modal.claimProps ? (
         <ClaimModal
           network={modal.claimProps.network}
-          selectedMarket={modal.claimProps.selectedMarket}
           balance={modal.claimProps.balance}
           setModal={modal.claimProps.setModal}
           claimReward={modal.claimProps.claimReward}
