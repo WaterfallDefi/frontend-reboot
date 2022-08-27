@@ -92,7 +92,6 @@ const useInvest = (
         isUSDC,
         setModal
       );
-      //TODO: update markets - it's just setMarkets(undefined)
       setMarkets(undefined);
       return result;
     },

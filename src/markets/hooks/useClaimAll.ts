@@ -3,17 +3,14 @@ import {
   useMemo,
 } from 'react';
 
-import { useWeb3React } from '@web3-react/core';
-
 import MasterChef from '../../config/abis/MasterChef.json';
 import {
   getContract,
   getSigner,
 } from '../../hooks/getContract';
-import { Network } from '../../WaterfallDefi';
+import { Modal, ModalProps, Network } from '../../WaterfallDefi';
 
-const useClaimAll = (network: Network, masterChefAddress: string) => {
-  const { account } = useWeb3React();
+const useClaimAll = (network: Network, masterChefAddress: string, setModal: React.Dispatch<React.SetStateAction<ModalProps>>) => {
   const signer = getSigner();
 
   const masterChefContract = useMemo(
@@ -30,22 +27,35 @@ const useClaimAll = (network: Network, masterChefAddress: string) => {
         _lockDurationIfLockExists
       );
 
+      setModal({
+        state: Modal.Txn,
+        txn: tx.hash,
+        status: "SUBMITTED",
+        message: "Claim Submitted",
+      });
+
       const receipt = await tx.wait();
 
-      //TODO: modals
-
-      //TODO: update staked balance
-
-      //   await claim(
-      //     masterChefContract,
-      //     dispatch,
-      //     _lockDurationIfLockNotExists,
-      //     _lockDurationIfLockExists
-      //   );
+      if (receipt.status === 1) {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "COMPLETED",
+          message: "Claim Success",
+        });
+      } else {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "REJECTED",
+          message: "Claim Failed",
+        });
+      }
+      //these aren't executed either in the original codebase:
       // account && dispatch(getPendingWTFReward({ account }));
       //   dispatch(updateUserStakedBalance(sousId, account));
     },
-    [account, masterChefContract]
+    [masterChefContract, setModal]
   );
 
   return { onClaimAll: handleClaimAll };
