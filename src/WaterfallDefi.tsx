@@ -79,18 +79,17 @@ function WaterfallDefi() {
       setNetwork={setNetwork}
       modal={modal}
       setModal={setModal}
+      setMarkets={setMarkets}
     />,
     ...(tutorial ? [<Tutorial key="tutorial" mode={mode} />, element] : [element]),
   ];
-
-  const marketInjection = markets ? markets : [];
 
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
-          element={layout(<Dashboard key="dashboard" mode={mode} network={network} markets={marketInjection} />, false)}
+          element={layout(<Dashboard key="dashboard" mode={mode} network={network} markets={markets} />, false)}
         />
         <Route
           path="/markets"
@@ -99,7 +98,7 @@ function WaterfallDefi() {
               key="markets"
               mode={mode}
               network={network}
-              markets={marketInjection}
+              markets={markets}
               setMarkets={setMarkets}
               setModal={setModal}
             />,
@@ -109,7 +108,7 @@ function WaterfallDefi() {
         <Route
           path="/portfolio"
           element={layout(
-            <MyPortfolio key="portfolio" mode={mode} network={network} markets={marketInjection} />,
+            <MyPortfolio key="portfolio" mode={mode} network={network} markets={markets ? markets : []} />,
             true
           )}
         />

@@ -1,25 +1,21 @@
-import './Markets.scss';
+import "./Markets.scss";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-import numeral from 'numeral';
+import numeral from "numeral";
 
-import getWTFApr, { formatAllocPoint } from '../hooks/getWtfApr';
-import { useCoingeckoPrices } from '../hooks/useCoingeckoPrices';
-import { useWTFPriceLP } from '../hooks/useWtfPriceFromLP';
-import TableRow from '../shared/TableRow';
-import { Market } from '../types';
-import {
-  ModalProps,
-  Mode,
-  Network,
-} from '../WaterfallDefi';
-import MarketDetail from './subcomponents/MarketDetail';
+import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
+import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
+import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
+import TableRow from "../shared/TableRow";
+import { Market } from "../types";
+import { ModalProps, Mode, Network } from "../WaterfallDefi";
+import MarketDetail from "./subcomponents/MarketDetail";
 
 type Props = {
   mode: Mode;
   network: Network;
-  markets: Market[];
+  markets: Market[] | undefined;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
@@ -29,11 +25,16 @@ function Markets(props: Props) {
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   const { price: wtfPrice } = useWTFPriceLP();
-  const coingeckoPrices = useCoingeckoPrices(markets);
+  const coingeckoPrices = useCoingeckoPrices(markets ? markets : []);
 
-  const filtered = markets.filter((m) =>
-    network === Network.AVAX ? m.isAvax : !m.isAvax
-  );
+  const filtered = markets ? markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax)) : [];
+
+  //we are using markets as a network switch reset indicator, if flipped to undefined
+  useEffect(() => {
+    if (!markets) {
+      setSelectedMarket(undefined);
+    }
+  }, [markets]);
 
   return (
     <div className={"markets-wrapper " + mode}>
@@ -80,8 +81,7 @@ function Markets(props: Props) {
               return totalAPR;
             });
 
-            const nonDollarTvl =
-              m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
+            const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
             const tvl =
               (!nonDollarTvl ? "$" : "") +
@@ -101,9 +101,7 @@ function Markets(props: Props) {
                       : Number(m.duration) / 60 + " Mins",
                   apr_markets: tranchesApr,
                   tvl: tvl,
-                  status: m.isRetired
-                    ? "Expired"
-                    : m.status[0] + m.status.slice(1).toLowerCase(),
+                  status: m.isRetired ? "Expired" : m.status[0] + m.status.slice(1).toLowerCase(),
                 }}
               />
             );

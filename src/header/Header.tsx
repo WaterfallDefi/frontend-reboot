@@ -15,6 +15,7 @@ import { Dark } from "./svgs/dark";
 import { Light } from "./svgs/light";
 import RedepositModal from "./subcomponents/RedepositModal";
 import ClaimModal from "./subcomponents/ClaimModal";
+import { Market } from "../types";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -31,10 +32,11 @@ type Props = {
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   modal: ModalProps;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 function Header(props: Props) {
-  const { mode, setMode, network, setNetwork, modal, setModal } = props;
+  const { mode, setMode, network, setNetwork, modal, setModal, setMarkets } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
@@ -67,6 +69,9 @@ function Header(props: Props) {
       }
     } else {
       setNetwork(network);
+    }
+    if (location.pathname === "/markets") {
+      setMarkets(undefined);
     }
   };
 

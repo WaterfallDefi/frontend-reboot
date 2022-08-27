@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   mode: Mode;
   network: Network;
-  markets: Market[];
+  markets: Market[] | undefined;
 };
 
 function Dashboard(props: Props) {
@@ -24,7 +24,7 @@ function Dashboard(props: Props) {
   const nav = useNavigate();
 
   const carouselRef = useRef<HTMLDivElement>(null);
-  const carouselMarkets = markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax));
+  const carouselMarkets = markets ? markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax)) : [];
 
   const isBrowserTabActiveRef = useIsBrowserTabActive();
 
@@ -35,7 +35,7 @@ function Dashboard(props: Props) {
   const bgImgs = ["default", "alternate", "none"];
 
   const { price, marketCap } = useWTFPriceLP();
-  const coingeckoPrices = useCoingeckoPrices(markets);
+  const coingeckoPrices = useCoingeckoPrices(markets ? markets : []);
 
   const totalTvl = useTotalTvl();
 

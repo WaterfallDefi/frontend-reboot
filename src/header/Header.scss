@@ -190,6 +190,10 @@
           height: 70px;
           transform: translateY(17.5px);
         }
+        &.disabled {
+          opacity: 0.5;
+          cursor: auto;
+        }
 
         .network {
           padding: 0 16px 2px 0;
