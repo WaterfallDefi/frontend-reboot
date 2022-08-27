@@ -108,7 +108,14 @@ function WaterfallDefi() {
         <Route
           path="/portfolio"
           element={layout(
-            <MyPortfolio key="portfolio" mode={mode} network={network} markets={markets ? markets : []} />,
+            <MyPortfolio
+              key="portfolio"
+              mode={mode}
+              network={network}
+              markets={markets ? markets : []}
+              setMarkets={setMarkets}
+              setModal={setModal}
+            />,
             true
           )}
         />

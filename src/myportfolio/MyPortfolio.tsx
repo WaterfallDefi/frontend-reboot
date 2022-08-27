@@ -1,6 +1,6 @@
 import "./MyPortfolio.scss";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
@@ -10,13 +10,14 @@ import { useWeb3React } from "@web3-react/core";
 
 import TableRow from "../shared/TableRow";
 import { Market, PORTFOLIO_STATUS, UserInvest } from "../types";
-import { Mode, Network } from "../WaterfallDefi";
+import { ModalProps, Mode, Network } from "../WaterfallDefi";
 import { fetchSubgraphQuery } from "./hooks/useSubgraphQuery";
 import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
 import { getEstimateYield } from "./hooks/getEstimateYield";
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
+import PortfolioFold from "./subcomponents/PortfolioFold";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -31,14 +32,17 @@ type Props = {
   mode: Mode;
   network: Network;
   markets: Market[];
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 function MyPortfolio(props: Props) {
-  const { mode, network, markets } = props;
+  const { mode, network, markets, setModal, setMarkets } = props;
   const { account } = useWeb3React<Web3Provider>();
   const { price: wtfPrice } = useWTFPriceLP();
 
   const positions = usePositions(markets);
+
   const [loaded, setLoaded] = useState<boolean>(false);
   const [subgraph, setSubgraph] = useState<any>([]);
 
@@ -321,43 +325,13 @@ function MyPortfolio(props: Props) {
                   },
                 }}
                 foldElement={
-                  <div className="fold">
-                    <div className="wrapper">
-                      <div className="card">
-                        <div className="card-title">
-                          Principal +<u className="est-yield">Est. Yield</u>
-                        </div>
-                        <div className="card-value">100.00</div>
-                        <div className="card-action">
-                          <button>Redeem</button>
-                        </div>
-                        <div className="autoroll-toggle">
-                          <span>Auto Rolling</span>
-                          {/* <switch /> */}
-                        </div>
-                      </div>
-                      <div className="card">
-                        <div className="card-title">WTF Reward</div>
-                        <div className="card-value">100 WTF</div>
-                        <div className="card-action">
-                          <button>Claim</button>
-                        </div>
-                      </div>
-                      <div className="prompt">
-                        {/* Union */}
-                        <div>
-                          <p>
-                            After maturity, you can choose to withdraw all the principal + yield. The platform will
-                            charge a fee of (principal + all yield in the current period) x
-                          </p>
-                          <p>
-                            You can also select roll-deposit to the next cycle, and you can change the Tranche and
-                            amount during Roll-deposit.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <PortfolioFold
+                    network={network}
+                    trancheMasterAddress={_market.address}
+                    abi={_market.abi}
+                    setModal={setModal}
+                    setMarkets={setMarkets}
+                  />
                 }
               />
             );
