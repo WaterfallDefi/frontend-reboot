@@ -266,9 +266,11 @@ function MyPortfolio(props: Props) {
               isActiveCycle
             );
 
-            const multicurrencyEstimateYield = _userInvest.MCprincipal.map((p) =>
-              getEstimateYield(p, trancheAPY, trancheCycle?.startAt, isActiveCycle)
-            );
+            const multicurrencyEstimateYield = _userInvest.MCprincipal
+              ? _userInvest.MCprincipal.map((p) =>
+                  getEstimateYield(p, trancheAPY, trancheCycle?.startAt, isActiveCycle)
+                )
+              : [];
 
             const wtfAPY = isCurrentCycle
               ? getWTFApr(
@@ -318,7 +320,45 @@ function MyPortfolio(props: Props) {
                     interest: _userInvest.interest,
                   },
                 }}
-                openFold={true}
+                foldElement={
+                  <div className="fold">
+                    <div className="wrapper">
+                      <div className="card">
+                        <div className="card-title">
+                          Principal +<u className="est-yield">Est. Yield</u>
+                        </div>
+                        <div className="card-value">100.00</div>
+                        <div className="card-action">
+                          <button>Redeem</button>
+                        </div>
+                        <div className="autoroll-toggle">
+                          <span>Auto Rolling</span>
+                          {/* <switch /> */}
+                        </div>
+                      </div>
+                      <div className="card">
+                        <div className="card-title">WTF Reward</div>
+                        <div className="card-value">100 WTF</div>
+                        <div className="card-action">
+                          <button>Claim</button>
+                        </div>
+                      </div>
+                      <div className="prompt">
+                        {/* Union */}
+                        <div>
+                          <p>
+                            After maturity, you can choose to withdraw all the principal + yield. The platform will
+                            charge a fee of (principal + all yield in the current period) x
+                          </p>
+                          <p>
+                            You can also select roll-deposit to the next cycle, and you can change the Tranche and
+                            amount during Roll-deposit.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
               />
             );
           });
