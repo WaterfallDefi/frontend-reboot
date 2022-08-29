@@ -72,6 +72,7 @@
           }
           .autoroll-toggle {
             display: "flex";
+            flex-direction: column;
             margin-top: 20px;
             span {
               font-size: 18;
@@ -79,6 +80,37 @@
               color: $text-color;
               margin-right: 12;
               padding-top: 4px;
+            }
+            .autoroll-btn {
+              width: 100%;
+              border-radius: 4px;
+              height: 28px;
+              font-size: 14px;
+              border: 1px solid $text-color-lightest;
+              margin-right: 24px;
+
+              color: $base-color;
+              cursor: pointer;
+              &.start {
+                background-color: $highlight-color;
+              }
+              &.stop {
+                background-color: $text-color-lighter;
+              }
+              &:disabled {
+                background-color: $text-color-lightest;
+                cursor: auto;
+              }
+            }
+            .autoroll-lbl {
+              font-size: 14px;
+              font-weight: 600;
+              &.on {
+                color: $highlight-color;
+              }
+              &.off {
+                color: $text-color-lighter;
+              }
             }
           }
         }

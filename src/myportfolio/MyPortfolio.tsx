@@ -18,6 +18,8 @@ import { getEstimateYield } from "./hooks/getEstimateYield";
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import PortfolioFold from "./subcomponents/PortfolioFold";
+import usePendingWTFReward from "../markets/hooks/usePendingWTFReward";
+import { MasterChefAddress } from "../config/address";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -329,6 +331,18 @@ function MyPortfolio(props: Props) {
                     network={network}
                     trancheMasterAddress={_market.address}
                     abi={_market.abi}
+                    totalAmount={_userInvest.principal}
+                    totalAmounts={_userInvest.MCprincipal}
+                    assets={_market.assets}
+                    isCurrentCycle={isCurrentCycle}
+                    isPending={trancheCycle?.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING}
+                    isActive={trancheCycle?.state === 1}
+                    currentTranche={_userInvest.tranche}
+                    fee={_market.tranches[_userInvest.tranche].fee}
+                    isAvax={_market.isAvax}
+                    isMulticurrency={_market.isMulticurrency}
+                    autorollImplemented={_market.autorollImplemented}
+                    trancheCount={_market.trancheCount}
                     setModal={setModal}
                     setMarkets={setMarkets}
                   />

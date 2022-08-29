@@ -1,14 +1,8 @@
 import { useCallback } from "react";
 import { Contract } from "@ethersproject/contracts";
 import { getContract, getSigner } from "../../hooks/getContract";
-import { ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import { Market } from "../../types";
-
-const redeem = async (contract: Contract, i: number) => {
-  const tx = await contract.redeemDirect(i);
-  const receipt = await tx.wait();
-  return receipt.status;
-};
 
 const useRedeemDirect = (
   network: Network,
@@ -21,22 +15,24 @@ const useRedeemDirect = (
 
   const contract = getContract(abi, trancheMasterAddress, network, signer);
 
-  // const market = useSelectedMarket();
   const handleRedeemDirect = useCallback(
     async (i: number) => {
-      const result = await redeem(contract, i);
+      const tx = await contract.redeemDirect(i);
+      const receipt = await tx.wait();
       setMarkets(undefined);
 
-      //   setModal({
-      //     state: Modal.Txn,
-      //     txn: tx.hash,
-      //     status: "COMPLETED",
-      //     message: "Deposit Success",
-      //   });
+      if (receipt.status === 1) {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "COMPLETED",
+          message: "Deposit Success",
+        });
+      }
 
-      return result;
+      return receipt.status;
     },
-    [contract, setMarkets]
+    [contract, setMarkets, setModal]
   );
 
   return { onRedeemDirect: handleRedeemDirect };
