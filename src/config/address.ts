@@ -329,9 +329,31 @@ export const BUSDTriple_VenusStrategyAddress: { [network: string]: string } = {
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0x46dd0Dc25918730bb8528994B1E8abFd58fb9c8e",
 };
-export const BUSDTriple_StargateStrategyAddress: { [network: string]: string } =
-  {
-    [NETWORKS.DEVNET]: "",
-    [NETWORKS.TESTNET]: "",
-    [NETWORKS.MAINNET]: "0xfF106F62855984D474c8360E680D06350e3ca898",
-  };
+export const BUSDTriple_StargateStrategyAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xfF106F62855984D474c8360E680D06350e3ca898",
+};
+export const BNB_Only_Falls_TrancheMasterAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x57B505d46a7B88e78C3C5b165DE7A7068cc4E0Da",
+};
+
+export const BNB_Only_Falls_MasterWTFAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xb56DCf1FF9fd986548B55DB65B215acc896f143E",
+};
+
+export const BNB_Only_Falls_AlpacaStrategyAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xa32290f53Fd616e1a0B2B2dFcfB843a112e959d1",
+};
+
+export const BNB_Only_Falls_VenusStrategyAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x4961446Bd81c1420bd6901E50F951eeaCc5aC1d7",
+};

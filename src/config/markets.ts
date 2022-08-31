@@ -37,6 +37,10 @@ import {
   BUSDTriple_AlpacaStrategyAddress,
   BUSDTriple_VenusStrategyAddress,
   BUSDTriple_StargateStrategyAddress,
+  BNB_Only_Falls_TrancheMasterAddress,
+  BNB_Only_Falls_MasterWTFAddress,
+  BNB_Only_Falls_AlpacaStrategyAddress,
+  BNB_Only_Falls_VenusStrategyAddress,
 } from "./address";
 import Tranches from "./abis/TrancheMaster.json";
 import MC_Tranches from "./abis/MC_TrancheMaster.json";
@@ -52,6 +56,47 @@ const NETWORK = "MAINNET" as NETWORKS_TYPE; //exposing network switch here, sinc
 //but since product is live, this should never change
 
 export const MarketList: Market[] = [
+  {
+    portfolio: "(New) BNB Falls",
+    isAvax: false,
+    wrapAvax: false,
+    autorollImplemented: true,
+    isMulticurrency: false,
+    assets: ["WBNB"], //changed to array for multicurrency
+    tokens: [],
+    listingDate: "2022/07/21",
+    tranches: [],
+    trancheCount: 3,
+    tvl: "",
+    totalTranchesTarget: "",
+    status: "",
+    nextTime: "",
+    address: BNB_Only_Falls_TrancheMasterAddress[NETWORK],
+    abi: AR_Tranches.abi, //tranches has autoPrincipal even though autoroll not enabled, so must use autoroll ABI
+    masterChefAbi: MasterChef.abi,
+    masterChefAddress: BNB_Only_Falls_MasterWTFAddress[NETWORK],
+    pools: [],
+    depositAssetAddress: WBNB_Address[NETWORK],
+    depositAssetAddresses: [],
+    depositAssetAbi: WTF.abi,
+    // strategyAddress: StrategyAddress[NETWORK],
+    // strategyAbi: StrategyAbi,
+    strategyFarms: [
+      {
+        farmName: "Alpaca BNB",
+        shares: 0.7,
+        sAddress: BNB_Only_Falls_AlpacaStrategyAddress[NETWORK],
+        apiKey: "alpaca_bnb",
+      },
+      {
+        farmName: "Venus BNB",
+        shares: 0.3,
+        sAddress: BNB_Only_Falls_VenusStrategyAddress[NETWORK],
+        apiKey: "venus_bnb",
+      },
+    ],
+    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/bsc-alpVeBnb",
+  },
   {
     portfolio: "DAI Falls (Autorolled)",
     isAvax: true,
@@ -89,8 +134,7 @@ export const MarketList: Market[] = [
         apiKey: "joe_dai_e",
       },
     ],
-    subgraphURL:
-      "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_dai",
+    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_dai",
     isRetired: false,
   },
   {
@@ -130,8 +174,7 @@ export const MarketList: Market[] = [
         apiKey: "joe_avax",
       },
     ],
-    subgraphURL:
-      "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_avax",
+    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_avax",
     isRetired: false,
   },
   {
@@ -171,8 +214,7 @@ export const MarketList: Market[] = [
         apiKey: "joe_dai_e",
       },
     ],
-    subgraphURL:
-      "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_dai",
+    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_dai",
     isRetired: true,
   },
   {
@@ -212,8 +254,7 @@ export const MarketList: Market[] = [
         apiKey: "joe_avax",
       },
     ],
-    subgraphURL:
-      "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_avax",
+    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_avax",
     isRetired: true,
   },
   {
@@ -253,8 +294,7 @@ export const MarketList: Market[] = [
         apiKey: "venus",
       },
     ],
-    subgraphURL:
-      "https://api2.waterfalldefi.org/subgraphs/name/waterfall/waterfall-subgraph-busdfalls4",
+    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/waterfall-subgraph-busdfalls4",
     isRetired: false,
   },
   {
@@ -294,8 +334,7 @@ export const MarketList: Market[] = [
         apiKey: "alpaca_pcs_usdt_bnb",
       },
     ],
-    subgraphURL:
-      "https://api2.waterfalldefi.org/subgraphs/name/waterfall/alpaca-bull-prod",
+    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/alpaca-bull-prod",
   },
   {
     portfolio: "BNB Bear Falls",
@@ -334,8 +373,7 @@ export const MarketList: Market[] = [
         apiKey: "alpaca_pcs_usdt_bnb",
       },
     ],
-    subgraphURL:
-      "https://api2.waterfalldefi.org/subgraphs/name/waterfall/alpaca-bear-prod",
+    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/alpaca-bear-prod",
   },
   {
     portfolio: "BUSD Falls (Autorolled) 2",
@@ -380,8 +418,7 @@ export const MarketList: Market[] = [
         apiKey: "stargate_bnb_busd",
       },
     ],
-    subgraphURL:
-      "https://apitest2.waterfalldefi.org/subgraphs/name/waterfall/bsc_test_alpVeStar",
+    subgraphURL: "https://apitest2.waterfalldefi.org/subgraphs/name/waterfall/bsc_test_alpVeStar",
     isRetired: false,
   },
 ];
