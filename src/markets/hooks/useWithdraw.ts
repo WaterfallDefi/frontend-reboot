@@ -1,18 +1,8 @@
-import React, {
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useCallback, useMemo } from "react";
 
-import {
-  getContract,
-  getSigner,
-} from '../../hooks/getContract';
-import { Market } from '../../types';
-import {
-  Modal,
-  ModalProps,
-  Network,
-} from '../../WaterfallDefi';
+import { getContract, getSigner } from "../../hooks/getContract";
+import { Market } from "../../types";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 const useWithdraw = (
   network: Network,
@@ -32,9 +22,7 @@ const useWithdraw = (
 
   const handleWithdraw = useCallback(
     async (amount: string, multicurrencyAmount?: string[]) => {
-      const tx = await trancheContract.withdraw(
-        multicurrencyAmount ? multicurrencyAmount : amount
-      );
+      const tx = await trancheContract.withdraw(multicurrencyAmount ? multicurrencyAmount : amount);
       const receipt = await tx.wait();
       if (receipt.status === 1) {
         setModal({
@@ -53,8 +41,9 @@ const useWithdraw = (
       }
 
       setMarkets(undefined);
-      //TO DO: refresh markets
-      //   dispatch(getMarkets(MarketList));
+
+      //TODO: update trancheBalance
+      //TODO: update positions
       //   // account && dispatch(getTrancheBalance({ account }));
       //   market && account && dispatch(getPosition({ market, account }));
 

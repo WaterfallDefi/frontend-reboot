@@ -225,8 +225,6 @@ function ApproveCardDefault(props: Props) {
       setDepositLoading(false);
       setBalanceInput("0");
       !selectedMarket.isMulticurrency ? fetchBalance() : multicurrencyBalancesWallet.fetchBalances();
-      //TODO: update trancheBalance
-      // if (account) dispatch(getTrancheBalance({ account }));
     } catch (e: any) {
       setModal({
         state: Modal.Txn,
