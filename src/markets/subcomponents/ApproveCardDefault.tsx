@@ -123,14 +123,21 @@ function ApproveCardDefault(props: Props) {
 
   const multicurrencyBalancesWallet = useBalances(network, selectedMarket.depositAssetAddresses);
 
-  const balance =
-    isRedeposit === undefined
+  const balance = useMemo(() => {
+    return !isRedeposit
       ? selectedMarket.isMulticurrency
         ? multicurrencyBalancesWallet.balances.map((mcb) => numeral(mcb).format("0,0.[0000]"))
         : numeral(balanceWallet).format("0,0.[0000]")
       : redepositBalance instanceof Array
       ? redepositBalance.map((rdb) => numeral(rdb).format("0,0.[0000]"))
       : numeral(redepositBalance).format("0,0.[0000]");
+  }, [
+    isRedeposit,
+    selectedMarket.isMulticurrency,
+    multicurrencyBalancesWallet.balances,
+    balanceWallet,
+    redepositBalance,
+  ]);
 
   const tokenButtonColors = useMemo(
     () =>

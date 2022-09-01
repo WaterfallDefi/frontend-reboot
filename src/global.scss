@@ -145,10 +145,10 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
           align-items: center;
           justify-content: space-between;
           .title {
-            color: $text-color;
+            color: $text-color-dark;
           }
           span {
-            color: $text-color;
+            color: $text-color-darker;
           }
           p {
             font-weight: 500;
@@ -209,15 +209,18 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
       display: inline-flex;
       min-width: 60px;
       justify-content: center;
-      &.Expired {
+      &.Expired,
+      &.EXPIRED {
         background: #ffc0cb;
         color: #ff0000;
       }
-      &.Pending {
+      &.Pending,
+      &.PENDING {
         background: rgba(252, 181, 0, 0.1);
         color: #fcb500;
       }
-      &.Active {
+      &.Active,
+      &.ACTIVE {
         background: rgba(0, 184, 184, 0.1);
         color: #00b8b8;
       }
