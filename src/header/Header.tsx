@@ -27,7 +27,6 @@ const formatAccountAddress = (address?: string | null) => {
 
 type Props = {
   mode: Mode;
-  setMode: React.Dispatch<React.SetStateAction<Mode>>;
   network: Network;
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   modal: ModalProps;
@@ -36,7 +35,7 @@ type Props = {
 };
 
 function Header(props: Props) {
-  const { mode, setMode, network, setNetwork, modal, setModal, setMarkets } = props;
+  const { mode, network, setNetwork, modal, setModal, setMarkets } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
@@ -190,16 +189,6 @@ function Header(props: Props) {
             </div>
           )}
         </div>
-        {mode === Mode.Light ? (
-          <div className="dark-icon" onClick={() => setMode(Mode.Dark)}>
-            <Dark />
-          </div>
-        ) : null}
-        {mode === Mode.Dark ? (
-          <div className="light-icon" onClick={() => setMode(Mode.Light)}>
-            <Light />
-          </div>
-        ) : null}
       </div>
       {/* todo: mobile drawers */}
       {/* <header>

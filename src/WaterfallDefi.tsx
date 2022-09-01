@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Blog from "./Blog";
 import { MarketList } from "./config/markets";
-import Dashboard from "./dashboard/Dashboard";
+import Dashboard from "./dashboard_v2/Dashboard_v2";
 import Footer from "./footer/Footer";
 import Header from "./header/Header";
 import { getMarkets } from "./hooks/getMarkets";
@@ -57,7 +57,6 @@ export type ModalProps = {
 };
 
 function WaterfallDefi() {
-  const [mode, setMode] = useState<Mode>(Mode.Light);
   const [network, setNetwork] = useState<Network>(Network.AVAX);
   const [markets, setMarkets] = useState<Market[] | undefined>();
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
@@ -73,30 +72,48 @@ function WaterfallDefi() {
   const layout = (element: JSX.Element, tutorial: boolean) => [
     <Header
       key="header"
-      mode={mode}
-      setMode={setMode}
+      mode={Mode.Dark}
       network={network}
       setNetwork={setNetwork}
       modal={modal}
       setModal={setModal}
       setMarkets={setMarkets}
     />,
-    ...(tutorial ? [<Tutorial key="tutorial" mode={mode} />, element] : [element]),
+    ...(tutorial ? [<Tutorial key="tutorial" mode={Mode.Dark} />, element] : [element]),
+  ];
+
+  const layout2 = () => [
+    <Header
+      key="header"
+      mode={Mode.Dark}
+      network={network}
+      setNetwork={setNetwork}
+      modal={modal}
+      setModal={setModal}
+      setMarkets={setMarkets}
+    />,
+    <Tutorial key="tutorial" mode={Mode.Dark} />,
+    <Dashboard />,
+    <Markets
+      key="markets"
+      mode={Mode.Dark}
+      network={network}
+      markets={markets}
+      setMarkets={setMarkets}
+      setModal={setModal}
+    />,
   ];
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={layout(<Dashboard key="dashboard" mode={mode} network={network} markets={markets} />, false)}
-        />
+        <Route path="/" element={layout2()} />
         <Route
           path="/markets"
           element={layout(
             <Markets
               key="markets"
-              mode={mode}
+              mode={Mode.Dark}
               network={network}
               markets={markets}
               setMarkets={setMarkets}
@@ -110,7 +127,7 @@ function WaterfallDefi() {
           element={layout(
             <MyPortfolio
               key="portfolio"
-              mode={mode}
+              mode={Mode.Dark}
               network={network}
               markets={markets ? markets : []}
               setMarkets={setMarkets}
@@ -121,11 +138,11 @@ function WaterfallDefi() {
         />
         <Route
           path="/stake"
-          element={layout(<Stake key="stake" mode={mode} network={network} setModal={setModal} />, false)}
+          element={layout(<Stake key="stake" mode={Mode.Dark} network={network} setModal={setModal} />, false)}
         />
         <Route path="/blog" element={layout(<Blog />, false)} />
       </Routes>
-      <Footer mode={mode} />
+      <Footer mode={Mode.Dark} />
     </BrowserRouter>
   );
 }

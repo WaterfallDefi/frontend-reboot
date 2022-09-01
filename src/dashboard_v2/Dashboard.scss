@@ -1,0 +1,170 @@
+@import "../global.scss";
+
+$evenPadding: calc((100vw - 1048px) / 2);
+
+.dashboard-wrapper {
+  max-width: 1048px;
+  padding: 0 $evenPadding;
+  margin: 0 auto;
+  @media screen and (max-width: 876px) {
+    padding-top: 100px;
+  }
+
+  .dash-banner {
+    border-radius: 24px;
+    padding: 32px 44px 102px;
+    background: $layer-color;
+    position: relative;
+    color: $text-color;
+    .banner-img-toggle {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      &:hover {
+        border: 2px solid $highlight-color;
+      }
+    }
+    .dash-banner-img {
+      position: absolute;
+      height: 370px;
+      width: 420px;
+      right: 0;
+      bottom: 56px;
+
+      @media screen and (max-width: 876px) {
+        display: none;
+      }
+    }
+    .linear-gradient {
+      width: 95%;
+      height: 280px;
+      background: linear-gradient(
+        90deg,
+        rgba(252, 182, 4, 0.1) 14.14%,
+        rgba(3, 161, 75, 0.1) 45.76%,
+        rgba(12, 108, 254, 0.1) 84.73%
+      );
+      filter: blur(100px);
+      position: absolute;
+      left: 50%;
+      bottom: 100px;
+      transform: matrix(-1, 0, 0, 1, 0, 0) translate(50%, 100%);
+    }
+    h1 {
+      font-size: 36px;
+      font-weight: 500;
+      line-height: 45px;
+      margin-bottom: 40px;
+    }
+    .content {
+      display: grid;
+      gap: 80px;
+      grid-auto-flow: column;
+      width: fit-content;
+      @media screen and (max-width: 876px) {
+        grid-auto-flow: row;
+        gap: 40px;
+      }
+
+      .block {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .title {
+          font-size: 16px;
+          line-height: 20.8px;
+          margin-bottom: 12px;
+          color: $text-color-lighter;
+        }
+        .value {
+          font-size: 24px;
+          line-height: 31.2px;
+          font-weight: 600;
+        }
+        .icon-group {
+          display: flex;
+          align-items: flex-end;
+          svg {
+            cursor: pointer;
+          }
+          & > svg,
+          & > a {
+            width: 32px;
+            height: 32px;
+          }
+        }
+      }
+    }
+  }
+
+  .total-value-locked {
+    height: 100px;
+    border-radius: 24px;
+    padding: 26px 0;
+    background: $base-color;
+    position: relative;
+    transform: translateY(-56px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .text {
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #4ac9ff 0%, #167bff 98.68%);
+      background-clip: text;
+      color: transparent;
+    }
+    .value {
+      height: 60px;
+      padding: 0 47px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgb(44, 82, 144); //temp
+      font-size: 32px;
+      font-weight: 600;
+      border-radius: 16px;
+      border: solid 1px transparent;
+      background-image: linear-gradient(132.89deg, #fff, #fff), linear-gradient(90deg, #4ac9ff 0%, #167bff 98.68%);
+      background-origin: padding-box, border-box;
+      background-clip: padding-box, border-box;
+      box-shadow: 0px 4px 10px 0px #187eff33;
+      white-space: nowrap;
+      min-width: 300px;
+      @media screen and (max-width: 414px) {
+        font-size: 28px;
+        transform: scale(0.8);
+      }
+    }
+  }
+
+  &.dark {
+    background: $base-color-dark;
+    .dash-banner {
+      background-color: $layer-color-dark;
+      color: $text-color-dark;
+
+      .content {
+        .block {
+          .title {
+            color: $text-color-darker;
+          }
+        }
+      }
+    }
+    .total-value-locked {
+      background: $layer-color-dark-2;
+    }
+
+    .info-wrapper {
+      .announcements {
+        background-color: $layer-color-dark;
+      }
+    }
+  }
+}
