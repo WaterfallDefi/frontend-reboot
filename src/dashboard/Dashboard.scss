@@ -47,21 +47,6 @@ $evenPadding: calc((100vw - 1048px) / 2);
         display: none;
       }
     }
-    .linear-gradient {
-      width: 95%;
-      height: 280px;
-      background: linear-gradient(
-        90deg,
-        rgba(252, 182, 4, 0.1) 14.14%,
-        rgba(3, 161, 75, 0.1) 45.76%,
-        rgba(12, 108, 254, 0.1) 84.73%
-      );
-      filter: blur(100px);
-      position: absolute;
-      left: 50%;
-      bottom: 100px;
-      transform: matrix(-1, 0, 0, 1, 0, 0) translate(50%, 100%);
-    }
     h1 {
       font-size: 36px;
       font-weight: 500;

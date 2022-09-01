@@ -140,7 +140,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <div className="charts">
-        <div className="linear-gradient" />
         <ClaimRedeposit
           network={selectedMarket.isAvax ? Network.AVAX : Network.BNB}
           selectedMarket={selectedMarket}

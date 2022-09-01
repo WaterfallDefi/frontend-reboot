@@ -69,7 +69,7 @@ function WaterfallDefi() {
     }
   }, [markets]);
 
-  const layout = (element: JSX.Element, tutorial: boolean) => [
+  const layout = (elements: JSX.Element[], tutorial: boolean) => [
     <Header
       key="header"
       mode={Mode.Dark}
@@ -79,68 +79,50 @@ function WaterfallDefi() {
       setModal={setModal}
       setMarkets={setMarkets}
     />,
-    ...(tutorial ? [<Tutorial key="tutorial" mode={Mode.Dark} />, element] : [element]),
-  ];
-
-  const layout2 = () => [
-    <Header
-      key="header"
-      mode={Mode.Dark}
-      network={network}
-      setNetwork={setNetwork}
-      modal={modal}
-      setModal={setModal}
-      setMarkets={setMarkets}
-    />,
-    <Tutorial key="tutorial" mode={Mode.Dark} />,
-    <Dashboard />,
-    <Markets
-      key="markets"
-      mode={Mode.Dark}
-      network={network}
-      markets={markets}
-      setMarkets={setMarkets}
-      setModal={setModal}
-    />,
+    ...(tutorial ? [<Tutorial key="tutorial" mode={Mode.Dark} />, ...elements] : [elements]),
   ];
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={layout2()} />
         <Route
-          path="/markets"
+          path="/"
           element={layout(
-            <Markets
-              key="markets"
-              mode={Mode.Dark}
-              network={network}
-              markets={markets}
-              setMarkets={setMarkets}
-              setModal={setModal}
-            />,
+            [
+              <Dashboard />,
+              <Markets
+                key="markets"
+                mode={Mode.Dark}
+                network={network}
+                markets={markets}
+                setMarkets={setMarkets}
+                setModal={setModal}
+              />,
+            ],
             true
           )}
         />
         <Route
           path="/portfolio"
           element={layout(
-            <MyPortfolio
-              key="portfolio"
-              mode={Mode.Dark}
-              network={network}
-              markets={markets ? markets : []}
-              setMarkets={setMarkets}
-              setModal={setModal}
-            />,
+            [
+              <MyPortfolio
+                key="portfolio"
+                mode={Mode.Dark}
+                network={network}
+                markets={markets ? markets : []}
+                setMarkets={setMarkets}
+                setModal={setModal}
+              />,
+            ],
             true
           )}
         />
         <Route
           path="/stake"
-          element={layout(<Stake key="stake" mode={Mode.Dark} network={network} setModal={setModal} />, false)}
+          element={layout([<Stake key="stake" mode={Mode.Dark} network={network} setModal={setModal} />], false)}
         />
-        <Route path="/blog" element={layout(<Blog />, false)} />
+        <Route path="/blog" element={layout([<Blog />], false)} />
       </Routes>
       <Footer mode={Mode.Dark} />
     </BrowserRouter>

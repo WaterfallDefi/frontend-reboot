@@ -127,11 +127,6 @@ function Header(props: Props) {
           </Link>
         </div>
         <div className="menu-block-wrapper">
-          <Link className="link" to={"/markets"} data-selected={location.pathname === "/markets"}>
-            Markets
-          </Link>
-        </div>
-        <div className="menu-block-wrapper">
           <Link className="link" to={"/portfolio"} data-selected={location.pathname === "/portfolio"}>
             My Portfolio
           </Link>

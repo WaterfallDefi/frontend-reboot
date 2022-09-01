@@ -68,7 +68,7 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    color: $text-color;
+    color: $text-color-dark;
 
     &.portfolio-name {
       font-weight: 500;

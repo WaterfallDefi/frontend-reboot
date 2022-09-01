@@ -131,20 +131,6 @@
         flex-direction: column;
       }
 
-      .linear-gradient {
-        position: absolute;
-        width: calc(100% - 48px);
-        background: linear-gradient(
-          90deg,
-          rgba(252, 182, 4, 0.8) 14.14%,
-          rgba(3, 161, 75, 0.8) 45.76%,
-          rgba(12, 108, 254, 0.8) 84.73%
-        );
-        filter: blur(369px);
-        transform: matrix(-1, 0, 0, 1, 0, 0);
-        height: 200px;
-      }
-
       .claim-redeposit {
         display: grid;
         gap: 20px;

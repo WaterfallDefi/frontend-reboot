@@ -82,7 +82,6 @@ function Dashboard(props: Props) {
           className="banner-img-toggle"
           onClick={() => (backgroundImg === 2 ? setBackgroundImg(0) : setBackgroundImg(backgroundImg + 1))}
         />
-        <div className="linear-gradient" />
         <h1>Dashboard</h1>
         <div className="content">
           <div className="block">
