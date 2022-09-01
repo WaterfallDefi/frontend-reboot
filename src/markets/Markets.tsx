@@ -2,6 +2,9 @@ import "./Markets.scss";
 
 import React, { useEffect, useState } from "react";
 
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
+
 import numeral from "numeral";
 
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
@@ -11,17 +14,21 @@ import TableRow from "../shared/TableRow";
 import { Market } from "../types";
 import { ModalProps, Mode, Network } from "../WaterfallDefi";
 import MarketDetail from "./subcomponents/MarketDetail";
+import { switchNetwork } from "../header/Header";
 
 type Props = {
   mode: Mode;
-  network: Network;
+  setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   markets: Market[] | undefined;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
 function Markets(props: Props) {
-  const { mode, network, markets, setMarkets, setModal } = props;
+  const { mode, setNetwork, markets, setMarkets, setModal } = props;
+
+  const { account } = useWeb3React<Web3Provider>();
+
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   const { price: wtfPrice } = useWTFPriceLP();
@@ -33,6 +40,11 @@ function Markets(props: Props) {
       setSelectedMarket(undefined);
     }
   }, [markets]);
+
+  async function goToMarket(market: Market) {
+    await switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork);
+    setSelectedMarket(market);
+  }
 
   return (
     <div className={"markets-wrapper " + mode}>
@@ -89,7 +101,7 @@ function Markets(props: Props) {
             return (
               <TableRow
                 key={m.portfolio}
-                setSelectedMarket={() => setSelectedMarket(m)}
+                setSelectedMarket={() => goToMarket(m)}
                 data={{
                   portfolio: m.portfolio,
                   assets: m.assets,

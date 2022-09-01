@@ -199,7 +199,9 @@ function TableRow(props: Props) {
       <div
         className={"table-row" + (foldOpen ? " fold-open" : "")}
         onClick={() => {
+          //markets on click
           setSelectedMarket && setSelectedMarket();
+          //my portfolio on click
           foldElement && setFoldOpen(!foldOpen);
         }}
       >

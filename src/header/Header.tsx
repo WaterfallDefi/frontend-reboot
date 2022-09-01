@@ -11,8 +11,8 @@ import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
 import useAuth, { useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
 import TransactionModal from "./subcomponents/TransactionModal";
-import { Dark } from "./svgs/dark";
-import { Light } from "./svgs/light";
+// import { Dark } from "./svgs/dark"; remember to delete these
+// import { Light } from "./svgs/light";
 import RedepositModal from "./subcomponents/RedepositModal";
 import ClaimModal from "./subcomponents/ClaimModal";
 import { Market } from "../types";
@@ -23,6 +23,36 @@ import { Market } from "../types";
 const formatAccountAddress = (address?: string | null) => {
   if (!address) return "";
   return address.slice(0, 6) + "..." + address.slice(-4);
+};
+
+export const switchNetwork = async (
+  account: string | null | undefined,
+  network: Network,
+  setNetwork: React.Dispatch<React.SetStateAction<Network>>
+) => {
+  if (account) {
+    let success: boolean = false;
+    const provider = window.ethereum;
+    if (provider?.request) {
+      try {
+        await provider.request({
+          method: "wallet_switchEthereumChain",
+          params: [
+            {
+              chainId: `0x${network.toString(16)}`,
+            },
+          ],
+        });
+        success = true;
+      } catch (error) {
+        console.error("Failed to setup the network in Metamask:", error);
+      } finally {
+        success && setNetwork(network);
+      }
+    }
+  } else {
+    setNetwork(network);
+  }
 };
 
 type Props = {
@@ -44,35 +74,6 @@ function Header(props: Props) {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
   const location = useLocation();
-
-  const switchNetwork = async (network: Network) => {
-    if (account) {
-      let success: boolean = false;
-      const provider = window.ethereum;
-      if (provider?.request) {
-        try {
-          await provider.request({
-            method: "wallet_switchEthereumChain",
-            params: [
-              {
-                chainId: `0x${network.toString(16)}`,
-              },
-            ],
-          });
-          success = true;
-        } catch (error) {
-          console.error("Failed to setup the network in Metamask:", error);
-        } finally {
-          success && setNetwork(network);
-        }
-      }
-    } else {
-      setNetwork(network);
-    }
-    if (location.pathname === "/markets") {
-      setMarkets(undefined);
-    }
-  };
 
   useEffect(() => {
     if (chainId && chainId.toString() !== Network[network]) {
@@ -159,11 +160,11 @@ function Header(props: Props) {
             </div>
             {dropdownOpen ? (
               network === Network.AVAX ? (
-                <div className="network bnb option" onClick={() => switchNetwork(Network.BNB)}>
+                <div className="network bnb option" onClick={() => switchNetwork(account, Network.BNB, setNetwork)}>
                   BNB
                 </div>
               ) : (
-                <div className="network avax option" onClick={() => switchNetwork(Network.AVAX)}>
+                <div className="network avax option" onClick={() => switchNetwork(account, Network.AVAX, setNetwork)}>
                   AVAX
                 </div>
               )

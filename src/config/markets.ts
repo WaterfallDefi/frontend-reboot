@@ -1,19 +1,7 @@
 import {
-  DAIFallsTrancheMasterAddress,
-  DAIFallsMasterWTFAddress,
   DAI_E_DepositAddress,
-  DAITraderJoeStrategyAddress,
-  WAVAXFallsTrancheMasterAddress,
-  WAVAXFallsMasterWTFAddress,
   WAVAXDepositAddress,
-  WAVAXTraderJoeStrategyAddress,
-  WAVAXBenqiStrategyAddress,
-  DAIBenqiStrategyAddress,
   BUSDAddress,
-  BUSD4_TrancheMaster,
-  BUSD4_MasterWTF,
-  BUSD4_AlpacaStrat,
-  BUSD4_VenusStrat,
   BULL_BNB_TrancheMasterAddress,
   BULL_BNB_WTFMasterAddress,
   BULL_BUSDBNB_sALPACA_Address,
@@ -52,7 +40,6 @@ import MC_Tranches from "./abis/MC_TrancheMaster.json";
 import AR_Tranches from "./abis/AR_TrancheMaster.json";
 import MasterChef from "./abis/MasterChef.json";
 import WTF from "./abis/WTF.json";
-import AVAXTranches from "./abis/AVAXTrancheMaster.json";
 import AVAXTrancheMasterAutorollABI from "./abis/AVAXTrancheMasterAutoroll.json";
 import { Market, NETWORKS } from "../types";
 
