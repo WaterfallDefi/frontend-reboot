@@ -27,8 +27,6 @@ function Markets(props: Props) {
   const { price: wtfPrice } = useWTFPriceLP();
   const coingeckoPrices = useCoingeckoPrices(markets ? markets : []);
 
-  const filtered = markets ? markets.filter((m) => (network === Network.AVAX ? m.isAvax : !m.isAvax)) : [];
-
   //we are using markets as a network switch reset indicator, if flipped to undefined
   useEffect(() => {
     if (!markets) {
@@ -60,8 +58,8 @@ function Markets(props: Props) {
           </div>
         </div>
       ) : null}
-      {!selectedMarket
-        ? filtered.map((m: Market) => {
+      {!selectedMarket && markets
+        ? markets.map((m: Market) => {
             const tranchesApr = m.tranches.map((_t, _i) => {
               const wtfAPR = getWTFApr(
                 m.isAvax ? Network.AVAX : Network.BNB,
