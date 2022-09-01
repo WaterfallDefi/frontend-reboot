@@ -10,7 +10,6 @@ import { Market, StrategyFarm } from "../../types";
 import { ModalProps, Network } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
-import Pie from "../svgs/Pie";
 import ClaimRedeposit from "./ClaimRedeposit";
 import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
@@ -39,8 +38,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const { account } = useWeb3React<Web3Provider>();
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
-  const [selectedStrategy, setSelectedStrategy] = useState<StrategyFarm | undefined>();
-  const [stratChartColor, setStratChartColor] = useState<string>("");
+  const [selectedStrategy, setSelectedStrategy] = useState<StrategyFarm | undefined>(selectedMarket.strategyFarms[0]);
+  const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
   const { balance, fetchBalance } = useTrancheBalance(
@@ -155,26 +154,13 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         />
         <div className="chart-block portfolio-block">
           <div className="background left-br dbl-chart">
-            {!stratChartData && !selectedStrategy ? (
-              <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
-            ) : stratChartData ? (
-              <StrategyChart data={stratChartData} color={stratChartColor} />
-            ) : (
-              <div>Loading...</div>
-            )}
+            {stratChartData ? <StrategyChart data={stratChartData} color={stratChartColor} /> : <div>Loading...</div>}
+          </div>
+          <div className="background left-br dbl-chart">
+            <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
           </div>
           <div className="background right-br">
             <div className="legend">
-              <div
-                className={"chart-toggle" + (!selectedStrategy ? " selected" : "")}
-                onClick={() =>
-                  selectedStrategy
-                    ? setSelectedStrategy(undefined)
-                    : setSelectedStrategy(selectedMarket.strategyFarms[0])
-                }
-              >
-                <Pie />
-              </div>
               {selectedMarket.strategyFarms.map((f, i) => (
                 <div
                   key={f.farmName}

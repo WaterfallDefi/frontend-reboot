@@ -17,9 +17,6 @@ function Dashboard() {
   return (
     <div className="dashboard-wrapper dark">
       <div className="dash-banner">
-        <div className="dash-banner-img none" />
-        <div className="linear-gradient" />
-        <h1>Dashboard</h1>
         <div className="content">
           <div className="block">
             <span className="title">WTF Price</span>

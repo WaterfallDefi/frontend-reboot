@@ -124,7 +124,7 @@ function Header(props: Props) {
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
           <Link className="link" to={"/"} data-selected={location.pathname === "/"}>
-            Dashboard
+            Markets
           </Link>
         </div>
         <div className="menu-block-wrapper">

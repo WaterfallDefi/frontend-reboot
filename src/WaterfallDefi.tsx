@@ -93,6 +93,7 @@ function WaterfallDefi() {
               <Markets
                 key="markets"
                 mode={Mode.Dark}
+                network={network}
                 setNetwork={setNetwork}
                 markets={markets}
                 setMarkets={setMarkets}

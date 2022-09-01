@@ -18,6 +18,7 @@ import { switchNetwork } from "../header/Header";
 
 type Props = {
   mode: Mode;
+  network: Network;
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   markets: Market[] | undefined;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
@@ -25,7 +26,7 @@ type Props = {
 };
 
 function Markets(props: Props) {
-  const { mode, setNetwork, markets, setMarkets, setModal } = props;
+  const { mode, network, setNetwork, markets, setMarkets, setModal } = props;
 
   const { account } = useWeb3React<Web3Provider>();
 
@@ -42,8 +43,11 @@ function Markets(props: Props) {
   }, [markets]);
 
   async function goToMarket(market: Market) {
-    await switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork);
-    setSelectedMarket(market);
+    if ((market.isAvax && network === Network.BNB) || (!market.isAvax && network === Network.AVAX)) {
+      switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork);
+    } else {
+      setSelectedMarket(market);
+    }
   }
 
   return (
