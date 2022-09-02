@@ -99,21 +99,6 @@ function ApproveCardSimul(props: Props) {
   //     useMulticurrencyTrancheBalance(address, i, selectedMarket.assets.length)
   // );
 
-  const tokenButtonColors = useMemo(
-    () =>
-      selectedMarket.assets.map((a) => {
-        switch (a) {
-          case "BUSD":
-            return "#F0B90B";
-          case "WAVAX":
-            return "#E84142";
-          default:
-            return "#1579FF";
-        }
-      }),
-    [selectedMarket.assets]
-  );
-
   //validation texts
   const notes = [
     "When depositing senior, you will get a guaranteed fixed rate. However, your deposit will be locked in the portfolio until this maturity date is reached.",

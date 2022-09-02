@@ -156,9 +156,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           <div className="background left-br dbl-chart">
             {stratChartData ? <StrategyChart data={stratChartData} color={stratChartColor} /> : <div>Loading...</div>}
           </div>
-          <div className="background left-br dbl-chart">
-            <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
-          </div>
           <div className="background right-br">
             <div className="legend">
               {selectedMarket.strategyFarms.map((f, i) => (
@@ -178,6 +175,9 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="background left-br dbl-chart">
+            <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
           </div>
         </div>
         <TrancheStructure

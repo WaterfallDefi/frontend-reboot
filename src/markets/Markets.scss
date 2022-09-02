@@ -49,7 +49,7 @@
         gap: 24px;
         z-index: 1;
         padding: 12px;
-        border-radius: 12px;
+        border-radius: 5px;
         background-color: $base-color;
         @media screen and (max-width: 768px) {
           flex-direction: column;
@@ -103,7 +103,7 @@
               display: flex;
               margin-right: 12px;
               padding: 8px;
-              border-radius: 4px;
+              border-radius: 5px;
 
               &.selected {
                 background-color: $text-color-lightest;
@@ -145,7 +145,7 @@
           background: $base-color;
           padding: 12px 32px;
           min-height: 140px;
-          border-radius: 12px;
+          border-radius: 5px;
           border-left: 5px solid $highlight-color;
           color: $text-color;
           display: flex;
@@ -165,7 +165,7 @@
             justify-content: space-between;
 
             button {
-              border-radius: 4px;
+              border-radius: 5px;
               height: 28px;
               font-size: 14px;
               border: 1px solid $text-color-lightest;
@@ -193,12 +193,12 @@
               .control {
                 padding: 1.5px;
                 background-color: "#FFFFFF";
-                border-radius: 10;
+                border-radius: 5px;
                 width: 100%;
 
                 .autoroll-btn {
                   width: 100%;
-                  border-radius: 4px;
+                  border-radius: 5px;
                   height: 28px;
                   font-size: 14px;
                   border: 1px solid $text-color-lightest;
@@ -235,7 +235,7 @@
       .chart-block {
         display: flex;
         color: $text-color;
-        border-radius: 12px;
+        border-radius: 5px;
         flex-grow: 1;
 
         .background {
@@ -600,7 +600,7 @@
         .approve-card {
           padding: 25px;
           background: $base-color;
-          border-radius: 12px;
+          border-radius: 5px;
           border: $highlight-color-dark 2px solid;
           z-index: 1;
 
@@ -722,6 +722,239 @@
       .table-row {
         &:hover {
           border: 2px solid $highlight-color-dark;
+        }
+      }
+    }
+
+    .market-detail-wrapper {
+      .information {
+        .block-wrapper {
+          background-color: $layer-color-dark;
+          .info-block {
+            .blocktext {
+              color: $text-color-dark;
+            }
+            .tvl {
+              color: $highlight-color;
+            }
+            .portfolio-name {
+              color: $text-color-dark;
+            }
+            .assets {
+              color: $text-color-dark;
+
+              &.multicurrency {
+                .asset {
+                  cursor: pointer;
+                  &:hover {
+                    background-color: $text-color-lighter;
+                  }
+                }
+              }
+
+              .asset {
+                &.selected {
+                  background-color: $text-color-lightest;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .charts {
+        .claim-redeposit {
+          .section {
+            background: $layer-color-dark;
+            border-left: 5px solid $highlight-color;
+            color: $text-color-dark;
+
+            .label {
+              color: $text-color-dark;
+            }
+            .rtn-amt {
+              color: $highlight-color;
+            }
+
+            .buttons {
+              button {
+                border: 1px solid $text-color-lightest;
+                color: $highlight-color;
+
+                &:disabled {
+                  color: $text-color-lightest;
+                }
+              }
+            }
+
+            .autoroll-controls {
+              .control-wrapper {
+                .control {
+                  background-color: "#FFFFFF";
+                  .autoroll-btn {
+                    border: 1px solid $text-color-lightest;
+                    color: $base-color-dark;
+                    &.start {
+                      background-color: $highlight-color;
+                    }
+                    &.stop {
+                      background-color: $text-color-lighter;
+                    }
+                    &:disabled {
+                      background-color: $text-color-lightest;
+                    }
+                  }
+                }
+              }
+              .autoroll-lbl {
+                &.on {
+                  color: $highlight-color;
+                }
+                &.off {
+                  color: $text-color-lighter;
+                }
+              }
+            }
+          }
+        }
+        .chart-block {
+          color: $text-color;
+          .background {
+            background: $layer-color-dark;
+          }
+          .selected {
+            background: $text-color-lightest;
+          }
+
+          .farm-key {
+            &.strategy-select {
+              cursor: pointer;
+              &:hover {
+                background: $text-color-lightest;
+                opacity: 0.5;
+              }
+            }
+          }
+        }
+      }
+
+      &.tranche-structure {
+        .background {
+          color: $layer-color-dark;
+        }
+      }
+    }
+    .deposit {
+      .next-cycle-wrapper {
+        .next-cycle {
+          color: $highlight-color;
+        }
+        .active-cycle {
+          color: $text-color-dark;
+        }
+      }
+      .top-bar {
+        .step-bar {
+          .step {
+            border: 1px solid $highlight-color;
+            color: $highlight-color;
+            background: $layer-color-dark;
+          }
+          .step-name {
+            color: $text-color-dark;
+          }
+          .line {
+            background: $text-color-lighter;
+          }
+        }
+        .select-deposit-assets {
+          .select-deposit-asset {
+            .step-name {
+              color: $text-color-dark;
+            }
+            .remaining-depositable-outer {
+              background-color: $text-color-lightest;
+              .remaining-depositable-inner {
+                background-color: $highlight-color;
+              }
+            }
+          }
+        }
+      }
+      .deposit-item {
+        .tranches {
+          .tranche {
+            border: $highlight-color-dark 2px solid;
+            background: $layer-color-dark;
+            &.selected {
+              border-color: $highlight-color;
+              background: $layer-color-dark;
+            }
+
+            .sold-out {
+              background-color: $layer-color-dark;
+            }
+
+            .tranche-name {
+              color: $text-color-dark;
+            }
+            .risk-text {
+              color: $text-color-dark;
+            }
+            .status {
+              .remaining {
+                color: $text-color-dark;
+              }
+            }
+            .progress-bar {
+              background-color: $text-color-lightest;
+            }
+            .separator {
+              background: $highlight-color-dark;
+            }
+          }
+        }
+        .approve-card {
+          background: $layer-color-dark;
+          border: $highlight-color-dark 2px solid;
+
+          .row {
+            color: $text-color-dark;
+          }
+          .separator {
+            background: $highlight-color-dark;
+          }
+          .input-wrapper {
+            .max-input {
+              color: $base-color-dark;
+              background: $highlight-color;
+            }
+          }
+          .validate-text {
+            color: red; //temp
+          }
+          .important-notes {
+            background-color: $layer-color;
+
+            & > div:nth-of-type(1) {
+              color: $highlight-color;
+            }
+            & > div:nth-of-type(2) > div:nth-of-type(1) {
+              color: $highlight-color;
+            }
+            & > div:nth-of-type(2) > div:nth-of-type(2) {
+              color: $text-color-dark;
+            }
+            &.placeholder {
+              background-color: $base-color-dark;
+            }
+          }
+          .redemption-fee {
+            color: $text-color-lightest;
+            & > span {
+              color: $highlight-color;
+            }
+          }
         }
       }
     }
