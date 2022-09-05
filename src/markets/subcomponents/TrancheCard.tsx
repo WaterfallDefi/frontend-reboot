@@ -14,13 +14,10 @@ type Props = {
   selected: boolean;
   setSelectTrancheIdx: React.Dispatch<React.SetStateAction<number | undefined>>;
   coingeckoPrices: any;
+  remaining: string;
 };
 
-const compareNum = (
-  num1: string | number | undefined,
-  num2: string | undefined,
-  largerOnly = false
-) => {
+const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
   if (num1 === undefined) return;
   if (num2 === undefined) return;
   const _num1 = new BigNumber(num1);
@@ -32,11 +29,7 @@ const compareNum = (
 
 const getPercentage = (num: string | undefined, total: string | undefined) => {
   if (!num || !total) return "0";
-  return new BigNumber(num)
-    .dividedBy(new BigNumber(total))
-    .times(100)
-    .toFormat(2)
-    .toString();
+  return new BigNumber(num).dividedBy(new BigNumber(total)).times(100).toFormat(2).toString();
 };
 
 const formatNumberSeparator = (num: string) => {
@@ -57,6 +50,7 @@ function TrancheCard(props: Props) {
     selected,
     setSelectTrancheIdx,
     coingeckoPrices,
+    remaining,
   } = props;
   const isSoldout = useMemo(
     () =>
@@ -68,12 +62,7 @@ function TrancheCard(props: Props) {
               .toString(),
             (Number(tranche.target) - 0.5).toString()
           ),
-    [
-      selectedMarket.autorollImplemented,
-      tranche.principal,
-      tranche.target,
-      tranche.autoPrincipal,
-    ]
+    [selectedMarket.autorollImplemented, tranche.principal, tranche.target, tranche.autoPrincipal]
   );
 
   const trancheApr = tranche.apy;
@@ -85,10 +74,7 @@ function TrancheCard(props: Props) {
 
   const wtfApr = getWTFApr(
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-    formatAllocPoint(
-      selectedMarket.pools[trancheIndex],
-      selectedMarket.totalAllocPoints
-    ),
+    formatAllocPoint(selectedMarket.pools[trancheIndex], selectedMarket.totalAllocPoints),
     selectedMarket.tranches[trancheIndex],
     selectedMarket.duration,
     selectedMarket.rewardPerBlock,
@@ -108,42 +94,22 @@ function TrancheCard(props: Props) {
 
   const riskText: string =
     selectedMarket.trancheCount === 3
-      ? [
-          "Low Risk ; Fixed",
-          "Medium Risk ; Fixed",
-          "Multiple Leverage ; Variable",
-        ][trancheIndex]
+      ? ["Low Risk ; Fixed", "Medium Risk ; Fixed", "Multiple Leverage ; Variable"][trancheIndex]
       : ["Low Risk ; Fixed", "Multiple Leverage ; Variable"][trancheIndex];
 
-  const prefix: string =
-    selectedMarket.assets[0] !== "WBNB" && selectedMarket.assets[0] !== "WAVAX"
-      ? "$"
-      : "";
+  const prefix: string = selectedMarket.assets[0] !== "WBNB" && selectedMarket.assets[0] !== "WAVAX" ? "$" : "";
 
-  const decimals: number =
-    selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e"
-      ? 6
-      : 18;
+  const decimals: number = selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e" ? 6 : 18;
 
-  const tvl: string = formatNumberSeparator(
-    formatTVL(tranchePrincipal, decimals)
-  );
+  const tvl: string = formatNumberSeparator(formatTVL(tranchePrincipal, decimals));
 
   const suffix: string =
-    selectedMarket.assets[0] === "WBNB" || selectedMarket.assets[0] === "WAVAX"
-      ? selectedMarket.assets[0]
-      : "";
+    selectedMarket.assets[0] === "WBNB" || selectedMarket.assets[0] === "WAVAX" ? selectedMarket.assets[0] : "";
 
   return (
     <div
-      className={
-        "tranche" +
-        (selected ? " selected" : "") +
-        (isSoldout ? " disabled" : "")
-      }
-      onClick={() =>
-        !selected && !isSoldout && setSelectTrancheIdx(trancheIndex)
-      }
+      className={"tranche" + (selected ? " selected" : "") + (isSoldout ? " disabled" : "")}
+      onClick={() => !selected && !isSoldout && setSelectTrancheIdx(trancheIndex)}
     >
       {isSoldout ? <div className="sold-out">Sold Out</div> : null}
       <div className="tranche-name">
@@ -164,7 +130,8 @@ function TrancheCard(props: Props) {
           {prefix + tvl + suffix}
         </div>
         <div className="remaining">
-          Remaining: {selectedMarket.assets[selectedDepositAssetIndex]}
+          Remaining: {Number(remaining.replaceAll(",", "")) > 0 ? remaining : "0"}{" "}
+          {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
       </div>
       <div className="progress-bar">

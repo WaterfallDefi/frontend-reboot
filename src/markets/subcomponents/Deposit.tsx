@@ -214,6 +214,24 @@ function Deposit(props: Props) {
                 selected={selectTrancheIdx === i}
                 setSelectTrancheIdx={setSelectTrancheIdx}
                 coingeckoPrices={coingeckoPrices}
+                remaining={
+                  !selectedMarket.isMulticurrency
+                    ? getRemaining(
+                        selectedMarket.tranches[i]?.target,
+                        !selectedMarket.autorollImplemented
+                          ? selectedMarket.tranches[i]?.principal
+                          : (
+                              Number(selectedMarket.tranches[i]?.principal) +
+                              Number(selectedMarket.tranches[i]?.autoPrincipal)
+                            ).toString(),
+                        selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e" ? 6 : 18
+                      ).remaining
+                    : getRemainingMulticurrency(
+                        selectedMarket.tranches[i]?.target,
+                        selectedMarket.tranches[i]?.principal,
+                        remainingDepositable
+                      ).remaining
+                }
               />
             );
           })}
