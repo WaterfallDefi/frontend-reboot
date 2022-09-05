@@ -7,11 +7,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
   padding: 86px $evenPadding 160px $evenPadding;
   .body-wrapper {
     .APY-card {
-      background: linear-gradient(
-        360deg,
-        rgba(21, 121, 255, 0.1) 0%,
-        rgba(21, 123, 255, 0.1) 100%
-      );
+      background: linear-gradient(360deg, rgba(21, 121, 255, 0.1) 0%, rgba(21, 123, 255, 0.1) 100%);
       padding: 24px 43px 24px 30px;
       display: flex;
       align-items: center;
@@ -66,10 +62,10 @@ $evenPadding: calc((100vw - 1072px) / 2);
             background-repeat: no-repeat;
             margin-right: 8px;
             &.busd {
-              background-image: url("../dashboard/svgs/BUSD.svg");
+              background-image: url("./svgs/BUSD.svg");
             }
             &.wavax {
-              background-image: url("../dashboard/svgs/AVAX.svg");
+              background-image: url("./svgs/AVAX.svg");
             }
           }
         }
