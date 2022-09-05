@@ -19,6 +19,7 @@ import { switchNetwork } from "../header/Header";
 type Props = {
   mode: Mode;
   network: Network;
+  setDisableHeaderNetworkSwitch: React.Dispatch<React.SetStateAction<boolean>>;
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   markets: Market[] | undefined;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
@@ -26,7 +27,7 @@ type Props = {
 };
 
 function Markets(props: Props) {
-  const { mode, network, setNetwork, markets, setMarkets, setModal } = props;
+  const { mode, network, setDisableHeaderNetworkSwitch, setNetwork, markets, setMarkets, setModal } = props;
 
   const { account } = useWeb3React<Web3Provider>();
 
@@ -39,16 +40,21 @@ function Markets(props: Props) {
   useEffect(() => {
     if (!markets) {
       setSelectedMarket(undefined);
+      setDisableHeaderNetworkSwitch(false);
     }
-  }, [markets]);
+  }, [markets, setSelectedMarket, setDisableHeaderNetworkSwitch]);
 
   async function goToMarket(market: Market) {
     if ((market.isAvax && network === Network.BNB) || (!market.isAvax && network === Network.AVAX)) {
-      switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork).then(
-        (res) => res && setSelectedMarket(market)
-      );
+      switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork).then((res) => {
+        if (res) {
+          setSelectedMarket(market);
+          setDisableHeaderNetworkSwitch(true);
+        }
+      });
     } else {
       setSelectedMarket(market);
+      setDisableHeaderNetworkSwitch(true);
     }
   }
 
@@ -58,6 +64,9 @@ function Markets(props: Props) {
         <div className="header-row">
           <div className="header first">
             <span>Portfolio Name</span>
+          </div>
+          <div className="header">
+            <span>Network</span>
           </div>
           <div className="header">
             <span>Asset</span>
@@ -110,6 +119,7 @@ function Markets(props: Props) {
                 setSelectedMarket={() => goToMarket(m)}
                 data={{
                   portfolio: m.portfolio,
+                  network: m.isAvax ? "AVAX" : "BNB",
                   assets: m.assets,
                   duration:
                     Number(m.duration) / 86400 >= 1

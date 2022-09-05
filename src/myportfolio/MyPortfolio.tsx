@@ -297,6 +297,7 @@ function MyPortfolio(props: Props) {
                 key={_idx}
                 data={{
                   portfolio: _market.portfolio,
+                  network: _market.isAvax ? "AVAX" : "BNB",
                   assets: _market.assets,
                   trancheCycle: {
                     trancheCycle: trancheCycle?.state !== 0 ? trancheCycle : undefined,

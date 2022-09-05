@@ -60,6 +60,7 @@ export const switchNetwork = async (
 type Props = {
   mode: Mode;
   network: Network;
+  disableHeaderNetworkSwitch: boolean;
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   modal: ModalProps;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
@@ -67,7 +68,7 @@ type Props = {
 };
 
 function Header(props: Props) {
-  const { mode, network, setNetwork, modal, setModal, setMarkets } = props;
+  const { mode, network, disableHeaderNetworkSwitch, setNetwork, modal, setModal, setMarkets } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
@@ -162,11 +163,17 @@ function Header(props: Props) {
             </div>
             {dropdownOpen ? (
               network === Network.AVAX ? (
-                <div className="network bnb option" onClick={() => switchNetwork(account, Network.BNB, setNetwork)}>
+                <div
+                  className="network bnb option"
+                  onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
+                >
                   BNB
                 </div>
               ) : (
-                <div className="network avax option" onClick={() => switchNetwork(account, Network.AVAX, setNetwork)}>
+                <div
+                  className="network avax option"
+                  onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AVAX, setNetwork)}
+                >
                   AVAX
                 </div>
               )

@@ -60,6 +60,7 @@ function WaterfallDefi() {
   const [network, setNetwork] = useState<Network>(Network.AVAX);
   const [markets, setMarkets] = useState<Market[] | undefined>();
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
+  const [disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch] = useState<boolean>(false);
 
   useEffect(() => {
     if (!markets) {
@@ -74,6 +75,7 @@ function WaterfallDefi() {
       key="header"
       mode={Mode.Dark}
       network={network}
+      disableHeaderNetworkSwitch={disableHeaderNetworkSwitch}
       setNetwork={setNetwork}
       modal={modal}
       setModal={setModal}
@@ -94,6 +96,7 @@ function WaterfallDefi() {
                 key="markets"
                 mode={Mode.Dark}
                 network={network}
+                setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
                 setNetwork={setNetwork}
                 markets={markets}
                 setMarkets={setMarkets}

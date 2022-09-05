@@ -40,6 +40,13 @@ function TableRow(props: Props) {
               </div>
             );
             break;
+          case "network":
+            elements.push(
+              <div className={"col network " + columnData} key={key}>
+                {columnData}
+              </div>
+            );
+            break;
           case "assets":
             elements.push(
               <div className="col" key={key}>

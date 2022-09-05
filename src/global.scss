@@ -74,6 +74,15 @@ $text-color-darker: rgba(255, 255, 255, 0.7);
       font-weight: 500;
     }
 
+    &.network {
+      &.AVAX {
+        color: rgb(232, 65, 66);
+      }
+      &.BNB {
+        color: rgb(240, 185, 11);
+      }
+    }
+
     &.apr_markets {
       display: flex;
       flex-direction: column;
