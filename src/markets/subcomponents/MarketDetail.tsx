@@ -134,7 +134,10 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           </div>
           <div className="info-block">
             <div />
-            <span className="tvl">$TVL: {selectedMarket.tvl}</span>
+            <span className="tvl">
+              TVL: {numeral(selectedMarket.tvl).format("0,0.[0000]")}{" "}
+              {selectedMarket.assets[0] === "WBNB" || "WAVAX" ? selectedMarket.assets[0] : "$"}
+            </span>
           </div>
         </div>
       </div>

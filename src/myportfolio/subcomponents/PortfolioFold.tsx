@@ -133,7 +133,7 @@ function PortfolioFold(props: Props) {
             {!isMulticurrency
               ? numeral(totalAmount).format("0,0.[0000]") + " " + assets
               : totalAmounts.map((a, i) => (
-                  <span>
+                  <span key={i}>
                     {numeral(a).format("0,0.[0000]")} {assets[i]}
                   </span>
                 ))}
