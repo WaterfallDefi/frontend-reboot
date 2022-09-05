@@ -30,6 +30,9 @@ function Dashboard() {
             <span className="title" />
             <div className="icon-group">
               <Metamask />
+              <a href="https://www.coingecko.com/en/coins/waterfall-governance-token">
+                <div className="coingecko" />
+              </a>
             </div>
           </div>
         </div>

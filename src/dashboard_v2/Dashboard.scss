@@ -81,6 +81,13 @@ $evenPadding: calc((100vw - 1048px) / 2);
             width: 32px;
             height: 32px;
           }
+          .coingecko {
+            margin-left: 24px;
+            width: 32px;
+            height: 32px;
+            background: url("./pngs/coingecko.png");
+            background-size: contain;
+          }
         }
       }
     }

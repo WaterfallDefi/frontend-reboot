@@ -211,6 +211,9 @@ function MyPortfolio(props: Props) {
           <span>Portfolio Name</span>
         </div>
         <div className="header">
+          <span>Network</span>
+        </div>
+        <div className="header">
           <span>Asset</span>
         </div>
         <div className="header">
