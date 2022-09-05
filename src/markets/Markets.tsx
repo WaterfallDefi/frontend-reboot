@@ -44,7 +44,9 @@ function Markets(props: Props) {
 
   async function goToMarket(market: Market) {
     if ((market.isAvax && network === Network.BNB) || (!market.isAvax && network === Network.AVAX)) {
-      switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork);
+      switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork).then(
+        (res) => res && setSelectedMarket(market)
+      );
     } else {
       setSelectedMarket(market);
     }

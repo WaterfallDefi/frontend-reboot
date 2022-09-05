@@ -50,8 +50,10 @@ export const switchNetwork = async (
         success && setNetwork(network);
       }
     }
+    return success;
   } else {
     setNetwork(network);
+    return true;
   }
 };
 
