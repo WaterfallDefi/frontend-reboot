@@ -30,6 +30,7 @@ export enum Modal {
   ConnectWallet = 2,
   Redeposit = 3,
   Claim = 4,
+  Terms = 5,
 }
 
 export type ModalProps = {
@@ -61,6 +62,12 @@ function WaterfallDefi() {
   const [markets, setMarkets] = useState<Market[] | undefined>();
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
   const [disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch] = useState<boolean>(false);
+
+  useEffect(() => {
+    setModal({
+      state: Modal.Terms,
+    });
+  }, []);
 
   useEffect(() => {
     if (!markets) {

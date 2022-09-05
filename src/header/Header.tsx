@@ -16,6 +16,7 @@ import TransactionModal from "./subcomponents/TransactionModal";
 import RedepositModal from "./subcomponents/RedepositModal";
 import ClaimModal from "./subcomponents/ClaimModal";
 import { Market } from "../types";
+import TermsModal from "./subcomponents/TermsModal";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -92,6 +93,7 @@ function Header(props: Props) {
         className={"mask" + (modal.state !== Modal.None ? " visible" : "")}
         onClick={() => setModal({ state: Modal.None })}
       />
+      {modal.state === Modal.Terms ? <TermsModal /> : null}
       {modal.state === Modal.ConnectWallet ? <ConnectWalletModal network={network} /> : null}
       {modal.state === Modal.Txn ? (
         <TransactionModal
