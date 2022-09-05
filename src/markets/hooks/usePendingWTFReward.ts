@@ -23,9 +23,7 @@ const usePendingWTFReward = (network: Network, masterChefAddress: string, tranch
           params: [account, i],
         });
       }
-      console.log("CALLS!!!!");
-      console.log(calls);
-      const result = await multicall(network, MasterChef.abi, calls);
+      const result = network === Network.AVAX ? [{ _hex: 0 }] : await multicall(network, MasterChef.abi, calls);
       let _pendingReward = new BigNumber(0);
       const _tranchesPendingReward = [];
       for (let i = 0; i < result.length; i++) {
