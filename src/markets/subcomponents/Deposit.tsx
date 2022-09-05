@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
 import Countdown from "react-countdown";
 
-import { Market } from "../../types";
+import { Market, PORTFOLIO_STATUS } from "../../types";
 import { ModalProps } from "../../WaterfallDefi";
 import getRemaining, { getRemainingMulticurrency } from "../hooks/getRemaining";
 import { Hill } from "../svgs/Hill";
@@ -131,46 +131,48 @@ function Deposit(props: Props) {
 
   return (
     <div className="deposit">
-      <div className="next-cycle-wrapper">
-        <Hill />
-        <div className="next-cycle">
-          Next Cycle
-          <Countdown
-            date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt)) * 1000}
-            renderer={({ days, hours, minutes, seconds, completed }) => {
-              return (
-                <span>
-                  {!completed && (
-                    <>
-                      {days}D {hours}H {minutes}M {seconds}S
-                    </>
-                  )}
-                </span>
-              );
-            }}
-          />
+      {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? (
+        <div className="next-cycle-wrapper">
+          <Hill />
+          <div className="next-cycle">
+            Next Cycle
+            <Countdown
+              date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt)) * 1000}
+              renderer={({ days, hours, minutes, seconds, completed }) => {
+                return (
+                  <span>
+                    {!completed && (
+                      <>
+                        {days}D {hours}H {minutes}M {seconds}S
+                      </>
+                    )}
+                  </span>
+                );
+              }}
+            />
+          </div>
+          <div className="active-cycle">
+            Active Cycle
+            {" " + formatTimestamp(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0)} -
+            {" " +
+              formatTimestamp(
+                Number(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0) +
+                  Number(selectedMarket.duration ? selectedMarket.duration : 0)
+              )}{" "}
+          </div>
+          <div
+            className="button"
+            onClick={() =>
+              handleReminder(
+                Number(selectedMarket.actualStartAt),
+                Number(selectedMarket.actualStartAt) + Number(selectedMarket.duration)
+              )
+            }
+          >
+            Remind Me
+          </div>
         </div>
-        <div className="active-cycle">
-          Active Cycle
-          {formatTimestamp(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0)} -
-          {formatTimestamp(
-            Number(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0) +
-              Number(selectedMarket.duration ? selectedMarket.duration : 0)
-          )}{" "}
-          {selectedMarket.duration}
-        </div>
-        <div
-          className="button"
-          onClick={() =>
-            handleReminder(
-              Number(selectedMarket.actualStartAt),
-              Number(selectedMarket.actualStartAt) + Number(selectedMarket.duration)
-            )
-          }
-        >
-          Remind Me
-        </div>
-      </div>
+      ) : null}
       <div className="top-bar">
         <div className="step-bar">
           <div className="step">1</div>
