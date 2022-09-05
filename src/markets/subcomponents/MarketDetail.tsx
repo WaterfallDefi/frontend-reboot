@@ -156,10 +156,10 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           flexGrow={!selectedStrategy}
         />
         <div className="chart-block portfolio-block">
-          <div className="background left-br dbl-chart">
+          <div className="background left-br">
             {stratChartData ? <StrategyChart data={stratChartData} color={stratChartColor} /> : <div>Loading...</div>}
           </div>
-          <div className="background right-br">
+          <div className="background">
             <div className="legend">
               {selectedMarket.strategyFarms.map((f, i) => (
                 <div
@@ -179,7 +179,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
               ))}
             </div>
           </div>
-          <div className="background left-br dbl-chart">
+          <div className="background right-br">
             <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
           </div>
         </div>

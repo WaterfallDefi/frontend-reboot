@@ -6,16 +6,10 @@ import MasterChef from "../../config/abis/MasterChef.json";
 import { Network } from "../../WaterfallDefi";
 import BigNumber from "bignumber.js";
 
-const usePendingWTFReward = (
-  network: Network,
-  masterChefAddress: string,
-  trancheCount: number
-) => {
+const usePendingWTFReward = (network: Network, masterChefAddress: string, trancheCount: number) => {
   const { account } = useWeb3React<Web3Provider>();
   const [totalPendingReward, setTotalPendingReward] = useState("0");
-  const [tranchesPendingReward, setTranchesPendingReward] = useState<string[]>(
-    []
-  );
+  const [tranchesPendingReward, setTranchesPendingReward] = useState<string[]>([]);
   //   const { slowRefresh } = useRefresh();
   //   const network = useNetwork();
 
@@ -29,14 +23,14 @@ const usePendingWTFReward = (
           params: [account, i],
         });
       }
+      console.log("CALLS!!!!");
+      console.log(calls);
       const result = await multicall(network, MasterChef.abi, calls);
       let _pendingReward = new BigNumber(0);
       const _tranchesPendingReward = [];
       for (let i = 0; i < result.length; i++) {
         _pendingReward = _pendingReward.plus(new BigNumber(result[i][0]?._hex));
-        _tranchesPendingReward.push(
-          new BigNumber(result[i][0]?._hex).toString()
-        );
+        _tranchesPendingReward.push(new BigNumber(result[i][0]?._hex).toString());
       }
       setTotalPendingReward(_pendingReward.toString());
       setTranchesPendingReward(_tranchesPendingReward);
