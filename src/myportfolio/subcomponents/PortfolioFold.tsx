@@ -70,7 +70,7 @@ function PortfolioFold(props: Props) {
 
   const { getAutoroll, changeAutoroll } = useAutoroll(network, trancheMasterAddress);
 
-  // const { tranchesPendingReward } = usePendingWTFReward(network, trancheMasterAddress, trancheCount);
+  const { tranchesPendingReward } = usePendingWTFReward(network, trancheMasterAddress, trancheCount);
 
   useEffect(() => {
     if (autorollImplemented) {
@@ -171,9 +171,9 @@ function PortfolioFold(props: Props) {
         <div className="card">
           <div className="card-title">WTF Reward</div>
           <div className="card-value">
-            {/* {isCurrentCycle && isActive
+            {isCurrentCycle && isActive
               ? numeral(formatNumberDisplay(tranchesPendingReward[currentTranche])).format("0,0.[0000]")
-              : "-"}{" "} */}
+              : "-"}{" "}
             WTF
           </div>
           <div className="card-action">

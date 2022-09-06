@@ -62,6 +62,7 @@ type Props = {
   mode: Mode;
   network: Network;
   disableHeaderNetworkSwitch: boolean;
+  setDisableHeaderNetworkSwitch: React.Dispatch<React.SetStateAction<boolean>>;
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   modal: ModalProps;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
@@ -69,7 +70,16 @@ type Props = {
 };
 
 function Header(props: Props) {
-  const { mode, network, disableHeaderNetworkSwitch, setNetwork, modal, setModal, setMarkets } = props;
+  const {
+    mode,
+    network,
+    disableHeaderNetworkSwitch,
+    setDisableHeaderNetworkSwitch,
+    setNetwork,
+    modal,
+    setModal,
+    setMarkets,
+  } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
@@ -84,6 +94,13 @@ function Header(props: Props) {
       setNetwork(chainId);
     }
   }, [chainId, network, setNetwork]);
+
+  //when navigating away from markets, reenable header network switch in case that user selected a product
+  useEffect(() => {
+    if (location.pathname !== "/" && disableHeaderNetworkSwitch) {
+      setDisableHeaderNetworkSwitch(false);
+    }
+  }, [location.pathname, disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch]);
 
   useEagerConnect(network);
 

@@ -332,7 +332,7 @@ function MyPortfolio(props: Props) {
                 }}
                 foldElement={
                   <PortfolioFold
-                    network={network}
+                    network={_market.isAvax ? Network.AVAX : Network.BNB}
                     trancheMasterAddress={_market.address}
                     abi={_market.abi}
                     totalAmount={_userInvest.principal}

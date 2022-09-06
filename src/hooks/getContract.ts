@@ -10,12 +10,8 @@ export const getContract = (
 ) => {
   const simpleRpcProvider =
     network === Network.AVAX
-      ? new ethers.providers.JsonRpcProvider(
-          "https://api.avax.network/ext/bc/C/rpc"
-        )
-      : new ethers.providers.JsonRpcProvider(
-          "https://bsc-dataseed.binance.org/"
-        );
+      ? new ethers.providers.JsonRpcProvider("https://api.avax.network/ext/bc/C/rpc")
+      : new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/");
   const signerOrProvider = signer ?? simpleRpcProvider;
   return new ethers.Contract(address, abi, signerOrProvider);
 };
@@ -35,10 +31,7 @@ interface Call {
   params?: any[]; // Function params
 }
 
-const getMulticallContract = (
-  network: Network,
-  signer?: ethers.Signer | ethers.providers.Provider
-) => {
+const getMulticallContract = (network: Network, signer?: ethers.Signer | ethers.providers.Provider) => {
   //turn into a switch case if we ever add a third chain
   const multicallAddress =
     network === Network.AVAX
@@ -48,24 +41,15 @@ const getMulticallContract = (
   return getContract(Multicall, multicallAddress, network, signer);
 };
 
-export const multicall = async <T = any>(
-  network: Network,
-  abi: any[],
-  calls: Call[]
-): Promise<T> => {
+export const multicall = async <T = any>(network: Network, abi: any[], calls: Call[]): Promise<T> => {
   try {
     const multi = getMulticallContract(network);
     const itf = new ethers.utils.Interface(abi);
 
-    const calldata = calls.map((call) => [
-      call.address.toLowerCase(),
-      itf.encodeFunctionData(call.name, call.params),
-    ]);
+    const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)]);
 
     const { returnData } = await multi.aggregate(calldata);
-    const res = returnData.map((call: any, i: number) =>
-      itf.decodeFunctionResult(calls[i].name, call)
-    );
+    const res = returnData.map((call: any, i: number) => itf.decodeFunctionResult(calls[i].name, call));
 
     return res;
   } catch (error: any) {

@@ -83,6 +83,7 @@ function WaterfallDefi() {
       mode={Mode.Dark}
       network={network}
       disableHeaderNetworkSwitch={disableHeaderNetworkSwitch}
+      setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
       setNetwork={setNetwork}
       modal={modal}
       setModal={setModal}
