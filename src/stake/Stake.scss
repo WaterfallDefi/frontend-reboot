@@ -95,7 +95,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
             & .stake-wtf {
               border-radius: 8px;
               padding: 16px;
-              background: $layer-color;
+              background: $layer-color-dark;
               display: grid;
               gap: 10px;
               div {
@@ -293,7 +293,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
             align-items: center;
             justify-content: space-between;
             p {
-              color: $text-color;
+              color: $text-color-dark;
               font-size: 14px;
               line-height: 125%;
               display: grid;
@@ -353,7 +353,29 @@ $evenPadding: calc((100vw - 1072px) / 2);
         color: $text-color-dark;
       }
       .actions {
+        .action {
+          background-color: $layer-color-dark;
+          color: $text-color-dark;
+          .segment {
+            .segment-block {
+              background-color: transparent;
+              color: $text-color-dark;
+              &[data-activated="true"] {
+                background-color: $highlight-color;
+              }
+            }
+          }
+          .increase,
+          .unstake {
+            color: $text-color-dark;
+            input {
+              color: $text-color-dark;
+              background-color: $base-color-dark;
+            }
+          }
+        }
         .stake-info {
+          background-color: $base-color-dark;
           p {
             color: $text-color-dark;
           }
