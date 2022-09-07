@@ -165,9 +165,11 @@ function MyPortfolio(props: Props) {
     const filtered = userInvests?.filter((_userInvest: any) => {
       if (!trancheCycles) return false;
       const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
-      if (_userInvest.principal === "0") return false;
+      if (!markets[marketIdx].isMulticurrency && _userInvest.principal === "0") return false;
+      if (markets[marketIdx].isMulticurrency && _userInvest.MCprincipal.every((p: string) => Number(p) === 0))
+        return false;
       if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
-      if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset)) return false;
+      if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset.toString())) return false;
       if (
         selectedStatus > -1 &&
         trancheCycles[trancheCycleId] &&
@@ -181,29 +183,39 @@ function MyPortfolio(props: Props) {
     userInvestsPayload[marketIdx] = { userInvests: filtered };
   }
 
+  const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAsset(event.target.value);
+  };
+  const handleTranchesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedTranche(Number(event.target.value));
+  };
+  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedStatus(Number(event.target.value));
+  };
+
   return (
     <div className={"my-portfolio-wrapper " + mode}>
       <div className="filters">
-        <select>
+        <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleStatusChange(e)}>
           {STATUSES.map((s, i) => (
-            <option key={i} onClick={() => setSelectedStatus(s.status)}>
+            <option key={i} value={s.status.toString()}>
               {s.name}
             </option>
           ))}
         </select>
-        <select>
-          <option onClick={() => setSelectedAsset("ALL")}>All</option>
-          {network === Network.AVAX && <option onClick={() => setSelectedAsset("DAI.e")}>DAI.e</option>}
-          {network === Network.AVAX && <option onClick={() => setSelectedAsset("WAVAX")}>WAVAX</option>}
-          {network === Network.BNB && <option onClick={() => setSelectedAsset("BUSD")}>BUSD</option>}
-          {network === Network.BNB && <option onClick={() => setSelectedAsset("WBNB")}>WBNB</option>}
-          {network === Network.BNB && <option onClick={() => setSelectedAsset("USDT")}>USDT</option>}
+        <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleAssetChange(e)}>
+          <option value="ALL">All</option>
+          <option value="DAI.e">DAI.e</option>
+          <option value="WAVAX">WAVAX</option>
+          <option value="BUSD">BUSD</option>
+          <option value="WBNB">WBNB</option>
+          <option value="USDT">USDT</option>
         </select>
-        <select>
-          <option onClick={() => setSelectedTranche(-1)}>All</option>
-          <option onClick={() => setSelectedTranche(0)}>Senior</option>
-          <option onClick={() => setSelectedTranche(1)}>Mezzanine</option>
-          <option onClick={() => setSelectedTranche(2)}>Junior</option>
+        <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleTranchesChange(e)}>
+          <option value="-1">All</option>
+          <option value="0">Senior / Fixed</option>
+          <option value="1">Mezzanine / Variable</option>
+          <option value="2">Junior</option>
         </select>
       </div>
       <div className="header-row">
