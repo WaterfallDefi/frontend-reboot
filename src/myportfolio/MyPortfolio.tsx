@@ -248,7 +248,7 @@ function MyPortfolio(props: Props) {
         </div>
       </div>
       {!loaded ? (
-        <div>Loading...</div>
+        <div className="loading">Loading...</div>
       ) : (
         userInvestsPayload.map((_userInvestMarket, __idx) => {
           const { userInvests } = _userInvestMarket;
