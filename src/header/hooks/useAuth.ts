@@ -18,8 +18,8 @@ enum ConnectorNames {
 
 const walletconnect = new WalletConnectConnector({
   rpc: {
-    [43114]: "https://api.avax-test.network/ext/bc/C/rpc",
-    [56]: "https://bsc-dataseed.binance.org/",
+    43114: "https://api.avax-test.network/ext/bc/C/rpc",
+    56: "https://bsc-dataseed.binance.org/",
   },
   supportedChainIds: [43114, 56],
   qrcode: true,
@@ -31,14 +31,11 @@ const injected = new InjectedConnector({
 });
 
 const connectorsByName = {
-  ["injected"]: injected,
-  ["walletconnect"]: walletconnect,
+  injected: injected,
+  walletconnect: walletconnect,
 };
 
-const AVAXNodes = [
-  "https://api.avax-test.network/ext/bc/C/rpc",
-  "https://rpc.ankr.com/avalanche",
-];
+const AVAXNodes = ["https://api.avax-test.network/ext/bc/C/rpc", "https://rpc.ankr.com/avalanche"];
 const BNBNodes = [
   "https://bsc-dataseed.binance.org/",
   "https://bsc-dataseed1.defibit.io",
@@ -61,11 +58,7 @@ const setupNetwork = async (network: Network) => {
               decimals: 18,
             },
             rpcUrls: network === Network.AVAX ? AVAXNodes : BNBNodes,
-            blockExplorerUrls: [
-              network === Network.AVAX
-                ? "https://snowtrace.io"
-                : "https://bscscan.com",
-            ],
+            blockExplorerUrls: [network === Network.AVAX ? "https://snowtrace.io" : "https://bscscan.com"],
           },
         ],
       });
@@ -75,9 +68,7 @@ const setupNetwork = async (network: Network) => {
       return false;
     }
   } else {
-    console.error(
-      "Can't setup the AVAX network on metamask because window.ethereum is undefined"
-    );
+    console.error("Can't setup the AVAX network on metamask because window.ethereum is undefined");
     return false;
   }
 };
@@ -87,10 +78,7 @@ const useAuth = (network: Network) => {
 
   const login = useCallback(
     (connectorID: string) => {
-      const connector =
-        connectorID === "injected"
-          ? connectorsByName.injected
-          : connectorsByName.walletconnect;
+      const connector = connectorID === "injected" ? connectorsByName.injected : connectorsByName.walletconnect;
       window.localStorage.setItem("connectorIdv2", connectorID);
       if (connector) {
         activate(connector, async (error: Error) => {
@@ -140,9 +128,7 @@ export const useEagerConnect = (network: Network) => {
   const { login } = useAuth(network);
 
   useEffect(() => {
-    const connectorId = window.localStorage.getItem(
-      "connectorIdv2"
-    ) as ConnectorNames;
+    const connectorId = window.localStorage.getItem("connectorIdv2") as ConnectorNames;
     if (connectorId) {
       login(connectorId);
     }

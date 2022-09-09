@@ -8,14 +8,11 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
-import useAuth, { useEagerConnect } from "./hooks/useAuth";
+import { useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
 import TransactionModal from "./subcomponents/TransactionModal";
-// import { Dark } from "./svgs/dark"; remember to delete these
-// import { Light } from "./svgs/light";
 import RedepositModal from "./subcomponents/RedepositModal";
 import ClaimModal from "./subcomponents/ClaimModal";
-import { Market } from "../types";
 import TermsModal from "./subcomponents/TermsModal";
 
 //this is for mobile, do later
@@ -66,24 +63,15 @@ type Props = {
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   modal: ModalProps;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
-  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 function Header(props: Props) {
-  const {
-    mode,
-    network,
-    disableHeaderNetworkSwitch,
-    setDisableHeaderNetworkSwitch,
-    setNetwork,
-    modal,
-    setModal,
-    setMarkets,
-  } = props;
+  const { mode, network, disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch, setNetwork, modal, setModal } =
+    props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
-  const { login, logout } = useAuth(network);
+  // const { login, logout } = useAuth(network);
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 

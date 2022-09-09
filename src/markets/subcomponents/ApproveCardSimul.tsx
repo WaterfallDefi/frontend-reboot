@@ -45,7 +45,7 @@ const compareNum = (num1: string | number | undefined, num2: string | undefined,
 function ApproveCardSimul(props: Props) {
   const {
     selectedMarket,
-    setSimulDeposit,
+    // setSimulDeposit, use this
     setModal,
     setMarkets,
     selectTrancheIdx,

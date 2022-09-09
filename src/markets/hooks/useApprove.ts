@@ -1,31 +1,17 @@
-import React, {
-  useCallback,
-  useMemo,
-} from 'react';
+import React, { useCallback, useMemo } from "react";
 
-import { utils } from 'ethers';
+import { utils } from "ethers";
 
-import { Contract } from '@ethersproject/contracts';
-import { useWeb3React } from '@web3-react/core';
+import { Contract } from "@ethersproject/contracts";
+import { useWeb3React } from "@web3-react/core";
 
-import ERC20 from '../../config/abis/WTF.json';
-import {
-  getContract,
-  getSigner,
-  multicall,
-} from '../../hooks/getContract';
-import {
-  Modal,
-  ModalProps,
-  Network,
-} from '../../WaterfallDefi';
+import ERC20 from "../../config/abis/WTF.json";
+import { getContract, getSigner, multicall } from "../../hooks/getContract";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 const useERC20Contract = (network: Network, address: string) => {
   const signer = getSigner();
-  return useMemo(
-    () => getContract(ERC20.abi, address, network, signer),
-    [signer, network, address]
-  );
+  return useMemo(() => getContract(ERC20.abi, address, network, signer), [signer, network, address]);
 };
 
 const approve = async (
@@ -36,8 +22,7 @@ const approve = async (
   const tx = await contract.approve(
     address,
     //USDC
-    address === "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d" ||
-      address === "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664"
+    address === "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d" || address === "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664"
       ? utils.parseUnits("999999999", 6)
       : utils.parseEther("999999999").toString()
   );
@@ -81,16 +66,12 @@ const useApprove = (
       const receipt = await approve(contract, masterChefAddress, setModal);
       return receipt;
     }
-  }, [account, contract, masterChefAddress]);
+  }, [account, contract, masterChefAddress, setModal]);
 
   return { onApprove: handleApprove };
 };
 
-export const useMultiApprove = (
-  network: Network,
-  approveTokenAddresses: string[],
-  masterChefAddress: string
-) => {
+export const useMultiApprove = (network: Network, approveTokenAddresses: string[], masterChefAddress: string) => {
   const { account } = useWeb3React();
 
   const calls = approveTokenAddresses.map((a, i) => ({
@@ -99,8 +80,7 @@ export const useMultiApprove = (
     params: [
       masterChefAddress,
       //USDC
-      a === "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d" ||
-      a === "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664"
+      a === "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d" || a === "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664"
         ? utils.parseUnits("999999999", 6) //we should add custom approval amounts...
         : utils.parseEther("999999999").toString(), //like seriously... HUGE security flaw!!
     ],

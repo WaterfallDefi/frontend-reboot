@@ -87,7 +87,6 @@ function WaterfallDefi() {
       setNetwork={setNetwork}
       modal={modal}
       setModal={setModal}
-      setMarkets={setMarkets}
     />,
     ...(tutorial ? [<Tutorial key="tutorial" mode={Mode.Dark} />, ...elements] : [elements]),
   ];

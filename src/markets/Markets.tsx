@@ -15,7 +15,6 @@ import { Market } from "../types";
 import { ModalProps, Mode, Network } from "../WaterfallDefi";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { switchNetwork } from "../header/Header";
-import { useLocation } from "react-router-dom";
 
 type Props = {
   mode: Mode;

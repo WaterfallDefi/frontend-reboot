@@ -1,6 +1,5 @@
 import { Metamask } from "../svgs/Metamask";
 import { WalletConnect } from "../svgs/WalletConnect";
-import { useWeb3React } from "@web3-react/core";
 import { Network } from "../../WaterfallDefi";
 import useAuth from "../hooks/useAuth";
 import { useCallback } from "react";
@@ -11,8 +10,6 @@ type Props = {
 
 function ConnectWalletModal(props: Props) {
   const { network } = props;
-
-  const { active } = useWeb3React();
 
   const { login } = useAuth(network);
 
@@ -29,16 +26,12 @@ function ConnectWalletModal(props: Props) {
       <title className="modal-title">Connect Wallet</title>
       <section className="connect-wallet">
         <div className="agreement">
-          By connecting a wallet, you agree to{" "}
-          <span className="terms">Terms of Service</span> and acknowledge that
-          you have read and understand the{" "}
-          <span className="pp">Privacy Policy</span>.
+          By connecting a wallet, you agree to <span className="terms">Terms of Service</span> and acknowledge that you
+          have read and understand the <span className="pp">Privacy Policy</span>.
         </div>
         <div className="connect metamask" onClick={onConnect}>
           <div className="metamask">
-            {!window.ethereum?.isMetaMask && (
-              <span className="install">Install</span>
-            )}
+            {!window.ethereum?.isMetaMask && <span className="install">Install</span>}
             <span className="label">Metamask</span>
           </div>
           <Metamask />
