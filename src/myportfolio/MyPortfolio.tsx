@@ -346,6 +346,7 @@ function MyPortfolio(props: Props) {
                   <PortfolioFold
                     network={_market.isAvax ? Network.AVAX : Network.BNB}
                     trancheMasterAddress={_market.address}
+                    masterWTFAddress={_market.masterChefAddress}
                     abi={_market.abi}
                     totalAmount={_userInvest.principal}
                     totalAmounts={_userInvest.MCprincipal}
@@ -355,7 +356,6 @@ function MyPortfolio(props: Props) {
                     isActive={trancheCycle?.state === 1}
                     currentTranche={_userInvest.tranche}
                     fee={_market.tranches[_userInvest.tranche].fee}
-                    isAvax={_market.isAvax}
                     isMulticurrency={_market.isMulticurrency}
                     autorollImplemented={_market.autorollImplemented}
                     trancheCount={_market.trancheCount}

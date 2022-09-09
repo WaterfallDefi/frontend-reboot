@@ -24,6 +24,7 @@ const formatNumberDisplay = (num: string | undefined, decimals = 18) => {
 type Props = {
   network: Network;
   trancheMasterAddress: string;
+  masterWTFAddress: string;
   abi: any;
   totalAmount: string;
   totalAmounts: string[];
@@ -33,7 +34,6 @@ type Props = {
   isActive: boolean;
   currentTranche: number;
   fee: string;
-  isAvax: boolean;
   isMulticurrency: boolean;
   autorollImplemented: boolean;
   trancheCount: number;
@@ -45,6 +45,7 @@ function PortfolioFold(props: Props) {
   const {
     network,
     trancheMasterAddress,
+    masterWTFAddress,
     abi,
     totalAmount,
     totalAmounts,
@@ -54,7 +55,6 @@ function PortfolioFold(props: Props) {
     isActive,
     currentTranche,
     fee,
-    isAvax,
     isMulticurrency,
     autorollImplemented,
     trancheCount,
@@ -70,7 +70,7 @@ function PortfolioFold(props: Props) {
 
   const { getAutoroll, changeAutoroll } = useAutoroll(network, trancheMasterAddress);
 
-  const { tranchesPendingReward } = usePendingWTFReward(network, trancheMasterAddress, trancheCount);
+  const { tranchesPendingReward } = usePendingWTFReward(network, masterWTFAddress, trancheCount);
 
   useEffect(() => {
     if (autorollImplemented) {
