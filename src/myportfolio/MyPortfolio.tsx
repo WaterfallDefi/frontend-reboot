@@ -18,8 +18,6 @@ import { getEstimateYield } from "./hooks/getEstimateYield";
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import PortfolioFold from "./subcomponents/PortfolioFold";
-import usePendingWTFReward from "../markets/hooks/usePendingWTFReward";
-import { MasterChefAddress } from "../config/address";
 
 const BIG_TEN = new BigNumber(10);
 
