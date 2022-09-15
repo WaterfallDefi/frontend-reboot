@@ -1,11 +1,6 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import {
-  VictoryAxis,
-  VictoryChart,
-  VictoryLine,
-  VictoryVoronoiContainer,
-} from 'victory';
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from "victory";
 
 type Props = {
   data: any[] | undefined;
@@ -24,10 +19,7 @@ const StrategyChart = (props: Props) => {
   const [hoverYield, setHoverYield] = useState<string>();
 
   return (
-    <div
-      className="strategy-chart"
-      onMouseLeave={() => setHoverYield(undefined)}
-    >
+    <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>
       {hoverYield && (
         <span className="hoverPrice" key="hoverPrice">
           {hoverYield}
@@ -39,13 +31,10 @@ const StrategyChart = (props: Props) => {
           data && (
             <VictoryVoronoiContainer
               labels={({ datum }) => datum._y.toFixed(1) + "%:"}
-              onActivated={(points) =>
-                setHoverYield(
-                  points[0]._y.toFixed(2) +
-                    "% - " +
-                    new Date(points[0]._x).toLocaleDateString()
-                )
-              }
+              onActivated={(points) => {
+                points[0] &&
+                  setHoverYield(points[0]._y.toFixed(2) + "% - " + new Date(points[0]._x).toLocaleDateString());
+              }}
               activateLabels={false}
             />
           )
@@ -59,14 +48,10 @@ const StrategyChart = (props: Props) => {
               fontSize: 10,
             },
           }}
-          tickFormat={(t) =>
-            new Date(t).getDate() + "/" + (new Date(t).getMonth() + 1)
-          }
+          tickFormat={(t) => new Date(t).getDate() + "/" + (new Date(t).getMonth() + 1)}
         />
         <VictoryAxis scale="linear" dependentAxis tickCount={10} />
-        {data && (
-          <VictoryLine data={data} style={{ data: { stroke: color } }} />
-        )}
+        {data && <VictoryLine data={data} style={{ data: { stroke: color } }} />}
       </VictoryChart>
     </div>
   );

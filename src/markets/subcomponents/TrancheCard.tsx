@@ -127,7 +127,7 @@ function TrancheCard(props: Props) {
       <div className="status">
         <div className="risk-text">
           {"TVL: "}
-          {prefix + tvl + suffix}
+          {prefix + " " + tvl + " " + suffix}
         </div>
         <div className="remaining">
           Remaining: {Number(remaining.replaceAll(",", "")) > 0 ? remaining : "0"}{" "}
