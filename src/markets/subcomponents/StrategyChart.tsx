@@ -46,11 +46,22 @@ const StrategyChart = (props: Props) => {
           style={{
             tickLabels: {
               fontSize: 10,
+              fill: "#FFF",
             },
           }}
           tickFormat={(t) => new Date(t).getDate() + "/" + (new Date(t).getMonth() + 1)}
         />
-        <VictoryAxis scale="linear" dependentAxis tickCount={10} />
+        <VictoryAxis
+          scale="linear"
+          dependentAxis
+          tickCount={10}
+          style={{
+            tickLabels: {
+              fontSize: 10,
+              fill: "#FFF",
+            },
+          }}
+        />
         {data && <VictoryLine data={data} style={{ data: { stroke: color } }} />}
       </VictoryChart>
     </div>

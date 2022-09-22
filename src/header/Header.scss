@@ -20,7 +20,7 @@
     border-radius: 12px;
     left: calc(50vw - 210px);
     padding: 16px;
-    background: $base-color-dark;
+    background: $layer-color-dark;
     color: $text-color-dark;
 
     .modal-title {
@@ -42,15 +42,30 @@
       width: 80%;
       left: 10%;
       background: $layer-color-dark;
+      .button-centerer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        button {
+          margin-top: 42px;
+          height: 42px;
+          width: 169px;
+          background-color: $highlight-color;
+          color: $base-color;
+          font-weight: 600;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
     }
 
     &.connect-wallet {
       section {
         .agreement {
           padding: 16px;
-          background-color: $text-color-dark;
+          background-color: $base-color-dark;
+          color: $base-color;
           border-radius: 12px;
-          color: $text-color;
           font-weight: 600;
         }
         .connect {
@@ -58,7 +73,7 @@
           height: 48px;
           border-radius: 12px;
           border: 1px solid $text-color-darker;
-          background-color: $text-color-dark;
+          background-color: $base-color-dark;
           display: flex;
           align-items: center;
           justify-content: space-between;

@@ -1,111 +1,113 @@
 @import "../global.scss";
 
 .tutorial-wrapper {
-  height: 800px;
+  padding-top: 100px;
+  height: 269px;
   overflow: hidden;
   transition: height 0.25s linear;
 
   &.collapsed {
-    height: 120px;
+    padding-top: 20px;
+    height: 0;
   }
 
-  .tutorial-banner {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 100px;
+  // .tutorial-banner {
+  //   display: flex;
+  //   justify-content: center;
+  //   margin-top: 20px;
+  //   margin-bottom: 100px;
 
-    @media screen and (max-width: 1024px) {
-      margin: 0 0 20px 22px;
-      flex-direction: column;
-    }
+  //   @media screen and (max-width: 1024px) {
+  //     margin: 0 0 20px 22px;
+  //     flex-direction: column;
+  //   }
 
-    .boxes {
-      width: 182px;
-      margin-top: 120px;
-      @media screen and (max-width: 1024px) {
-        display: none;
-      }
-    }
+  //   .boxes {
+  //     width: 182px;
+  //     margin-top: 120px;
+  //     @media screen and (max-width: 1024px) {
+  //       display: none;
+  //     }
+  //   }
 
-    .tutorial-text {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 120px;
+  //   .tutorial-text {
+  //     display: flex;
+  //     flex-direction: column;
+  //     align-items: center;
+  //     margin-top: 120px;
 
-      h1 {
-        font-size: 36px;
-        line-height: 55px;
-        letter-spacing: -0.015em;
-        color: $text-color;
-        position: relative;
-        max-width: 626px;
-        margin: 0 auto;
-        text-align: center;
-        font-weight: 600;
-        @media screen and (max-width: 678px) {
-          font-size: 36px;
-          line-height: 55px;
-          text-align: left;
-        }
-      }
+  //     h1 {
+  //       font-size: 36px;
+  //       line-height: 55px;
+  //       letter-spacing: -0.015em;
+  //       color: $text-color;
+  //       position: relative;
+  //       max-width: 626px;
+  //       margin: 0 auto;
+  //       text-align: center;
+  //       font-weight: 600;
+  //       @media screen and (max-width: 678px) {
+  //         font-size: 36px;
+  //         line-height: 55px;
+  //         text-align: left;
+  //       }
+  //     }
 
-      p {
-        max-width: 510px;
-        color: $text-color;
-        text-align: center;
-        font-size: 14px;
-        line-height: 24px;
-        margin-top: 8px;
-        @media screen and (max-width: 1024px) {
-          margin: 40px 0 24px;
-        }
-        @media screen and (max-width: 678px) {
-          text-align: left;
-        }
-      }
-    }
-    .mountain {
-      margin-top: 100px;
+  //     p {
+  //       max-width: 510px;
+  //       color: $text-color;
+  //       text-align: center;
+  //       font-size: 14px;
+  //       line-height: 24px;
+  //       margin-top: 8px;
+  //       @media screen and (max-width: 1024px) {
+  //         margin: 40px 0 24px;
+  //       }
+  //       @media screen and (max-width: 678px) {
+  //         text-align: left;
+  //       }
+  //     }
+  //   }
+  //   .mountain {
+  //     margin-top: 100px;
 
-      svg {
-        padding-left: 40px;
-        @media screen and (max-width: 1024px) {
-          padding-left: 110px;
-        }
-      }
+  //     svg {
+  //       padding-left: 40px;
+  //       @media screen and (max-width: 1024px) {
+  //         padding-left: 110px;
+  //       }
+  //     }
 
-      .claim {
-        background-color: white; //temp
-        color: $highlight-color;
-        padding: 18px 16px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border: 1px solid $highlight-color; //temp
-        border-radius: 8px;
-        position: relative;
-        align-items: center;
-        transform: translateY(-5px);
-        z-index: 1;
+  //     .claim {
+  //       background-color: white; //temp
+  //       color: $highlight-color;
+  //       padding: 18px 16px;
+  //       display: flex;
+  //       flex-direction: column;
+  //       justify-content: space-between;
+  //       border: 1px solid $highlight-color; //temp
+  //       border-radius: 8px;
+  //       position: relative;
+  //       align-items: center;
+  //       transform: translateY(-5px);
+  //       z-index: 1;
 
-        .label {
-          margin-bottom: 12px;
-          margin-right: 4px;
-          font-size: 12px;
-        }
-        .weekly-reward {
-          font-size: 20;
-          font-weight: 600;
-          text-align: center;
-          @media screen and (max-width: 678px) {
-            font-size: 12;
-          }
-        }
-      }
-    }
-  }
+  //       .label {
+  //         margin-bottom: 12px;
+  //         margin-right: 4px;
+  //         font-size: 12px;
+  //       }
+  //       .weekly-reward {
+  //         font-size: 20;
+  //         font-weight: 600;
+  //         text-align: center;
+  //         @media screen and (max-width: 678px) {
+  //           font-size: 12;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
   .guide-wrapper {
     display: flex;
     flex-direction: column;
@@ -159,18 +161,21 @@
             }
             &.deposit {
               background: url("./pngs/deposit.png");
-              background-size: cover;
+              background-size: contain;
               background-position: center;
+              background-repeat: none;
             }
             &.wait {
               background: url("./pngs/wait.png");
-              background-size: cover;
+              background-size: contain;
               background-position: center;
+              background-repeat: none;
             }
             &.withdraw {
               background: url("./pngs/withdraw.png");
-              background-size: cover;
+              background-size: contain;
               background-position: center;
+              background-repeat: none;
             }
           }
         }
@@ -195,8 +200,8 @@
     }
   }
   .collapse-control {
-    position: absolute;
-    top: 80px;
+    position: relative;
+    top: -190px;
     right: 24px;
     width: 100%;
     text-align: right;
@@ -205,6 +210,7 @@
     font-weight: 600;
     cursor: pointer;
     &.uncollapse {
+      top: -170px;
       color: $highlight-color;
     }
   }

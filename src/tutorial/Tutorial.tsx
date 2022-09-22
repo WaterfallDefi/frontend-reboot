@@ -4,8 +4,6 @@ import { useState } from "react";
 
 import { Mode } from "../WaterfallDefi";
 import { ArrowLine } from "./svgs/ArrowLine";
-import { Boxes } from "./svgs/Boxes";
-import { Mountain } from "./svgs/Mountain";
 
 type Props = {
   mode: Mode;
@@ -17,26 +15,6 @@ function Tutorial(props: Props) {
 
   return (
     <div className={"tutorial-wrapper" + (collapsed ? " collapsed" : "") + " " + mode}>
-      <div className="tutorial-banner">
-        ,
-        <div className="boxes">
-          <Boxes />
-        </div>
-        <div className="tutorial-text">
-          <h1>Risk Optimised Yield Farming</h1>
-          <p>
-            Yield will be distributed in a way such that users of more senior tranches get a fixed return, while users
-            of more junior tranches get a leveraged return
-          </p>
-        </div>
-        <div className="mountain">
-          <Mountain />
-          <div className="claim">
-            <span className="label">Weekly rewards for AVAX coming soon!</span>
-            <div className="weekly-reward">67,612.1</div>
-          </div>
-        </div>
-      </div>
       <div className="guide-wrapper">
         <div className="row">
           <div className="col">

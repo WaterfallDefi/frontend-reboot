@@ -772,18 +772,26 @@
 
             .label {
               color: $text-color-dark;
+              font-size: 18px;
+              width: 200px;
             }
             .rtn-amt {
               color: $highlight-color;
             }
 
             .buttons {
-              button {
+              display: flex;
+              flex-direction: column;
+              gap: 16px;
+              .claim-redep-btn {
+                width: 100%;
                 border: 1px solid $text-color-lightest;
                 color: $highlight-color;
+                background-color: $base-color;
+                font-weight: 600;
 
                 &:disabled {
-                  color: $text-color-lightest;
+                  color: $text-color-lighter;
                 }
               }
             }
@@ -795,6 +803,7 @@
                   .autoroll-btn {
                     border: 1px solid $text-color-lightest;
                     color: $base-color-dark;
+                    font-weight: 600;
                     &.start {
                       background-color: $highlight-color;
                     }

@@ -98,7 +98,7 @@ function Header(props: Props) {
         className={"mask" + (modal.state !== Modal.None ? " visible" : "")}
         onClick={() => setModal({ state: Modal.None })}
       />
-      {modal.state === Modal.Terms ? <TermsModal /> : null}
+      {modal.state === Modal.Terms ? <TermsModal setModal={setModal} /> : null}
       {modal.state === Modal.ConnectWallet ? <ConnectWalletModal network={network} /> : null}
       {modal.state === Modal.Txn ? (
         <TransactionModal

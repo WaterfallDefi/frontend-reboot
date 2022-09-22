@@ -7,7 +7,7 @@ import { useWeb3React } from "@web3-react/core";
 
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market, StrategyFarm } from "../../types";
-import { ModalProps, Network } from "../../WaterfallDefi";
+import { ModalProps, Mode, Network } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
 import ClaimRedeposit from "./ClaimRedeposit";
@@ -15,6 +15,7 @@ import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
 import StrategyChart from "./StrategyChart";
 import TrancheStructure from "./TrancheStructure";
+import Tutorial from "../../tutorial/Tutorial";
 
 type Props = {
   selectedMarket: Market;
@@ -98,6 +99,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   return (
     <div className="market-detail-wrapper">
+      <Tutorial mode={Mode.Dark} />
       <div className="information">
         <div className="block-wrapper">
           <div className="info-block pointer" onClick={() => setSelectedMarket(undefined)}>

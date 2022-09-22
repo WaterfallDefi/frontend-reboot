@@ -1,4 +1,13 @@
-function TermsModal() {
+import React from "react";
+import { Modal, ModalProps } from "../../WaterfallDefi";
+
+type Props = {
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+};
+
+function TermsModal(props: Props) {
+  const { setModal } = props;
+
   return (
     <div className="modal terms-of-service">
       <title className="modal-title">Terms Of Service</title>
@@ -452,6 +461,9 @@ function TermsModal() {
           laws of any other jurisdiction.<span className="Apple-converted-space">&nbsp;</span>
         </p>
       </section>
+      <div className="button-centerer">
+        <button onClick={() => setModal({ state: Modal.None })}>I Agree</button>
+      </div>
     </div>
   );
 }

@@ -11,7 +11,6 @@ import { getMarkets } from "./hooks/getMarkets";
 import Markets from "./markets/Markets";
 import MyPortfolio from "./myportfolio/MyPortfolio";
 import Stake from "./stake/Stake";
-import Tutorial from "./tutorial/Tutorial";
 import { Market } from "./types";
 
 export enum Mode {
@@ -88,7 +87,7 @@ function WaterfallDefi() {
       modal={modal}
       setModal={setModal}
     />,
-    ...(tutorial ? [<Tutorial key="tutorial" mode={Mode.Dark} />, ...elements] : [elements]),
+    ...[elements],
   ];
 
   return (

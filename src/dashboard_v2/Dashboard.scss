@@ -4,11 +4,8 @@ $evenPadding: calc((100vw - 1048px) / 2);
 
 .dashboard-wrapper {
   max-width: 1048px;
-  padding: 0 $evenPadding;
+  padding: 100px $evenPadding 0 $evenPadding;
   margin: 0 auto;
-  @media screen and (max-width: 876px) {
-    padding-top: 100px;
-  }
 
   .dash-banner {
     border-radius: 24px;
@@ -69,6 +66,13 @@ $evenPadding: calc((100vw - 1048px) / 2);
           font-size: 24px;
           line-height: 31.2px;
           font-weight: 600;
+          &.busd,
+          &.daie {
+            color: #f0b90b;
+          }
+          &.avax {
+            color: #e84142;
+          }
         }
         .icon-group {
           display: flex;
