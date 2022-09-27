@@ -158,6 +158,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           flexGrow={!selectedStrategy}
         />
         <div className="chart-block portfolio-block">
+          <h1>Historical Performance</h1>
           <div className="background left-br">
             {stratChartData ? <StrategyChart data={stratChartData} color={stratChartColor} /> : <div>Loading...</div>}
           </div>

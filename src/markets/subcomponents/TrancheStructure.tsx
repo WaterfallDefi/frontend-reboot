@@ -9,11 +9,7 @@ type Props = {
 
 const getPercentage = (num: string | undefined, total: string | undefined) => {
   if (!num || !total) return "0";
-  return new BigNumber(num)
-    .dividedBy(new BigNumber(total))
-    .times(100)
-    .toFormat(2)
-    .toString();
+  return new BigNumber(num).dividedBy(new BigNumber(total)).times(100).toFormat(2).toString();
 };
 
 const COLORS: { [key: string]: string } = {
@@ -32,52 +28,35 @@ function TrancheStructure(props: Props) {
       ? [
           {
             name: "Senior",
-            value: Number(
-              getPercentage(tranches[0]?.target, totalTranchesTarget)
-            ),
+            value: Number(getPercentage(tranches[0]?.target, totalTranchesTarget)),
           },
           {
             name: "Mezzanine",
-            value: Number(
-              getPercentage(tranches[1]?.target, totalTranchesTarget)
-            ),
+            value: Number(getPercentage(tranches[1]?.target, totalTranchesTarget)),
           },
           {
             name: "Junior",
-            value: Number(
-              getPercentage(tranches[2]?.target, totalTranchesTarget)
-            ),
+            value: Number(getPercentage(tranches[2]?.target, totalTranchesTarget)),
           },
         ]
       : [
           {
             name: "Fixed",
-            value: Number(
-              getPercentage(tranches[0]?.target, totalTranchesTarget)
-            ),
+            value: Number(getPercentage(tranches[0]?.target, totalTranchesTarget)),
           },
           {
             name: "Variable",
-            value: Number(
-              getPercentage(tranches[1]?.target, totalTranchesTarget)
-            ),
+            value: Number(getPercentage(tranches[1]?.target, totalTranchesTarget)),
           },
         ];
 
   return (
-    <div
-      className={
-        "chart-block tranche-structure" + (wipeRight ? " wipe-right" : "")
-      }
-    >
+    <div className={"chart-block tranche-structure" + (wipeRight ? " wipe-right" : "")}>
+      <h1>Tranche Structure</h1>
       <div className="background left-br">
         <div className="tranche-chart">
           {payload.map((t, i) => (
-            <div
-              key={i}
-              className="tranche-stack"
-              style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
-            >
+            <div key={i} className="tranche-stack" style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}>
               <span>{t.value}%</span>
             </div>
           ))}
@@ -87,10 +66,7 @@ function TrancheStructure(props: Props) {
         <div className="legend">
           {payload.map((t, i) => (
             <div key={t.name} className="farm-key">
-              <div
-                className="key-color"
-                style={{ backgroundColor: COLORS[t.name] }}
-              />
+              <div className="key-color" style={{ backgroundColor: COLORS[t.name] }} />
               <span>{t.name}</span>
             </div>
           ))}
