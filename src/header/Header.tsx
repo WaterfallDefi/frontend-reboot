@@ -14,6 +14,7 @@ import TransactionModal from "./subcomponents/TransactionModal";
 import RedepositModal from "./subcomponents/RedepositModal";
 import ClaimModal from "./subcomponents/ClaimModal";
 import TermsModal from "./subcomponents/TermsModal";
+import { Market } from "../types";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -63,11 +64,20 @@ type Props = {
   setNetwork: React.Dispatch<React.SetStateAction<Network>>;
   modal: ModalProps;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 function Header(props: Props) {
-  const { mode, network, disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch, setNetwork, modal, setModal } =
-    props;
+  const {
+    mode,
+    network,
+    disableHeaderNetworkSwitch,
+    setDisableHeaderNetworkSwitch,
+    setNetwork,
+    modal,
+    setModal,
+    setMarkets,
+  } = props;
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
@@ -133,7 +143,12 @@ function Header(props: Props) {
       <div className="pc-left">
         <div className="waterfalldefi" />
         <div className="menu-block-wrapper">
-          <Link className="link" to={"/"} data-selected={location.pathname === "/"}>
+          <Link
+            className="link"
+            to={"/"}
+            data-selected={location.pathname === "/"}
+            onClick={() => location.pathname === "/" && setMarkets(undefined)}
+          >
             Markets
           </Link>
         </div>

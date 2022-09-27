@@ -86,6 +86,7 @@ function WaterfallDefi() {
       setNetwork={setNetwork}
       modal={modal}
       setModal={setModal}
+      setMarkets={setMarkets}
     />,
     ...[elements],
   ];
