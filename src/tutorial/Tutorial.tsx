@@ -11,10 +11,9 @@ type Props = {
 
 function Tutorial(props: Props) {
   const { mode } = props;
-  const [collapsed, setCollapsed] = useState<boolean>(false);
 
   return (
-    <div className={"tutorial-wrapper" + (collapsed ? " collapsed" : "") + " " + mode}>
+    <div className={"tutorial-wrapper " + mode}>
       <div className="guide-wrapper">
         <div className="row">
           <div className="col">
@@ -42,21 +41,6 @@ function Tutorial(props: Props) {
           </div>
         </div>
       </div>
-      {!collapsed ? (
-        <div className="collapse-control collapse" onClick={() => setCollapsed(true)}>
-          ^ Collapse
-        </div>
-      ) : null}
-      {collapsed ? (
-        <div
-          className="collapse-control uncollapse"
-          onClick={() => {
-            setCollapsed(false);
-          }}
-        >
-          Tutorial
-        </div>
-      ) : null}
     </div>
   );
 }

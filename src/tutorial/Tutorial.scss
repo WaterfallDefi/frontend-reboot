@@ -1,113 +1,10 @@
 @import "../global.scss";
 
 .tutorial-wrapper {
-  padding-top: 100px;
-  height: 269px;
+  height: 169px;
   overflow: hidden;
   transition: height 0.25s linear;
 
-  &.collapsed {
-    padding-top: 20px;
-    height: 0;
-  }
-
-  // .tutorial-banner {
-  //   display: flex;
-  //   justify-content: center;
-  //   margin-top: 20px;
-  //   margin-bottom: 100px;
-
-  //   @media screen and (max-width: 1024px) {
-  //     margin: 0 0 20px 22px;
-  //     flex-direction: column;
-  //   }
-
-  //   .boxes {
-  //     width: 182px;
-  //     margin-top: 120px;
-  //     @media screen and (max-width: 1024px) {
-  //       display: none;
-  //     }
-  //   }
-
-  //   .tutorial-text {
-  //     display: flex;
-  //     flex-direction: column;
-  //     align-items: center;
-  //     margin-top: 120px;
-
-  //     h1 {
-  //       font-size: 36px;
-  //       line-height: 55px;
-  //       letter-spacing: -0.015em;
-  //       color: $text-color;
-  //       position: relative;
-  //       max-width: 626px;
-  //       margin: 0 auto;
-  //       text-align: center;
-  //       font-weight: 600;
-  //       @media screen and (max-width: 678px) {
-  //         font-size: 36px;
-  //         line-height: 55px;
-  //         text-align: left;
-  //       }
-  //     }
-
-  //     p {
-  //       max-width: 510px;
-  //       color: $text-color;
-  //       text-align: center;
-  //       font-size: 14px;
-  //       line-height: 24px;
-  //       margin-top: 8px;
-  //       @media screen and (max-width: 1024px) {
-  //         margin: 40px 0 24px;
-  //       }
-  //       @media screen and (max-width: 678px) {
-  //         text-align: left;
-  //       }
-  //     }
-  //   }
-  //   .mountain {
-  //     margin-top: 100px;
-
-  //     svg {
-  //       padding-left: 40px;
-  //       @media screen and (max-width: 1024px) {
-  //         padding-left: 110px;
-  //       }
-  //     }
-
-  //     .claim {
-  //       background-color: white; //temp
-  //       color: $highlight-color;
-  //       padding: 18px 16px;
-  //       display: flex;
-  //       flex-direction: column;
-  //       justify-content: space-between;
-  //       border: 1px solid $highlight-color; //temp
-  //       border-radius: 8px;
-  //       position: relative;
-  //       align-items: center;
-  //       transform: translateY(-5px);
-  //       z-index: 1;
-
-  //       .label {
-  //         margin-bottom: 12px;
-  //         margin-right: 4px;
-  //         font-size: 12px;
-  //       }
-  //       .weekly-reward {
-  //         font-size: 20;
-  //         font-weight: 600;
-  //         text-align: center;
-  //         @media screen and (max-width: 678px) {
-  //           font-size: 12;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
   .guide-wrapper {
     display: flex;
     flex-direction: column;
@@ -163,19 +60,19 @@
               background: url("./pngs/deposit.png");
               background-size: contain;
               background-position: center;
-              background-repeat: none;
+              background-repeat: no-repeat;
             }
             &.wait {
               background: url("./pngs/wait.png");
               background-size: contain;
               background-position: center;
-              background-repeat: none;
+              background-repeat: no-repeat;
             }
             &.withdraw {
               background: url("./pngs/withdraw.png");
               background-size: contain;
               background-position: center;
-              background-repeat: none;
+              background-repeat: no-repeat;
             }
           }
         }
@@ -199,46 +96,9 @@
       }
     }
   }
-  .collapse-control {
-    position: relative;
-    top: -190px;
-    right: 24px;
-    width: 100%;
-    text-align: right;
-    color: $text-color;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    &.uncollapse {
-      top: -170px;
-      color: $highlight-color;
-    }
-  }
 
   &.dark {
     background-color: $base-color-dark;
-
-    .tutorial-banner {
-      .tutorial-text {
-        h1 {
-          color: $text-color-dark;
-        }
-        p {
-          color: $text-color-dark;
-        }
-      }
-
-      .mountain {
-        .claim {
-          background-color: $layer-color-dark-2;
-          border: 2px solid $highlight-color-dark;
-
-          .label {
-            color: $base-color;
-          }
-        }
-      }
-    }
 
     .guide-wrapper {
       .row {
@@ -253,10 +113,6 @@
           color: $text-color-darker;
         }
       }
-    }
-
-    .collapse-control {
-      color: $text-color-darker;
     }
   }
 }
