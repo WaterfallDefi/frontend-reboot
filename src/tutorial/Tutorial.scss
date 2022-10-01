@@ -1,9 +1,8 @@
 @import "../global.scss";
 
 .tutorial-wrapper {
-  height: 169px;
+  height: 269px;
   overflow: hidden;
-  transition: height 0.25s linear;
 
   .guide-wrapper {
     display: flex;
@@ -14,6 +13,13 @@
       position: static;
       transform: translateX(0);
     }
+
+    h1 {
+      color: $text-color-dark;
+      width: 100%;
+      padding-left: 269px;
+    }
+
     .row {
       display: flex;
       svg {

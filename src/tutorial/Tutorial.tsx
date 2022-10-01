@@ -15,6 +15,7 @@ function Tutorial(props: Props) {
   return (
     <div className={"tutorial-wrapper " + mode}>
       <div className="guide-wrapper">
+        <h1>User Guide</h1>
         <div className="row">
           <div className="col">
             <div className="img-wrapper">
