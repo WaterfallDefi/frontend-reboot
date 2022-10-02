@@ -337,6 +337,14 @@
               gap: 6px;
               margin: 120px 80px 30px 90px;
               align-items: flex-end;
+
+              .subordination {
+                position: absolute;
+                top: 69px;
+                left: 12px;
+                font-size: 14px;
+              }
+
               .tranche-stack {
                 width: 180px;
                 animation: grow 0.25s ease-in;

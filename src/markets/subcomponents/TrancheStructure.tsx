@@ -26,30 +26,44 @@ function TrancheStructure(props: Props) {
 
   const [hoveredTranche, setHoveredTranche] = useState<number>(-1);
 
+  const values = [
+    Number(getPercentage(tranches[0]?.target, totalTranchesTarget)),
+    Number(getPercentage(tranches[1]?.target, totalTranchesTarget)),
+    Number(getPercentage(tranches[2]?.target, totalTranchesTarget)),
+  ];
+
+  function getSubordination() {
+    if (tranches.length === 3) {
+      return hoveredTranche === 0 ? values[1] + values[2] : hoveredTranche === 1 ? values[2] : "";
+    } else {
+      return hoveredTranche === 0 ? values[2] : "";
+    }
+  }
+
   const payload =
     tranches.length === 3
       ? [
           {
             name: "Senior",
-            value: Number(getPercentage(tranches[0]?.target, totalTranchesTarget)),
+            value: values[0],
           },
           {
             name: "Mezzanine",
-            value: Number(getPercentage(tranches[1]?.target, totalTranchesTarget)),
+            value: values[1],
           },
           {
             name: "Junior",
-            value: Number(getPercentage(tranches[2]?.target, totalTranchesTarget)),
+            value: values[2],
           },
         ]
       : [
           {
             name: "Fixed",
-            value: Number(getPercentage(tranches[0]?.target, totalTranchesTarget)),
+            value: values[0],
           },
           {
             name: "Variable",
-            value: Number(getPercentage(tranches[1]?.target, totalTranchesTarget)),
+            value: values[1],
           },
         ];
 
@@ -58,6 +72,13 @@ function TrancheStructure(props: Props) {
       <div className="background left-br">
         <h2>Tranche Structure</h2>
         <div className="tranche-chart">
+          {hoveredTranche !== -1 && hoveredTranche !== payload.length - 1 ? (
+            <span className="subordination" key="subordination">
+              Subordination Level (Sum of Lower Tranches):
+              <br />
+              Total portfolio loss must exceed {getSubordination()}%
+            </span>
+          ) : null}
           {payload.map((t, i) => (
             <div
               key={i}
