@@ -76,7 +76,7 @@ function TrancheStructure(props: Props) {
             <span className="subordination" key="subordination">
               Subordination Level (Sum of Lower Tranches):
               <br />
-              Total portfolio loss must exceed {getSubordination()}%
+              Total portfolio loss must exceed {getSubordination()}% before principal loss is possible.
             </span>
           ) : null}
           {payload.map((t, i) => (
