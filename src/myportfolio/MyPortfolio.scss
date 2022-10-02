@@ -14,7 +14,7 @@
     justify-content: flex-end;
     select {
       height: 42px;
-      font-size: 16px;
+      font-size: $font-size-md;
       font-weight: 500;
       border-radius: 5px;
       margin-right: 8px;
@@ -73,7 +73,7 @@
           .card-title {
             display: flex;
             align-items: flex-start;
-            font-size: 12px;
+            font-size: $font-size-sm;
             color: $text-color;
           }
 
@@ -89,7 +89,7 @@
             width: fit-content;
 
             button {
-              font-size: 12px;
+              font-size: $font-size-md;
               height: 30px;
               padding: 0 12px;
               border-radius: 4px;
@@ -101,7 +101,7 @@
             flex-direction: column;
             margin-top: 20px;
             span {
-              font-size: 18;
+              font-size: $font-size-md;
               font-weight: 400;
               color: $text-color;
               margin-right: 12;
@@ -111,7 +111,7 @@
               width: 100%;
               border-radius: 4px;
               height: 28px;
-              font-size: 14px;
+              font-size: $font-size-md;
               border: 1px solid $text-color-lightest;
               margin-right: 24px;
 
@@ -129,7 +129,7 @@
               }
             }
             .autoroll-lbl {
-              font-size: 14px;
+              font-size: $font-size-md;
               font-weight: 600;
               &.on {
                 color: $highlight-color;
@@ -152,7 +152,7 @@
           gap: 5px;
           grid-auto-flow: column;
           color: $text-color;
-          font-size: 12px;
+          font-size: $font-size-sm;
           font-weight: 500;
           line-height: 15.6px;
         }

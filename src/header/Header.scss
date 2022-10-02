@@ -26,7 +26,7 @@
     .modal-title {
       color: $text-color-dark;
       font-weight: 600;
-      font-size: 16px;
+      font-size: $font-size-md;
       margin-bottom: 14px;
     }
     section {
@@ -80,7 +80,7 @@
           margin-top: 16px;
           cursor: pointer;
           font-weight: 600;
-          font-size: 16px;
+          font-size: $font-size-md;
           color: $text-color-dark;
           &:hover {
             border-color: $highlight-color;
@@ -103,18 +103,18 @@
         font-weight: 500;
 
         h1 {
-          font-size: 18px;
+          font-size: $font-size-lg;
           color: 1px solid $text-color-dark;
           margin-bottom: 17px;
         }
         p {
-          font-size: 14px;
+          font-size: $font-size-md;
           color: 1px solid $text-color-darker;
           margin-bottom: 16px;
         }
         & > span {
           font-weight: 400;
-          font-size: 12px;
+          font-size: $font-size-sm;
           color: $text-color;
         }
         a {
@@ -164,7 +164,7 @@
 
     .menu-block-wrapper {
       font-weight: 600;
-      font-size: 16px;
+      font-size: $font-size-md;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -200,7 +200,7 @@
   .right {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: $font-size-md;
     font-weight: 600;
     padding-right: 41px;
 
@@ -250,7 +250,7 @@
           }
 
           .dropdown-triangle {
-            font-size: 10px;
+            font-size: $font-size-sm;
             margin: 0 5px 0 8px;
             padding-top: 3px;
           }
@@ -262,7 +262,7 @@
         border: 0;
         padding: 0 24px;
         font-weight: 400;
-        font-size: 16px;
+        font-size: $font-size-md;
         color: $base-color;
         background-color: $highlight-color;
         cursor: pointer;

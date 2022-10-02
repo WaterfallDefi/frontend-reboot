@@ -37,7 +37,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
       }
     }
     h1 {
-      font-size: 36px;
+      font-size: $font-size-xl;
       font-weight: 500;
       line-height: 45px;
       margin-bottom: 40px;
@@ -57,13 +57,13 @@ $evenPadding: calc((100vw - 1048px) / 2);
         flex-direction: column;
         justify-content: space-between;
         .title {
-          font-size: 16px;
+          font-size: $font-size-md;
           line-height: 20.8px;
           margin-bottom: 12px;
           color: $text-color-lighter;
         }
         .value {
-          font-size: 24px;
+          font-size: $font-size-lg;
           line-height: 31.2px;
           font-weight: 600;
           &.busd,
@@ -109,7 +109,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
     justify-content: space-between;
     align-items: center;
     .text {
-      font-size: 14px;
+      font-size: $font-size-md;
       font-weight: 600;
       background: linear-gradient(90deg, #4ac9ff 0%, #167bff 98.68%);
       background-clip: text;
@@ -122,7 +122,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
       align-items: center;
       justify-content: center;
       color: rgb(44, 82, 144); //temp
-      font-size: 32px;
+      font-size: $font-size-lg;
       font-weight: 600;
       border-radius: 16px;
       border: solid 1px transparent;

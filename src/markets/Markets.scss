@@ -61,7 +61,7 @@
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          font-size: 14px;
+          font-size: $font-size-md;
 
           &.pointer {
             cursor: pointer;
@@ -73,19 +73,19 @@
             color: $text-color;
           }
           .tvl {
-            font-size: 16px;
+            font-size: $font-size-md;
             color: $highlight-color;
           }
 
           .portfolio-name {
             margin-top: 4px;
-            font-size: 30px;
+            font-size: $font-size-xl;
             color: $text-color;
           }
 
           .assets {
             display: flex;
-            font-size: 20px;
+            font-size: $font-size-lg;
             color: $text-color;
             padding: 3px;
             margin-top: 4px;
@@ -153,7 +153,7 @@
           display: flex;
           flex-direction: column;
           justify-content: space-around;
-          font-size: 20px;
+          font-size: $font-size-lg;
 
           .label {
             color: $text-color;
@@ -169,7 +169,7 @@
             button {
               border-radius: 5px;
               height: 28px;
-              font-size: 14px;
+              font-size: $font-size-md;
               border: 1px solid $text-color-lightest;
               color: $highlight-color;
               cursor: pointer;
@@ -202,7 +202,7 @@
                   width: 100%;
                   border-radius: 5px;
                   height: 28px;
-                  font-size: 14px;
+                  font-size: $font-size-md;
                   border: 1px solid $text-color-lightest;
                   margin-right: 24px;
 
@@ -222,7 +222,7 @@
               }
             }
             .autoroll-lbl {
-              font-size: 14px;
+              font-size: $font-size-md;
               font-weight: 600;
               &.on {
                 color: $highlight-color;
@@ -342,7 +342,7 @@
                 position: absolute;
                 top: 69px;
                 left: 12px;
-                font-size: 14px;
+                font-size: $font-size-md;
               }
 
               .tranche-stack {
@@ -352,7 +352,7 @@
                 align-items: center;
                 justify-content: center;
                 color: $base-color;
-                font-size: 16px;
+                font-size: $font-size-md;
                 border: 2px solid $layer-color-dark;
                 &.hovered {
                   border: 2px solid $base-color;
@@ -373,11 +373,11 @@
         padding: 30px 0;
 
         .next-cycle {
-          font-size: 14px;
+          font-size: $font-size-md;
           color: $highlight-color;
         }
         .active-cycle {
-          font-size: 14px;
+          font-size: $font-size-md;
           color: $text-color;
           margin-top: 13px;
         }
@@ -406,7 +406,7 @@
             color: $highlight-color;
             border-radius: 50%;
             font-weight: 500;
-            font-size: 16px;
+            font-size: $font-size-md;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -414,7 +414,7 @@
             z-index: 1;
           }
           .step-name {
-            font-size: 14px;
+            font-size: $font-size-md;
             color: $text-color;
           }
           .line {
@@ -441,7 +441,7 @@
               margin-right: 8px;
             }
             .step-name {
-              font-size: 14px;
+              font-size: $font-size-md;
               color: $text-color;
               .rem-value {
                 font-weight: 800;
@@ -503,7 +503,7 @@
             }
 
             .sold-out {
-              font-size: 14px;
+              font-size: $font-size-md;
               width: 75px;
               height: 30px;
               border: rgb(224, 78, 41) 1px solid;
@@ -521,7 +521,7 @@
             }
 
             .tranche-name {
-              font-size: 14px;
+              font-size: $font-size-md;
               line-height: 18px;
               color: $text-color;
               display: flex;
@@ -550,7 +550,7 @@
               }
             }
             .apr {
-              font-size: 16px;
+              font-size: $font-size-md;
               line-height: 22px;
               margin: 10px 0;
               &.senior,
@@ -566,7 +566,7 @@
               }
             }
             .risk-text {
-              font-size: 12px;
+              font-size: $font-size-sm;
               line-height: 125%;
               letter-spacing: -0.015em;
               color: $text-color;
@@ -575,7 +575,7 @@
               display: flex;
               justify-content: space-between;
               .remaining {
-                font-size: 12px;
+                font-size: $font-size-sm;
                 line-height: 16px;
                 letter-spacing: -0.015em;
                 color: $text-color;
@@ -621,14 +621,14 @@
           z-index: 1;
 
           .row {
-            font-size: 20px;
+            font-size: $font-size-lg;
             line-height: 27px;
             color: $text-color;
             display: flex;
             margin-bottom: 35px;
             justify-content: space-between;
             & > div:nth-of-type(2) {
-              font-size: 24px;
+              font-size: $font-size-lg;
               line-height: 33px;
               text-align: end;
             }
@@ -645,7 +645,7 @@
               width: 100%;
               height: 50px;
               text-align: right;
-              font-size: 20px;
+              font-size: $font-size-lg;
               border-radius: 5px;
             }
             .max-input {
@@ -655,7 +655,7 @@
               color: $base-color;
               background: $highlight-color;
               border-radius: 5px;
-              font-size: 16px;
+              font-size: $font-size-md;
               padding: 0 12px;
               margin-right: 8px;
               cursor: pointer;
@@ -664,7 +664,7 @@
           .validate-text {
             width: calc(100% - 4px);
             text-align: right;
-            font-size: 12px;
+            font-size: $font-size-sm;
             line-height: 125%;
             letter-spacing: -0.015em;
             color: red; //temp
@@ -707,7 +707,7 @@
               border: 0px;
               padding: 0px 24px;
               font-weight: 400;
-              font-size: 16px;
+              font-size: $font-size-md;
               height: 56px;
               cursor: pointer;
             }
@@ -787,7 +787,7 @@
 
             .label {
               color: $text-color-dark;
-              font-size: 18px;
+              font-size: $font-size-md;
               width: 200px;
             }
             .rtn-amt {
