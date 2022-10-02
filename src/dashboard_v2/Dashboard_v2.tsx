@@ -1,5 +1,5 @@
 import "./Dashboard.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
 import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import numeral from "numeral";
@@ -15,14 +15,27 @@ import {
   MultiSigAddress,
   WAVAXDepositAddress,
 } from "../config/address";
+import ky from "ky";
 
 function Dashboard() {
   const { price, marketCap } = useWTFPriceLP();
 
   const totalTvl = useTotalTvl();
 
+  const [wavaxPrice, setWavaxPrice] = useState<number>();
+
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const getWAVAXPrice = async () => {
+      const result: any = await ky
+        .get("https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD&ids=wrapped-avax")
+        .json();
+      setWavaxPrice(result["wrapped-avax"]?.usd);
+    };
+    getWAVAXPrice();
   }, []);
 
   const { actualBalance: pendingRewardBUSD } = useBalanceOfOtherAddress(
@@ -43,11 +56,15 @@ function Dashboard() {
     AVAXMultiSigAddress[NETWORKS.MAINNET]
   );
 
-  const _pendingRewardBUSD = numeral(new BigNumber(pendingRewardBUSD).times(0.8).toString()).format("0,0");
+  const _pendingRewardBUSD = new BigNumber(pendingRewardBUSD);
 
-  const _pendingRewardDAIE = numeral(new BigNumber(pendingRewardDAIE).times(0.8).toString()).format("0,0");
+  const _pendingRewardDAIE = new BigNumber(pendingRewardDAIE);
 
-  const _pendingRewardWAVAX = numeral(new BigNumber(pendingRewardWAVAX).times(0.8).toString()).format("0,0.[00]");
+  const _pendingRewardWAVAX = new BigNumber(pendingRewardWAVAX).times(wavaxPrice ? wavaxPrice : 0);
+
+  const _totalRewardPool = numeral(
+    _pendingRewardBUSD.plus(_pendingRewardDAIE).plus(_pendingRewardWAVAX).toString()
+  ).format("0,0.[00]");
 
   return (
     <div className="dashboard-wrapper dark">
@@ -62,16 +79,8 @@ function Dashboard() {
             <span className="value">$ {marketCap ? numeral(marketCap).format("0,0") : "-"}</span>
           </div>
           <div className="block">
-            <span className="title">BUSD Pool</span>
-            <span className="value busd">$ {_pendingRewardBUSD}</span>
-          </div>
-          <div className="block">
-            <span className="title">DAI.e Pool</span>
-            <span className="value daie">$ {_pendingRewardDAIE}</span>
-          </div>
-          <div className="block">
-            <span className="title">WAVAX Pool</span>
-            <span className="value avax">{_pendingRewardWAVAX} WAVAX</span>
+            <span className="title">Protocol Combined Revenue</span>
+            <span className="value busd">$ {_totalRewardPool}</span>
           </div>
           <div className="block">
             <span className="title" />
