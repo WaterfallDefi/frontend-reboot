@@ -145,12 +145,18 @@ function ApproveCardDefault(props: Props) {
         switch (a) {
           case "BUSD":
             return "#F0B90B";
+          case "WBNB":
+            return "#F0B90B";
+          case "DAI.e":
+            return "#F0B90B";
           case "WAVAX":
             return "#E84142";
           case "TUSD":
             return "#1579FF";
+          case "USDC":
+            return "#2775CA";
           default:
-            return "#000000";
+            return "#FFFFFF";
         }
       }),
     [selectedMarket.assets]

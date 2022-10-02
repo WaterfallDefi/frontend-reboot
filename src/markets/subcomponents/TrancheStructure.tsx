@@ -1,4 +1,5 @@
 import { BigNumber } from "bignumber.js";
+import { useState } from "react";
 import { Tranche } from "../../types";
 
 type Props = {
@@ -22,6 +23,8 @@ const COLORS: { [key: string]: string } = {
 
 function TrancheStructure(props: Props) {
   const { tranches, totalTranchesTarget, wipeRight } = props;
+
+  const [hoveredTranche, setHoveredTranche] = useState<number>(-1);
 
   const payload =
     tranches.length === 3
@@ -56,7 +59,14 @@ function TrancheStructure(props: Props) {
         <h2>Tranche Structure</h2>
         <div className="tranche-chart">
           {payload.map((t, i) => (
-            <div key={i} className="tranche-stack" style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}>
+            <div
+              key={i}
+              onMouseEnter={() => {
+                setHoveredTranche(i);
+              }}
+              className={"tranche-stack" + (hoveredTranche === i ? " hovered" : "")}
+              style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
+            >
               <span>{t.value}%</span>
             </div>
           ))}

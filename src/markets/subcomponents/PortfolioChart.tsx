@@ -10,12 +10,10 @@ type StrategyFarm = {
 
 type Props = {
   strategyFarms: StrategyFarm[];
-  setSelectedStrategy: React.Dispatch<
-    React.SetStateAction<StrategyFarm | undefined>
-  >;
+  setSelectedStrategy: React.Dispatch<React.SetStateAction<StrategyFarm | undefined>>;
 };
 
-const COLORS = ["#FFFFFF", "#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
+const COLORS = ["rgb(19,19,44)", "#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
 
 function PortfolioChart(props: Props) {
   const { strategyFarms } = props;
@@ -30,10 +28,7 @@ function PortfolioChart(props: Props) {
 
   useEffect(() => {
     if (!loaded) {
-      setData([
-        { farmName: "", shares: 0, sAddress: "", apiKey: "" },
-        ...strategyFarms,
-      ]);
+      setData([{ farmName: "", shares: 0, sAddress: "", apiKey: "" }, ...strategyFarms]);
       setLoaded(true);
     }
   }, [strategyFarms, loaded]);
@@ -44,9 +39,7 @@ function PortfolioChart(props: Props) {
         data={data}
         width={275}
         height={275}
-        labels={data.map((strat) =>
-          strat.shares === 0 ? "" : (strat.shares * 100).toString() + "%"
-        )}
+        labels={data.map((strat) => (strat.shares === 0 ? "" : (strat.shares * 100).toString() + "%"))}
         labelRadius={35}
         y="shares"
         colorScale={COLORS}
