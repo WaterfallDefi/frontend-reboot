@@ -75,6 +75,48 @@ function Markets(props: Props) {
                 return a.portfolio.localeCompare(b.portfolio);
               case 1:
                 return a.isAvax ? 1 : -1;
+              case 2:
+                return a.assets[0].localeCompare(b.assets[0]);
+              case 3:
+                return (a.duration ? a.duration : 0) > (b.duration ? b.duration : 0)
+                  ? -1
+                  : (b.duration ? b.duration : 0) > (a.duration ? a.duration : 0)
+                  ? 1
+                  : 0;
+              case 4:
+                const wtfAPR_A = getWTFApr(
+                  a.isAvax ? Network.AVAX : Network.BNB,
+                  formatAllocPoint(a?.pools[a.trancheCount - 1], a?.totalAllocPoints),
+                  a?.tranches[a.trancheCount - 1],
+                  a.duration,
+                  a.rewardPerBlock,
+                  wtfPrice,
+                  a?.assets,
+                  coingeckoPrices
+                );
+                const trancheAPR_A = a.tranches[a.trancheCount - 1].apy;
+                const totalAPR_A =
+                  wtfAPR_A !== "0.00" && wtfAPR_A !== undefined
+                    ? Number(trancheAPR_A) + Number(numeral(wtfAPR_A).value())
+                    : trancheAPR_A;
+
+                const wtfAPR_B = getWTFApr(
+                  b.isAvax ? Network.AVAX : Network.BNB,
+                  formatAllocPoint(b?.pools[b.trancheCount - 1], b?.totalAllocPoints),
+                  b?.tranches[b.trancheCount - 1],
+                  b.duration,
+                  b.rewardPerBlock,
+                  wtfPrice,
+                  b?.assets,
+                  coingeckoPrices
+                );
+                const trancheAPR_B = b.tranches[b.trancheCount - 1].apy;
+                const totalAPR_B =
+                  wtfAPR_B !== "0.00" && wtfAPR_B !== undefined
+                    ? Number(trancheAPR_B) + Number(numeral(wtfAPR_B).value())
+                    : trancheAPR_B;
+
+                return totalAPR_A > totalAPR_B ? -1 : totalAPR_B > totalAPR_A ? 1 : 0;
               default:
                 return 0;
             }
