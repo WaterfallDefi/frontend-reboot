@@ -3,10 +3,9 @@
 .my-portfolio-wrapper {
   padding-top: 69px;
   width: 100%;
-  height: calc(100vh - 420px);
   overflow: hidden;
   overflow-x: auto;
-  min-height: 420px;
+  min-height: calc(100vh - 420px);
 
   .filters {
     width: calc(100% - 16px);
