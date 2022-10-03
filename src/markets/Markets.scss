@@ -15,6 +15,7 @@
   overflow: hidden;
   overflow-x: auto;
   .header-row {
+    margin-top: 69px;
     @include header-row;
   }
   .row-wrapper {
@@ -35,14 +36,13 @@
   }
 
   .market-detail-wrapper {
-    padding: 0 0 64px 24px;
+    padding: 100px 0 64px 24px;
     width: calc(100% - 48px);
     margin: 0 auto;
     min-height: 100vh;
 
     .information {
       display: flex;
-      padding-top: 37px;
 
       .block-wrapper {
         display: flex;

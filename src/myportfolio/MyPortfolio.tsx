@@ -62,6 +62,9 @@ function MyPortfolio(props: Props) {
 
   const _investHistoryResult = subgraph && subgraph.length > 0 ? [...subgraph] : [];
 
+  console.log("subgraph");
+  console.log(subgraph);
+
   for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
     const _subgraphResultMarket = subgraph[marketIdx];
     if (!_subgraphResultMarket) continue;

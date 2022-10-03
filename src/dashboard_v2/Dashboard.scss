@@ -1,47 +1,16 @@
 @import "../global.scss";
 
-$evenPadding: calc((100vw - 1048px) / 2);
-
 .dashboard-wrapper {
-  max-width: 1048px;
-  padding: 100px $evenPadding 0 $evenPadding;
+  padding: 100px 24px 0 24px;
   margin: 0 auto;
 
   .dash-banner {
     border-radius: 24px;
-    padding: 32px 44px 102px;
+    padding: 24px 24px 24px 42px;
     background: $layer-color;
     position: relative;
     color: $text-color;
-    .banner-img-toggle {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 20px;
-      height: 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      &:hover {
-        border: 2px solid $highlight-color;
-      }
-    }
-    .dash-banner-img {
-      position: absolute;
-      height: 370px;
-      width: 420px;
-      right: 0;
-      bottom: 56px;
 
-      @media screen and (max-width: 876px) {
-        display: none;
-      }
-    }
-    h1 {
-      font-size: $font-size-xl;
-      font-weight: 500;
-      line-height: 45px;
-      margin-bottom: 40px;
-    }
     .content {
       display: grid;
       gap: 80px;
@@ -97,8 +66,8 @@ $evenPadding: calc((100vw - 1048px) / 2);
     }
   }
 
-  .total-value-locked {
-    height: 100px;
+  .sub-banner {
+    height: 169px;
     border-radius: 24px;
     padding: 26px 0;
     background: $base-color;
@@ -108,34 +77,9 @@ $evenPadding: calc((100vw - 1048px) / 2);
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    .text {
-      font-size: $font-size-md;
-      font-weight: 600;
-      background: linear-gradient(90deg, #4ac9ff 0%, #167bff 98.68%);
-      background-clip: text;
-      color: transparent;
-    }
-    .value {
-      height: 60px;
-      padding: 0 47px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgb(44, 82, 144); //temp
-      font-size: $font-size-lg;
-      font-weight: 600;
-      border-radius: 16px;
-      border: solid 1px transparent;
-      background-image: linear-gradient(132.89deg, #fff, #fff), linear-gradient(90deg, #4ac9ff 0%, #167bff 98.68%);
-      background-origin: padding-box, border-box;
-      background-clip: padding-box, border-box;
-      box-shadow: 0px 4px 10px 0px #187eff33;
-      white-space: nowrap;
-      min-width: 300px;
-      @media screen and (max-width: 414px) {
-        font-size: 28px;
-        transform: scale(0.8);
-      }
+
+    .twitter {
+      width: calc(100% - 48px);
     }
   }
 
@@ -153,7 +97,7 @@ $evenPadding: calc((100vw - 1048px) / 2);
         }
       }
     }
-    .total-value-locked {
+    .sub-banner {
       background: $layer-color-dark-2;
     }
 

@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import Blog from "./Blog";
 import { MarketList } from "./config/markets";
-import Dashboard from "./dashboard_v2/Dashboard_v2";
 import Footer from "./footer/Footer";
 import Header from "./header/Header";
 import { getMarkets } from "./hooks/getMarkets";
@@ -98,7 +97,6 @@ function WaterfallDefi() {
           path="/"
           element={layout(
             [
-              <Dashboard />,
               <Markets
                 key="markets"
                 mode={Mode.Dark}

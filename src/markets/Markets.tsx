@@ -15,6 +15,7 @@ import { Market } from "../types";
 import { ModalProps, Mode, Network } from "../WaterfallDefi";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { switchNetwork } from "../header/Header";
+import Dashboard from "../dashboard_v2/Dashboard_v2";
 
 type Props = {
   mode: Mode;
@@ -26,12 +27,16 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
+const headers = ["Portfolio Name", "Network", "Asset", "Lock-up Period", "Deposit APR", "TVL", "Status"];
+
 function Markets(props: Props) {
   const { mode, network, setDisableHeaderNetworkSwitch, setNetwork, markets, setMarkets, setModal } = props;
 
   const { account } = useWeb3React<Web3Provider>();
 
   const [selectedMarket, setSelectedMarket] = useState<Market>();
+
+  const [headerSort, setHeaderSort] = useState<number>(-1);
 
   const { price: wtfPrice } = useWTFPriceLP();
   const coingeckoPrices = useCoingeckoPrices(markets ? markets : []);
@@ -60,29 +65,14 @@ function Markets(props: Props) {
 
   return (
     <div className={"markets-wrapper " + mode}>
+      {!selectedMarket ? <Dashboard /> : null}
       {!selectedMarket ? (
         <div className="header-row">
-          <div className="header first">
-            <span>Portfolio Name</span>
-          </div>
-          <div className="header">
-            <span>Network</span>
-          </div>
-          <div className="header">
-            <span>Asset</span>
-          </div>
-          <div className="header">
-            <span>Lock-up period</span>
-          </div>
-          <div className="header">
-            <span>Deposit APR</span>
-          </div>
-          <div className="header">
-            <span>TVL</span>
-          </div>
-          <div className="header last">
-            <span>Status</span>
-          </div>
+          {headers.map((h, i) => (
+            <div className={"header" + (i === 0 ? " first" : i === headers.length ? " last" : "")}>
+              <span>{h}</span>
+            </div>
+          ))}
         </div>
       ) : null}
       {!selectedMarket && markets
