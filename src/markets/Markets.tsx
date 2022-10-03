@@ -27,6 +27,11 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
 };
 
+type CoingeckoPrices = {
+  wbnb?: { usd?: number };
+  ["wrapped-avax"]?: { usd?: number };
+};
+
 const headers = ["Portfolio Name", "Network", "Asset", "Lock-up Period", "Deposit APR", "TVL", "Status"];
 
 function Markets(props: Props) {
@@ -39,7 +44,7 @@ function Markets(props: Props) {
   const [headerSort, setHeaderSort] = useState<number>(-1);
 
   const { price: wtfPrice } = useWTFPriceLP();
-  const coingeckoPrices = useCoingeckoPrices(markets ? markets : []);
+  const coingeckoPrices: CoingeckoPrices = useCoingeckoPrices();
 
   //we are using markets as a network switch reset indicator, if flipped to undefined
   useEffect(() => {
@@ -117,6 +122,29 @@ function Markets(props: Props) {
                     : trancheAPR_B;
 
                 return totalAPR_A > totalAPR_B ? -1 : totalAPR_B > totalAPR_A ? 1 : 0;
+              case 5:
+                const aTVL =
+                  a.assets[0] === "WBNB"
+                    ? Number(a.tvl) * Number(coingeckoPrices?.wbnb?.usd)
+                    : a.assets[0] === "WAVAX"
+                    ? Number(a.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
+                    : a.tvl;
+
+                const bTVL =
+                  b.assets[0] === "WBNB"
+                    ? Number(b.tvl) * Number(coingeckoPrices?.wbnb?.usd)
+                    : b.assets[0] === "WAVAX"
+                    ? Number(b.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
+                    : b.tvl;
+                return aTVL > bTVL ? -1 : bTVL > aTVL ? 1 : 0;
+              case 6:
+                if (a.status === "PENDING" && b.status === "ACTIVE") {
+                  return -1;
+                }
+                if (a.status === "ACTIVE" && b.isRetired) {
+                  return -1;
+                }
+                return 0;
               default:
                 return 0;
             }

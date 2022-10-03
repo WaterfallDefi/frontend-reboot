@@ -1,6 +1,5 @@
 import ky from "ky";
 import { useEffect, useState } from "react";
-import { Market } from "../types";
 
 const getCoingeckoPrices = async () => {
   const result = await ky
@@ -12,7 +11,7 @@ const getCoingeckoPrices = async () => {
   return result;
 };
 
-export const useCoingeckoPrices = (markets: Market[]) => {
+export const useCoingeckoPrices = () => {
   const [prices, setPrices] = useState({});
 
   //   const { slowRefresh } = useRefresh();
@@ -22,7 +21,7 @@ export const useCoingeckoPrices = (markets: Market[]) => {
       setPrices(_prices);
     };
     fetchBalance();
-  }, [markets]);
+  }, []);
 
   return prices;
 };
