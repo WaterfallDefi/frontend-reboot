@@ -1,6 +1,6 @@
 import "./Markets.scss";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
@@ -49,34 +49,37 @@ function Markets(props: Props) {
     }
   }, [markets, setSelectedMarket, setDisableHeaderNetworkSwitch]);
 
-  async function goToMarket(market: Market) {
-    if ((market.isAvax && network === Network.BNB) || (!market.isAvax && network === Network.AVAX)) {
-      switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork).then((res) => {
-        if (res) {
-          setSelectedMarket(market);
-          setDisableHeaderNetworkSwitch(true);
-        }
-      });
-    } else {
-      setSelectedMarket(market);
-      setDisableHeaderNetworkSwitch(true);
-    }
-  }
+  const goToMarket = useCallback(
+    async (market: Market) => {
+      if ((market.isAvax && network === Network.BNB) || (!market.isAvax && network === Network.AVAX)) {
+        switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork).then((res) => {
+          if (res) {
+            setSelectedMarket(market);
+            setDisableHeaderNetworkSwitch(true);
+          }
+        });
+      } else {
+        setSelectedMarket(market);
+        setDisableHeaderNetworkSwitch(true);
+      }
+    },
+    [account, network, setDisableHeaderNetworkSwitch, setNetwork]
+  );
 
-  return (
-    <div className={"markets-wrapper " + mode}>
-      {!selectedMarket ? <Dashboard /> : null}
-      {!selectedMarket ? (
-        <div className="header-row">
-          {headers.map((h, i) => (
-            <div className={"header" + (i === 0 ? " first" : i === headers.length ? " last" : "")}>
-              <span>{h}</span>
-            </div>
-          ))}
-        </div>
-      ) : null}
-      {!selectedMarket && markets
-        ? markets.map((m: Market) => {
+  const tableRows = useMemo(() => {
+    return markets
+      ? markets
+          .sort((a: Market, b: Market) => {
+            switch (headerSort) {
+              case 0:
+                return a.portfolio.localeCompare(b.portfolio);
+              case 1:
+                return a.isAvax ? 1 : -1;
+              default:
+                return 0;
+            }
+          })
+          .map((m: Market) => {
             const tranchesApr = m.tranches.map((_t, _i) => {
               const wtfAPR = getWTFApr(
                 m.isAvax ? Network.AVAX : Network.BNB,
@@ -122,7 +125,25 @@ function Markets(props: Props) {
               />
             );
           })
-        : null}
+      : [];
+  }, [markets, headerSort, wtfPrice, coingeckoPrices, goToMarket]);
+
+  return (
+    <div className={"markets-wrapper " + mode}>
+      {!selectedMarket ? <Dashboard /> : null}
+      {!selectedMarket ? (
+        <div className="header-row">
+          {headers.map((h, i) => (
+            <div
+              className={"header" + (i === 0 ? " first" : i === headers.length ? " last" : "")}
+              onClick={() => setHeaderSort(i)}
+            >
+              <span>{h}</span>
+            </div>
+          ))}
+        </div>
+      ) : null}
+      {!selectedMarket && tableRows}
       {selectedMarket ? (
         <MarketDetail
           selectedMarket={selectedMarket}
