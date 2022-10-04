@@ -16,6 +16,7 @@
   overflow-x: auto;
   .header-row {
     margin-top: 69px;
+    cursor: pointer;
     @include header-row;
   }
   .row-wrapper {

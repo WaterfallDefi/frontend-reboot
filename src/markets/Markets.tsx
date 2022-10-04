@@ -42,6 +42,7 @@ function Markets(props: Props) {
   const [selectedMarket, setSelectedMarket] = useState<Market>();
 
   const [headerSort, setHeaderSort] = useState<number>(-1);
+  const [sortAsc, setSortAsc] = useState<boolean>(true);
 
   const { price: wtfPrice } = useWTFPriceLP();
   const coingeckoPrices: CoingeckoPrices = useCoingeckoPrices();
@@ -205,15 +206,26 @@ function Markets(props: Props) {
         <div className="header-row">
           {headers.map((h, i) => (
             <div
-              className={"header" + (i === 0 ? " first" : i === headers.length ? " last" : "")}
-              onClick={() => setHeaderSort(i)}
+              className={"header" + (i === 0 ? " first" : i === headers.length - 1 ? " last" : "")}
+              onClick={() => {
+                if (headerSort !== i) {
+                  setSortAsc(true);
+                  setHeaderSort(i);
+                } else {
+                  setSortAsc(!sortAsc);
+                }
+              }}
             >
-              <span>{h}</span>
+              <span>
+                {headerSort === i ? (sortAsc ? "^ " : "v ") : null}
+                {h}
+              </span>
             </div>
           ))}
         </div>
       ) : null}
-      {!selectedMarket && tableRows}
+      {!selectedMarket && sortAsc ? tableRows : null}
+      {!selectedMarket && !sortAsc ? [...tableRows].reverse() : null}
       {selectedMarket ? (
         <MarketDetail
           selectedMarket={selectedMarket}
