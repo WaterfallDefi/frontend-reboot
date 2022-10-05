@@ -227,7 +227,7 @@ function MyPortfolio(props: Props) {
 
               const trancheCycle: any = trancheCycles[trancheCycleId];
 
-              const _market: any = markets[__idx];
+              const _market: Market = markets[__idx];
 
               const tranchesDisplayText =
                 _market.trancheCount === 3 ? ["Senior", "Mezzanine", "Junior"] : ["Fixed", "Variable"];
@@ -359,8 +359,8 @@ function MyPortfolio(props: Props) {
             }
           }
         )
-        .map((tr: { data: TableRowData; foldElement: JSX.Element }) => (
-          <TableRow data={tr.data} foldElement={tr.foldElement} />
+        .map((tr: { data: TableRowData; foldElement: JSX.Element }, i) => (
+          <TableRow key={i} data={tr.data} foldElement={tr.foldElement} />
         )),
     [userInvestsPayloadPrerendered, headerSort]
   );
@@ -403,6 +403,7 @@ function MyPortfolio(props: Props) {
       <div className="header-row">
         {headers.map((h, i) => (
           <div
+            key={i}
             className={"header" + (i === 0 ? " first" : i === headers.length - 1 ? " last" : "")}
             onClick={() => {
               if (headerSort !== i) {
