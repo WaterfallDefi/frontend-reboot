@@ -206,6 +206,7 @@ function Markets(props: Props) {
         <div className="header-row">
           {headers.map((h, i) => (
             <div
+              key={i}
               className={"header" + (i === 0 ? " first" : i === headers.length - 1 ? " last" : "")}
               onClick={() => {
                 if (headerSort !== i) {
