@@ -93,10 +93,7 @@ function MyPortfolio(props: Props) {
     fetchSubgraph();
   }, [account]);
 
-  const _investHistoryResult = subgraph && subgraph.length > 0 ? [...subgraph] : [];
-
-  console.log("subgraph");
-  console.log(subgraph);
+  const _investHistoryResult = useMemo(() => (subgraph && subgraph.length > 0 ? [...subgraph] : []), [subgraph]);
 
   for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
     const _subgraphResultMarket = subgraph[marketIdx];
@@ -191,7 +188,7 @@ function MyPortfolio(props: Props) {
     _investHistoryResult[marketIdx].userInvests = userInvests;
   }
 
-  const userInvestsPayload: { userInvests: UserInvest[] }[] = [];
+  const userInvestsPayload: { userInvests: UserInvest[] }[] = useMemo(() => [], []);
   let filteredCount = 0;
   for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
     if (!_investHistoryResult[marketIdx]) continue;
@@ -355,6 +352,8 @@ function MyPortfolio(props: Props) {
                 return a.data.network === "AVAX" ? 1 : -1;
               case 2:
                 return a.data.assets[0].localeCompare(b.data.assets[0]);
+              case 4:
+                return a.data.tranche.localeCompare(b.data.tranche);
               default:
                 return 0;
             }

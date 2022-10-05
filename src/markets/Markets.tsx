@@ -75,81 +75,6 @@ function Markets(props: Props) {
   const tableRows = useMemo(() => {
     return markets
       ? markets
-          .sort((a: Market, b: Market) => {
-            switch (headerSort) {
-              case 0:
-                return a.portfolio.localeCompare(b.portfolio);
-              case 1:
-                return a.isAvax ? 1 : -1;
-              case 2:
-                return a.assets[0].localeCompare(b.assets[0]);
-              case 3:
-                return (a.duration ? a.duration : 0) > (b.duration ? b.duration : 0)
-                  ? -1
-                  : (b.duration ? b.duration : 0) > (a.duration ? a.duration : 0)
-                  ? 1
-                  : 0;
-              case 4:
-                const wtfAPR_A = getWTFApr(
-                  a.isAvax ? Network.AVAX : Network.BNB,
-                  formatAllocPoint(a?.pools[a.trancheCount - 1], a?.totalAllocPoints),
-                  a?.tranches[a.trancheCount - 1],
-                  a.duration,
-                  a.rewardPerBlock,
-                  wtfPrice,
-                  a?.assets,
-                  coingeckoPrices
-                );
-                const trancheAPR_A = a.tranches[a.trancheCount - 1].apy;
-                const totalAPR_A =
-                  wtfAPR_A !== "0.00" && wtfAPR_A !== undefined
-                    ? Number(trancheAPR_A) + Number(numeral(wtfAPR_A).value())
-                    : trancheAPR_A;
-
-                const wtfAPR_B = getWTFApr(
-                  b.isAvax ? Network.AVAX : Network.BNB,
-                  formatAllocPoint(b?.pools[b.trancheCount - 1], b?.totalAllocPoints),
-                  b?.tranches[b.trancheCount - 1],
-                  b.duration,
-                  b.rewardPerBlock,
-                  wtfPrice,
-                  b?.assets,
-                  coingeckoPrices
-                );
-                const trancheAPR_B = b.tranches[b.trancheCount - 1].apy;
-                const totalAPR_B =
-                  wtfAPR_B !== "0.00" && wtfAPR_B !== undefined
-                    ? Number(trancheAPR_B) + Number(numeral(wtfAPR_B).value())
-                    : trancheAPR_B;
-
-                return totalAPR_A > totalAPR_B ? -1 : totalAPR_B > totalAPR_A ? 1 : 0;
-              case 5:
-                const aTVL =
-                  a.assets[0] === "WBNB"
-                    ? Number(a.tvl) * Number(coingeckoPrices?.wbnb?.usd)
-                    : a.assets[0] === "WAVAX"
-                    ? Number(a.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
-                    : a.tvl;
-
-                const bTVL =
-                  b.assets[0] === "WBNB"
-                    ? Number(b.tvl) * Number(coingeckoPrices?.wbnb?.usd)
-                    : b.assets[0] === "WAVAX"
-                    ? Number(b.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
-                    : b.tvl;
-                return aTVL > bTVL ? -1 : bTVL > aTVL ? 1 : 0;
-              case 6:
-                if (a.status === "PENDING" && b.status === "ACTIVE") {
-                  return -1;
-                }
-                if (a.status === "ACTIVE" && b.isRetired) {
-                  return -1;
-                }
-                return 0;
-              default:
-                return 0;
-            }
-          })
           .map((m: Market) => {
             const tranchesApr = m.tranches.map((_t, _i) => {
               const wtfAPR = getWTFApr(
@@ -162,7 +87,7 @@ function Markets(props: Props) {
                 m?.assets,
                 coingeckoPrices
               );
-              const trancheAPR = _t.apy;
+              const trancheAPR: string = _t.apy;
               const totalAPR =
                 wtfAPR !== "0.00" && wtfAPR !== undefined
                   ? Number(trancheAPR) + Number(numeral(wtfAPR).value())
@@ -177,25 +102,73 @@ function Markets(props: Props) {
               numeral(m.tvl.includes("e-") ? "0" : m.tvl).format("0,0.[0000]") +
               (nonDollarTvl ? " " + m.assets[0] : "");
 
-            return (
-              <TableRow
-                key={m.portfolio}
-                setSelectedMarket={() => goToMarket(m)}
-                data={{
-                  portfolio: m.portfolio,
-                  network: m.isAvax ? "AVAX" : "BNB",
-                  assets: m.assets,
-                  duration:
-                    Number(m.duration) / 86400 >= 1
-                      ? Number(m.duration) / 86400 + " Days"
-                      : Number(m.duration) / 60 + " Mins",
-                  apr_markets: tranchesApr,
-                  tvl: tvl,
-                  status: m.isRetired ? "Expired" : m.status[0] + m.status.slice(1).toLowerCase(),
-                }}
-              />
-            );
+            return {
+              market: m,
+              data: {
+                portfolio: m.portfolio,
+                network: m.isAvax ? "AVAX" : "BNB",
+                assets: m.assets,
+                duration:
+                  Number(m.duration) / 86400 >= 1
+                    ? Number(m.duration) / 86400 + " Days"
+                    : Number(m.duration) / 60 + " Mins",
+                apr_markets: tranchesApr,
+                tvl: tvl,
+                status: m.isRetired ? "Expired" : m.status[0] + m.status.slice(1).toLowerCase(),
+              },
+            };
           })
+          //TYPE DATA!!
+          .sort((a: { market: Market; data: any }, b: { market: Market; data: any }) => {
+            switch (headerSort) {
+              case 0:
+                return a.data.portfolio.localeCompare(b.data.portfolio);
+              case 1:
+                return a.market.isAvax ? 1 : -1;
+              case 2:
+                return a.data.assets[0].localeCompare(b.data.assets[0]);
+              case 3:
+                return (a.market.duration ? a.market.duration : 0) > (b.market.duration ? b.market.duration : 0)
+                  ? -1
+                  : (b.market.duration ? b.market.duration : 0) > (a.market.duration ? a.market.duration : 0)
+                  ? 1
+                  : 0;
+              case 4:
+                return Number(a.data.apr_markets[a.market.trancheCount - 1]) >
+                  Number(b.data.apr_markets[b.market.trancheCount - 1])
+                  ? -1
+                  : Number(a.data.apr_markets[a.market.trancheCount - 1]) <
+                    Number(b.data.apr_markets[b.market.trancheCount - 1])
+                  ? 1
+                  : 0;
+              case 5:
+                const aTVL =
+                  a.market.assets[0] === "WBNB"
+                    ? Number(a.market.tvl) * Number(coingeckoPrices?.wbnb?.usd)
+                    : a.market.assets[0] === "WAVAX"
+                    ? Number(a.market.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
+                    : a.market.tvl;
+
+                const bTVL =
+                  b.market.assets[0] === "WBNB"
+                    ? Number(b.market.tvl) * Number(coingeckoPrices?.wbnb?.usd)
+                    : b.market.assets[0] === "WAVAX"
+                    ? Number(b.market.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
+                    : b.market.tvl;
+                return aTVL < bTVL ? -1 : bTVL < aTVL ? 1 : 0;
+              case 6:
+                if (a.data.status === "PENDING" && b.data.status === "ACTIVE") {
+                  return -1;
+                }
+                if (a.data.status === "ACTIVE" && b.data.isRetired) {
+                  return -1;
+                }
+                return 0;
+              default:
+                return 0;
+            }
+          })
+          .map((m) => <TableRow key={m.data.portfolio} setSelectedMarket={() => goToMarket(m.market)} data={m.data} />)
       : [];
   }, [markets, headerSort, wtfPrice, coingeckoPrices, goToMarket]);
 
