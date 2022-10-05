@@ -340,6 +340,32 @@ function MyPortfolio(props: Props) {
     [_investHistoryResult, userInvestsPayload, markets, network, setMarkets, setModal, wtfPrice]
   );
 
+  const userInvestsPayloadRendered = useMemo(
+    () =>
+      userInvestsPayloadPrerendered
+        .sort(
+          (
+            a: { data: TableRowData; foldElement: JSX.Element },
+            b: { data: TableRowData; foldElement: JSX.Element }
+          ) => {
+            switch (headerSort) {
+              case 0:
+                return a.data.portfolio.localeCompare(b.data.portfolio);
+              case 1:
+                return a.data.network === "AVAX" ? 1 : -1;
+              case 2:
+                return a.data.assets[0].localeCompare(b.data.assets[0]);
+              default:
+                return 0;
+            }
+          }
+        )
+        .map((tr: { data: TableRowData; foldElement: JSX.Element }) => (
+          <TableRow data={tr.data} foldElement={tr.foldElement} />
+        )),
+    [userInvestsPayloadPrerendered, headerSort]
+  );
+
   const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedAsset(event.target.value);
   };
@@ -397,28 +423,10 @@ function MyPortfolio(props: Props) {
       </div>
       {!loaded ? (
         <div className="loading">Loading...</div>
+      ) : sortAsc ? (
+        userInvestsPayloadRendered
       ) : (
-        userInvestsPayloadPrerendered
-          .sort(
-            (
-              a: { data: TableRowData; foldElement: JSX.Element },
-              b: { data: TableRowData; foldElement: JSX.Element }
-            ) => {
-              switch (headerSort) {
-                case 0:
-                  return a.data.portfolio.localeCompare(b.data.portfolio);
-                case 1:
-                  return a.data.network === "AVAX" ? 1 : -1;
-                case 2:
-                  return a.data.assets[0].localeCompare(b.data.assets[0]);
-                default:
-                  return 0;
-              }
-            }
-          )
-          .map((tr: { data: TableRowData; foldElement: JSX.Element }) => (
-            <TableRow data={tr.data} foldElement={tr.foldElement} />
-          ))
+        [...userInvestsPayloadRendered].reverse()
       )}
       {loaded && filteredCount === 0 ? (
         <div className="no-data">
