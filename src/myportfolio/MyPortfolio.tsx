@@ -190,16 +190,16 @@ function MyPortfolio(props: Props) {
     }
 
     const userInvestsPayload: { userInvests: UserInvest[] }[] = [];
-    // let filteredCount = 0;
+
     for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
       if (!_investHistoryResult[marketIdx]) continue;
       const { userInvests, trancheCycles } = _investHistoryResult[marketIdx];
       const filtered = userInvests?.filter((_userInvest: any) => {
         if (!trancheCycles) return false;
         const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
-        // if (!markets[marketIdx].isMulticurrency && _userInvest.principal === "0") return false;
-        // if (markets[marketIdx].isMulticurrency && _userInvest.MCprincipal.every((p: string) => Number(p) === 0))
-        //   return false;
+        if (!markets[marketIdx].isMulticurrency && _userInvest.principal === "0") return false;
+        if (markets[marketIdx].isMulticurrency && _userInvest.MCprincipal.every((p: string) => Number(p) === 0))
+          return false;
         if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
         if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset.toString())) return false;
         if (
@@ -210,7 +210,6 @@ function MyPortfolio(props: Props) {
           return false;
         return true;
       });
-      // filteredCount += filtered.length;
 
       userInvestsPayload[marketIdx] = { userInvests: filtered };
     }
@@ -346,9 +345,6 @@ function MyPortfolio(props: Props) {
     wtfPrice,
   ]);
 
-  console.log("prerender");
-  console.log(userInvestsPayloadPrerendered.length);
-
   const userInvestsPayloadRendered = useMemo(
     () =>
       userInvestsPayloadPrerendered
@@ -373,9 +369,9 @@ function MyPortfolio(props: Props) {
                   ? 1
                   : 0;
               case 6:
-                return Number(a.data.principal.principal) > Number(b.data.principal.principal)
+                return Number(a.data.principal.principal) < Number(b.data.principal.principal)
                   ? -1
-                  : Number(b.data.principal.principal) > Number(a.data.principal.principal)
+                  : Number(b.data.principal.principal) < Number(a.data.principal.principal)
                   ? 1
                   : 0;
               case 7:
@@ -400,8 +396,6 @@ function MyPortfolio(props: Props) {
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedStatus(Number(event.target.value));
   };
-
-  console.log(userInvestsPayloadRendered.length);
 
   return (
     <div className={"my-portfolio-wrapper " + mode}>
