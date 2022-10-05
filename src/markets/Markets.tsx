@@ -32,6 +32,16 @@ type CoingeckoPrices = {
   ["wrapped-avax"]?: { usd?: number };
 };
 
+type TableRowData = {
+  portfolio: string;
+  network: string;
+  assets: string[];
+  duration: string;
+  apr_markets: (string | number)[];
+  tvl: string;
+  status: string;
+};
+
 const headers = ["Portfolio Name", "Network", "Asset", "Lock-up Period", "Deposit APR", "TVL", "Status"];
 
 function Markets(props: Props) {
@@ -119,7 +129,7 @@ function Markets(props: Props) {
             };
           })
           //TYPE DATA!!
-          .sort((a: { market: Market; data: any }, b: { market: Market; data: any }) => {
+          .sort((a: { market: Market; data: TableRowData }, b: { market: Market; data: TableRowData }) => {
             switch (headerSort) {
               case 0:
                 return a.data.portfolio.localeCompare(b.data.portfolio);
@@ -160,7 +170,7 @@ function Markets(props: Props) {
                 if (a.data.status === "PENDING" && b.data.status === "ACTIVE") {
                   return -1;
                 }
-                if (a.data.status === "ACTIVE" && b.data.isRetired) {
+                if (a.data.status === "ACTIVE" && b.market.isRetired) {
                   return -1;
                 }
                 return 0;
