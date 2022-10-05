@@ -74,7 +74,7 @@ function MyPortfolio(props: Props) {
   const positions = usePositions(markets);
 
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [subgraph, setSubgraph] = useState<any>([]);
+  const [subgraph, setSubgraph] = useState<any>(undefined);
 
   const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
   const [selectedTranche, setSelectedTranche] = useState(-1);
@@ -93,102 +93,102 @@ function MyPortfolio(props: Props) {
     fetchSubgraph();
   }, [account]);
 
-  const _investHistoryResult = useMemo(() => (subgraph && subgraph.length > 0 ? [...subgraph] : []), [subgraph]);
+  const userInvestsPayloadPrerendered = useMemo(() => {
+    const _investHistoryResult = subgraph && subgraph.length > 0 ? [...subgraph] : [];
 
-  for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
-    const _subgraphResultMarket = subgraph[marketIdx];
-    if (!_subgraphResultMarket) continue;
-    const _market = markets[marketIdx];
-    const { userInvests: _userInvests } = _subgraphResultMarket;
-    const _position = positions[marketIdx];
+    for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
+      const _subgraphResultMarket = subgraph[marketIdx];
+      if (!_subgraphResultMarket) continue;
+      const _market = markets[marketIdx];
+      const { userInvests: _userInvests } = _subgraphResultMarket;
+      const _position = positions[marketIdx];
 
-    let userInvests = _userInvests?.filter((_userInvest: UserInvest) => {
-      if (_userInvest?.cycle === Number(_market?.cycle) && _market?.status === PORTFOLIO_STATUS.PENDING) return false;
-      if (_userInvest?.cycle === Number(_market?.cycle) && _market?.status === PORTFOLIO_STATUS.ACTIVE) return false;
-      return true;
-    });
+      let userInvests = _userInvests?.filter((_userInvest: UserInvest) => {
+        if (_userInvest?.cycle === Number(_market?.cycle) && _market?.status === PORTFOLIO_STATUS.PENDING) return false;
+        if (_userInvest?.cycle === Number(_market?.cycle) && _market?.status === PORTFOLIO_STATUS.ACTIVE) return false;
+        return true;
+      });
 
-    let _cycle;
-    const _MCprincipals: string[][] = [];
+      let _cycle;
+      const _MCprincipals: string[][] = [];
 
-    if (_position) {
-      //single currency
-      if (!_market.isMulticurrency) {
-        for (let i = 0; i < _position.length; i++) {
-          //single currency cycle
-          _cycle = new BigNumber(_position[i][0]._hex).toString();
+      if (_position) {
+        //single currency
+        if (!_market.isMulticurrency) {
+          for (let i = 0; i < _position.length; i++) {
+            //single currency cycle
+            _cycle = new BigNumber(_position[i][0]._hex).toString();
 
-          //single currency, i = individual tranche
-          const _principal = !_market?.isMulticurrency
-            ? numeral(new BigNumber(_position[i][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[0000]")
-            : "";
+            //single currency, i = individual tranche
+            const _principal = !_market?.isMulticurrency
+              ? numeral(new BigNumber(_position[i][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[0000]")
+              : "";
 
+            if (
+              _cycle === _market?.cycle &&
+              (_market?.status === PORTFOLIO_STATUS.PENDING || _market?.status === PORTFOLIO_STATUS.ACTIVE)
+            ) {
+              userInvests = [
+                {
+                  capital: "0",
+                  cycle: Number(_market?.cycle),
+                  harvestAt: 0,
+                  id: "",
+                  investAt: 0,
+                  owner: "",
+                  principal: _principal,
+                  tranche: i,
+                  interest: "0",
+                  earningsAPY: "NaN",
+                },
+                ...userInvests,
+              ];
+            }
+          }
+        } else {
+          //multicurrency
+          _cycle = new BigNumber(_position[0][0]._hex).toString();
+
+          //multicurrency, j = individual tranche
+          for (let j = 0; j < _market.trancheCount; j++) {
+            _MCprincipals.push(
+              _market.depositAssetAddresses.map((a, tokenIdx) =>
+                numeral(
+                  new BigNumber(_position[j + 1 + tokenIdx * _market.trancheCount][0]._hex)
+                    .dividedBy(BIG_TEN.pow(18))
+                    .toString()
+                ).format("0,0.[0000]")
+              )
+            );
+          }
           if (
             _cycle === _market?.cycle &&
             (_market?.status === PORTFOLIO_STATUS.PENDING || _market?.status === PORTFOLIO_STATUS.ACTIVE)
           ) {
             userInvests = [
-              {
-                capital: "0",
-                cycle: Number(_market?.cycle),
-                harvestAt: 0,
-                id: "",
-                investAt: 0,
-                owner: "",
-                principal: _principal,
-                tranche: i,
-                interest: "0",
-                earningsAPY: "NaN",
-              },
+              ..._MCprincipals.map((p, ti) => {
+                return {
+                  capital: "0",
+                  cycle: Number(_market?.cycle),
+                  harvestAt: 0,
+                  id: "",
+                  investAt: 0,
+                  owner: "",
+                  principal: "0",
+                  MCprincipal: p,
+                  tranche: ti,
+                  interest: "0",
+                  earningsAPY: "NaN",
+                };
+              }),
               ...userInvests,
             ];
           }
         }
-      } else {
-        //multicurrency
-        _cycle = new BigNumber(_position[0][0]._hex).toString();
-
-        //multicurrency, j = individual tranche
-        for (let j = 0; j < _market.trancheCount; j++) {
-          _MCprincipals.push(
-            _market.depositAssetAddresses.map((a, tokenIdx) =>
-              numeral(
-                new BigNumber(_position[j + 1 + tokenIdx * _market.trancheCount][0]._hex)
-                  .dividedBy(BIG_TEN.pow(18))
-                  .toString()
-              ).format("0,0.[0000]")
-            )
-          );
-        }
-        if (
-          _cycle === _market?.cycle &&
-          (_market?.status === PORTFOLIO_STATUS.PENDING || _market?.status === PORTFOLIO_STATUS.ACTIVE)
-        ) {
-          userInvests = [
-            ..._MCprincipals.map((p, ti) => {
-              return {
-                capital: "0",
-                cycle: Number(_market?.cycle),
-                harvestAt: 0,
-                id: "",
-                investAt: 0,
-                owner: "",
-                principal: null,
-                MCprincipal: p,
-                tranche: ti,
-                interest: "0",
-                earningsAPY: "NaN",
-              };
-            }),
-            ...userInvests,
-          ];
-        }
       }
+      _investHistoryResult[marketIdx].userInvests = userInvests;
     }
-    _investHistoryResult[marketIdx].userInvests = userInvests;
-  }
 
-  const userInvestsPayloadPrerendered = useMemo(() => {
     const userInvestsPayload: { userInvests: UserInvest[] }[] = [];
     // let filteredCount = 0;
     for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
@@ -334,7 +334,8 @@ function MyPortfolio(props: Props) {
       })
       .flat();
   }, [
-    _investHistoryResult,
+    positions,
+    subgraph,
     selectedAsset,
     selectedTranche,
     selectedStatus,
@@ -344,6 +345,9 @@ function MyPortfolio(props: Props) {
     setModal,
     wtfPrice,
   ]);
+
+  console.log("prerender");
+  console.log(userInvestsPayloadPrerendered.length);
 
   const userInvestsPayloadRendered = useMemo(
     () =>
@@ -357,11 +361,25 @@ function MyPortfolio(props: Props) {
               case 0:
                 return a.data.portfolio.localeCompare(b.data.portfolio);
               case 1:
-                return a.data.network === "AVAX" ? 1 : -1;
+                return a.data.network === "AVAX" ? -1 : 1;
               case 2:
                 return a.data.assets[0].localeCompare(b.data.assets[0]);
               case 4:
                 return a.data.tranche.localeCompare(b.data.tranche);
+              case 5:
+                return Number(a.data.apr_portfolio.totalAPR) < Number(b.data.apr_portfolio.totalAPR)
+                  ? -1
+                  : Number(b.data.apr_portfolio.totalAPR) < Number(a.data.apr_portfolio.totalAPR)
+                  ? 1
+                  : 0;
+              case 6:
+                return Number(a.data.principal.principal) > Number(b.data.principal.principal)
+                  ? -1
+                  : Number(b.data.principal.principal) > Number(a.data.principal.principal)
+                  ? 1
+                  : 0;
+              case 7:
+                return a.data.status.localeCompare(b.data.status);
               default:
                 return 0;
             }
@@ -382,6 +400,8 @@ function MyPortfolio(props: Props) {
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedStatus(Number(event.target.value));
   };
+
+  console.log(userInvestsPayloadRendered.length);
 
   return (
     <div className={"my-portfolio-wrapper " + mode}>

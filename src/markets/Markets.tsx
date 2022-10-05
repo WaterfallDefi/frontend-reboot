@@ -134,20 +134,20 @@ function Markets(props: Props) {
               case 0:
                 return a.data.portfolio.localeCompare(b.data.portfolio);
               case 1:
-                return a.market.isAvax ? 1 : -1;
+                return a.market.isAvax ? -1 : 1;
               case 2:
                 return a.data.assets[0].localeCompare(b.data.assets[0]);
               case 3:
-                return (a.market.duration ? a.market.duration : 0) > (b.market.duration ? b.market.duration : 0)
+                return (a.market.duration ? a.market.duration : 0) < (b.market.duration ? b.market.duration : 0)
                   ? -1
-                  : (b.market.duration ? b.market.duration : 0) > (a.market.duration ? a.market.duration : 0)
+                  : (b.market.duration ? b.market.duration : 0) < (a.market.duration ? a.market.duration : 0)
                   ? 1
                   : 0;
               case 4:
-                return Number(a.data.apr_markets[a.market.trancheCount - 1]) >
+                return Number(a.data.apr_markets[a.market.trancheCount - 1]) <
                   Number(b.data.apr_markets[b.market.trancheCount - 1])
                   ? -1
-                  : Number(a.data.apr_markets[a.market.trancheCount - 1]) <
+                  : Number(a.data.apr_markets[a.market.trancheCount - 1]) >
                     Number(b.data.apr_markets[b.market.trancheCount - 1])
                   ? 1
                   : 0;
