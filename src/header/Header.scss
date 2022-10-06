@@ -128,6 +128,10 @@
         }
       }
     }
+
+    .increase {
+      @include increase;
+    }
   }
 
   .mask {
