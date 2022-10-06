@@ -113,9 +113,15 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 <div
                   className={"asset" + (!simulDeposit && selectedDepositAssetIndex === i ? " selected" : "")}
                   key={assetName}
-                  onClick={() => setSelectedDepositAssetIndex(i)}
+                  onClick={() => {
+                    setSelectedDepositAssetIndex(i);
+                    setSimulDeposit(false);
+                  }}
                 >
-                  <div className="coin" style={{ backgroundImage: `url(/coins/${assetName}.png)` }} />
+                  <div
+                    className="coin"
+                    style={{ backgroundImage: `url(/coins/${assetName !== "DAI.e" ? assetName : "dai"}.png)` }}
+                  />
                   <span>{assetName}</span>
                 </div>
               ))}

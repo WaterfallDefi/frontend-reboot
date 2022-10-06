@@ -247,8 +247,16 @@ $font-size-xl: 30px;
   .header-row {
     .header {
       background-color: $layer-color-dark-2;
-      span {
+      .header-title {
         color: $text-color-darker;
+        .asc,
+        .desc {
+          margin-left: 12px;
+          color: $text-color;
+          &.active {
+            color: $highlight-color;
+          }
+        }
       }
     }
   }

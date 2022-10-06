@@ -25,6 +25,7 @@
   }
 
   .header-row {
+    cursor: pointer;
     @include header-row;
   }
 

@@ -200,9 +200,11 @@ function Markets(props: Props) {
                 }
               }}
             >
-              <span>
-                {headerSort === i ? (sortAsc ? "^ " : "v ") : null}
+              <span className="header-title">
                 {h}
+                {headerSort !== i && <span className="asc">▲</span>}
+                {headerSort === i && sortAsc && <span className="asc active">▲</span>}
+                {headerSort === i && !sortAsc && <span className="desc active">▼</span>}
               </span>
             </div>
           ))}

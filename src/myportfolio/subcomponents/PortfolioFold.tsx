@@ -139,7 +139,9 @@ function PortfolioFold(props: Props) {
                 ))}
           </div>
           <div className="card-action">
-            {isCurrentCycle && isPending && <button onClick={() => redeemDirect(currentTranche)}>Redeem</button>}
+            {isCurrentCycle && isPending && !redeemLoading && (
+              <button onClick={() => redeemDirect(currentTranche)}>Redeem</button>
+            )}
             {!isPending && !isActive && <button onClick={withdrawAll}>Withdraw All Tranches</button>}
           </div>
           {autorollImplemented ? (
@@ -176,9 +178,9 @@ function PortfolioFold(props: Props) {
               : "-"}{" "}
             WTF
           </div>
-          <div className="card-action">
+          {/* <div className="card-action">
             <button>Claim</button>
-          </div>
+          </div> */}
         </div>
         <div className="prompt">
           {/* Union */}

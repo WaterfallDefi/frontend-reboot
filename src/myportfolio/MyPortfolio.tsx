@@ -73,7 +73,6 @@ function MyPortfolio(props: Props) {
 
   const positions = usePositions(markets);
 
-  const [loaded, setLoaded] = useState<boolean>(false);
   const [subgraph, setSubgraph] = useState<any>(undefined);
 
   const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
@@ -87,14 +86,14 @@ function MyPortfolio(props: Props) {
     const fetchSubgraph = async () => {
       const subgraphQuery = await fetchSubgraphQuery(account);
       setSubgraph(subgraphQuery);
-      setLoaded(true);
     };
-
     fetchSubgraph();
   }, [account]);
 
   const userInvestsPayloadPrerendered = useMemo(() => {
     const _investHistoryResult = subgraph && subgraph.length > 0 ? [...subgraph] : [];
+
+    if (markets.length === 0) return [];
 
     for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
       const _subgraphResultMarket = subgraph[marketIdx];
@@ -436,24 +435,20 @@ function MyPortfolio(props: Props) {
               }
             }}
           >
-            <span>
-              {headerSort === i ? (sortAsc ? "^ " : "v ") : null}
+            <span className="header-title">
               {h}
+              {headerSort !== i && <span className="asc">▲</span>}
+              {headerSort === i && sortAsc && <span className="asc active">▲</span>}
+              {headerSort === i && !sortAsc && <span className="desc active">▼</span>}
             </span>
           </div>
         ))}
       </div>
-      {!loaded ? (
-        <div className="loading">Loading...</div>
-      ) : sortAsc ? (
-        userInvestsPayloadRendered
-      ) : (
-        [...userInvestsPayloadRendered].reverse()
-      )}
-      {loaded && userInvestsPayloadRendered.length === 0 ? (
+      {sortAsc ? userInvestsPayloadRendered : [...userInvestsPayloadRendered].reverse()}
+      {userInvestsPayloadRendered.length === 0 ? (
         <div className="no-data">
           <NoData />
-          <span>No Data</span>
+          <span>{userInvestsPayloadPrerendered.length === 0 ? "Loading..." : "No Data"}</span>
         </div>
       ) : null}
     </div>

@@ -766,12 +766,10 @@
                   &:hover {
                     background-color: $text-color-lighter;
                   }
-                }
-              }
-
-              .asset {
-                &.selected {
-                  background-color: $text-color-lightest;
+                  &.selected {
+                    border: 2px solid $highlight-color;
+                    background-color: $text-color;
+                  }
                 }
               }
             }
