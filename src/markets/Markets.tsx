@@ -184,7 +184,7 @@ function Markets(props: Props) {
 
   return (
     <div className={"markets-wrapper " + mode}>
-      {!selectedMarket ? <Dashboard /> : null}
+      {!selectedMarket ? <Dashboard coingeckoPrices={coingeckoPrices} /> : null}
       {!selectedMarket ? (
         <div className="header-row">
           {headers.map((h, i) => (

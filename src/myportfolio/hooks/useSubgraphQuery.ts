@@ -1,12 +1,9 @@
-import BigNumber from 'bignumber.js';
-import ky from 'ky';
-import numeral from 'numeral';
+import BigNumber from "bignumber.js";
+import ky from "ky";
+import numeral from "numeral";
 
-import { MarketList } from '../../config/markets';
-import {
-  TrancheCycle,
-  UserInvest,
-} from '../../types';
+import { MarketList } from "../../config/markets";
+import { TrancheCycle, UserInvest } from "../../types";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -73,10 +70,7 @@ const getSubgraphQuery = async (subgraphURL: string, account: string) => {
   return res;
 };
 
-export const fetchSubgraphQuery = async (
-  account: string | null | undefined,
-  decimals = 18
-) => {
+export const fetchSubgraphQuery = async (account: string | null | undefined, decimals = 18) => {
   if (!account) return [];
 
   const historyQueryResult: any = [];
@@ -114,24 +108,11 @@ export const fetchSubgraphQuery = async (
     }
     if (userInvests) {
       for (let i = 0; i < userInvests.length; i++) {
-        const {
-          capital,
-          cycle,
-          harvestAt,
-          id,
-          investAt,
-          owner,
-          principal,
-          tranche,
-        } = userInvests[i];
+        const { capital, cycle, harvestAt, id, investAt, owner, principal, tranche } = userInvests[i];
         const trancheCycleId = tranche + "-" + cycle;
         const _farmDuration =
-          _trancheCycles[trancheCycleId]?.endAt >
-          +_trancheCycles[trancheCycleId]?.startAt + +Number(_duration)
-            ? new BigNumber(
-                _trancheCycles[trancheCycleId]?.endAt -
-                  _trancheCycles[trancheCycleId]?.startAt
-              )
+          _trancheCycles[trancheCycleId]?.endAt > +_trancheCycles[trancheCycleId]?.startAt + +Number(_duration)
+            ? new BigNumber(_trancheCycles[trancheCycleId]?.endAt - _trancheCycles[trancheCycleId]?.startAt)
             : new BigNumber(_duration);
         const interest = new BigNumber(capital).isZero()
           ? new BigNumber(principal)
@@ -155,28 +136,20 @@ export const fetchSubgraphQuery = async (
                   .toFormat(4)
                   .toString()
               ).format("0,0.[0000]")
-            : numeral(
-                new BigNumber(capital)
-                  .dividedBy(BIG_TEN.pow(decimals))
-                  .toFormat(4)
-                  .toString()
-              ).format("0,0.[0000]"),
+            : numeral(new BigNumber(capital).dividedBy(BIG_TEN.pow(decimals)).toFormat(4).toString()).format(
+                "0,0.[0000]"
+              ),
           cycle,
           harvestAt,
           id,
           investAt,
           owner,
-          principal: numeral(
-            new BigNumber(principal)
-              .dividedBy(BIG_TEN.pow(decimals))
-              .toFormat(4)
-              .toString()
-          ).format("0,0.[0000]"),
+          principal: numeral(new BigNumber(principal).dividedBy(BIG_TEN.pow(decimals)).toFormat(4).toString()).format(
+            "0,0.[0000]"
+          ),
           MCprincipal: [],
           tranche,
-          interest: numeral(
-            interest.dividedBy(BIG_TEN.pow(decimals)).toFormat(4).toString()
-          ).format("0,0.[0000]"),
+          interest: numeral(interest.dividedBy(BIG_TEN.pow(decimals)).toFormat(4).toString()).format("0,0.[0000]"),
           earningsAPY,
         };
 
@@ -192,9 +165,44 @@ export const fetchSubgraphQuery = async (
   return historyQueryResult;
 };
 
-export const useHistoricalAPY = async (
-  earlierDate: string,
-  laterDate: string
-) => {
+export const getSubgraphCyclesOnly = async (subgraphURL: string) => {
+  let res;
+  try {
+    res = await ky
+      .post(subgraphURL, {
+        json: {
+          query: `{
+            trancheCycles(first:1000,orderBy: id, orderDirection: asc) {
+              id
+              cycle
+              state
+              principal
+              capital
+              rate
+              startAt
+              endAt
+            }
+          }`,
+        },
+      })
+      .json();
+  } catch (e) {
+    console.error(e);
+  }
+  return res;
+};
+
+export const fetchSubgraphCycleQuery = async () => {
+  const subgraphResult: any = [];
+  for (let marketIdx = 0; marketIdx < MarketList.length; marketIdx++) {
+    const p = MarketList[marketIdx];
+
+    const res: any = await getSubgraphCyclesOnly(p.subgraphURL);
+    subgraphResult[marketIdx] = { data: res.data, assets: p.assets };
+  }
+  return subgraphResult;
+};
+
+export const useHistoricalAPY = async (earlierDate: string, laterDate: string) => {
   return await getAPYHourly(earlierDate, laterDate);
 };
