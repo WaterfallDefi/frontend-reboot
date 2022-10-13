@@ -63,7 +63,7 @@ function Dashboard(props: Props) {
 
       return acc + deployedUSDvalue;
     },
-    0
+    80666000
   );
 
   return (
