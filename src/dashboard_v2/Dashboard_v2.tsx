@@ -43,8 +43,6 @@ function Dashboard(props: Props) {
     fetchSubgraph();
   }, []);
 
-  console.log(subgraph);
-
   const totalCapitalDeployed = subgraph.reduce(
     (acc: number, nextQuery: { data: DashboardSubgraphQuery; assets: string[] }) => {
       let deployedUSDvalue;

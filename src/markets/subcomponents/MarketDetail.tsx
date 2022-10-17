@@ -6,7 +6,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
-import { Market, StrategyFarm } from "../../types";
+import { Market, StrategyFarm, Tranche } from "../../types";
 import { ModalProps, Network } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
@@ -96,6 +96,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     );
   }, [APYData, selectedStrategy]);
 
+  const principalTVL = selectedMarket.tranches.reduce((acc: number, next: Tranche) => acc + Number(next.target), 0);
+
   return (
     <div className="market-detail-wrapper">
       <div className="information">
@@ -134,16 +136,40 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 </div>
               )}
             </div>
-            <span className="blocktext">
-              Lock-up period: {selectedMarket.duration ? getLockupPeriod(selectedMarket.duration) : "-"}
-            </span>
           </div>
-          <div className="info-block">
-            <div />
-            <span className="tvl">
-              TVL: {numeral(selectedMarket.tvl).format("0,0.[0000]")}{" "}
+        </div>
+      </div>
+      <div className="tvl-bar">
+        <div className="tvl-div">
+          <div className="subdiv">
+            <div className="subdiv-title">TVL: </div>
+            <div>
+              <span className="tvl">{numeral(selectedMarket.tvl).format("0,0.0000")} </span>
               {selectedMarket.assets[0] === "WBNB" || "WAVAX" ? selectedMarket.assets[0] : "$"}
-            </span>
+            </div>
+          </div>
+          <div className="subdiv">
+            <div className="subdiv-title">Principal TVL:</div>{" "}
+            <div>
+              <span className="max-tvl">{numeral(principalTVL).format("0,0.0000")}</span>{" "}
+              {selectedMarket.assets[0] === "WBNB" || "WAVAX" ? selectedMarket.assets[0] : "$"}
+            </div>
+          </div>
+        </div>
+        <div className="lockup-div">
+          <div className="title">Lock-up period:</div>
+          {selectedMarket.duration ? getLockupPeriod(selectedMarket.duration) : "-"}
+        </div>
+        <div className="status-div">
+          Status:{" "}
+          <div className={"status " + selectedMarket.status}>
+            {selectedMarket.status === "PENDING"
+              ? "Subscription Open"
+              : selectedMarket.status === "ACTIVE"
+              ? "Active"
+              : selectedMarket.status === "RETIRED"
+              ? "Retired"
+              : ""}
           </div>
         </div>
       </div>

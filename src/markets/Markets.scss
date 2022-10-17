@@ -51,7 +51,7 @@
         gap: 24px;
         z-index: 1;
         margin-left: 24px;
-        padding: 12px;
+        padding: 12px 24px;
         border-radius: 5px;
         background-color: $base-color;
         @media screen and (max-width: 768px) {
@@ -69,14 +69,6 @@
             cursor: pointer;
             justify-content: center;
             color: $text-color-dark;
-          }
-
-          .blocktext {
-            color: $text-color;
-          }
-          .tvl {
-            font-size: $font-size-md;
-            color: $highlight-color;
           }
 
           .portfolio-name {
@@ -108,6 +100,7 @@
               margin-right: 12px;
               padding: 8px;
               border-radius: 5px;
+              align-items: center;
 
               &.selected {
                 background-color: $text-color-lightest;
@@ -121,6 +114,73 @@
                 margin-right: 8px;
               }
             }
+          }
+        }
+      }
+    }
+
+    .tvl-bar {
+      width: calc(100% - 96px);
+      margin: 24px 0 0 24px;
+      padding: 24px;
+      border-radius: 5px;
+      background: $layer-color-dark;
+      display: flex;
+      color: $base-color;
+      justify-content: space-between;
+
+      .tvl-div {
+        width: 269px;
+        display: flex;
+        flex-direction: column;
+        .subdiv {
+          display: flex;
+          justify-content: space-between;
+          .tvl {
+            font-size: $font-size-md;
+            color: $highlight-color;
+          }
+          .max-tvl {
+            font-size: $font-size-md;
+            color: rgba(252, 182, 4, 0.8);
+          }
+        }
+      }
+
+      .lockup-div {
+        display: flex;
+        width: 210px;
+        padding-top: 12px;
+        justify-content: space-between;
+        font-size: $font-size-md;
+      }
+
+      .status-div {
+        font-size: $font-size-md;
+        padding-top: 6px;
+        .status {
+          border-radius: 4px;
+          padding: 8px;
+          margin-left: 12px;
+          height: 24px;
+          line-height: 24px;
+          border: 0;
+          font-weight: 600;
+          font-size: $font-size-sm;
+          display: inline-flex;
+          min-width: 60px;
+          justify-content: center;
+          &.EXPIRED {
+            background: #ffc0cb;
+            color: #ff0000;
+          }
+          &.PENDING {
+            background: rgba(252, 181, 0, 0.1);
+            color: #fcb500;
+          }
+          &.ACTIVE {
+            background: rgba(0, 184, 184, 0.1);
+            color: #00b8b8;
           }
         }
       }
@@ -978,7 +1038,7 @@
             }
           }
           .redemption-fee {
-            color: $text-color-lightest;
+            color: $base-color;
             & > span {
               color: $highlight-color;
             }
