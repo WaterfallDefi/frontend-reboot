@@ -195,107 +195,6 @@
         flex-direction: column;
       }
 
-      .claim-redeposit {
-        display: grid;
-        gap: 20px;
-        grid-auto-flow: row;
-        position: relative;
-
-        &.flex-grow {
-          flex-grow: 1;
-        }
-
-        .section {
-          background: $base-color;
-          padding: 12px 32px;
-          min-height: 140px;
-          border-radius: 5px;
-          border-left: 5px solid $highlight-color;
-          color: $text-color;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          font-size: $font-size-lg;
-
-          .label {
-            color: $text-color;
-          }
-          .rtn-amt {
-            color: $highlight-color;
-          }
-
-          .buttons {
-            display: flex;
-            justify-content: space-between;
-
-            button {
-              border-radius: 5px;
-              height: 28px;
-              font-size: $font-size-md;
-              border: 1px solid $text-color-lightest;
-              color: $highlight-color;
-              cursor: pointer;
-
-              & > svg {
-                margin-left: 5px;
-              }
-
-              &:disabled {
-                color: $text-color-lightest;
-                cursor: auto;
-              }
-            }
-          }
-
-          .autoroll-controls {
-            .autoroll-balance {
-              margin-top: 10px;
-            }
-            .control-wrapper {
-              display: flex;
-              margin-top: 10px;
-              .control {
-                padding: 1.5px;
-                background-color: "#FFFFFF";
-                border-radius: 5px;
-                width: 100%;
-
-                .autoroll-btn {
-                  width: 100%;
-                  border-radius: 5px;
-                  height: 28px;
-                  font-size: $font-size-md;
-                  border: 1px solid $text-color-lightest;
-                  margin-right: 24px;
-
-                  color: $base-color;
-                  cursor: pointer;
-                  &.start {
-                    background-color: $highlight-color;
-                  }
-                  &.stop {
-                    background-color: $text-color-lighter;
-                  }
-                  &:disabled {
-                    background-color: $text-color-lightest;
-                    cursor: auto;
-                  }
-                }
-              }
-            }
-            .autoroll-lbl {
-              font-size: $font-size-md;
-              font-weight: 600;
-              &.on {
-                color: $highlight-color;
-              }
-              &.off {
-                color: $text-color-lighter;
-              }
-            }
-          }
-        }
-      }
       .chart-block {
         display: flex;
         color: $text-color;
@@ -322,7 +221,27 @@
 
           .portfolio-chart {
             margin-top: 10px;
+            padding-top: 18px;
             height: auto;
+            .strat {
+              margin-top: 8px;
+              width: calc(100% - 48px);
+              padding: 0 24px;
+              display: flex;
+              justify-content: space-between;
+              .color1 {
+                color: #ffb0e3;
+              }
+              .color2 {
+                color: #4a63b9;
+              }
+              .color3 {
+                color: #85c872;
+              }
+              .color4 {
+                color: #f7c05f;
+              }
+            }
           }
 
           .strategy-chart {
@@ -332,56 +251,6 @@
               top: 69px;
               left: 12px;
               font-size: 30px;
-            }
-          }
-
-          .legend {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            &.tranche-structure {
-              padding-top: 165px;
-            }
-
-            .selected {
-              background: $text-color-lightest;
-            }
-
-            .chart-toggle {
-              position: absolute;
-              top: 12px;
-              right: 12px;
-              padding: 5px;
-              border-radius: 5px;
-              cursor: pointer;
-            }
-
-            .farm-key {
-              display: flex;
-              flex-direction: column;
-              align-items: flex-end;
-              margin-right: 20px;
-              padding: 5px;
-              border-radius: 5px;
-              margin-bottom: 12px;
-
-              &.strategy-select {
-                cursor: pointer;
-                &:hover {
-                  background: $text-color-lightest;
-                  opacity: 0.5;
-                }
-              }
-
-              .key-color {
-                width: 40px;
-                height: 40px;
-                border-radius: 5px;
-              }
-              span {
-                white-space: nowrap;
-              }
             }
           }
         }
@@ -403,7 +272,27 @@
                 position: absolute;
                 top: 69px;
                 left: 12px;
-                font-size: $font-size-md;
+                .tranche-name {
+                  font-size: $font-size-md;
+
+                  &.senior,
+                  &.fixed {
+                    color: #fcb500;
+                  }
+                  &.mezzanine {
+                    color: #00a14a;
+                  }
+                  &.junior,
+                  &.variable {
+                    color: #0066ff;
+                  }
+                }
+                .label {
+                  font-size: $font-size-sm;
+                }
+                .comment {
+                  font-size: 12px;
+                }
               }
 
               .tranche-stack {
@@ -424,372 +313,107 @@
         }
       }
     }
-    .deposit {
-      padding: 0 20px;
 
-      .next-cycle-wrapper {
+    .claim-redeposit {
+      margin-bottom: 24px;
+
+      .user-deposit {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 30px 0;
-
-        .next-cycle {
-          font-size: $font-size-md;
-          color: $highlight-color;
-        }
-        .active-cycle {
-          font-size: $font-size-md;
-          color: $text-color;
-          margin-top: 13px;
-        }
+        gap: 24px;
+        font-size: $font-size-md;
+      }
+      .label {
+        padding-top: 2px;
+        color: $base-color;
+        font-size: $font-size-md;
+      }
+      .rtn-amt {
+        padding-top: 2px;
+        color: $highlight-color;
+        font-size: $font-size-md;
+      }
+      .wtf-reward {
+        display: flex;
+        gap: 24px;
       }
 
-      .top-bar {
+      .buttons {
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 35px;
+        gap: 24px;
 
-        .step-bar {
-          display: grid;
-          gap: 10px;
-          grid-auto-flow: column;
-          width: fit-content;
-          align-items: center;
-          @media screen and (max-width: 1024px) {
-            width: 100%;
-            padding: 0;
-            grid-template-columns: auto auto 1fr auto auto;
-          }
-          .step {
-            width: 32px;
-            height: 32px;
-            border: 1px solid $highlight-color;
-            color: $highlight-color;
-            border-radius: 50%;
-            font-weight: 500;
-            font-size: $font-size-md;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: $base-color;
-            z-index: 1;
-          }
-          .step-name {
-            font-size: $font-size-md;
-            color: $text-color;
-          }
-          .line {
-            height: 1px;
-            width: 173px;
-            background: $text-color-lighter;
-            @media screen and (max-width: 1024px) {
-              width: auto;
-            }
-          }
-        }
-        .select-deposit-assets {
-          display: flex;
-          flex-direction: column;
-
-          .select-deposit-asset {
-            display: flex;
-            height: 35px;
-            .coin {
-              height: 25px;
-              width: 25px;
-              background-size: cover;
-              background-repeat: no-repeat;
-              margin-right: 8px;
-            }
-            .step-name {
-              font-size: $font-size-md;
-              color: $text-color;
-              .rem-value {
-                font-weight: 800;
-                margin-right: 10;
-              }
-            }
-            .remaining-depositable-outer {
-              width: 160px;
-              height: 6px;
-              background-color: $text-color-lightest;
-              border-radius: 4px;
-              margin: 9px 20px 0 6px;
-              .remaining-depositable-inner {
-                height: 6px;
-                background-color: $highlight-color;
-                border-radius: 4px;
-              }
-            }
-          }
-        }
-      }
-      .deposit-item {
-        display: grid;
-        grid-template-columns: 45% calc(55% - 24px);
-        grid-column-gap: 24px;
-        @media screen and (max-width: 675px) {
-          grid-template-columns: "none";
-          grid-row-gap: 20px;
-        }
-        .tranches {
-          display: grid;
-          grid-template-rows: 1fr 1fr 1fr;
-          grid-row-gap: 20px;
-          &.two-tranches {
-            grid-template-rows: 1fr 1fr;
-          }
-
-          .tranche {
-            padding: 20px;
-            min-height: 270px;
-            position: relative;
-            cursor: pointer;
-            border: $highlight-color-dark 2px solid;
-            box-sizing: border-box;
-            border-radius: 8px;
-            background: $base-color;
-            &.selected {
-              border-color: $highlight-color;
-              background: $layer-color;
-            }
-            &.disabled {
-              opacity: 0.5;
-              cursor: default;
-            }
-            @media screen and (max-width: 768px) {
-              & {
-                height: auto;
-              }
-            }
-
-            .sold-out {
-              font-size: $font-size-md;
-              width: 75px;
-              height: 30px;
-              border: rgb(224, 78, 41) 1px solid;
-              color: rgb(224, 78, 41);
-              box-sizing: border-box;
-              border-radius: 4px;
-              transform: rotate(-30deg);
-              position: absolute;
-              left: -20px;
-              top: -9px;
-              text-align: center;
-              line-height: 30px;
-              background-color: $base-color;
-              z-index: 11;
-            }
-
-            .tranche-name {
-              font-size: $font-size-md;
-              line-height: 18px;
-              color: $text-color;
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              .flex-row {
-                display: flex;
-                align-items: center;
-                .dot {
-                  width: 8px;
-                  height: 8px;
-                  border-radius: 100%;
-                  margin-right: 5px;
-                  &.senior,
-                  &.fixed {
-                    background-color: rgba(252, 182, 4, 0.8);
-                  }
-                  &.mezzanine {
-                    background-color: rgba(3, 161, 75, 0.8);
-                  }
-                  &.junior,
-                  &.variable {
-                    background-color: rgba(12, 108, 254, 0.8);
-                  }
-                }
-              }
-            }
-            .apr {
-              font-size: $font-size-md;
-              line-height: 22px;
-              margin: 10px 0;
-              &.senior,
-              &.fixed {
-                color: rgba(252, 182, 4, 0.8);
-              }
-              &.mezzanine {
-                color: rgba(3, 161, 75, 0.8);
-              }
-              &.junior,
-              &.variable {
-                color: rgba(12, 108, 254, 0.8);
-              }
-            }
-            .risk-text {
-              font-size: $font-size-sm;
-              line-height: 125%;
-              letter-spacing: -0.015em;
-              color: $text-color;
-            }
-            .status {
-              display: flex;
-              justify-content: space-between;
-              .remaining {
-                font-size: $font-size-sm;
-                line-height: 16px;
-                letter-spacing: -0.015em;
-                color: $text-color;
-              }
-            }
-            .progress-bar {
-              margin: 10px 0;
-              border-radius: 2px;
-              width: 100%;
-              height: 6px;
-              position: relative;
-              background-color: $text-color-lightest;
-
-              div {
-                content: "";
-                height: 6px;
-                position: absolute;
-                &.senior,
-                &.fixed {
-                  background-color: rgba(252, 182, 4, 0.8);
-                }
-                &.mezzanine {
-                  background-color: rgba(3, 161, 75, 0.8);
-                }
-                &.junior,
-                &.variable {
-                  background-color: rgba(12, 108, 254, 0.8);
-                }
-              }
-            }
-            .separator {
-              background: $highlight-color-dark;
-              height: 1px;
-              margin: 40px 0px;
-            }
-          }
-        }
-        .approve-card {
-          padding: 25px;
-          background: $base-color;
+        button {
           border-radius: 5px;
-          border: $highlight-color-dark 2px solid;
-          z-index: 1;
+          height: 28px;
+          font-size: $font-size-md;
+          font-weight: 600;
+          border: 1px solid $text-color-lightest;
+          color: $highlight-color;
+          cursor: pointer;
 
-          .row {
-            font-size: $font-size-lg;
-            line-height: 27px;
-            color: $text-color;
-            display: flex;
-            margin-bottom: 35px;
-            justify-content: space-between;
-            & > div:nth-of-type(2) {
-              font-size: $font-size-lg;
-              line-height: 33px;
-              text-align: end;
-            }
+          & > svg {
+            margin-left: 5px;
           }
-          .separator {
-            background: $highlight-color-dark;
-            height: 1px;
-            margin: 40px 0px;
+
+          &:disabled {
+            color: $base-color;
+            cursor: auto;
+            opacity: 0.5;
           }
-          .input-wrapper {
+        }
+      }
+
+      .autoroll-controls {
+        display: flex;
+        gap: 24px;
+        .autoroll-balance {
+          margin-top: 2px;
+          font-size: $font-size-md;
+        }
+        .control-wrapper {
+          display: flex;
+          .control {
+            background-color: "#FFFFFF";
+            border-radius: 5px;
             width: 100%;
-            display: flex;
-            input {
-              width: 100%;
-              height: 50px;
-              text-align: right;
-              font-size: $font-size-lg;
-              border-radius: 5px;
-            }
-            .max-input {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              color: $base-color;
-              background: $highlight-color;
-              border-radius: 5px;
-              font-size: $font-size-md;
-              padding: 0 12px;
-              margin-right: 8px;
-              cursor: pointer;
-            }
-          }
-          .validate-text {
-            width: calc(100% - 4px);
-            text-align: right;
-            font-size: $font-size-sm;
-            line-height: 125%;
-            letter-spacing: -0.015em;
-            color: red; //temp
-            margin-top: 4px;
-            min-height: 15px;
-          }
-          .important-notes {
-            margin-top: 20px;
-            border-radius: 8px;
-            background-color: $layer-color;
-            padding: 20px;
-            display: flex;
-            min-height: 69px;
 
-            & > div:nth-of-type(1) {
-              color: $highlight-color;
-              padding-top: 2px;
-              margin-right: 10px;
-            }
-            & > div:nth-of-type(2) > div:nth-of-type(1) {
-              color: $highlight-color;
-              margin-bottom: 10px;
-            }
-            & > div:nth-of-type(2) > div:nth-of-type(2) {
-              color: $text-color;
-            }
-            &.placeholder {
-              background-color: $base-color;
-            }
-          }
-          .button {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            & button {
+            .autoroll-btn {
               width: 100%;
-              background: linear-gradient(360deg, rgb(21, 121, 255) 0%, rgb(21, 123, 255) 100%);
-              color: rgb(255, 255, 255);
-              border-radius: 8px;
-              border: 0px;
-              padding: 0px 24px;
-              font-weight: 400;
+              border-radius: 5px;
+              height: 28px;
               font-size: $font-size-md;
-              height: 56px;
+              border: 1px solid $highlight-color;
+              margin-right: 24px;
+
+              color: $base-color;
               cursor: pointer;
-            }
-            @media screen and (min-width: 1024px) {
-              & button {
-                max-width: 300px;
+              &.start {
+                background-color: $highlight-color;
+              }
+              &.stop {
+                background-color: $text-color-lighter;
+              }
+              &:disabled {
+                background-color: $text-color-lightest;
+                cursor: auto;
               }
             }
           }
-          .redemption-fee {
-            min-height: 22px;
-            color: $text-color-lightest;
-            margin-top: 10px;
-            text-align: center;
-            & > span {
-              color: $highlight-color;
-            }
+        }
+        .autoroll-lbl {
+          margin-top: 2px;
+          font-size: $font-size-md;
+          font-weight: 600;
+          &.on {
+            color: $highlight-color;
+          }
+          &.off {
+            color: $base-color;
           }
         }
       }
     }
+
+    @include deposit();
   }
 
   &.dark {
@@ -906,7 +530,7 @@
           .background {
             background: $layer-color-dark;
 
-            h2 {
+            h3 {
               margin-left: 12px;
             }
           }
@@ -929,120 +553,6 @@
       &.tranche-structure {
         .background {
           color: $layer-color-dark;
-        }
-      }
-    }
-    .deposit {
-      .next-cycle-wrapper {
-        .next-cycle {
-          color: $highlight-color;
-        }
-        .active-cycle {
-          color: $text-color-dark;
-        }
-      }
-      .top-bar {
-        .step-bar {
-          .step {
-            border: 1px solid $highlight-color;
-            color: $highlight-color;
-            background: $layer-color-dark;
-          }
-          .step-name {
-            color: $text-color-dark;
-          }
-          .line {
-            background: $text-color-lighter;
-          }
-        }
-        .select-deposit-assets {
-          .select-deposit-asset {
-            .step-name {
-              color: $text-color-dark;
-            }
-            .remaining-depositable-outer {
-              background-color: $text-color-lightest;
-              .remaining-depositable-inner {
-                background-color: $highlight-color;
-              }
-            }
-          }
-        }
-      }
-      .deposit-item {
-        .tranches {
-          .tranche {
-            border: $highlight-color-dark 2px solid;
-            background: $layer-color-dark;
-            &.selected {
-              border-color: $highlight-color;
-              background: $layer-color-dark;
-            }
-
-            .sold-out {
-              background-color: $layer-color-dark;
-            }
-
-            .tranche-name {
-              color: $text-color-dark;
-            }
-            .risk-text {
-              color: $text-color-dark;
-            }
-            .status {
-              .remaining {
-                color: $text-color-dark;
-              }
-            }
-            .progress-bar {
-              background-color: $text-color-lightest;
-            }
-            .separator {
-              background: $highlight-color-dark;
-            }
-          }
-        }
-        .approve-card {
-          background: $layer-color-dark;
-          border: $highlight-color-dark 2px solid;
-
-          .row {
-            color: $text-color-dark;
-          }
-          .separator {
-            background: $highlight-color-dark;
-          }
-          .input-wrapper {
-            .max-input {
-              color: $base-color-dark;
-              background: $highlight-color;
-            }
-          }
-          .validate-text {
-            color: red; //temp
-          }
-          .important-notes {
-            background-color: $layer-color;
-
-            & > div:nth-of-type(1) {
-              color: $highlight-color;
-            }
-            & > div:nth-of-type(2) > div:nth-of-type(1) {
-              color: $highlight-color;
-            }
-            & > div:nth-of-type(2) > div:nth-of-type(2) {
-              color: $text-color-dark;
-            }
-            &.placeholder {
-              background-color: $base-color-dark;
-            }
-          }
-          .redemption-fee {
-            color: $base-color;
-            & > span {
-              color: $highlight-color;
-            }
-          }
         }
       }
     }

@@ -129,6 +129,14 @@
       }
     }
 
+    &.redeposit {
+      width: 90%;
+      height: 90%;
+      overflow-y: scroll;
+      left: 5%;
+      @include deposit();
+    }
+
     .increase {
       @include increase;
     }

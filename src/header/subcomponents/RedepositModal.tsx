@@ -29,7 +29,7 @@ function RedepositModal(props: Props) {
   } = props;
 
   return (
-    <div className="modal redeposit">
+    <div className="modal redeposit dark">
       <h1>Roll Deposit</h1>
       <Deposit
         isRedeposit={true}

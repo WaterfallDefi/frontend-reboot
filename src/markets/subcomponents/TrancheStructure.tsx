@@ -36,7 +36,7 @@ function TrancheStructure(props: Props) {
     if (tranches.length === 3) {
       return hoveredTranche === 0 ? values[1] + values[2] : hoveredTranche === 1 ? values[2] : "";
     } else {
-      return hoveredTranche === 0 ? values[2] : "";
+      return hoveredTranche === 0 ? Number(getPercentage(tranches[1]?.target, totalTranchesTarget)) : "";
     }
   }
 
@@ -69,15 +69,31 @@ function TrancheStructure(props: Props) {
 
   return (
     <div className={"chart-block tranche-structure" + (wipeRight ? " wipe-right" : "")}>
-      <div className="background left-br">
-        <h2>Tranche Structure</h2>
+      <div className="background left-br right-br">
+        <h3>Tranche Structure</h3>
         <div className="tranche-chart">
-          {hoveredTranche !== -1 && hoveredTranche !== payload.length - 1 ? (
-            <span className="subordination" key="subordination">
-              Subordination Level (Sum of Lower Tranches):
+          {hoveredTranche !== -1 ? (
+            <div className="subordination" key="subordination">
+              <span className={"tranche-name " + payload[hoveredTranche].name.toLowerCase()}>
+                {payload[hoveredTranche].name}
+              </span>
               <br />
-              Total portfolio loss must exceed {getSubordination()}% before principal loss is possible.
-            </span>
+              {hoveredTranche !== payload.length - 1 && (
+                <span className="label">Subordination Level (Sum of Lower Tranches):</span>
+              )}
+              {hoveredTranche === payload.length - 1 && <span className="label">Variable Rate:</span>}
+              <br />
+              {hoveredTranche !== payload.length - 1 && (
+                <span className="comment">
+                  Total portfolio loss must exceed {getSubordination()}% before principal loss is possible.
+                </span>
+              )}
+              {hoveredTranche === payload.length - 1 && (
+                <span className="comment">
+                  Any return that surpasses all tranche thicknesses will go to the Junior tranche
+                </span>
+              )}
+            </div>
           ) : null}
           {payload.map((t, i) => (
             <div
@@ -89,16 +105,6 @@ function TrancheStructure(props: Props) {
               style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
             >
               <span>{t.value}%</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="background right-br">
-        <div className="legend tranche-structure">
-          {payload.map((t, i) => (
-            <div key={t.name} className="farm-key">
-              <div className="key-color" style={{ backgroundColor: COLORS[t.name] }} />
-              <span>{t.name}</span>
             </div>
           ))}
         </div>

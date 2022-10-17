@@ -24,7 +24,7 @@ type Props = {
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
-const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
+// const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
 
 const getLockupPeriod = (duration: string) => {
   const lockupPeriod = Number(duration) / 86400;
@@ -39,7 +39,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
   const [selectedStrategy, setSelectedStrategy] = useState<StrategyFarm | undefined>(selectedMarket.strategyFarms[0]);
-  const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
+  // const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
   const { balance, fetchBalance } = useTrancheBalance(
@@ -63,16 +63,16 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     account && selectedMarket.isMulticurrency ? fetchMCBalance() : fetchBalance();
   }, [account, fetchMCBalance, fetchBalance, selectedMarket.isMulticurrency]);
 
-  const [APYData, setAPYData] = useState<any[]>([]);
+  // const [APYData, setAPYData] = useState<any[]>([]);
 
-  useEffect(() => {
-    const today = new Date();
-    const twoWeeksAgo = new Date();
-    twoWeeksAgo.setDate(today.getDate() - 14);
-    getAPYHourly(twoWeeksAgo.toISOString(), today.toISOString()).then((res: any) => {
-      setAPYData(res);
-    });
-  }, []);
+  // useEffect(() => {
+  //   const today = new Date();
+  //   const twoWeeksAgo = new Date();
+  //   twoWeeksAgo.setDate(today.getDate() - 14);
+  //   getAPYHourly(twoWeeksAgo.toISOString(), today.toISOString()).then((res: any) => {
+  //     setAPYData(res);
+  //   });
+  // }, []);
 
   // const [depositableAssets, setDepositableAssets] = useState<string[]>(
   //   selectedMarket.assets
@@ -84,17 +84,17 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   // const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined =
   //   selectedMarket.trancheInvests;
 
-  const stratChartData = useMemo(() => {
-    return (
-      selectedStrategy &&
-      APYData.map((apy) => {
-        return {
-          x: apy.timestamp,
-          y: Number(apy[selectedStrategy.apiKey]) * 100,
-        };
-      })
-    );
-  }, [APYData, selectedStrategy]);
+  // const stratChartData = useMemo(() => {
+  //   return (
+  //     selectedStrategy &&
+  //     APYData.map((apy) => {
+  //       return {
+  //         x: apy.timestamp,
+  //         y: Number(apy[selectedStrategy.apiKey]) * 100,
+  //       };
+  //     })
+  //   );
+  // }, [APYData, selectedStrategy]);
 
   const principalTVL = selectedMarket.tranches.reduce((acc: number, next: Tranche) => acc + Number(next.target), 0);
 
@@ -174,46 +174,14 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <div className="charts">
-        <ClaimRedeposit
-          network={selectedMarket.isAvax ? Network.AVAX : Network.BNB}
-          selectedMarket={selectedMarket}
-          coingeckoPrices={coingeckoPrices}
-          selectedDepositAssetIndex={selectedDepositAssetIndex}
-          balance={selectedMarket.isMulticurrency ? MCbalance : balance}
-          simulDeposit={simulDeposit}
-          setModal={setModal}
-          setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
-          setSimulDeposit={setSimulDeposit}
-          setMarkets={setMarkets}
-          flexGrow={!selectedStrategy}
-        />
         <div className="chart-block portfolio-block">
-          <div className="background left-br">
-            <h2>Historical Performance</h2>
+          {/* <div className="background left-br">
             {stratChartData ? <StrategyChart data={stratChartData} color={stratChartColor} /> : <div>Loading...</div>}
-          </div>
-          <div className="background right-br">
+          </div> */}
+          <div className="background left-br right-br">
+            <h3>Strategy Composition</h3>
             <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
-            <div className="legend">
-              {selectedMarket.strategyFarms.map((f, i) => (
-                <div
-                  key={f.farmName}
-                  className={
-                    "farm-key strategy-select" +
-                    (selectedStrategy && selectedStrategy.farmName === f.farmName ? " selected" : "")
-                  }
-                  onClick={() => {
-                    setSelectedStrategy(f);
-                    setStratChartColor(COLORS[i]);
-                  }}
-                >
-                  <div className="key-color" style={{ backgroundColor: COLORS[i] }} />
-                  <span>{f.farmName}</span>
-                </div>
-              ))}
-            </div>
           </div>
-          {/* <div className="background right-br"></div> */}
         </div>
         <TrancheStructure
           tranches={selectedMarket.tranches}
@@ -221,6 +189,19 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           wipeRight={selectedStrategy !== undefined}
         />
       </div>
+      <ClaimRedeposit
+        network={selectedMarket.isAvax ? Network.AVAX : Network.BNB}
+        selectedMarket={selectedMarket}
+        coingeckoPrices={coingeckoPrices}
+        selectedDepositAssetIndex={selectedDepositAssetIndex}
+        balance={selectedMarket.isMulticurrency ? MCbalance : balance}
+        simulDeposit={simulDeposit}
+        setModal={setModal}
+        setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
+        setSimulDeposit={setSimulDeposit}
+        setMarkets={setMarkets}
+        flexGrow={!selectedStrategy}
+      />
       <Deposit
         isRedeposit={false}
         selectedMarket={selectedMarket}

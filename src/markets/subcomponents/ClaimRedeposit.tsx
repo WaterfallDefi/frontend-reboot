@@ -193,9 +193,9 @@ function ClaimRedeposit(props: Props) {
   };
 
   return (
-    <div className={"claim-redeposit" + (flexGrow ? " flexGrow" : "")}>
-      <div className="section">
-        <div className="label">Return Principal + Yield</div>
+    <div className="claim-redeposit tvl-bar">
+      <div className="user-deposit">
+        User Deposit:{" "}
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
             ? numeral(balance).format("0,0.[0000]")
@@ -223,39 +223,40 @@ function ClaimRedeposit(props: Props) {
             Roll Deposit
           </button>
         </div>
-        {account && selectedMarket.autorollImplemented ? (
-          <div className="autoroll-controls">
-            {autorollBalance !== "0" ? (
-              <div className="autoroll-balance">Autoroll Balance: ${autorollBalance}</div>
-            ) : null}
-            <div className="control-wrapper">
-              <div className="control">
-                {!autorollPending ? (
-                  <button
-                    className={"autoroll-btn " + (autoroll ? "stop" : "start")}
-                    disabled={awaitingAutorollConfirm}
-                    onClick={() => {
-                      setAwaitingAutorollConfirm(true);
-                      changeAutoroll(!autoroll).then((res) => {
-                        getAutoroll().then((res2) => {
-                          setAutoroll(res2);
-                          setAwaitingAutorollConfirm(false);
-                        });
-                      });
-                    }}
-                  >
-                    {autoroll ? "Stop Autoroll" : "Start Autoroll"}
-                  </button>
-                ) : null}
-              </div>
-            </div>
-            <span className={"autoroll-lbl " + (autoroll ? "on" : "off")}>
-              {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
-            </span>
-          </div>
-        ) : null}
       </div>
-      <div className="section">
+
+      {account && selectedMarket.autorollImplemented ? (
+        <div className="autoroll-controls">
+          {autorollBalance !== "0" ? (
+            <div className="autoroll-balance">Autoroll Balance: ${autorollBalance}</div>
+          ) : null}
+          <div className="control-wrapper">
+            <div className="control">
+              {!autorollPending ? (
+                <button
+                  className={"autoroll-btn " + (autoroll ? "stop" : "start")}
+                  disabled={awaitingAutorollConfirm}
+                  onClick={() => {
+                    setAwaitingAutorollConfirm(true);
+                    changeAutoroll(!autoroll).then((res) => {
+                      getAutoroll().then((res2) => {
+                        setAutoroll(res2);
+                        setAwaitingAutorollConfirm(false);
+                      });
+                    });
+                  }}
+                >
+                  {autoroll ? "Stop Autoroll" : "Start Autoroll"}
+                </button>
+              ) : null}
+            </div>
+          </div>
+          <span className={"autoroll-lbl " + (autoroll ? "on" : "off")}>
+            {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
+          </span>
+        </div>
+      ) : null}
+      <div className="wtf-reward">
         <div className="label">WTF Reward</div>
         <div className="rtn-amt">
           {totalPendingReward

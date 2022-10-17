@@ -130,7 +130,7 @@ function Deposit(props: Props) {
   const widths = selectedMarket.isMulticurrency ? selectedMarket.assets.map((a, i) => returnWidth(i)) : [];
 
   return (
-    <div className="deposit">
+    <div className="deposit dark-deposit">
       {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? (
         <div className="next-cycle-wrapper">
           <Hill />

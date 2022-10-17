@@ -26,6 +26,8 @@ function PortfolioChart(props: Props) {
   ]);
   const [loaded, setLoaded] = useState<boolean>(false);
 
+  const [hoveredSlice, setHoveredSlice] = useState<StrategyFarm>();
+
   useEffect(() => {
     if (!loaded) {
       setData([{ farmName: "", shares: 0, sAddress: "", apiKey: "" }, ...strategyFarms]);
@@ -35,6 +37,15 @@ function PortfolioChart(props: Props) {
 
   return (
     <div className="portfolio-chart">
+      {data.map(
+        (strat, i) =>
+          strat.shares !== 0 && (
+            <div className="strat">
+              <span className={"color" + i}>{strat.farmName}:</span>{" "}
+              <span>{strat.shares === 0 ? "" : (strat.shares * 100).toString() + "%"}</span>
+            </div>
+          )
+      )}
       <VictoryPie
         data={data}
         width={275}
@@ -52,6 +63,16 @@ function PortfolioChart(props: Props) {
             fill: "#FFFFFF",
           },
         }}
+        events={[
+          {
+            target: "data",
+            eventHandlers: {
+              onMouseOver: (props) => {
+                console.log(props);
+              },
+            },
+          },
+        ]}
       />
     </div>
   );
