@@ -90,7 +90,8 @@ function TrancheStructure(props: Props) {
               )}
               {hoveredTranche === payload.length - 1 && (
                 <span className="comment">
-                  Any return that surpasses all tranche thicknesses will go to the Junior tranche
+                  Junior tranche receives all the residual return, after paying back Senior and Mezzanine tranches in
+                  order. Junior tranches are subject to first loss should the portfolio experience any drawdowns.
                 </span>
               )}
             </div>
