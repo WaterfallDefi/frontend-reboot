@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-
+import BigNumber from "bignumber.js";
 import numeral from "numeral";
 
 import { Web3Provider } from "@ethersproject/providers";
@@ -18,6 +18,8 @@ import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
 import StrategyChart from "./StrategyChart";
 import TrancheStructure from "./TrancheStructure";
+
+const BIG_TEN = new BigNumber(10);
 
 type Props = {
   selectedMarket: Market;
@@ -73,7 +75,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(selectedMarket.subgraphURL);
       const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
-        y: tc.aprBeforeFee,
+        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
         x: tc.endAt,
       }));
       setAPYData(data);
