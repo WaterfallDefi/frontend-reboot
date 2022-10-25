@@ -206,6 +206,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         />
         <div className="chart-block">
           <div className="background left-br right-br">
+            <h3>Historical Performance</h3>
             {APYData ? (
               <StrategyChart data={APYData} trancheCount={selectedMarket.trancheCount} />
             ) : (
