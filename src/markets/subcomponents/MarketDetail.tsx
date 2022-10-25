@@ -76,7 +76,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
         y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
-        x: tc.endAt,
+        x: new Date(Number(tc.endAt) * 1000),
       }));
       setAPYData(data);
     };

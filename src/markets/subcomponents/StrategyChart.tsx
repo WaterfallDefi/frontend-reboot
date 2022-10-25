@@ -43,7 +43,7 @@ const StrategyChart = (props: Props) => {
       >
         <VictoryAxis
           scale="time"
-          tickCount={13}
+          tickCount={5}
           style={{
             tickLabels: {
               fontSize: 10,
