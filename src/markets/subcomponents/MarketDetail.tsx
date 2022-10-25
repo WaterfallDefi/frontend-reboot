@@ -204,7 +204,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           totalTranchesTarget={selectedMarket.totalTranchesTarget}
           wipeRight={selectedStrategy !== undefined}
         />
-        <div className="chart-block">
+        <div className="chart-block historical-performance">
           <div className="background left-br right-br">
             <h3>Historical Performance</h3>
             {APYData ? (

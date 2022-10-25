@@ -69,7 +69,7 @@ function TrancheStructure(props: Props) {
         ];
 
   return (
-    <div className={"chart-block tranche-structure" + (wipeRight ? " wipe-right" : "")}>
+    <div className={"chart-block tranche-structure"}>
       <div className="background left-br right-br">
         <h3>Tranche Structure</h3>
         <div className="tranche-chart">

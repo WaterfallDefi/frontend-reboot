@@ -16,7 +16,6 @@ type Props = {
 
 const StrategyChart = (props: Props) => {
   const { data, trancheCount } = props;
-  // const [chartWidth, setChartWidth] = useState<number>(window.innerWidth * 0.6);
   const [hoverYield, setHoverYield] = useState<string>();
 
   return (
