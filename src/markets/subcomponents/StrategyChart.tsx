@@ -4,6 +4,7 @@ import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from 
 
 type Props = {
   data: any[] | undefined;
+  trancheCount: number;
   // color: string;
 };
 
@@ -14,7 +15,7 @@ type Props = {
 // }
 
 const StrategyChart = (props: Props) => {
-  const { data } = props;
+  const { data, trancheCount } = props;
   // const [chartWidth, setChartWidth] = useState<number>(window.innerWidth * 0.6);
   const [hoverYield, setHoverYield] = useState<string>();
 
@@ -62,7 +63,15 @@ const StrategyChart = (props: Props) => {
             },
           }}
         />
-        {data && <VictoryLine data={data} style={{ data: { stroke: "#FFF" } }} />}
+        {data && (
+          <VictoryLine data={data.filter((tc) => tc.id.slice(0, 2) === "0-")} style={{ data: { stroke: "#fcb500" } }} />
+        )}
+        {data && (
+          <VictoryLine data={data.filter((tc) => tc.id.slice(0, 2) === "1-")} style={{ data: { stroke: "#00a14a" } }} />
+        )}
+        {data && trancheCount === 3 && (
+          <VictoryLine data={data.filter((tc) => tc.id.slice(0, 2) === "2-")} style={{ data: { stroke: "#0066ff" } }} />
+        )}
       </VictoryChart>
     </div>
   );

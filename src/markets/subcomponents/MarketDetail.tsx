@@ -72,6 +72,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     const fetchSubgraph = async () => {
       const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(selectedMarket.subgraphURL);
       const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
+        id: tc.id,
         y: tc.aprBeforeFee,
         x: tc.endAt,
       }));
@@ -201,8 +202,14 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           totalTranchesTarget={selectedMarket.totalTranchesTarget}
           wipeRight={selectedStrategy !== undefined}
         />
-        <div className="background left-br right-br">
-          {APYData ? <StrategyChart data={APYData} /> : <div>Loading...</div>}
+        <div className="chart-block">
+          <div className="background left-br right-br">
+            {APYData ? (
+              <StrategyChart data={APYData} trancheCount={selectedMarket.trancheCount} />
+            ) : (
+              <div>Loading...</div>
+            )}
+          </div>
         </div>
       </div>
       <ClaimRedeposit
