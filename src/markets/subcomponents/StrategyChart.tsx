@@ -4,7 +4,7 @@ import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from 
 
 type Props = {
   data: any[] | undefined;
-  color: string;
+  // color: string;
 };
 
 // enum Timescale {
@@ -14,7 +14,7 @@ type Props = {
 // }
 
 const StrategyChart = (props: Props) => {
-  const { data, color } = props;
+  const { data } = props;
   // const [chartWidth, setChartWidth] = useState<number>(window.innerWidth * 0.6);
   const [hoverYield, setHoverYield] = useState<string>();
 
@@ -62,7 +62,7 @@ const StrategyChart = (props: Props) => {
             },
           }}
         />
-        {data && <VictoryLine data={data} style={{ data: { stroke: color } }} />}
+        {data && <VictoryLine data={data} style={{ data: { stroke: "#FFF" } }} />}
       </VictoryChart>
     </div>
   );

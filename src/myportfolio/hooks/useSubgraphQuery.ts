@@ -181,6 +181,7 @@ export const getSubgraphCyclesOnly = async (subgraphURL: string) => {
               rate
               startAt
               endAt
+              aprBeforeFee
             }
           }`,
         },
@@ -205,4 +206,8 @@ export const fetchSubgraphCycleQuery = async () => {
 
 export const useHistoricalAPY = async (earlierDate: string, laterDate: string) => {
   return await getAPYHourly(earlierDate, laterDate);
+};
+
+export const fetchSingleSubgraphCycleQuery = async (subgraphURL: string) => {
+  return await getSubgraphCyclesOnly(subgraphURL);
 };

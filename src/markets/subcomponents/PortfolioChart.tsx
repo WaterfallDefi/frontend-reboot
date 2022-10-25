@@ -40,7 +40,7 @@ function PortfolioChart(props: Props) {
       {data.map(
         (strat, i) =>
           strat.shares !== 0 && (
-            <div className="strat">
+            <div className="strat" key={i}>
               <span className={"color" + i}>{strat.farmName}:</span>{" "}
               <span>{strat.shares === 0 ? "" : (strat.shares * 100).toString() + "%"}</span>
             </div>

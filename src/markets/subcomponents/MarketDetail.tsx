@@ -5,7 +5,10 @@ import numeral from "numeral";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
-import { getAPYHourly } from "../../myportfolio/hooks/useSubgraphQuery";
+import {
+  fetchSingleSubgraphCycleQuery,
+  // getAPYHourly,
+} from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market, StrategyFarm, Tranche } from "../../types";
 import { ModalProps, Network } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
@@ -63,15 +66,28 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     account && selectedMarket.isMulticurrency ? fetchMCBalance() : fetchBalance();
   }, [account, fetchMCBalance, fetchBalance, selectedMarket.isMulticurrency]);
 
-  // const [APYData, setAPYData] = useState<any[]>([]);
+  const [APYData, setAPYData] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchSubgraph = async () => {
+      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(selectedMarket.subgraphURL);
+      const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
+        y: tc.aprBeforeFee,
+        x: tc.endAt,
+      }));
+      setAPYData(data);
+    };
+
+    fetchSubgraph();
+  }, [selectedMarket.subgraphURL]);
 
   // useEffect(() => {
-  //   const today = new Date();
-  //   const twoWeeksAgo = new Date();
-  //   twoWeeksAgo.setDate(today.getDate() - 14);
-  //   getAPYHourly(twoWeeksAgo.toISOString(), today.toISOString()).then((res: any) => {
-  //     setAPYData(res);
-  //   });
+  // const today = new Date();
+  // const twoWeeksAgo = new Date();
+  // twoWeeksAgo.setDate(today.getDate() - 14);
+  // getAPYHourly(twoWeeksAgo.toISOString(), today.toISOString()).then((res: any) => {
+  //   setAPYData(res);
+  // });
   // }, []);
 
   // const [depositableAssets, setDepositableAssets] = useState<string[]>(
@@ -175,9 +191,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       </div>
       <div className="charts">
         <div className="chart-block portfolio-block">
-          {/* <div className="background left-br">
-            {stratChartData ? <StrategyChart data={stratChartData} color={stratChartColor} /> : <div>Loading...</div>}
-          </div> */}
           <div className="background left-br right-br">
             <h3>Strategy Composition</h3>
             <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
@@ -188,6 +201,9 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           totalTranchesTarget={selectedMarket.totalTranchesTarget}
           wipeRight={selectedStrategy !== undefined}
         />
+        <div className="background left-br right-br">
+          {APYData ? <StrategyChart data={APYData} /> : <div>Loading...</div>}
+        </div>
       </div>
       <ClaimRedeposit
         network={selectedMarket.isAvax ? Network.AVAX : Network.BNB}
