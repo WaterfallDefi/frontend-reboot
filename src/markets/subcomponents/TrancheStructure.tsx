@@ -1,4 +1,5 @@
 import { BigNumber } from "bignumber.js";
+import numeral from "numeral";
 import { useState } from "react";
 import { Tranche } from "../../types";
 
@@ -86,15 +87,15 @@ function TrancheStructure(props: Props) {
               {hoveredTranche === 0 && (
                 <span className="comment">
                   Repayment of Interest and Principal is paid out to this segment first. {payload[hoveredTranche].name}{" "}
-                  Tranche users have principal protection until the portfolio strategy experiences {getSubordination()}%
-                  loss or more.
+                  Tranche users have principal protection until the portfolio strategy experiences{" "}
+                  {numeral(getSubordination().toString()).format("0,0.[0000]")}% loss or more.
                 </span>
               )}
               {hoveredTranche === 1 && hoveredTranche !== payload.length - 1 && (
                 <span className="comment">
                   Mezzanine Tranche: Repayment of Interest and Principal is paid after Senior Tranche. Mezzanine Tranche
-                  users have principal protection until the portfolio strategy experiences {getSubordination()}% loss or
-                  more.
+                  users have principal protection until the portfolio strategy experiences{" "}
+                  {numeral(getSubordination().toString()).format("0,0.[0000]")}% loss or more.
                 </span>
               )}
               {hoveredTranche === payload.length - 1 && (
