@@ -26,7 +26,7 @@ function PortfolioChart(props: Props) {
   ]);
   const [loaded, setLoaded] = useState<boolean>(false);
 
-  const [hoveredSlice, setHoveredSlice] = useState<StrategyFarm>();
+  // const [hoveredSlice, setHoveredSlice] = useState<StrategyFarm>();
 
   useEffect(() => {
     if (!loaded) {
@@ -63,16 +63,16 @@ function PortfolioChart(props: Props) {
             fill: "#FFFFFF",
           },
         }}
-        events={[
-          {
-            target: "data",
-            eventHandlers: {
-              onMouseOver: (props) => {
-                console.log(props);
-              },
-            },
-          },
-        ]}
+        // events={[
+        //   {
+        //     target: "data",
+        //     eventHandlers: {
+        //       onMouseOver: (props) => {
+        //         console.log(props);
+        //       },
+        //     },
+        //   },
+        // ]}
       />
     </div>
   );
