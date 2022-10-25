@@ -78,14 +78,23 @@ function TrancheStructure(props: Props) {
                 {payload[hoveredTranche].name}
               </span>
               <br />
-              {hoveredTranche !== payload.length - 1 && (
+              {/* {hoveredTranche !== payload.length - 1 && (
                 <span className="label">Subordination Level (Sum of Lower Tranches):</span>
-              )}
-              {hoveredTranche === payload.length - 1 && <span className="label">Variable Rate:</span>}
-              <br />
-              {hoveredTranche !== payload.length - 1 && (
+              )} */}
+              {/* {hoveredTranche === payload.length - 1 && <span className="label">Variable Rate:</span>}
+              <br /> */}
+              {hoveredTranche === 0 && (
                 <span className="comment">
-                  Total portfolio loss must exceed {getSubordination()}% before principal loss is possible.
+                  Repayment of Interest and Principal is paid out to this segment first. {payload[hoveredTranche].name}{" "}
+                  Tranche users have principal protection until the portfolio strategy experiences {getSubordination()}%
+                  loss or more.
+                </span>
+              )}
+              {hoveredTranche === 1 && hoveredTranche !== payload.length - 1 && (
+                <span className="comment">
+                  Mezzanine Tranche: Repayment of Interest and Principal is paid after Senior Tranche. Mezzanine Tranche
+                  users have principal protection until the portfolio strategy experiences {getSubordination()}% loss or
+                  more.
                 </span>
               )}
               {hoveredTranche === payload.length - 1 && (
