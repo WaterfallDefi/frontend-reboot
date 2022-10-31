@@ -82,7 +82,9 @@ function Dashboard(props: Props) {
           </div>
           <div className="block">
             <span className="title">Total Capital Deployed</span>
-            <span className="value">$ {numeral(totalCapitalDeployed).format("0,0")}</span>
+            <span className="value">
+              $ {totalCapitalDeployed !== 80666000 ? numeral(totalCapitalDeployed).format("0,0") : "-"}
+            </span>
           </div>
           <div className="block">
             <span className="title" />
