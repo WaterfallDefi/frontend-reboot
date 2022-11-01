@@ -142,14 +142,17 @@ function PortfolioFold(props: Props) {
             {isCurrentCycle && isPending && !redeemLoading && (
               <button onClick={() => redeemDirect(currentTranche)}>Redeem</button>
             )}
-            {!isPending && !isActive && <button onClick={withdrawAll}>Withdraw All Tranches</button>}
+            {!isPending && !isActive && <button onClick={withdrawAll}>Withdraw All</button>}
           </div>
         </div>
 
         {autorollImplemented ? (
           <div className="card">
-            <div className="autoroll-toggle">
-              <span>Auto Rolling</span>
+            <div className="card-title">Auto Rolling</div>
+            <div className="card-value">
+              {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
+            </div>
+            <div className="card-action">
               {!autorollPending ? (
                 <button
                   className={"autoroll-btn " + (autoroll ? "stop" : "start")}
@@ -167,9 +170,6 @@ function PortfolioFold(props: Props) {
                   {autoroll ? "Stop Autoroll" : "Start Autoroll"}
                 </button>
               ) : null}
-              <span className={"autoroll-lbl " + (autoroll ? "on" : "off")}>
-                {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
-              </span>
             </div>
           </div>
         ) : null}
