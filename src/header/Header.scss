@@ -215,7 +215,7 @@
       background-color: $base-color-dark;
       padding-right: 8px;
       top: 8px;
-      left: calc(-100% + 8px);
+      left: -100%;
       display: flex;
       gap: 8px;
       flex-direction: column;
@@ -234,7 +234,7 @@
         display: flex;
         align-items: center;
         height: 69px;
-        width: 60vw;
+        width: 69vw;
         font-size: $font-size-md;
         padding-left: 24px;
         a {
