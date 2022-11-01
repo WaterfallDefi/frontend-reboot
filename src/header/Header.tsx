@@ -186,21 +186,44 @@ function Header(props: Props) {
               className="link"
               to={"/"}
               data-selected={location.pathname === "/"}
-              onClick={() => location.pathname === "/" && setMarkets(undefined)}
+              onClick={() => {
+                location.pathname === "/" && setMarkets(undefined);
+                setMobileDropdownOpen(false);
+              }}
             >
               Markets
             </Link>
           </div>
           <div className="mobile-menu-block-wrapper">
-            <Link className="link" to={"/portfolio"} data-selected={location.pathname === "/portfolio"}>
+            <Link
+              className="link"
+              to={"/portfolio"}
+              data-selected={location.pathname === "/portfolio"}
+              onClick={() => setMobileDropdownOpen(false)}
+            >
               My Portfolio
+            </Link>
+          </div>
+          <div className="mobile-menu-block-wrapper">
+            <Link
+              className="link"
+              to={"/stake"}
+              data-selected={location.pathname === "/stake"}
+              onClick={() => setMobileDropdownOpen(false)}
+            >
+              Stake
             </Link>
           </div>
           <div className="mobile-menu-block-wrapper">
             <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
           </div>
           <div className="mobile-menu-block-wrapper">
-            <Link className="link" to={"/blog"} data-selected={location.pathname === "/blog"}>
+            <Link
+              className="link"
+              to={"/blog"}
+              data-selected={location.pathname === "/blog"}
+              onClick={() => setMobileDropdownOpen(false)}
+            >
               Blog
             </Link>
           </div>

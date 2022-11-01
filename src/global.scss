@@ -64,9 +64,12 @@ $font-size-xl: 30px;
   background-color: $layer-color;
   margin: 0 20px 16px 20px;
   cursor: pointer;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     flex-wrap: wrap;
     height: 420px;
+    .col {
+      width: 100%;
+    }
   }
 
   .col {
@@ -75,6 +78,19 @@ $font-size-xl: 30px;
     justify-content: center;
     flex-grow: 1;
     color: $text-color-dark;
+
+    .mob-title {
+      display: none;
+    }
+    @media screen and (max-width: 1024px) {
+      padding: 0 6px;
+      .mob-title {
+        display: block;
+        font-weight: 300;
+        color: $base-color;
+      }
+      justify-content: space-between;
+    }
 
     &.portfolio-name {
       font-weight: 500;
@@ -141,9 +157,12 @@ $font-size-xl: 30px;
     }
 
     &.apr_portfolio {
-      display: grid;
+      @media screen and (max-width: 1024px) {
+        width: 100%;
+      }
+      display: flex;
+      flex-direction: column;
       gap: 20px;
-      grid-auto-flow: column;
       h1 {
         font-weight: 500;
       }
@@ -173,18 +192,21 @@ $font-size-xl: 30px;
     }
 
     &.trancheCycle {
-      display: grid;
-      gap: 5px;
-      grid-auto-flow: row;
-      justify-items: center;
-      span {
-        white-space: nowrap;
+      .tranche-cycle {
+        width: 100%;
+        display: flex;
+        gap: 5px;
+        flex-direction: column;
+        span {
+          text-align: center;
+          @media screen and (max-width: 1024px) {
+            text-align: right;
+          }
+        }
       }
     }
 
     &.principal {
-      display: flex;
-      flex-direction: column;
       .mc-principal {
         display: flex;
         align-items: center;
@@ -193,8 +215,6 @@ $font-size-xl: 30px;
     }
 
     &.yield {
-      display: flex;
-      flex-direction: column;
       .mc-yield {
         display: flex;
         align-items: center;
@@ -202,12 +222,19 @@ $font-size-xl: 30px;
       }
     }
 
-    .coin {
-      height: 25px;
-      width: 25px;
-      background-size: cover;
-      background-repeat: no-repeat;
-      margin-right: 8px;
+    .assets {
+      display: flex;
+      justify-content: center;
+      @media screen and (max-width: 1024px) {
+        justify-content: flex-end;
+      }
+      .coin {
+        height: 25px;
+        width: 25px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin-right: 8px;
+      }
     }
 
     span {
@@ -215,6 +242,10 @@ $font-size-xl: 30px;
     }
 
     .status {
+      width: 80%;
+      @media screen and (max-width: 1024px) {
+        margin-left: 10%;
+      }
       border-radius: 4px;
       height: 24px;
       line-height: 24px;

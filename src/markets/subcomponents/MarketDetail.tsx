@@ -72,7 +72,12 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     const fetchSubgraph = async () => {
-      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(selectedMarket.subgraphURL);
+      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(
+        //temporary hack, REMOVE this ternary once we've successfully run (New) BNB Falls for a few more cycles
+        selectedMarket.subgraphURL === "https://api2.waterfalldefi.org/subgraphs/name/waterfall/bsc-alpVeBnb"
+          ? "https://api2.waterfalldefi.org/subgraphs/name/waterfall/waterfall-subgraph-busdfalls4"
+          : selectedMarket.subgraphURL
+      );
       const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
         y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
@@ -83,37 +88,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
     fetchSubgraph();
   }, [selectedMarket.subgraphURL]);
-
-  // useEffect(() => {
-  // const today = new Date();
-  // const twoWeeksAgo = new Date();
-  // twoWeeksAgo.setDate(today.getDate() - 14);
-  // getAPYHourly(twoWeeksAgo.toISOString(), today.toISOString()).then((res: any) => {
-  //   setAPYData(res);
-  // });
-  // }, []);
-
-  // const [depositableAssets, setDepositableAssets] = useState<string[]>(
-  //   selectedMarket.assets
-  // );
-
-  // const tokens: { addr: string; strategy: string; percent: any }[] | undefined =
-  //   selectedMarket.tokens;
-
-  // const trancheInvest: { type: "BigNumber"; hex: string }[][] | undefined =
-  //   selectedMarket.trancheInvests;
-
-  // const stratChartData = useMemo(() => {
-  //   return (
-  //     selectedStrategy &&
-  //     APYData.map((apy) => {
-  //       return {
-  //         x: apy.timestamp,
-  //         y: Number(apy[selectedStrategy.apiKey]) * 100,
-  //       };
-  //     })
-  //   );
-  // }, [APYData, selectedStrategy]);
 
   const principalTVL = selectedMarket.tranches.reduce((acc: number, next: Tranche) => acc + Number(next.target), 0);
 

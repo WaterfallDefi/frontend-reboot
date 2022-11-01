@@ -36,28 +36,33 @@ function TableRow(props: Props) {
           case "portfolio":
             elements.push(
               <div className="col portfolio-name" key={key}>
-                {columnData}
+                <span className="mob-title">Portfolio Name</span>
+                <span>{columnData}</span>
               </div>
             );
             break;
           case "network":
             elements.push(
               <div className={"col network " + columnData} key={key}>
-                {columnData}
+                <span className="mob-title">Network</span>
+                <span>{columnData}</span>
               </div>
             );
             break;
           case "assets":
             elements.push(
               <div className="col" key={key}>
-                {columnData.map((assetName: string) => [
-                  <div
-                    key={assetName + "-img"}
-                    className="coin"
-                    style={{ backgroundImage: `url(/coins/${assetName}.png)` }}
-                  />,
-                  <span key={assetName + "-span"}>{assetName}</span>,
-                ])}
+                <span className="mob-title">Assets</span>
+                <div className="assets">
+                  {columnData.map((assetName: string) => [
+                    <div
+                      key={assetName + "-img"}
+                      className="coin"
+                      style={{ backgroundImage: `url(/coins/${assetName}.png)` }}
+                    />,
+                    <span key={assetName + "-span"}>{assetName}</span>,
+                  ])}
+                </div>
               </div>
             );
             break;
@@ -146,8 +151,9 @@ function TableRow(props: Props) {
           case "trancheCycle":
             elements.push(
               <div className="col trancheCycle" key={key}>
+                <span className="mob-title">Cycle</span>
                 {columnData.trancheCycle ? (
-                  <>
+                  <div className="tranche-cycle">
                     <span>{formatTimestamp(columnData.trancheCycle.startAt)}</span>
                     <span>↓</span>
                     <span>
@@ -161,9 +167,9 @@ function TableRow(props: Props) {
                         )
                       }
                     </span>
-                  </>
+                  </div>
                 ) : (
-                  "--"
+                  <span>"--"</span>
                 )}
               </div>
             );
@@ -172,6 +178,7 @@ function TableRow(props: Props) {
             if (typeof columnData.yield === "object") {
               elements.push(
                 <div className="col yield" key={key}>
+                  <span className="mob-title">Yield</span>
                   {columnData.yield.map((y: any, i: number) => (
                     <div className="mc-yield" key={i}>
                       <span>{y}</span>
@@ -188,7 +195,8 @@ function TableRow(props: Props) {
             } else {
               elements.push(
                 <div className="col yield" key={key}>
-                  {columnData.yield}
+                  <span className="mob-title">Yield</span>
+                  <span>{columnData.yield}</span>
                 </div>
               );
             }
@@ -197,6 +205,7 @@ function TableRow(props: Props) {
             if (columnData.assets.length > 1) {
               elements.push(
                 <div className="col principal" key={key}>
+                  <span className="mob-title">Principal</span>
                   {columnData.MCprincipal.map((p: any, i: number) => (
                     <div className="mc-principal" key={i}>
                       <span>{p}</span>
@@ -213,6 +222,7 @@ function TableRow(props: Props) {
             } else {
               elements.push(
                 <div className="col principal" key={key}>
+                  <span className="mob-title">Principal</span>
                   <span>{columnData.principal + " " + columnData.assets[0]}</span>
                 </div>
               );
@@ -221,6 +231,7 @@ function TableRow(props: Props) {
           default:
             elements.push(
               <div className="col" key={key}>
+                <span className="mob-title">{key === "duration" ? "Lock-up Period" : "TVL"}</span>
                 {columnData}
               </div>
             );
