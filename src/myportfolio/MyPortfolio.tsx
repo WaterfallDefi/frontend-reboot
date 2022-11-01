@@ -305,27 +305,32 @@ function MyPortfolio(props: Props) {
                   interest: _userInvest.interest,
                 },
               },
-              foldElement: (
-                <PortfolioFold
-                  network={_market.isAvax ? Network.AVAX : Network.BNB}
-                  trancheMasterAddress={_market.address}
-                  masterWTFAddress={_market.masterChefAddress}
-                  abi={_market.abi}
-                  totalAmount={_userInvest.principal}
-                  totalAmounts={_userInvest.MCprincipal}
-                  assets={_market.assets}
-                  isCurrentCycle={isCurrentCycle}
-                  isPending={trancheCycle?.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING}
-                  isActive={trancheCycle?.state === 1}
-                  currentTranche={_userInvest.tranche}
-                  fee={_market.tranches[_userInvest.tranche].fee}
-                  isMulticurrency={_market.isMulticurrency}
-                  autorollImplemented={_market.autorollImplemented}
-                  trancheCount={_market.trancheCount}
-                  setModal={setModal}
-                  setMarkets={setMarkets}
-                />
-              ),
+              foldElement:
+                (_market.isAvax && network === Network.AVAX) || (!_market.isAvax && network === Network.BNB) ? (
+                  <PortfolioFold
+                    network={_market.isAvax ? Network.AVAX : Network.BNB}
+                    trancheMasterAddress={_market.address}
+                    masterWTFAddress={_market.masterChefAddress}
+                    abi={_market.abi}
+                    totalAmount={_userInvest.principal}
+                    totalAmounts={_userInvest.MCprincipal}
+                    assets={_market.assets}
+                    isCurrentCycle={isCurrentCycle}
+                    isPending={trancheCycle?.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING}
+                    isActive={trancheCycle?.state === 1}
+                    currentTranche={_userInvest.tranche}
+                    fee={_market.tranches[_userInvest.tranche].fee}
+                    isMulticurrency={_market.isMulticurrency}
+                    autorollImplemented={_market.autorollImplemented}
+                    trancheCount={_market.trancheCount}
+                    setModal={setModal}
+                    setMarkets={setMarkets}
+                  />
+                ) : (
+                  <div className="fold">
+                    Please switch network with the upper right corner dropdown to withdraw these funds.
+                  </div>
+                ),
             };
           }
         );
