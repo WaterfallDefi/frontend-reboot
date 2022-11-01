@@ -107,8 +107,8 @@ function Header(props: Props) {
   return (
     <div className={"header-wrapper " + mode}>
       <div
-        className={"mask" + (modal.state !== Modal.None ? " visible" : "")}
-        onClick={() => setModal({ state: Modal.None })}
+        className={"mask" + (modal.state !== Modal.None || mobileDropdownOpen ? " visible" : "")}
+        onClick={() => (modal.state !== Modal.None ? setModal({ state: Modal.None }) : setMobileDropdownOpen(false))}
       />
       {modal.state === Modal.Terms ? <TermsModal setModal={setModal} /> : null}
       {modal.state === Modal.ConnectWallet ? <ConnectWalletModal network={network} /> : null}
@@ -177,36 +177,34 @@ function Header(props: Props) {
         <div onClick={() => setMobileDropdownOpen(true)}>
           <Burger />
         </div>
-        {mobileDropdownOpen ? (
-          <div className="mobile-menu">
-            <div className="mobile-menu-burger" onClick={() => setMobileDropdownOpen(false)}>
-              <Burger />
-            </div>
-            <div className="mobile-menu-block-wrapper">
-              <Link
-                className="link"
-                to={"/"}
-                data-selected={location.pathname === "/"}
-                onClick={() => location.pathname === "/" && setMarkets(undefined)}
-              >
-                Markets
-              </Link>
-            </div>
-            <div className="mobile-menu-block-wrapper">
-              <Link className="link" to={"/portfolio"} data-selected={location.pathname === "/portfolio"}>
-                My Portfolio
-              </Link>
-            </div>
-            <div className="mobile-menu-block-wrapper">
-              <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
-            </div>
-            <div className="mobile-menu-block-wrapper">
-              <Link className="link" to={"/blog"} data-selected={location.pathname === "/blog"}>
-                Blog
-              </Link>
-            </div>
+        <div className={"mobile-menu" + (mobileDropdownOpen ? " open" : "")}>
+          <div className="mobile-menu-burger" onClick={() => setMobileDropdownOpen(false)}>
+            <Burger />
           </div>
-        ) : null}
+          <div className="mobile-menu-block-wrapper">
+            <Link
+              className="link"
+              to={"/"}
+              data-selected={location.pathname === "/"}
+              onClick={() => location.pathname === "/" && setMarkets(undefined)}
+            >
+              Markets
+            </Link>
+          </div>
+          <div className="mobile-menu-block-wrapper">
+            <Link className="link" to={"/portfolio"} data-selected={location.pathname === "/portfolio"}>
+              My Portfolio
+            </Link>
+          </div>
+          <div className="mobile-menu-block-wrapper">
+            <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
+          </div>
+          <div className="mobile-menu-block-wrapper">
+            <Link className="link" to={"/blog"} data-selected={location.pathname === "/blog"}>
+              Blog
+            </Link>
+          </div>
+        </div>
       </div>
       <div className="right">
         <div className="wallet-wrapper">

@@ -215,10 +215,15 @@
       background-color: $base-color-dark;
       padding-right: 8px;
       top: 8px;
-      left: 8px;
+      left: calc(-100% + 8px);
       display: flex;
       gap: 8px;
       flex-direction: column;
+      transition: transform 0.25s ease-in;
+
+      &.open {
+        transform: translateX(100vw);
+      }
 
       .mobile-menu-burger {
         height: 51px;
@@ -231,8 +236,6 @@
         height: 69px;
         width: 60vw;
         font-size: $font-size-md;
-        border-radius: 5px;
-        background-color: $layer-color-dark;
         padding-left: 24px;
         a {
           color: $base-color;
