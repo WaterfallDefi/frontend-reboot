@@ -48,22 +48,29 @@
     }
     .fold {
       margin: 0 20px 20px -10px;
-      padding: 0 0 0 32px;
+      padding: 0 0 0 30px;
       position: relative;
+      .mini-wrapper {
+        background-color: $layer-color-dark-2;
+        color: $base-color;
+        padding: 12px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        text-align: right;
+      }
       .wrapper {
-        background: $layer-color;
+        background-color: $layer-color-dark-2;
         position: relative;
         z-index: 1;
-        display: grid;
-        gap: 27px;
-        grid-auto-flow: column;
-        grid-template-columns: 235px 235px 1fr;
+        display: flex;
+        gap: 12px;
         align-items: end;
         @media screen and (max-width: 768px) {
           grid-auto-flow: row;
           grid-template-columns: auto;
         }
         .card {
+          width: 13%;
           padding: 15px;
           margin: 0 0 24px 24px;
           border: 1px solid $highlight-color;
@@ -75,7 +82,7 @@
             display: flex;
             align-items: flex-start;
             font-size: $font-size-sm;
-            color: $text-color;
+            color: $text-color-dark;
           }
 
           .card-value {
@@ -104,7 +111,7 @@
             span {
               font-size: $font-size-md;
               font-weight: 400;
-              color: $text-color;
+              color: $text-color-dark;
               margin-right: 12;
               padding-top: 4px;
             }
@@ -142,17 +149,17 @@
           }
         }
         .prompt {
-          width: calc(100% - 24px);
-          margin-bottom: 24px;
+          margin: 0 24px 24px 0;
+          padding: 8px;
           height: fit-content;
           text-align: center;
           position: relative;
           border-radius: 8px;
-          background: $base-color;
+          background: $layer-color-dark;
           display: grid;
           gap: 5px;
           grid-auto-flow: column;
-          color: $text-color;
+          color: $text-color-dark;
           font-size: $font-size-sm;
           font-weight: 500;
           line-height: 15.6px;
@@ -175,19 +182,19 @@
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    margin-top: 69px;
+    margin: 69px 0;
     color: $text-color-darker;
   }
 
   &.dark {
     @include dark-table;
 
-    .row-wrapper {
-      .fold {
-        .wrapper {
-          background: $layer-color-dark;
-        }
-      }
-    }
+    // .row-wrapper {
+    //   .fold {
+    //     .wrapper {
+    //       background: $layer-color-dark;
+    //     }
+    //   }
+    // }
   }
 }

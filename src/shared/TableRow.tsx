@@ -65,19 +65,48 @@ function TableRow(props: Props) {
             elements.push(
               <div className="col apr_markets" key={key}>
                 <div className="tranche-apr">
-                  <span>{columnData.length === 2 ? "Fixed" : "Senior"}</span>
-                  <div style={{ color: "orange" }}>{numeral(columnData[0]).format("0,0.[00]")} %</div>
-                </div>
-                <div className="tranche-apr">
-                  <span>{columnData.length === 2 ? "Variable" : "Mezzanine"}</span>
-                  <div style={{ color: columnData.length === 3 ? "green" : "blue" }}>
-                    {numeral(columnData[1]).format("0,0.[00]")} %
+                  <span>{columnData.tranchesApr.length === 2 ? "Fixed" : "Senior"}</span>
+                  <div>
+                    <span
+                      style={{
+                        color: "rgba(252, 182, 4, 0.8)",
+                      }}
+                    >
+                      {numeral(columnData.tranchesApr[0]).format("0,0.[00]")} %
+                    </span>
+                    <br />
+                    <span style={{ fontSize: 10 }}>{"( +" + columnData.wtfApr[0] + "% WTF )"}</span>
                   </div>
                 </div>
-                {columnData.length === 3 ? (
+                <div className="tranche-apr">
+                  <span>{columnData.tranchesApr.length === 2 ? "Variable" : "Mezzanine"}</span>
+                  <div>
+                    <span
+                      style={{
+                        color:
+                          columnData.tranchesApr.length === 3 ? "rgba(3, 161, 75, 0.8)" : "rgba(12, 108, 254, 0.8)",
+                      }}
+                    >
+                      {numeral(columnData.tranchesApr[1]).format("0,0.[00]")} %
+                    </span>
+                    <br />
+                    <span style={{ fontSize: 10 }}>{"( +" + columnData.wtfApr[1] + "% WTF )"}</span>
+                  </div>
+                </div>
+                {columnData.tranchesApr.length === 3 ? (
                   <div className="tranche-apr">
                     <span>Junior</span>
-                    <div style={{ color: "blue" }}>{numeral(columnData[2]).format("0,0.[00]")} %</div>
+                    <div>
+                      <span
+                        style={{
+                          color: "rgba(12, 108, 254, 0.8)",
+                        }}
+                      >
+                        {numeral(columnData.tranchesApr[2]).format("0,0.[00]")} %
+                      </span>
+                      <br />
+                      <span style={{ fontSize: 10 }}>{"( +" + columnData.wtfApr[2] + "% WTF )"}</span>
+                    </div>
                   </div>
                 ) : null}
               </div>

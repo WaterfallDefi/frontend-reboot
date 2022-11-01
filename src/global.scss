@@ -60,13 +60,13 @@ $font-size-xl: 30px;
   display: flex;
   align-items: center;
   border-radius: 12px;
-  height: 127px;
+  height: 169px;
   background-color: $layer-color;
   margin: 0 20px 16px 20px;
   cursor: pointer;
   @media screen and (max-width: 768px) {
     flex-wrap: wrap;
-    height: 269px;
+    height: 420px;
   }
 
   .col {

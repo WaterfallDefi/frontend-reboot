@@ -37,7 +37,7 @@ type TableRowData = {
   network: string;
   assets: string[];
   duration: string;
-  apr_markets: (string | number)[];
+  apr_markets: { tranchesApr: (string | number)[]; wtfApr: (string | undefined)[] };
   tvl: string;
   status: string;
 };
@@ -86,8 +86,8 @@ function Markets(props: Props) {
     return markets
       ? markets
           .map((m: Market) => {
-            const tranchesApr = m.tranches.map((_t, _i) => {
-              const wtfAPR = getWTFApr(
+            const wtfAprs = m.tranches.map((_t, _i) => {
+              return getWTFApr(
                 m.isAvax ? Network.AVAX : Network.BNB,
                 formatAllocPoint(m?.pools[_i], m?.totalAllocPoints),
                 m?.tranches[_i],
@@ -97,6 +97,10 @@ function Markets(props: Props) {
                 m?.assets,
                 coingeckoPrices
               );
+            });
+
+            const tranchesApr = m.tranches.map((_t, _i) => {
+              const wtfAPR = wtfAprs[_i];
               const trancheAPR: string = _t.apy;
               const totalAPR =
                 wtfAPR !== "0.00" && wtfAPR !== undefined
@@ -122,7 +126,7 @@ function Markets(props: Props) {
                   Number(m.duration) / 86400 >= 1
                     ? Number(m.duration) / 86400 + " Days"
                     : Number(m.duration) / 60 + " Mins",
-                apr_markets: tranchesApr,
+                apr_markets: { tranchesApr: tranchesApr, wtfApr: wtfAprs },
                 tvl: tvl,
                 status: m.isRetired ? "Expired" : m.status[0] + m.status.slice(1).toLowerCase(),
               },
@@ -144,11 +148,11 @@ function Markets(props: Props) {
                   ? 1
                   : 0;
               case 4:
-                return Number(a.data.apr_markets[a.market.trancheCount - 1]) <
-                  Number(b.data.apr_markets[b.market.trancheCount - 1])
+                return Number(a.data.apr_markets.tranchesApr[a.market.trancheCount - 1]) <
+                  Number(b.data.apr_markets.tranchesApr[b.market.trancheCount - 1])
                   ? -1
-                  : Number(a.data.apr_markets[a.market.trancheCount - 1]) >
-                    Number(b.data.apr_markets[b.market.trancheCount - 1])
+                  : Number(a.data.apr_markets.tranchesApr[a.market.trancheCount - 1]) >
+                    Number(b.data.apr_markets.tranchesApr[b.market.trancheCount - 1])
                   ? 1
                   : 0;
               case 5:

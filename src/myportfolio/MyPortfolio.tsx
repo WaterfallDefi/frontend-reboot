@@ -328,7 +328,9 @@ function MyPortfolio(props: Props) {
                   />
                 ) : (
                   <div className="fold">
-                    Please switch network with the upper right corner dropdown to withdraw these funds.
+                    <div className="mini-wrapper">
+                      Please switch network with the upper right corner dropdown to withdraw these funds.
+                    </div>
                   </div>
                 ),
             };
@@ -453,7 +455,7 @@ function MyPortfolio(props: Props) {
       {userInvestsPayloadRendered.length === 0 ? (
         <div className="no-data">
           <NoData />
-          <span>{userInvestsPayloadPrerendered.length === 0 ? "Loading..." : "No Data"}</span>
+          <span>No Data</span>
         </div>
       ) : null}
     </div>

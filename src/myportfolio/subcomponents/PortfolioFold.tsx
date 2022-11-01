@@ -144,7 +144,10 @@ function PortfolioFold(props: Props) {
             )}
             {!isPending && !isActive && <button onClick={withdrawAll}>Withdraw All Tranches</button>}
           </div>
-          {autorollImplemented ? (
+        </div>
+
+        {autorollImplemented ? (
+          <div className="card">
             <div className="autoroll-toggle">
               <span>Auto Rolling</span>
               {!autorollPending ? (
@@ -168,8 +171,9 @@ function PortfolioFold(props: Props) {
                 {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
               </span>
             </div>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
+
         <div className="card">
           <div className="card-title">WTF Reward</div>
           <div className="card-value">
