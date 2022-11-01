@@ -6,7 +6,6 @@ import { Tranche } from "../../types";
 type Props = {
   tranches: Tranche[];
   totalTranchesTarget: string;
-  wipeRight: boolean;
 };
 
 const getPercentage = (num: string | undefined, total: string | undefined) => {
@@ -23,7 +22,7 @@ const COLORS: { [key: string]: string } = {
 };
 
 function TrancheStructure(props: Props) {
-  const { tranches, totalTranchesTarget, wipeRight } = props;
+  const { tranches, totalTranchesTarget } = props;
 
   const [hoveredTranche, setHoveredTranche] = useState<number>(-1);
 

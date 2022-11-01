@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
 
@@ -199,11 +199,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
             <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
           </div>
         </div>
-        <TrancheStructure
-          tranches={selectedMarket.tranches}
-          totalTranchesTarget={selectedMarket.totalTranchesTarget}
-          wipeRight={selectedStrategy !== undefined}
-        />
+        <TrancheStructure tranches={selectedMarket.tranches} totalTranchesTarget={selectedMarket.totalTranchesTarget} />
         <div className="chart-block historical-performance">
           <div className="background left-br right-br">
             <h3>Historical Performance</h3>
