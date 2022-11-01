@@ -216,6 +216,10 @@
     font-weight: 600;
     padding-right: 41px;
 
+    @media screen and (max-width: 1024px) {
+      justify-content: flex-end;
+    }
+
     .wallet-wrapper {
       display: flex;
       align-items: center;

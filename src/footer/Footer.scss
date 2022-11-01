@@ -21,6 +21,10 @@
     .logo-footer {
       background: url("./svgs/LogoFooter.svg");
       width: 420px;
+      @media screen and (max-width: 1024px) {
+        width: auto;
+      }
+
       height: 69px;
       background-repeat: no-repeat;
     }

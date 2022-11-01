@@ -15,6 +15,7 @@ import RedepositModal from "./subcomponents/RedepositModal";
 import ClaimModal from "./subcomponents/ClaimModal";
 import TermsModal from "./subcomponents/TermsModal";
 import { Market } from "../types";
+import { Burger } from "./svgs/burger";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -171,7 +172,9 @@ function Header(props: Props) {
           </Link>
         </div>
       </div>
-      <div className="mobile-left"></div>
+      <div className="mobile-left">
+        <Burger />
+      </div>
       <div className="right">
         <div className="wallet-wrapper">
           <div
