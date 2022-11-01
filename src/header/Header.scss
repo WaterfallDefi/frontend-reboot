@@ -208,6 +208,38 @@
     @media screen and (max-width: 1024px) {
       display: block;
     }
+
+    .mobile-menu {
+      position: fixed;
+      height: 100%;
+      background-color: $base-color-dark;
+      padding-right: 8px;
+      top: 8px;
+      left: 8px;
+      display: flex;
+      gap: 8px;
+      flex-direction: column;
+
+      .mobile-menu-burger {
+        height: 51px;
+        padding: 13px 0 0 13px;
+      }
+
+      .mobile-menu-block-wrapper {
+        display: flex;
+        align-items: center;
+        height: 69px;
+        width: 60vw;
+        font-size: $font-size-md;
+        border-radius: 5px;
+        background-color: $layer-color-dark;
+        padding-left: 24px;
+        a {
+          color: $base-color;
+          text-decoration: none;
+        }
+      }
+    }
   }
   .right {
     display: flex;

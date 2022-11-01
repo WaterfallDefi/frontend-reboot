@@ -85,6 +85,7 @@ function Header(props: Props) {
   // const { login, logout } = useAuth(network);
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState<boolean>(false);
 
   const location = useLocation();
 
@@ -173,7 +174,39 @@ function Header(props: Props) {
         </div>
       </div>
       <div className="mobile-left">
-        <Burger />
+        <div onClick={() => setMobileDropdownOpen(true)}>
+          <Burger />
+        </div>
+        {mobileDropdownOpen ? (
+          <div className="mobile-menu">
+            <div className="mobile-menu-burger" onClick={() => setMobileDropdownOpen(false)}>
+              <Burger />
+            </div>
+            <div className="mobile-menu-block-wrapper">
+              <Link
+                className="link"
+                to={"/"}
+                data-selected={location.pathname === "/"}
+                onClick={() => location.pathname === "/" && setMarkets(undefined)}
+              >
+                Markets
+              </Link>
+            </div>
+            <div className="mobile-menu-block-wrapper">
+              <Link className="link" to={"/portfolio"} data-selected={location.pathname === "/portfolio"}>
+                My Portfolio
+              </Link>
+            </div>
+            <div className="mobile-menu-block-wrapper">
+              <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
+            </div>
+            <div className="mobile-menu-block-wrapper">
+              <Link className="link" to={"/blog"} data-selected={location.pathname === "/blog"}>
+                Blog
+              </Link>
+            </div>
+          </div>
+        ) : null}
       </div>
       <div className="right">
         <div className="wallet-wrapper">
