@@ -17,6 +17,10 @@
     position: fixed;
     top: 69px;
     width: 420px;
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
+
     border-radius: 12px;
     left: calc(50vw - 210px);
     padding: 16px;

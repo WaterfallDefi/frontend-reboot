@@ -179,6 +179,7 @@ function IncreaseAction(props: Props) {
   }, [duration, extendLockTime, fetchBalance]);
 
   const onConfirmLockWTFRewards = async () => {
+    console.log("wtf???");
     if (!fromMasterChef) return;
     if (!claimReward) return;
     if (!locked && !duration) return;
@@ -548,10 +549,8 @@ function IncreaseAction(props: Props) {
         </div>
       )}
       {account && approved && fromMasterChef && (
-        <button
-        // onClick={() => !lockWTFRewardsLoading && onConfirmLockWTFRewards()}
-        >
-          {!lockWTFRewardsLoading ? "Confirm" : "Locking WTF Rewards..."}
+        <button onClick={() => !lockWTFRewardsLoading && onConfirmLockWTFRewards()}>
+          {!lockWTFRewardsLoading ? "Confirm" : "Claiming Rewards..."}
         </button>
       )}
     </div>

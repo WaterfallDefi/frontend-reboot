@@ -153,6 +153,9 @@ $font-size-xl: 30px;
         & svg {
           margin-left: 5px;
         }
+        .wtf {
+          color: $base-color;
+        }
       }
     }
 
@@ -315,6 +318,7 @@ $font-size-xl: 30px;
     &:focus {
       border-color: $highlight-color;
     }
+    color: $base-color;
   }
 
   .label {

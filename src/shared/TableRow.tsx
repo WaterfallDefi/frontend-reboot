@@ -80,7 +80,9 @@ function TableRow(props: Props) {
                       {numeral(columnData.tranchesApr[0]).format("0,0.[00]")} %
                     </span>
                     <br />
-                    <span style={{ fontSize: 10 }}>{"( +" + columnData.wtfApr[0] + "% WTF )"}</span>
+                    <span className="wtf" style={{ fontSize: 10 }}>
+                      {"( +" + columnData.wtfApr[0] + "% WTF )"}
+                    </span>
                   </div>
                 </div>
                 <div className="tranche-apr">
@@ -95,7 +97,9 @@ function TableRow(props: Props) {
                       {numeral(columnData.tranchesApr[1]).format("0,0.[00]")} %
                     </span>
                     <br />
-                    <span style={{ fontSize: 10 }}>{"( +" + columnData.wtfApr[1] + "% WTF )"}</span>
+                    <span className="wtf" style={{ fontSize: 10 }}>
+                      {"( +" + columnData.wtfApr[1] + "% WTF )"}
+                    </span>
                   </div>
                 </div>
                 {columnData.tranchesApr.length === 3 ? (
@@ -110,7 +114,9 @@ function TableRow(props: Props) {
                         {numeral(columnData.tranchesApr[2]).format("0,0.[00]")} %
                       </span>
                       <br />
-                      <span style={{ fontSize: 10 }}>{"( +" + columnData.wtfApr[2] + "% WTF )"}</span>
+                      <span className="wtf" style={{ fontSize: 10 }}>
+                        {"( +" + columnData.wtfApr[2] + "% WTF )"}
+                      </span>
                     </div>
                   </div>
                 ) : null}

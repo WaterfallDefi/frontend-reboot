@@ -147,7 +147,7 @@ function ClaimRedeposit(props: Props) {
         formatBigNumber2HexString(
           !(balance instanceof Array) ? new BigNumber(balance).times(BIG_TEN.pow(18)) : new BigNumber(0)
         ),
-        balance instanceof Array ? balance : []
+        balance instanceof Array ? balance : undefined
       );
       // successNotification("Withdraw All Success", "");
     } catch (e) {
