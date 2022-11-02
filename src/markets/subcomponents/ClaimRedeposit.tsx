@@ -115,18 +115,23 @@ function ClaimRedeposit(props: Props) {
       state: Modal.Txn,
       txn: undefined,
       status: "PENDING",
-      message: "Claiming ",
+      message: "Claiming",
     });
     try {
-      // await onClaimAll(_lockDurationIfLockNotExists, _lockDurationIfLockExists);
-      // successNotification("Claim Success", "");
+      await onClaimAll(_lockDurationIfLockNotExists, _lockDurationIfLockExists);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Claim Success",
+      });
     } catch (e) {
       console.error(e);
       setModal({
         state: Modal.Txn,
         txn: undefined,
         status: "REJECTED",
-        message: "Claim Fail ",
+        message: "Claim Fail",
       });
     } finally {
       setClaimRewardLoading(false);
@@ -149,7 +154,12 @@ function ClaimRedeposit(props: Props) {
         ),
         balance instanceof Array ? balance : undefined
       );
-      // successNotification("Withdraw All Success", "");
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Withdraw Success",
+      });
     } catch (e) {
       console.error(e);
       setModal({
