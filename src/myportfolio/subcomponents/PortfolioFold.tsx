@@ -70,7 +70,7 @@ function PortfolioFold(props: Props) {
 
   const { getAutoroll, changeAutoroll } = useAutoroll(network, trancheMasterAddress);
 
-  const { tranchesPendingReward } = usePendingWTFReward(network, masterWTFAddress, trancheCount);
+  const { totalPendingReward, tranchesPendingReward } = usePendingWTFReward(network, masterWTFAddress, trancheCount);
 
   useEffect(() => {
     if (autorollImplemented) {

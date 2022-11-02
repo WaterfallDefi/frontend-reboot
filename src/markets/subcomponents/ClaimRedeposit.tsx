@@ -269,10 +269,11 @@ function ClaimRedeposit(props: Props) {
       <div className="wtf-reward">
         <div className="label">WTF Reward</div>
         <div className="rtn-amt">
-          {totalPendingReward
+          {/* HACKING THIS OUT UNTIL WTF REWARD CLAIMING IS FIXED */}
+          {/* {totalPendingReward
             ? numeral(new BigNumber(totalPendingReward.toString()).dividedBy(BIG_TEN.pow(18))).format("0,0.[0000]")
-            : "--"}{" "}
-          WTF
+            : "--"}{" "} */}
+          -
         </div>
         <div className="buttons">
           <button onClick={() => claimPopup()}>Claim</button>

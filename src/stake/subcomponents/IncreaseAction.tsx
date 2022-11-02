@@ -15,18 +15,18 @@ import useApprove from "../../markets/hooks/useApprove";
 import { NETWORKS, StakingConfig } from "../../types";
 import { ModalProps, Network } from "../../WaterfallDefi";
 import useCheckLocked from "../hooks/useCheckLocked";
-import useExtendLockTime from "../hooks/useExtendLockTime";
+// import useExtendLockTime from "../hooks/useExtendLockTime";
 import useIncreaseLockAmount from "../hooks/useIncreaseLockAmount";
-import useLockAndStakeWTF from "../hooks/useLockAndStakeWTF";
+// import useLockAndStakeWTF from "../hooks/useLockAndStakeWTF";
 import { getMultiplier } from "../multiplier";
 
 type Props = {
   stakingConfig: StakingConfig;
   network: Network;
-  lockingWTF: string;
-  expiryTimestamp: string;
-  startTimestamp: string;
-  fetchLockingWTF: () => void;
+  lockingWTF?: string;
+  expiryTimestamp?: string;
+  startTimestamp?: string;
+  fetchLockingWTF?: () => void;
   fromMasterChef: boolean;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   wtfRewardsBalance?: string;
@@ -79,7 +79,7 @@ function IncreaseAction(props: Props) {
     actualBalance: actualWtfBalance,
   } = useBalance(network, network === Network.BNB ? WTFAddressBNB[NETWORKS.MAINNET] : WTFAddressAVAX[NETWORKS.MAINNET]);
   const { increaseLockAmount } = useIncreaseLockAmount(network);
-  const { extendLockTime } = useExtendLockTime(network);
+  // const { extendLockTime } = useExtendLockTime(network);
   const [approved, setApproved] = useState(false);
   const [locked, setLocked] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
@@ -90,7 +90,7 @@ function IncreaseAction(props: Props) {
 
   const { balance: VeWTFBalance } = useBalance(network, stakingConfig.earningTokenAddress);
 
-  const { lockAndStakeWTF } = useLockAndStakeWTF(network);
+  // const { lockAndStakeWTF } = useLockAndStakeWTF(network);
   const { onCheckApprove } = useCheckApprove(
     network,
     network === Network.BNB ? WTFAddressBNB[NETWORKS.MAINNET] : WTFAddressAVAX[NETWORKS.MAINNET],
@@ -161,29 +161,29 @@ function IncreaseAction(props: Props) {
     return diff;
   }, [newExpireDate, expiryTimestamp]);
 
-  const onExtendLockTime = useCallback(async () => {
-    if (!duration) return;
-    setExtendLockTimeLoading(true);
-    try {
-      await extendLockTime(Number(duration));
-      fetchBalance();
-      // successNotification("Extend Lock Time Success", "");
+  // const onExtendLockTime = useCallback(async () => {
+  //   if (!duration) return;
+  //   setExtendLockTimeLoading(true);
+  //   try {
+  //     await extendLockTime(Number(duration));
+  //     fetchBalance();
+  //     // successNotification("Extend Lock Time Success", "");
 
-      setSelectedValue(0);
-      setDatePickerValue(undefined);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setExtendLockTimeLoading(false);
-    }
-  }, [duration, extendLockTime, fetchBalance]);
+  //     setSelectedValue(0);
+  //     setDatePickerValue(undefined);
+  //   } catch (e) {
+  //     console.error(e);
+  //   } finally {
+  //     setExtendLockTimeLoading(false);
+  //   }
+  // }, [duration, extendLockTime, fetchBalance]);
 
-  const onConfirmLockWTFRewards = async () => {
-    console.log("wtf???");
+  const onConfirmClaimWTFRewards = async () => {
+    console.log("A", duration, locked);
     if (!fromMasterChef) return;
     if (!claimReward) return;
     if (!locked && !duration) return;
-    // console.log("A", duration, locked);
+    console.log("A", duration, locked);
     const _duration = duration ? duration.toString() : "0";
     setLockWTFRewardsLoading(true);
     try {
@@ -277,6 +277,7 @@ function IncreaseAction(props: Props) {
     if (!totalVeWTF) return "";
     if (!rewardPerBlock) return "";
     if (receivedVeWTF === "0") return "-";
+    if (!lockingWTF) return "-";
 
     let _balanceInput = balanceInput;
     if (fromMasterChef) _balanceInput = new BigNumber(wtfRewardsBalance || 0).dividedBy(BIG_TEN.pow(18)).toString();
@@ -355,26 +356,26 @@ function IncreaseAction(props: Props) {
     }
   }, [actualWtfBalance, balanceInput]);
 
-  const onConfirm = useCallback(async () => {
-    if (validateText !== undefined && validateText.length > 0) return;
-    if (Number(balanceInput) <= 0) return;
-    if (!duration) return;
-    setLoading(true);
-    try {
-      await lockAndStakeWTF(balanceInput, duration);
-      // await lockAndStakeWTF(balanceInput, 3600 * 2);
-      fetchBalance();
-      setLocked(true);
-      setBalanceInput("0");
-      // successNotification("Lock & Stake Success", "");
-      setSelectedValue(0);
-      setDatePickerValue(undefined);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  }, [validateText, duration, fetchBalance, lockAndStakeWTF, balanceInput]);
+  // const onConfirm = useCallback(async () => {
+  //   if (validateText !== undefined && validateText.length > 0) return;
+  //   if (Number(balanceInput) <= 0) return;
+  //   if (!duration) return;
+  //   setLoading(true);
+  //   try {
+  //     await lockAndStakeWTF(balanceInput, duration);
+  //     // await lockAndStakeWTF(balanceInput, 3600 * 2);
+  //     fetchBalance();
+  //     setLocked(true);
+  //     setBalanceInput("0");
+  //     // successNotification("Lock & Stake Success", "");
+  //     setSelectedValue(0);
+  //     setDatePickerValue(undefined);
+  //   } catch (e) {
+  //     console.error(e);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [validateText, duration, fetchBalance, lockAndStakeWTF, balanceInput]);
 
   const onIncreaseLockAmount = useCallback(async () => {
     if (validateText !== undefined && validateText.length > 0) return;
@@ -384,7 +385,7 @@ function IncreaseAction(props: Props) {
       await increaseLockAmount(balanceInput);
       fetchBalance();
       setBalanceInput("0");
-      fetchLockingWTF();
+      fetchLockingWTF && fetchLockingWTF();
       // successNotification("Increase Amount Success", "");
 
       setSelectedValue(0);
@@ -470,49 +471,55 @@ function IncreaseAction(props: Props) {
           {!increaseLockAmountLoading ? "Increase Lock Amount" : "Increasing Lock Amount..."}
         </button>
       )}
-      <div className="label" style={{ margin: "15px 0 10px" }}>
-        <p>Lock will expire in:</p>
-        {expiryTimestamp !== "0" &&
-          (duration
-            ? dayjs.unix(Number(expiryTimestamp) + Number(duration)).format("YYYY-MM-DD HH:mm:ss")
-            : dayjs.unix(Number(expiryTimestamp)).format("YYYY-MM-DD HH:mm:ss"))}
-        {expiryTimestamp === "0" && newExpireDate?.format("YYYY-MM-DD")}
-        <div style={{ display: "flex" }}>
-          <div className="max" style={{ marginRight: 10 }} onClick={resetLockTime}>
-            Reset
-          </div>
-          <div className="max" onClick={handleMaxLockTime}>
-            MAX
+      {!fromMasterChef && (
+        <div className="label" style={{ margin: "15px 0 10px" }}>
+          <p>Lock will expire in:</p>
+          {expiryTimestamp !== "0" &&
+            (duration
+              ? dayjs.unix(Number(expiryTimestamp) + Number(duration)).format("YYYY-MM-DD HH:mm:ss")
+              : dayjs.unix(Number(expiryTimestamp)).format("YYYY-MM-DD HH:mm:ss"))}
+          {expiryTimestamp === "0" && newExpireDate?.format("YYYY-MM-DD")}
+          <div style={{ display: "flex" }}>
+            <div className="max" style={{ marginRight: 10 }} onClick={resetLockTime}>
+              Reset
+            </div>
+            <div className="max" onClick={handleMaxLockTime}>
+              MAX
+            </div>
           </div>
         </div>
-      </div>
-      <input
-        type="date"
-        className="date-picker"
-        onChange={(e) => {
-          setDatePickerValue(dayjs(e.target.value));
-          if (locked) setBalanceInput("0");
-        }}
-      />
-      <div className="select-time-limit">
-        {[91.5, 183, 365.25, 730.5].map((value, i) => (
-          <div className="time-limit" key={value}>
-            <input
-              type="checkbox"
-              value={value}
-              checked={selectedValue === value}
-              onChange={(e) => {
-                setSelectedValue(Number(e.target.value));
-                setDatePickerValue(undefined);
-                if (locked) {
-                  setBalanceInput("0");
-                }
-              }}
-            />
-            <span>{timeLimitLabels[i]}</span>
-          </div>
-        ))}
-      </div>
+      )}
+      {!fromMasterChef && (
+        <input
+          type="date"
+          className="date-picker"
+          onChange={(e) => {
+            setDatePickerValue(dayjs(e.target.value));
+            if (locked) setBalanceInput("0");
+          }}
+        />
+      )}
+      {!fromMasterChef && (
+        <div className="select-time-limit">
+          {[91.5, 183, 365.25, 730.5].map((value, i) => (
+            <div className="time-limit" key={value}>
+              <input
+                type="checkbox"
+                value={value}
+                checked={selectedValue === value}
+                onChange={(e) => {
+                  setSelectedValue(Number(e.target.value));
+                  setDatePickerValue(undefined);
+                  if (locked) {
+                    setBalanceInput("0");
+                  }
+                }}
+              />
+              <span>{timeLimitLabels[i]}</span>
+            </div>
+          ))}
+        </div>
+      )}
       {validateTextLockTime && <div className="validate-text">{validateTextLockTime}</div>}
       {account && approved && locked && !isExpired && !fromMasterChef && (
         <button
@@ -534,22 +541,26 @@ function IncreaseAction(props: Props) {
         </button>
       )}
       {!account && <button onClick={() => login("injected")}>Connect Wallet</button>}
-      <div className="label">
-        <p>Convert Ratio</p>
-        <span>{!validateText && !validateTextLockTime && convertRatio}</span>
-      </div>
-      <div className="label">
-        <p>Received veWTF</p>
-        <span>{!validateText && !validateTextLockTime && receivedVeWTF}</span>
-      </div>
-      {totalVeWTF && rewardPerBlock && (
+      {!fromMasterChef && (
+        <div className="label">
+          <p>Convert Ratio</p>
+          <span>{!validateText && !validateTextLockTime && convertRatio}</span>
+        </div>
+      )}
+      {!fromMasterChef && (
+        <div className="label">
+          <p>Received veWTF</p>
+          <span>{!validateText && !validateTextLockTime && receivedVeWTF}</span>
+        </div>
+      )}
+      {!fromMasterChef && totalVeWTF && rewardPerBlock && (
         <div className="label">
           <p>APR</p>
           <span>{!validateText && !validateTextLockTime && currentAPR}</span>
         </div>
       )}
       {account && approved && fromMasterChef && (
-        <button onClick={() => !lockWTFRewardsLoading && onConfirmLockWTFRewards()}>
+        <button onClick={() => !lockWTFRewardsLoading && onConfirmClaimWTFRewards()}>
           {!lockWTFRewardsLoading ? "Confirm" : "Claiming Rewards..."}
         </button>
       )}
