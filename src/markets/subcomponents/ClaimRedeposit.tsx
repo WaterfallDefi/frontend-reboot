@@ -21,7 +21,7 @@ type Props = {
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
-  flexGrow: boolean;
+  // flexGrow: boolean;
 };
 
 const BIG_TEN = new BigNumber(10);
@@ -42,11 +42,11 @@ function ClaimRedeposit(props: Props) {
     setSelectedDepositAssetIndex,
     setSimulDeposit,
     setMarkets,
-    flexGrow,
+    // flexGrow,
   } = props;
 
-  const [claimRewardLoading, setClaimRewardLoading] = useState(false);
-  const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
+  // const [claimRewardLoading, setClaimRewardLoading] = useState(false);
+  // const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
 
   const [autoroll, setAutoroll] = useState(false);
   const [autorollPending, setAutorollPending] = useState<boolean>(true);
@@ -74,7 +74,7 @@ function ClaimRedeposit(props: Props) {
 
   const { account } = useWeb3React<Web3Provider>();
 
-  const { totalPendingReward, tranchesPendingReward } = usePendingWTFReward(
+  const { totalPendingReward } = usePendingWTFReward(
     selectedMarket.isAvax ? Network.AVAX : Network.BNB,
     selectedMarket.masterChefAddress,
     selectedMarket.trancheCount
@@ -109,7 +109,7 @@ function ClaimRedeposit(props: Props) {
   }, [selectedMarket.autorollImplemented, getAutorollBalance, selectedMarket.assets, coingeckoPrices, autorollBalance]);
 
   const claimReward = async (_lockDurationIfLockNotExists: string, _lockDurationIfLockExists: string) => {
-    setClaimRewardLoading(true);
+    // setClaimRewardLoading(true);
 
     setModal({
       state: Modal.Txn,
@@ -134,11 +134,11 @@ function ClaimRedeposit(props: Props) {
         message: "Claim Fail",
       });
     } finally {
-      setClaimRewardLoading(false);
+      // setClaimRewardLoading(false);
     }
   };
   const withdrawAll = async () => {
-    setWithdrawAllLoading(true);
+    // setWithdrawAllLoading(true);
 
     setModal({
       state: Modal.Txn,
@@ -169,7 +169,7 @@ function ClaimRedeposit(props: Props) {
         message: "Withdraw Fail ",
       });
     } finally {
-      setWithdrawAllLoading(false);
+      // setWithdrawAllLoading(false);
     }
   };
 

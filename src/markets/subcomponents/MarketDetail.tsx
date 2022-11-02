@@ -9,7 +9,7 @@ import {
   fetchSingleSubgraphCycleQuery,
   // getAPYHourly,
 } from "../../myportfolio/hooks/useSubgraphQuery";
-import { Market, StrategyFarm, Tranche } from "../../types";
+import { Market, Tranche } from "../../types";
 import { ModalProps, Network } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
@@ -43,7 +43,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const { account } = useWeb3React<Web3Provider>();
 
   const [selectedDepositAssetIndex, setSelectedDepositAssetIndex] = useState(0);
-  const [selectedStrategy, setSelectedStrategy] = useState<StrategyFarm | undefined>(selectedMarket.strategyFarms[0]);
   // const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
@@ -170,7 +169,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         <div className="chart-block portfolio-block">
           <div className="background left-br right-br">
             <h3>Strategy Composition</h3>
-            <PortfolioChart strategyFarms={selectedMarket.strategyFarms} setSelectedStrategy={setSelectedStrategy} />
+            <PortfolioChart strategyFarms={selectedMarket.strategyFarms} />
           </div>
         </div>
         <TrancheStructure tranches={selectedMarket.tranches} totalTranchesTarget={selectedMarket.totalTranchesTarget} />
@@ -196,7 +195,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
         setSimulDeposit={setSimulDeposit}
         setMarkets={setMarkets}
-        flexGrow={!selectedStrategy}
       />
       <Deposit
         isRedeposit={false}

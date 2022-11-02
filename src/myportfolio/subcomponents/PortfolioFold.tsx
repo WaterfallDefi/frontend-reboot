@@ -70,7 +70,7 @@ function PortfolioFold(props: Props) {
 
   const { getAutoroll, changeAutoroll } = useAutoroll(network, trancheMasterAddress);
 
-  const { totalPendingReward, tranchesPendingReward } = usePendingWTFReward(network, masterWTFAddress, trancheCount);
+  const { tranchesPendingReward } = usePendingWTFReward(network, masterWTFAddress, trancheCount);
 
   useEffect(() => {
     if (autorollImplemented) {
@@ -81,7 +81,7 @@ function PortfolioFold(props: Props) {
     }
   }, [autorollImplemented, getAutoroll]);
 
-  const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
+  // const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
   const [redeemLoading, setRedeemLoading] = useState(false);
 
   const [autoroll, setAutoroll] = useState(false);
@@ -92,7 +92,7 @@ function PortfolioFold(props: Props) {
   // !isMulticurrency ? useTrancheBalance(trancheMasterAddress) : useAllMulticurrencyTrancheBalance(trancheMasterAddress, assets.length);
 
   const withdrawAll = async () => {
-    setWithdrawAllLoading(true);
+    // setWithdrawAllLoading(true);
 
     try {
       if (!balance) return;
@@ -106,7 +106,7 @@ function PortfolioFold(props: Props) {
         message: "Withdraw Failed",
       });
     } finally {
-      setWithdrawAllLoading(false);
+      // setWithdrawAllLoading(false);
     }
   };
 
@@ -114,7 +114,12 @@ function PortfolioFold(props: Props) {
     setRedeemLoading(true);
     try {
       const result = await onRedeemDirect(i);
-      // successNotification("Redeem Success", "");
+      setModal({
+        state: Modal.Txn,
+        txn: result.hash,
+        status: "COMPLETED",
+        message: "Claim Success",
+      });
     } catch (e) {
       console.error(e);
     } finally {
@@ -191,7 +196,7 @@ function PortfolioFold(props: Props) {
           <div>
             <p>
               After maturity, you can choose to withdraw all the principal + yield. The platform will charge a fee of
-              (principal + all yield in the current period) x
+              (principal + all yield in the current period) x <span className="fee">{fee + "%"}</span>
             </p>
             <p>
               You can also select roll-deposit to the next cycle, and you can change the Tranche and amount during

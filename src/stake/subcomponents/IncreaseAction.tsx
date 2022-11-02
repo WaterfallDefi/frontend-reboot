@@ -64,7 +64,7 @@ function IncreaseAction(props: Props) {
     wtfRewardsBalance,
     totalVeWTF,
     rewardPerBlock,
-    claimReward,
+    // claimReward,
   } = props;
   const { account } = useWeb3React<Web3Provider>();
   const { login } = useAuth(network);
@@ -83,10 +83,10 @@ function IncreaseAction(props: Props) {
   const [approved, setApproved] = useState(false);
   const [locked, setLocked] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
-  const [lockWTFRewardsLoading, setLockWTFRewardsLoading] = useState(false);
+  const [lockWTFRewardsLoading] = useState(false); //no setStateAction! lock WTF has been disabled until new staking congtract
   const [increaseLockAmountLoading, setIncreaseLockAmountLoading] = useState(false);
-  const [extendLockTimeLoading, setExtendLockTimeLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [extendLockTimeLoading] = useState(false); //no setStateAction! extend lock WTF has been disabled until new staking congtract
+  const [loading] = useState(false); //no setStateAction!
 
   const { balance: VeWTFBalance } = useBalance(network, stakingConfig.earningTokenAddress);
 

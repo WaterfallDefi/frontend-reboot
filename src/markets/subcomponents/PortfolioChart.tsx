@@ -10,7 +10,6 @@ type StrategyFarm = {
 
 type Props = {
   strategyFarms: StrategyFarm[];
-  setSelectedStrategy: React.Dispatch<React.SetStateAction<StrategyFarm | undefined>>;
 };
 
 const COLORS = ["rgb(19,19,44)", "#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
