@@ -15,12 +15,17 @@ function ClaimModal(props: Props) {
 
   const stakingConfig = network === Network.BNB ? Stakings[0] : Stakings[1];
 
+  console.log("balance");
+  console.log(balance);
+
   return (
     <div className="modal claim">
       <h1>Claim</h1>
+      <p>To claim your locked WTF, stake it for at least three months and increase your yield!</p>
       <IncreaseAction
         network={network}
         stakingConfig={stakingConfig}
+        expiryTimestamp={"0"}
         fromMasterChef={true}
         wtfRewardsBalance={balance}
         claimReward={claimReward}
