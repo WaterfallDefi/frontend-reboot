@@ -167,18 +167,15 @@
   }
 
   .pc-left {
-    display: grid;
-    gap: 36px;
-    grid-auto-flow: column;
+    display: flex;
+    gap: 24px;
     @media screen and (max-width: 1024px) {
       display: none;
     }
 
-    .waterfalldefi {
-      width: 84px;
-      height: 42px;
-      background: url("./waterfalldefi.png");
-      background-size: cover;
+    .waterfall-defi-logo {
+      width: 24px;
+      overflow-x: hidden;
     }
 
     .menu-block-wrapper {

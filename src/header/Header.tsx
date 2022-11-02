@@ -16,6 +16,7 @@ import ClaimModal from "./subcomponents/ClaimModal";
 import TermsModal from "./subcomponents/TermsModal";
 import { Market } from "../types";
 import { Burger } from "./svgs/burger";
+import { WaterFallDark } from "./svgs";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -143,7 +144,9 @@ function Header(props: Props) {
         />
       ) : null}
       <div className="pc-left">
-        <div className="waterfalldefi" />
+        <div className="waterfall-defi-logo">
+          <WaterFallDark />
+        </div>
         <div className="menu-block-wrapper">
           <Link
             className="link"
@@ -274,13 +277,6 @@ function Header(props: Props) {
           )}
         </div>
       </div>
-      {/* todo: mobile drawers */}
-      {/* <header>
-              <Burger />
-              <img src="url(/waterfalldefi.png)" />
-            </header> */}
-      {/* todo: Connect Wallet Modal component in /subcomponents */}
-      {/* <ConnectWalletModal/> */}
     </div>
   );
 }
