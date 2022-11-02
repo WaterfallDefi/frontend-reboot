@@ -18,7 +18,7 @@ enum ConnectorNames {
 
 const walletconnect = new WalletConnectConnector({
   rpc: {
-    43114: "https://api.avax-test.network/ext/bc/C/rpc",
+    43114: "https://api.avax.network/ext/bc/C/rpc",
     56: "https://bsc-dataseed.binance.org/",
   },
   supportedChainIds: [43114, 56],
@@ -35,7 +35,7 @@ const connectorsByName = {
   walletconnect: walletconnect,
 };
 
-const AVAXNodes = ["https://api.avax-test.network/ext/bc/C/rpc", "https://rpc.ankr.com/avalanche"];
+const AVAXNodes = ["https://api.avax.network/ext/bc/C/rpc", "https://rpc.ankr.com/avalanche"];
 const BNBNodes = [
   "https://bsc-dataseed.binance.org/",
   "https://bsc-dataseed1.defibit.io",
