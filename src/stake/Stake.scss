@@ -90,6 +90,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
         flex-direction: column;
       }
       .stake-info {
+        width: auto;
         .stake-info-inner {
           .veWTF {
             & .stake-wtf {
@@ -105,6 +106,11 @@ $evenPadding: calc((100vw - 1072px) / 2);
                   font-size: 12px;
                 }
               }
+            }
+          }
+          .WTF-reward {
+            span {
+              color: $base-color;
             }
           }
         }
@@ -242,8 +248,8 @@ $evenPadding: calc((100vw - 1072px) / 2);
         color: $text-color;
         position: relative;
         z-index: 1;
-        @media screen and (max-width: 700px) {
-          width: 100%;
+        @media screen and (max-width: 1024px) {
+          width: auto;
         }
 
         .segment {

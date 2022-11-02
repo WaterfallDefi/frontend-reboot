@@ -1,22 +1,13 @@
-import './Stake.scss';
+import "./Stake.scss";
 
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from "react";
 
-import BigNumber from 'bignumber.js';
-import numeral from 'numeral';
-import {
-  VictoryAxis,
-  VictoryChart,
-  VictoryLine,
-  VictoryVoronoiContainer,
-} from 'victory';
+import BigNumber from "bignumber.js";
+import numeral from "numeral";
+import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from "victory";
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 
 import {
   AVAXMultiSigAddress,
@@ -24,26 +15,21 @@ import {
   DaiEPendingRewardLiquidFillChartAddress,
   MultiSigAddress,
   WAVAXDepositAddress,
-} from '../config/address';
-import Stakings from '../config/staking';
-import useBalance from '../hooks/useBalance';
-import { useWTFPriceLP } from '../hooks/useWtfPriceFromLP';
-import { NETWORKS } from '../types';
-import {
-  Modal,
-  ModalProps,
-  Mode,
-  Network,
-} from '../WaterfallDefi';
-import useBalanceOfOtherAddress from './hooks/useBalanceOfOtherAddress';
-import useClaimRewards from './hooks/useClaimRewards';
-import useGetLockingWTF from './hooks/useGetLockingWTF';
-import { usePendingReward } from './hooks/usePendingReward';
-import { useStakingPool } from './hooks/useStaking';
-import useTotalSupply from './hooks/useTotalSupply';
-import IncreaseAction from './subcomponents/IncreaseAction';
-import UnstakeAction from './subcomponents/UnstakeAction';
-import WTFToken from './svgs/WTFToken';
+} from "../config/address";
+import Stakings from "../config/staking";
+import useBalance from "../hooks/useBalance";
+import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
+import { NETWORKS } from "../types";
+import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
+import useBalanceOfOtherAddress from "./hooks/useBalanceOfOtherAddress";
+import useClaimRewards from "./hooks/useClaimRewards";
+import useGetLockingWTF from "./hooks/useGetLockingWTF";
+import { usePendingReward } from "./hooks/usePendingReward";
+import { useStakingPool } from "./hooks/useStaking";
+import useTotalSupply from "./hooks/useTotalSupply";
+import IncreaseAction from "./subcomponents/IncreaseAction";
+import UnstakeAction from "./subcomponents/UnstakeAction";
+import WTFToken from "./svgs/WTFToken";
 
 // import useClaimFeeRewards from "./hooks/useClaimFeeRewards";
 
@@ -61,11 +47,9 @@ const BLOCK_TIME = (chainId: string) => {
 };
 
 const actualMultiplier = [
-  0.00416666666666667, 0.01, 0.01625, 0.0250000000000001, 0.0354166666666666,
-  0.05, 0.0670833333333334, 0.0899999999999999, 0.11625, 0.145833333333333,
-  0.183333333333333, 0.235, 0.2925, 0.361666666666666, 0.44375, 0.54,
-  0.665833333333333, 0.81, 0.981666666666667, 1.18333333333333, 1.435,
-  1.72333333333333, 2.07, 2.49,
+  0.00416666666666667, 0.01, 0.01625, 0.0250000000000001, 0.0354166666666666, 0.05, 0.0670833333333334,
+  0.0899999999999999, 0.11625, 0.145833333333333, 0.183333333333333, 0.235, 0.2925, 0.361666666666666, 0.44375, 0.54,
+  0.665833333333333, 0.81, 0.981666666666667, 1.18333333333333, 1.435, 1.72333333333333, 2.07, 2.49,
 ];
 
 enum StakeKey {
@@ -101,12 +85,8 @@ function Stake(props: Props) {
 
   const { actualBalance: pendingReward } = useBalanceOfOtherAddress(
     network,
-    network === Network.BNB
-      ? BUSDAddress[NETWORKS.MAINNET]
-      : DaiEPendingRewardLiquidFillChartAddress[NETWORKS.MAINNET],
-    network === Network.BNB
-      ? MultiSigAddress[NETWORKS.MAINNET]
-      : AVAXMultiSigAddress[NETWORKS.MAINNET]
+    network === Network.BNB ? BUSDAddress[NETWORKS.MAINNET] : DaiEPendingRewardLiquidFillChartAddress[NETWORKS.MAINNET],
+    network === Network.BNB ? MultiSigAddress[NETWORKS.MAINNET] : AVAXMultiSigAddress[NETWORKS.MAINNET]
   );
 
   const { actualBalance: pendingRewardWAVAX } = useBalanceOfOtherAddress(
@@ -115,34 +95,15 @@ function Stake(props: Props) {
     AVAXMultiSigAddress[NETWORKS.MAINNET]
   );
 
-  const _pendingReward = numeral(
-    new BigNumber(pendingReward).times(0.8).toString()
-  ).format("0,0.[00]");
+  const _pendingReward = numeral(new BigNumber(pendingReward).times(0.8).toString()).format("0,0.[00]");
 
-  const _pendingRewardWAVAX = numeral(
-    new BigNumber(pendingRewardWAVAX).times(0.8).toString()
-  ).format("0,0.[00]");
+  const _pendingRewardWAVAX = numeral(new BigNumber(pendingRewardWAVAX).times(0.8).toString()).format("0,0.[00]");
 
-  const { balance: VeWTFBalance } = useBalance(
-    network,
-    stakingConfig.earningTokenAddress
-  );
-  const VeWTFTotalSupply = useTotalSupply(
-    network,
-    stakingConfig.earningTokenAddress
-  );
-  const {
-    total: lockingWTF,
-    expiryTimestamp,
-    startTimestamp,
-    fetchLockingWTF,
-  } = useGetLockingWTF(network, account);
+  const { balance: VeWTFBalance } = useBalance(network, stakingConfig.earningTokenAddress);
+  const VeWTFTotalSupply = useTotalSupply(network, stakingConfig.earningTokenAddress);
+  const { total: lockingWTF, expiryTimestamp, startTimestamp, fetchLockingWTF } = useGetLockingWTF(network, account);
 
-  const pendingWTFRewards = usePendingReward(
-    network,
-    stakingConfig.rewardTokenAddress,
-    account
-  );
+  const pendingWTFRewards = usePendingReward(network, stakingConfig.rewardTokenAddress, account);
   const { price: wtfPrice } = useWTFPriceLP();
 
   const { claimRewards } = useClaimRewards(network);
@@ -173,11 +134,8 @@ function Stake(props: Props) {
   const _VeWTFBalance = numeral(VeWTFBalance).value() || 0;
   const _VeWTFTotalSupply = numeral(VeWTFTotalSupply).value() || 0;
   const VeWTFRatio =
-    VeWTFTotalSupply && VeWTFBalance
-      ? numeral((_VeWTFBalance / _VeWTFTotalSupply) * 100).format("0,0.[0000]")
-      : "-";
-  const VeWTFRatioPercentage =
-    VeWTFTotalSupply && VeWTFBalance ? _VeWTFBalance / _VeWTFTotalSupply : 0;
+    VeWTFTotalSupply && VeWTFBalance ? numeral((_VeWTFBalance / _VeWTFTotalSupply) * 100).format("0,0.[0000]") : "-";
+  const VeWTFRatioPercentage = VeWTFTotalSupply && VeWTFBalance ? _VeWTFBalance / _VeWTFTotalSupply : 0;
 
   const currentAPR = useMemo(() => {
     if (!rewardPerBlock) return "";
@@ -232,9 +190,7 @@ function Stake(props: Props) {
         <div className="APY-card">
           <div>
             <p>Lock WTF to Earn</p>
-            <div>
-              Receive Vote Escrowed WTF (veWTF) that gets you daily WTF rewards,
-            </div>
+            <div>Receive Vote Escrowed WTF (veWTF) that gets you daily WTF rewards,</div>
             <div>platform fees shares and more!</div>
           </div>
           <span>APR up to {maxAPR}%</span>
@@ -246,18 +202,13 @@ function Stake(props: Props) {
               {numeral(totalLocked).format("0,0.[0000]")}
             </div>
             <div>
-              Total veWTF Minted: <WTFToken />{" "}
-              {numeral(_VeWTFTotalSupply).format("0,0.[0000]")}
+              Total veWTF Minted: <WTFToken /> {numeral(_VeWTFTotalSupply).format("0,0.[0000]")}
             </div>
           </div>
           <div className="est-reward-pool">
             <span className="bold">Estimated Reward Pool</span>
             <div className={"pendingReward"}>
-              <div
-                className={
-                  "coin " + (network === Network.AVAX ? " dai" : " busd")
-                }
-              />
+              <div className={"coin " + (network === Network.AVAX ? " dai" : " busd")} />
               {_pendingReward}
               {network === Network.AVAX ? " DAI.e" : " BUSD"}
             </div>
@@ -307,24 +258,16 @@ function Stake(props: Props) {
                 setModal={setModal}
               />
             )}
-            {activatedKey === StakeKey.Unstake && (
-              <UnstakeAction network={network} stakingConfig={stakingConfig} />
-            )}
+            {activatedKey === StakeKey.Unstake && <UnstakeAction network={network} stakingConfig={stakingConfig} />}
           </div>
           <div className="stake-info">
             <div className="stake-info-inner">
               <div className="veWTF">
                 <p>Your veWTF</p>
-                <p>
-                  {VeWTFBalance
-                    ? numeral(_VeWTFBalance).format("0,0.[0000]")
-                    : "-"}
-                </p>
+                <p>{VeWTFBalance ? numeral(_VeWTFBalance).format("0,0.[0000]") : "-"}</p>
                 <span>
                   {VeWTFBalance !== "0" &&
-                    `(1 veWTF= ${numeral(
-                      Number(lockingWTF) / Number(_VeWTFBalance)
-                    ).format("0,0.[0000]")} WTF)`}
+                    `(1 veWTF= ${numeral(Number(lockingWTF) / Number(_VeWTFBalance)).format("0,0.[0000]")} WTF)`}
                 </span>
                 <span>{VeWTFRatio && VeWTFRatio}% of veWTF ownership</span>
                 <div className="stake-wtf">Stake WTF get veWTF</div>
@@ -349,9 +292,7 @@ function Stake(props: Props) {
                 </span>
                 <button
                   onClick={() => !harvestLoading && onHarvest()}
-                  className={
-                    "harvest-btn" + (harvestLoading ? " harvesting" : "")
-                  }
+                  className={"harvest-btn" + (harvestLoading ? " harvesting" : "")}
                 >
                   {!harvestLoading ? "Harvest" : "Harvesting..."}&nbsp;&nbsp;🐳
                 </button>
@@ -361,28 +302,11 @@ function Stake(props: Props) {
             <div className="stake-graph">
               <div>veWTF - Locking Period vs Predicted APR</div>
               <VictoryChart
-                containerComponent={
-                  <VictoryVoronoiContainer
-                    labels={({ datum }) => datum._y}
-                    activateLabels={false}
-                  />
-                }
+                containerComponent={<VictoryVoronoiContainer labels={({ datum }) => datum._y} activateLabels={false} />}
               >
-                <VictoryAxis
-                  tickCount={12}
-                  tickValues={[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23]}
-                  label={"Months"}
-                />
-                <VictoryAxis
-                  scale="linear"
-                  dependentAxis
-                  tickCount={6}
-                  label={"APR%"}
-                />
-                <VictoryLine
-                  data={data}
-                  style={{ data: { stroke: "#0066FF" } }}
-                />
+                <VictoryAxis tickCount={12} tickValues={[1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23]} label={"Months"} />
+                <VictoryAxis scale="linear" dependentAxis tickCount={6} label={"APR%"} />
+                <VictoryLine data={data} style={{ data: { stroke: "#0066FF" } }} />
               </VictoryChart>
             </div>
             <div className="your-stake">
@@ -391,19 +315,14 @@ function Stake(props: Props) {
                 <span>Your stake</span>
                 <span>
                   <WTFToken />
-                  {lockingWTF !== "0"
-                    ? numeral(lockingWTF).format("0,0.[0000]")
-                    : "-"}{" "}
-                  WTF
+                  {lockingWTF !== "0" ? numeral(lockingWTF).format("0,0.[0000]") : "-"} WTF
                 </span>
               </section>
               <section>
                 <span>Your ratio</span>
                 <span>
                   {lockingWTF !== "0"
-                    ? numeral(
-                        (Number(_VeWTFBalance) / Number(lockingWTF)) * 100
-                      ).format("0,0.[00]")
+                    ? numeral((Number(_VeWTFBalance) / Number(lockingWTF)) * 100).format("0,0.[00]")
                     : "-"}{" "}
                   %
                 </span>
@@ -415,9 +334,7 @@ function Stake(props: Props) {
               <section>
                 <span>Expire date:</span>
                 <span>
-                  {expiryTimestamp &&
-                    expiryTimestamp !== "0" &&
-                    new Date(Number(expiryTimestamp)).toDateString()}
+                  {expiryTimestamp && expiryTimestamp !== "0" && new Date(Number(expiryTimestamp)).toDateString()}
                 </span>
               </section>
             </div>

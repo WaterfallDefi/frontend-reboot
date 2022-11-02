@@ -335,6 +335,9 @@
       .wtf-reward {
         display: flex;
         gap: 24px;
+        span {
+          color: $base-color;
+        }
       }
 
       .buttons {
