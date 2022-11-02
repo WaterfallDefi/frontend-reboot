@@ -22,9 +22,6 @@ const useWithdraw = (
 
   const handleWithdraw = useCallback(
     async (amount: string, multicurrencyAmount?: string[]) => {
-      console.log("AMOUNT");
-      console.log(amount);
-      console.log(multicurrencyAmount);
       const tx = await trancheContract.withdraw(multicurrencyAmount ? multicurrencyAmount : amount);
       const receipt = await tx.wait();
       if (receipt.status === 1) {
