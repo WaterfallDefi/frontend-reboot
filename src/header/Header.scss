@@ -2,10 +2,6 @@
 
 .header-wrapper {
   width: 100%;
-  @media screen and (max-width: 1024px) {
-    width: auto;
-  }
-
   position: fixed;
   top: 0px;
   left: 0px;

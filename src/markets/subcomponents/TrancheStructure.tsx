@@ -112,7 +112,7 @@ function TrancheStructure(props: Props) {
                 setHoveredTranche(i);
               }}
               className={"tranche-stack" + (hoveredTranche === i ? " hovered" : "")}
-              style={{ height: t.value * 2 + "px", background: COLORS[t.name] }}
+              style={{ height: t.value * 1.9 + "px", background: COLORS[t.name] }}
             >
               <span>{t.value}%</span>
             </div>

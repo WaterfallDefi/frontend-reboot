@@ -67,6 +67,7 @@ $font-size-xl: 30px;
   @media screen and (max-width: 1024px) {
     flex-wrap: wrap;
     height: 420px;
+    padding: 24px;
     .col {
       width: 100%;
     }
@@ -472,8 +473,8 @@ $font-size-xl: 30px;
       display: grid;
       grid-template-columns: 45% calc(55% - 24px);
       grid-column-gap: 24px;
-      @media screen and (max-width: 675px) {
-        grid-template-columns: "none";
+      @media screen and (max-width: 1024px) {
+        grid-template-columns: none;
         grid-row-gap: 20px;
       }
       .tranches {
@@ -824,7 +825,7 @@ $font-size-xl: 30px;
             color: red; //temp
           }
           .important-notes {
-            background-color: $layer-color;
+            background-color: $layer-color-dark-2;
 
             & > div:nth-of-type(1) {
               color: $highlight-color;
@@ -837,6 +838,10 @@ $font-size-xl: 30px;
             }
             &.placeholder {
               background-color: $base-color-dark;
+            }
+
+            .notes-content {
+              color: $base-color;
             }
           }
           .redemption-fee {

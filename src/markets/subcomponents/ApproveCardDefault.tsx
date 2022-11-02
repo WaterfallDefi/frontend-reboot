@@ -372,7 +372,7 @@ function ApproveCardDefault(props: Props) {
       {selectTrancheIdx !== undefined ? (
         <div className="important-notes">
           <div>Important Notes</div>
-          <div>{notes[selectTrancheIdx]}</div>
+          <div className="notes-content">{notes[selectTrancheIdx]}</div>
         </div>
       ) : (
         <div className="important-notes placeholder" />
