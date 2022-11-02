@@ -281,7 +281,7 @@
             .hoverPrice {
               position: absolute;
               left: 12px;
-              font-size: 30px;
+              font-size: $font-size-xl;
             }
           }
         }
@@ -322,7 +322,7 @@
                   font-size: $font-size-sm;
                 }
                 .comment {
-                  font-size: 12px;
+                  font-size: $font-size-xs;
                 }
               }
 
