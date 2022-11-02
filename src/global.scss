@@ -25,7 +25,7 @@ $font-size-xl: 30px;
   flex: 1;
   margin-bottom: 32px;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1024px) {
     padding: 0;
     width: 100%;
     align-items: flex-start;
@@ -45,7 +45,7 @@ $font-size-xl: 30px;
       border-bottom-right-radius: 12px;
     }
     background-color: $layer-color;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1024px) {
       display: none;
     }
     span {
@@ -502,7 +502,7 @@ $font-size-xl: 30px;
             opacity: 0.5;
             cursor: default;
           }
-          @media screen and (max-width: 768px) {
+          @media screen and (max-width: 1024px) {
             & {
               height: auto;
             }
