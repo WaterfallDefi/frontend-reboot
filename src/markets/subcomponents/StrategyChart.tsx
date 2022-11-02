@@ -27,8 +27,8 @@ const StrategyChart = (props: Props) => {
       )}
       <VictoryChart
         key="chart"
-        width={window.innerWidth * 0.5}
-        height={420}
+        width={window.innerWidth > 1024 ? window.innerWidth * 0.5 : window.innerWidth}
+        height={window.innerWidth > 1024 ? 420 : 369}
         containerComponent={
           data && (
             <VictoryVoronoiContainer

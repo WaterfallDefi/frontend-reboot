@@ -40,6 +40,12 @@
     padding: 100px 0 64px 24px;
     width: calc(100% - 48px);
     margin: 0 auto;
+    @media screen and (max-width: 1024px) {
+      padding: 100px 0 0 0;
+      width: calc(100% - 24px);
+      margin: 0;
+    }
+
     min-height: 100vh;
 
     .information {
@@ -54,7 +60,7 @@
         padding: 12px 24px;
         border-radius: 5px;
         background-color: $base-color;
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 1024px) {
           flex-direction: column;
           width: 100%;
         }
@@ -126,6 +132,12 @@
       border-radius: 5px;
       background: $layer-color-dark;
       display: flex;
+      @media screen and (max-width: 1024px) {
+        width: auto;
+        flex-direction: column;
+        flex-wrap: nowrap;
+      }
+
       color: $base-color;
       justify-content: space-between;
 
@@ -191,8 +203,9 @@
       padding: 24px 24px 20px;
       gap: 20px;
 
-      @media screen and (max-width: 768px) {
+      @media screen and (max-width: 1024px) {
         flex-direction: column;
+        padding: 24px 0 20px 24px;
       }
 
       .chart-block {
@@ -205,6 +218,7 @@
           top: 0;
           left: 0;
           height: 100%;
+          width: 100%;
           background: $base-color;
 
           &.left-br {
@@ -247,6 +261,11 @@
           .strategy-chart {
             height: 375px;
             width: 50vw;
+            @media screen and (max-width: 1024px) {
+              height: 369px;
+              width: 100%;
+            }
+
             .hoverPrice {
               position: absolute;
               left: 12px;
@@ -335,9 +354,6 @@
       .wtf-reward {
         display: flex;
         gap: 24px;
-        span {
-          color: $base-color;
-        }
       }
 
       .buttons {
