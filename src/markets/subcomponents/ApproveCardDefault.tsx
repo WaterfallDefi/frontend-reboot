@@ -259,7 +259,7 @@ function ApproveCardDefault(props: Props) {
       if (_remaining) setBalanceInput(_remaining);
     } else {
       if (compareNum(_remaining, _balance)) {
-        if (_balance) setBalanceInput(_balance);
+        if (_balance) setBalanceInput(actualBalanceWallet);
       } else if (compareNum(_balance, _remaining, true)) {
         if (_remaining) setBalanceInput(_remaining);
       }
