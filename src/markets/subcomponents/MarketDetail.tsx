@@ -71,12 +71,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     const fetchSubgraph = async () => {
-      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(
-        //temporary hack, REMOVE this ternary once we've successfully run (New) BNB Falls for a few more cycles
-        selectedMarket.subgraphURL === "https://api2.waterfalldefi.org/subgraphs/name/waterfall/bsc-alpVeBnb"
-          ? "https://api2.waterfalldefi.org/subgraphs/name/waterfall/waterfall-subgraph-busdfalls4"
-          : selectedMarket.subgraphURL
-      );
+      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(selectedMarket.subgraphURL);
       const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
         y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
