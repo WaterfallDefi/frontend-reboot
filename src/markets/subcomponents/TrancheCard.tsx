@@ -60,7 +60,7 @@ function TrancheCard(props: Props) {
             new BigNumber(tranche.autoPrincipal ? tranche.autoPrincipal : "0")
               .plus(new BigNumber(tranche.principal))
               .toString(),
-            (Number(tranche.target) - 0.5).toString()
+            Number(tranche.target).toString()
           ),
     [selectedMarket.autorollImplemented, tranche.principal, tranche.target, tranche.autoPrincipal]
   );
