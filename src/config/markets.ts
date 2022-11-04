@@ -2,15 +2,7 @@ import {
   DAI_E_DepositAddress,
   WAVAXDepositAddress,
   BUSDAddress,
-  BULL_BNB_TrancheMasterAddress,
-  BULL_BNB_WTFMasterAddress,
-  BULL_BUSDBNB_sALPACA_Address,
-  BULL_USDTBNB_sALPACA_Address,
-  BEAR_BNB_TrancheMasterAddress,
-  BEAR_BNB_WTFMasterAddress,
   WBNB_Address,
-  BEAR_BNBBUSD_sALPACA_Address,
-  BEAR_BNBUSDT_sALPACA_Address,
   DAIFallsTrancheMasterAddress2,
   DAIFallsMasterWTFAddress2,
   DAIBenqiStrategyAddress2,
@@ -19,7 +11,6 @@ import {
   WAVAXFallsMasterWTFAddress2,
   WAVAXBenqiStrategyAddress2,
   WAVAXTraderJoeStrategyAddress2,
-  USDT_Address_BNB,
   BUSDTripleStratTrancheMasterAddress,
   BUSDTripleStratMasterWTFAddress,
   BUSDTriple_AlpacaStrategyAddress,
@@ -35,8 +26,8 @@ import {
   StargateBenqi_BenqiStrategyAddress,
   USDC_Address_AVAX,
 } from "./address";
-import Tranches from "./abis/TrancheMaster.json";
-import MC_Tranches from "./abis/MC_TrancheMaster.json";
+// import Tranches from "./abis/TrancheMaster.json";
+// import MC_Tranches from "./abis/MC_TrancheMaster.json";
 import AR_Tranches from "./abis/AR_TrancheMaster.json";
 import MasterChef from "./abis/MasterChef.json";
 import WTF from "./abis/WTF.json";
