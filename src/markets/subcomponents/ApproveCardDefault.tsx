@@ -197,7 +197,7 @@ function ApproveCardDefault(props: Props) {
   const validateText = useMemo(() => {
     const _remaining = remainingExact.replace(/,/g, "");
     const _balanceInput = balanceInput;
-    if (compareNum(_balanceInput, actualBalanceWallet, false)) {
+    if (compareNum(_balanceInput, actualBalanceWallet, true)) {
       if (!selectedMarket.wrapAvax) return "Insufficient Balance";
     }
     if (compareNum(_balanceInput, _remaining, true)) {
