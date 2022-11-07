@@ -255,11 +255,12 @@ function ApproveCardDefault(props: Props) {
     const _balance =
       balance instanceof Array ? balance[selectedDepositAssetIndex].replace(/,/g, "") : balance.replace(/,/g, "");
     const _remaining = remainingExact.replace(/,/g, "");
+
     if (selectedMarket.wrapAvax) {
       if (_remaining) setBalanceInput(_remaining);
     } else {
       if (compareNum(_remaining, _balance)) {
-        if (_balance) setBalanceInput(actualBalanceWallet);
+        if (_balance) setBalanceInput(isRedeposit ? _balance : actualBalanceWallet);
       } else if (compareNum(_balance, _remaining, true)) {
         if (_remaining) setBalanceInput(_remaining);
       }
