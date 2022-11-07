@@ -197,13 +197,14 @@ function ApproveCardDefault(props: Props) {
   const validateText = useMemo(() => {
     const _remaining = remainingExact.replace(/,/g, "");
     const _balanceInput = balanceInput;
-    if (compareNum(_balanceInput, actualBalanceWallet, true)) {
+    const _balance: string = balance instanceof Array ? "0" : balance;
+    if (compareNum(_balanceInput, isRedeposit ? _balance : actualBalanceWallet, true)) {
       if (!selectedMarket.wrapAvax) return "Insufficient Balance";
     }
     if (compareNum(_balanceInput, _remaining, true)) {
       return "Maximum deposit amount = " + remaining;
     }
-  }, [remaining, remainingExact, balanceInput, actualBalanceWallet, selectedMarket.wrapAvax]);
+  }, [remaining, remainingExact, balance, actualBalanceWallet, balanceInput, selectedMarket.wrapAvax, isRedeposit]);
 
   const handleWrapAvax = async () => {
     setDepositLoading(true);
