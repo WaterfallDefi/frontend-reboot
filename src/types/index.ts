@@ -10,7 +10,7 @@ export interface Tranche {
   fee: string;
   principal: string;
   target: string;
-  autoPrincipal?: string;
+  autoPrincipal: string;
   validPercent?: string;
 }
 export interface Invest {

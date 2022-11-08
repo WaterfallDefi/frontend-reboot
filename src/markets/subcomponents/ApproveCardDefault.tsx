@@ -267,7 +267,6 @@ function ApproveCardDefault(props: Props) {
       balance instanceof Array ? balance[selectedDepositAssetIndex].replace(/,/g, "") : balance.replace(/,/g, "");
     const _redepositBalance =
       redepositBalance instanceof Array ? redepositBalance[selectedDepositAssetIndex] : redepositBalance;
-    console.log(redepositBalance);
     const _remaining = remainingExact.replace(/,/g, "");
 
     if (selectedMarket.wrapAvax) {

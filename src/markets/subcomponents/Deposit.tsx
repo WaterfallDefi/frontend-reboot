@@ -107,10 +107,9 @@ function Deposit(props: Props) {
             selectedMarket.tranches[selectTrancheIdx]?.target,
             !selectedMarket.autorollImplemented
               ? selectedMarket.tranches[selectTrancheIdx]?.principal
-              : (
-                  Number(selectedMarket.tranches[selectTrancheIdx]?.principal) +
-                  Number(selectedMarket.tranches[selectTrancheIdx]?.autoPrincipal)
-                ).toString(),
+              : new BigNumber(selectedMarket.tranches[selectTrancheIdx]?.principal)
+                  .plus(selectedMarket.tranches[selectTrancheIdx]?.autoPrincipal)
+                  .toString(),
             selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e" ? 6 : 18
           )
         : getRemainingMulticurrency(
