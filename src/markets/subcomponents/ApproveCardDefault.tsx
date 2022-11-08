@@ -197,14 +197,24 @@ function ApproveCardDefault(props: Props) {
   const validateText = useMemo(() => {
     const _remaining = remainingExact.replace(/,/g, "");
     const _balanceInput = balanceInput;
-    const _balance: string = balance instanceof Array ? "0" : balance;
-    if (compareNum(_balanceInput, isRedeposit ? _balance : actualBalanceWallet, true)) {
+    const _redepositBalance: string =
+      redepositBalance instanceof Array ? redepositBalance[selectedDepositAssetIndex] : redepositBalance;
+    if (compareNum(_balanceInput, isRedeposit ? _redepositBalance : actualBalanceWallet, true)) {
       if (!selectedMarket.wrapAvax) return "Insufficient Balance";
     }
     if (compareNum(_balanceInput, _remaining, true)) {
       return "Maximum deposit amount = " + remaining;
     }
-  }, [remaining, remainingExact, balance, actualBalanceWallet, balanceInput, selectedMarket.wrapAvax, isRedeposit]);
+  }, [
+    remaining,
+    remainingExact,
+    redepositBalance,
+    actualBalanceWallet,
+    balanceInput,
+    selectedDepositAssetIndex,
+    selectedMarket.wrapAvax,
+    isRedeposit,
+  ]);
 
   const handleWrapAvax = async () => {
     setDepositLoading(true);
@@ -255,13 +265,16 @@ function ApproveCardDefault(props: Props) {
   const handleMaxInput = () => {
     const _balance =
       balance instanceof Array ? balance[selectedDepositAssetIndex].replace(/,/g, "") : balance.replace(/,/g, "");
+    const _redepositBalance =
+      redepositBalance instanceof Array ? redepositBalance[selectedDepositAssetIndex] : redepositBalance;
+    console.log(redepositBalance);
     const _remaining = remainingExact.replace(/,/g, "");
 
     if (selectedMarket.wrapAvax) {
       if (_remaining) setBalanceInput(_remaining);
     } else {
       if (compareNum(_remaining, _balance)) {
-        if (_balance) setBalanceInput(isRedeposit ? _balance : actualBalanceWallet);
+        if (_balance) setBalanceInput(isRedeposit ? _redepositBalance : actualBalanceWallet);
       } else if (compareNum(_balance, _remaining, true)) {
         if (_remaining) setBalanceInput(_remaining);
       }
