@@ -231,6 +231,7 @@ function Deposit(props: Props) {
                         remainingDepositable
                       ).remaining
                 }
+                isActive={selectedMarket.status === "ACTIVE"}
               />
             );
           })}

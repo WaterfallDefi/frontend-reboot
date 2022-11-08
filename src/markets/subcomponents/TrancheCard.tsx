@@ -15,6 +15,7 @@ type Props = {
   setSelectTrancheIdx: React.Dispatch<React.SetStateAction<number | undefined>>;
   coingeckoPrices: any;
   remaining: string;
+  isActive: boolean;
 };
 
 const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
@@ -51,10 +52,13 @@ function TrancheCard(props: Props) {
     setSelectTrancheIdx,
     coingeckoPrices,
     remaining,
+    isActive,
   } = props;
   const isSoldout = useMemo(
     () =>
-      !selectedMarket.autorollImplemented
+      isActive
+        ? true
+        : !selectedMarket.autorollImplemented
         ? compareNum(tranche.principal, tranche.target)
         : compareNum(
             new BigNumber(tranche.autoPrincipal ? tranche.autoPrincipal : "0")
@@ -62,7 +66,7 @@ function TrancheCard(props: Props) {
               .toString(),
             Number(tranche.target).toString()
           ),
-    [selectedMarket.autorollImplemented, tranche.principal, tranche.target, tranche.autoPrincipal]
+    [isActive, selectedMarket.autorollImplemented, tranche.principal, tranche.target, tranche.autoPrincipal]
   );
 
   const trancheApr = tranche.apy;

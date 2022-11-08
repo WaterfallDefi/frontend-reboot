@@ -42,6 +42,12 @@ const compareNum = (num1: string | number | undefined, num2: string | undefined,
   return _num1.comparedTo(_num2) >= 0 ? true : false;
 };
 
+//!!!!
+//TO DO:
+//fix remainder calculation in validateText()
+//fix max input calculation
+//
+
 function ApproveCardSimul(props: Props) {
   const {
     selectedMarket,
