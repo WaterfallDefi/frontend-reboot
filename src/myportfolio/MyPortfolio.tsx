@@ -272,10 +272,16 @@ function MyPortfolio(props: Props) {
 
             const netAPY = wtfAPY !== "-" ? Number(trancheAPY) + Number(numeral(wtfAPY).value()) : trancheAPY;
 
+            const networkStrings = {
+              43114: "AVAX",
+              56: "BNB",
+              137: "Polygon",
+            };
+
             return {
               data: {
                 portfolio: _market.portfolio,
-                network: _market.isAvax ? "AVAX" : "BNB",
+                network: networkStrings[_market.network],
                 assets: _market.assets,
                 trancheCycle: {
                   trancheCycle: trancheCycle?.state !== 0 ? trancheCycle : undefined,
@@ -306,9 +312,9 @@ function MyPortfolio(props: Props) {
                 },
               },
               foldElement:
-                (_market.isAvax && network === Network.AVAX) || (!_market.isAvax && network === Network.BNB) ? (
+                _market.network === network ? (
                   <PortfolioFold
-                    network={_market.isAvax ? Network.AVAX : Network.BNB}
+                    network={_market.network}
                     trancheMasterAddress={_market.address}
                     masterWTFAddress={_market.masterChefAddress}
                     abi={_market.abi}
@@ -363,7 +369,7 @@ function MyPortfolio(props: Props) {
               case 0:
                 return a.data.portfolio.localeCompare(b.data.portfolio);
               case 1:
-                return a.data.network === "AVAX" ? -1 : 1;
+                return a.data.network.localeCompare(b.data.network);
               case 2:
                 return a.data.assets[0].localeCompare(b.data.assets[0]);
               case 4:

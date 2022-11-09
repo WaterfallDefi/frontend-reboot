@@ -41,7 +41,7 @@ const NETWORK = "MAINNET" as NETWORKS_TYPE; //exposing network switch here, sinc
 export const MarketList: Market[] = [
   {
     portfolio: "(New) BNB Falls",
-    isAvax: false,
+    network: 56,
     wrapAvax: false,
     autorollImplemented: true,
     isMulticurrency: false,
@@ -82,7 +82,7 @@ export const MarketList: Market[] = [
   },
   {
     portfolio: "DAI Falls (Autorolled)",
-    isAvax: true,
+    network: 43114,
     wrapAvax: false,
     autorollImplemented: true,
     isMulticurrency: false,
@@ -122,7 +122,7 @@ export const MarketList: Market[] = [
   },
   {
     portfolio: "AVAX Falls (Autorolled)",
-    isAvax: true,
+    network: 43114,
     wrapAvax: true,
     autorollImplemented: true,
     isMulticurrency: false,
@@ -162,7 +162,7 @@ export const MarketList: Market[] = [
   },
   {
     portfolio: "BUSD Falls",
-    isAvax: false,
+    network: 56,
     wrapAvax: false,
     autorollImplemented: true,
     isMulticurrency: false,
@@ -208,7 +208,7 @@ export const MarketList: Market[] = [
   },
   {
     portfolio: "USDC Falls",
-    isAvax: true,
+    network: 43114,
     wrapAvax: false,
     autorollImplemented: true,
     isMulticurrency: false,

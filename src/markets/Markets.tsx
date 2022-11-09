@@ -67,8 +67,8 @@ function Markets(props: Props) {
 
   const goToMarket = useCallback(
     async (market: Market) => {
-      if ((market.isAvax && network === Network.BNB) || (!market.isAvax && network === Network.AVAX)) {
-        switchNetwork(account, market.isAvax ? Network.AVAX : Network.BNB, setNetwork).then((res) => {
+      if (market.network !== network) {
+        switchNetwork(account, market.network, setNetwork).then((res) => {
           if (res) {
             setSelectedMarket(market);
             setDisableHeaderNetworkSwitch(true);
@@ -88,7 +88,7 @@ function Markets(props: Props) {
           .map((m: Market) => {
             const wtfAprs = m.tranches.map((_t, _i) => {
               return getWTFApr(
-                m.isAvax ? Network.AVAX : Network.BNB,
+                m.network,
                 formatAllocPoint(m?.pools[_i], m?.totalAllocPoints),
                 m?.tranches[_i],
                 m.duration,
@@ -116,11 +116,17 @@ function Markets(props: Props) {
               numeral(m.tvl.includes("e-") ? "0" : m.tvl).format("0,0.[0000]") +
               (nonDollarTvl ? " " + m.assets[0] : "");
 
+            const networkStrings = {
+              43114: "AVAX",
+              56: "BNB",
+              137: "Polygon",
+            };
+
             return {
               market: m,
               data: {
                 portfolio: m.portfolio,
-                network: m.isAvax ? "AVAX" : "BNB",
+                network: networkStrings[m.network],
                 assets: m.assets,
                 duration:
                   Number(m.duration) / 86400 >= 1
@@ -138,7 +144,7 @@ function Markets(props: Props) {
               case 0:
                 return a.data.portfolio.localeCompare(b.data.portfolio);
               case 1:
-                return a.market.isAvax ? -1 : 1;
+                return a.data.network.localeCompare(b.data.network);
               case 2:
                 return a.data.assets[0].localeCompare(b.data.assets[0]);
               case 3:

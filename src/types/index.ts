@@ -1,4 +1,5 @@
 import { Contract } from "web3-eth-contract";
+import { Network } from "../WaterfallDefi";
 
 export const PORTFOLIO_STATUS = {
   ACTIVE: "ACTIVE",
@@ -43,7 +44,7 @@ export interface FarmConfig {
 
 export interface Market {
   portfolio: string;
-  isAvax: boolean;
+  network: Network;
   wrapAvax?: boolean;
   autorollImplemented: boolean;
   isMulticurrency: boolean;

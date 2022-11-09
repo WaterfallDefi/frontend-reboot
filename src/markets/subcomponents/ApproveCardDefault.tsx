@@ -79,7 +79,7 @@ function ApproveCardDefault(props: Props) {
   const { account } = useWeb3React<Web3Provider>();
   const wrapAvaxContract = useWrapAVAXContract();
 
-  const network = selectedMarket.isAvax ? Network.AVAX : Network.BNB;
+  const network = selectedMarket.network;
 
   //deposit hooks
   const depositAddress = !selectedMarket.isMulticurrency

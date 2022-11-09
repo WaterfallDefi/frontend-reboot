@@ -54,28 +54,24 @@ function ClaimRedeposit(props: Props) {
   const [autorollBalance, setAutorollBalance] = useState<string | undefined>();
 
   const { getAutoroll, changeAutoroll, getAutorollBalance } = useAutoroll(
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.network,
     selectedMarket.address
   );
 
   const { onWithdraw } = useWithdraw(
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
     setModal,
     setMarkets
   );
 
-  const { onClaimAll } = useClaimAll(
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
-    selectedMarket.masterChefAddress,
-    setModal
-  );
+  const { onClaimAll } = useClaimAll(selectedMarket.network, selectedMarket.masterChefAddress, setModal);
 
   const { account } = useWeb3React<Web3Provider>();
 
   const { totalPendingReward } = usePendingWTFReward(
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.network,
     selectedMarket.masterChefAddress,
     selectedMarket.trancheCount
   );

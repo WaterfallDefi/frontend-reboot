@@ -77,7 +77,7 @@ function TrancheCard(props: Props) {
   const isHide = selectedMarket.rewardPerBlock !== "0" ? "visible" : "hidden";
 
   const wtfApr = getWTFApr(
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.network,
     formatAllocPoint(selectedMarket.pools[trancheIndex], selectedMarket.totalAllocPoints),
     selectedMarket.tranches[trancheIndex],
     selectedMarket.duration,

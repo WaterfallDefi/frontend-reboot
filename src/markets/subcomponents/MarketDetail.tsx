@@ -48,7 +48,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   const { balance, fetchBalance } = useTrancheBalance(
     //don't need { invested } for now
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
     selectedMarket.isMulticurrency
@@ -56,7 +56,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
   const { MCbalance, fetchMCBalance } = useMulticurrencyTrancheBalance(
     //don't need { MCinvested } for now
-    selectedMarket.isAvax ? Network.AVAX : Network.BNB,
+    selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
     selectedMarket.assets.length,
@@ -180,7 +180,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <ClaimRedeposit
-        network={selectedMarket.isAvax ? Network.AVAX : Network.BNB}
+        network={selectedMarket.network}
         selectedMarket={selectedMarket}
         coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}

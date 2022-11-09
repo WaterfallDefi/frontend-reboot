@@ -46,19 +46,11 @@ const getTotalTVL = async () => {
           : []),
       ];
 
-      const [t0, t1, t2] = await multicall(
-        _mkt?.isAvax ? Network.AVAX : Network.BNB,
-        _mkt?.abi,
-        calls
-      );
+      const [t0, t1, t2] = await multicall(_mkt?.network, _mkt?.abi, calls);
       const _tranches = [t0, t1, t2];
       _tranches.forEach((_t, _i) => {
-        const _principal = _t
-          ? new BigNumber(_t.principal?._hex).dividedBy(BIG_TEN.pow(18))
-          : BIG_ZERO;
-        const _autoPrincipal = _t
-          ? new BigNumber(_t.autoPrincipal?._hex).dividedBy(BIG_TEN.pow(18))
-          : BIG_ZERO;
+        const _principal = _t ? new BigNumber(_t.principal?._hex).dividedBy(BIG_TEN.pow(18)) : BIG_ZERO;
+        const _autoPrincipal = _t ? new BigNumber(_t.autoPrincipal?._hex).dividedBy(BIG_TEN.pow(18)) : BIG_ZERO;
         let rate = 1;
         if (_mkt?.assets?.includes("WAVAX")) {
           rate = avaxPrice;
