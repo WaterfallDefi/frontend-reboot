@@ -268,8 +268,8 @@
         flex-direction: column;
         justify-content: flex-start;
         &.open {
-          height: 70px;
-          transform: translateY(17.5px);
+          height: 105px;
+          transform: translateY(35px);
         }
         &.disabled {
           opacity: 0.5;
