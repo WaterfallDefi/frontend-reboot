@@ -166,11 +166,13 @@ function Header(props: Props) {
             My Portfolio
           </Link>
         </div>
-        <div className="menu-block-wrapper">
-          <Link className="link" to={"/stake"} data-selected={location.pathname === "/stake"}>
-            Stake
-          </Link>
-        </div>
+        {network !== Network.Polygon && (
+          <div className="menu-block-wrapper">
+            <Link className="link" to={"/stake"} data-selected={location.pathname === "/stake"}>
+              Stake
+            </Link>
+          </div>
+        )}
         <div className="menu-block-wrapper">
           <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
         </div>
