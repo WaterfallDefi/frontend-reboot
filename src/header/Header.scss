@@ -294,6 +294,9 @@
           &.bnb {
             color: rgb(240, 185, 11);
           }
+          &.matic {
+            color: #8247e5;
+          }
           &.option {
             border-radius: 8px;
             padding: 0 16px 2px 20px;
@@ -325,6 +328,12 @@
         div {
           margin-top: 8.5px;
         }
+      }
+      .logout-btn {
+        color: $base-color;
+        margin-left: 12px;
+        width: 24px;
+        height: 24px;
       }
     }
     .dark-icon,

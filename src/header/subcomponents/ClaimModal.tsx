@@ -15,9 +15,6 @@ function ClaimModal(props: Props) {
 
   const stakingConfig = network === Network.BNB ? Stakings[0] : Stakings[1];
 
-  console.log("balance");
-  console.log(balance);
-
   return (
     <div className="modal claim">
       <h1>Claim</h1>

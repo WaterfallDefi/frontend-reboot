@@ -392,44 +392,50 @@ export const BNB_Only_Falls_VenusStrategyAddress: { [network: string]: string } 
   [NETWORKS.MAINNET]: "0x4961446Bd81c1420bd6901E50F951eeaCc5aC1d7",
 };
 
-// export const Polygon_Uncollateralized_TrancheMasterAddress: { [network: string]: string } = {
-//   [NETWORKS.DEVNET]: "",
-//   [NETWORKS.TESTNET]: "",
-//   [NETWORKS.MAINNET]: "0x0fd49A50F55e6EcD826Ba1aF1352B40aC30266a9",
-// };
+export const USDC_Address_Matic: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+};
 
-// export const Polygon_Uncollateralized_MasterWTFAddress: { [network: string]: string } = {
-//   [NETWORKS.DEVNET]: "",
-//   [NETWORKS.TESTNET]: "",
-//   [NETWORKS.MAINNET]: "0x272351b79a978820016241402448B3803c6541C8",
-// };
+export const Polygon_Uncollateralized_TrancheMasterAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x0fd49A50F55e6EcD826Ba1aF1352B40aC30266a9",
+};
 
-// export const Polygon_Uncollateralized_ClearpoolFolkvangStrat: { [network: string]: string } = {
-//   [NETWORKS.DEVNET]: "",
-//   [NETWORKS.TESTNET]: "",
-//   [NETWORKS.MAINNET]: "0x7ee5BEFbbE16fF4cfE03AD40ac59783d76EE2860",
-// };
+export const Polygon_Uncollateralized_MasterWTFAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x272351b79a978820016241402448B3803c6541C8",
+};
 
-// export const Polygon_Uncollateralized_ClearpoolAmberStrat: { [network: string]: string } = {
-//   [NETWORKS.DEVNET]: "",
-//   [NETWORKS.TESTNET]: "",
-//   [NETWORKS.MAINNET]: "0x737954A3cEd0184529e53BC90bbda35c5814074F",
-// };
+export const Polygon_Uncollateralized_ClearpoolFolkvangStrat: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x7ee5BEFbbE16fF4cfE03AD40ac59783d76EE2860",
+};
 
-// export const Polygon_Uncollateralized_ClearpoolAurosStrat: { [network: string]: string } = {
-//   [NETWORKS.DEVNET]: "",
-//   [NETWORKS.TESTNET]: "",
-//   [NETWORKS.MAINNET]: "0x6274c64AcECfB5a30BfE508f207166d8CAC3c0a7",
-// };
+export const Polygon_Uncollateralized_ClearpoolAmberStrat: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x737954A3cEd0184529e53BC90bbda35c5814074F",
+};
 
-// export const Polygon_Uncollateralized_ClearpoolBastionStrat: { [network: string]: string } = {
-//   [NETWORKS.DEVNET]: "",
-//   [NETWORKS.TESTNET]: "",
-//   [NETWORKS.MAINNET]: "0x15B879fa6715419E7543Df6177728Fdd0E303081",
-// };
+export const Polygon_Uncollateralized_ClearpoolAurosStrat: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x6274c64AcECfB5a30BfE508f207166d8CAC3c0a7",
+};
 
-// export const Polygon_Uncollateralized_ClearpoolParallelStrat: { [network: string]: string } = {
-//   [NETWORKS.DEVNET]: "",
-//   [NETWORKS.TESTNET]: "",
-//   [NETWORKS.MAINNET]: "0x100534763E68FC20B335684e552fA2Fa853025b3",
-// };
+export const Polygon_Uncollateralized_ClearpoolBastionStrat: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x15B879fa6715419E7543Df6177728Fdd0E303081",
+};
+
+export const Polygon_Uncollateralized_ClearpoolParallelStrat: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x100534763E68FC20B335684e552fA2Fa853025b3",
+};

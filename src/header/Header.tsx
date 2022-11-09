@@ -8,7 +8,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
-import { useEagerConnect } from "./hooks/useAuth";
+import useAuth, { setupNetwork, useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
 import TransactionModal from "./subcomponents/TransactionModal";
 import RedepositModal from "./subcomponents/RedepositModal";
@@ -17,6 +17,7 @@ import TermsModal from "./subcomponents/TermsModal";
 import { Market } from "../types";
 import { Burger } from "./svgs/burger";
 import { WaterFallDark } from "./svgs";
+import { Logout } from "./svgs/logout";
 
 //this is for mobile, do later
 // import { Burger } from "./svgs/burger";
@@ -46,7 +47,10 @@ export const switchNetwork = async (
         });
         success = true;
       } catch (error) {
-        console.error("Failed to setup the network in Metamask:", error);
+        try {
+          await setupNetwork(network);
+        } catch (error) {}
+        // console.error("Failed to setup the network in Metamask:", error);
       } finally {
         success && setNetwork(network);
       }
@@ -83,7 +87,7 @@ function Header(props: Props) {
 
   const { active, account, chainId } = useWeb3React<Web3Provider>();
 
-  // const { login, logout } = useAuth(network);
+  const { logout } = useAuth(network);
 
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState<boolean>(false);
@@ -207,16 +211,18 @@ function Header(props: Props) {
               My Portfolio
             </Link>
           </div>
-          <div className="mobile-menu-block-wrapper">
-            <Link
-              className="link"
-              to={"/stake"}
-              data-selected={location.pathname === "/stake"}
-              onClick={() => setMobileDropdownOpen(false)}
-            >
-              Stake
-            </Link>
-          </div>
+          {network !== Network.Polygon && (
+            <div className="mobile-menu-block-wrapper">
+              <Link
+                className="link"
+                to={"/stake"}
+                data-selected={location.pathname === "/stake"}
+                onClick={() => setMobileDropdownOpen(false)}
+              >
+                Stake
+              </Link>
+            </div>
+          )}
           <div className="mobile-menu-block-wrapper">
             <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
           </div>
@@ -239,27 +245,65 @@ function Header(props: Props) {
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
-            <div className={"network" + (network === Network.AVAX ? " avax" : " bnb")}>
+            <div
+              className={
+                "network" +
+                (network === Network.AVAX ? " avax" : "") +
+                (network === Network.BNB ? " bnb" : "") +
+                (network === Network.Polygon ? " matic" : "")
+              }
+            >
               <div className="dropdown-triangle">▼</div>
-              {network === Network.AVAX ? "AVAX" : "BNB"}
+              {network === Network.AVAX && "AVAX"}
+              {network === Network.BNB && "BNB"}
+              {network === Network.Polygon && "MATIC"}
             </div>
-            {dropdownOpen ? (
-              network === Network.AVAX ? (
-                <div
-                  className="network bnb option"
-                  onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
-                >
-                  BNB
-                </div>
-              ) : (
-                <div
-                  className="network avax option"
-                  onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AVAX, setNetwork)}
-                >
-                  AVAX
-                </div>
-              )
-            ) : null}
+            {dropdownOpen
+              ? network === Network.AVAX
+                ? [
+                    <div
+                      className="network bnb option"
+                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
+                    >
+                      BNB
+                    </div>,
+                    <div
+                      className="network matic option"
+                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)}
+                    >
+                      MATIC
+                    </div>,
+                  ]
+                : network === Network.BNB
+                ? [
+                    <div
+                      className="network avax option"
+                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AVAX, setNetwork)}
+                    >
+                      AVAX
+                    </div>,
+                    <div
+                      className="network matic option"
+                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)}
+                    >
+                      MATIC
+                    </div>,
+                  ]
+                : [
+                    <div
+                      className="network bnb option"
+                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
+                    >
+                      BNB
+                    </div>,
+                    <div
+                      className="network avax option"
+                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AVAX, setNetwork)}
+                    >
+                      AVAX
+                    </div>,
+                  ]
+              : null}
           </div>
           {!active ? (
             <button
@@ -271,9 +315,14 @@ function Header(props: Props) {
               Connect Wallet
             </button>
           ) : (
-            <div className="connect-wallet-btn">
-              <div>{formatAccountAddress(account)}</div>
-            </div>
+            [
+              <div className="connect-wallet-btn">
+                <div>{formatAccountAddress(account)}</div>
+              </div>,
+              <div className="logout-btn" onClick={logout}>
+                <Logout />
+              </div>,
+            ]
           )}
         </div>
       </div>

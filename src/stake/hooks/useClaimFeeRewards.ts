@@ -3,10 +3,7 @@ import { Contract } from "@ethersproject/contracts";
 import { getContract, getSigner } from "../../hooks/getContract";
 import { Network } from "../../WaterfallDefi";
 import WTFRewards from "../../config/abis/WTFRewards.json";
-import {
-  FeeRewardsAddressAVAX,
-  FeeRewardsAddressBNB,
-} from "../../config/address";
+import { FeeRewardsAddressAVAX, FeeRewardsAddressBNB } from "../../config/address";
 import { NETWORKS } from "../../types";
 
 const useFeeRewardsContract = (network: Network) => {
@@ -16,10 +13,7 @@ const useFeeRewardsContract = (network: Network) => {
     () =>
       getContract(
         WTFRewards.abi,
-        //incoming from Kirill:
-        network === Network.AVAX
-          ? FeeRewardsAddressBNB[NETWORKS.MAINNET]
-          : FeeRewardsAddressAVAX[NETWORKS.MAINNET],
+        network === Network.AVAX ? FeeRewardsAddressAVAX[NETWORKS.MAINNET] : FeeRewardsAddressBNB[NETWORKS.MAINNET],
         network,
         signer
       ),

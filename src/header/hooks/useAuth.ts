@@ -42,9 +42,41 @@ const BNBNodes = [
   "https://bsc-dataseed1.defibit.io",
   "https://bsc-dataseed1.ninicoin.io/",
 ];
+const PolygonNodes = ["https://polygon-rpc.com", "https://rpc-mainnet.matic.network", "https://rpc.ankr.com/polygon"];
 
-const setupNetwork = async (network: Network) => {
+export const setupNetwork = async (network: Network) => {
   const provider = window.ethereum;
+
+  const chainNames = {
+    43114: "Avalanche",
+    56: "BNB",
+    137: "Polygon",
+  };
+
+  const networkNames = {
+    43114: "AVAX",
+    56: "BNB",
+    137: "Polygon",
+  };
+
+  const networkSymbols = {
+    43114: "AVAX",
+    56: "BNB",
+    137: "MATIC",
+  };
+
+  const rpcUrls = {
+    43114: AVAXNodes,
+    56: BNBNodes,
+    137: PolygonNodes,
+  };
+
+  const blockExplorerUrls = {
+    43114: ["https://snowtrace.io"],
+    56: ["https://bscscan.com"],
+    137: ["https://polygonscan.com"],
+  };
+
   if (provider?.request) {
     try {
       await provider.request({
@@ -52,14 +84,14 @@ const setupNetwork = async (network: Network) => {
         params: [
           {
             chainId: `0x${network.toString(16)}`,
-            chainName: network === Network.AVAX ? "Avalanche" : "BNB Chain",
+            chainName: chainNames[network],
             nativeCurrency: {
-              name: network === Network.AVAX ? "AVAX" : "BNB",
-              symbol: network === Network.AVAX ? "AVAX" : "BNB",
+              name: networkNames[network],
+              symbol: networkSymbols[network],
               decimals: 18,
             },
-            rpcUrls: network === Network.AVAX ? AVAXNodes : BNBNodes,
-            blockExplorerUrls: [network === Network.AVAX ? "https://snowtrace.io" : "https://bscscan.com"],
+            rpcUrls: rpcUrls[network],
+            blockExplorerUrls: blockExplorerUrls[network],
           },
         ],
       });
@@ -69,7 +101,7 @@ const setupNetwork = async (network: Network) => {
       return false;
     }
   } else {
-    console.error("Can't setup the AVAX network on metamask because window.ethereum is undefined");
+    console.error("Can't setup the network on metamask because window.ethereum is undefined");
     return false;
   }
 };

@@ -24,6 +24,18 @@ function TransactionModal(props: Props) {
   const { network, txn, status, message, setModal } = props;
 
   const InnerElement = () => {
+    const blockExplorerUrls = {
+      43114: "https://snowtrace.io",
+      56: "https://bscscan.com",
+      137: "https://polygonscan.com",
+    };
+
+    const viewOns = {
+      43114: "View on Snowtrace",
+      56: "View on BSCScan",
+      137: "View on Explorer",
+    };
+
     switch (status) {
       case ModalStatus.Pending.valueOf():
         return (
@@ -33,18 +45,13 @@ function TransactionModal(props: Props) {
             <span>Confirm this transaction in your wallet</span>
           </section>
         );
-
       case ModalStatus.Submitted.valueOf():
         return (
           <section className="transaction">
             <h1>Transaction Submitted</h1>
             {txn && (
-              <a
-                href={`${network === Network.BNB ? "https://bscscan.com" : "https://snowtrace.io"}/tx/${txn}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {network === Network.BNB ? "View on BSCScan" : "View on Snowtrace"}
+              <a href={`${blockExplorerUrls[network]}/tx/${txn}`} target="_blank" rel="noreferrer">
+                {viewOns[network]}
               </a>
             )}
             <button onClick={() => setModal({ state: Modal.None })}>Close</button>
@@ -63,12 +70,8 @@ function TransactionModal(props: Props) {
           <section className="transaction">
             <h1>Transaction Reverted</h1>
             {txn && (
-              <a
-                href={`${network === Network.BNB ? "https://bscscan.com" : "https://snowtrace.io"}/tx/${txn}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {network === Network.BNB ? "View on BSCScan" : "View on Snowtrace"}
+              <a href={`${blockExplorerUrls[network]}/tx/${txn}`} target="_blank" rel="noreferrer">
+                {viewOns[network]}
               </a>
             )}
             <button onClick={() => setModal({ state: Modal.None })}>Close</button>
@@ -79,12 +82,8 @@ function TransactionModal(props: Props) {
           <section className="transaction">
             <h1>Transaction Completed</h1>
             {txn && (
-              <a
-                href={`${network === Network.BNB ? "https://bscscan.com" : "https://snowtrace.io"}/tx/${txn}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {network === Network.BNB ? "View on BSCScan" : "View on Snowtrace"}
+              <a href={`${blockExplorerUrls[network]}/tx/${txn}`} target="_blank" rel="noreferrer">
+                {viewOns[network]}
               </a>
             )}
             <button onClick={() => setModal({ state: Modal.None })}>Dismiss</button>

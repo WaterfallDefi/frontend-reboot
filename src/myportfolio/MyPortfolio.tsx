@@ -275,7 +275,7 @@ function MyPortfolio(props: Props) {
             const networkStrings = {
               43114: "AVAX",
               56: "BNB",
-              137: "Polygon",
+              137: "MATIC",
             };
 
             return {
