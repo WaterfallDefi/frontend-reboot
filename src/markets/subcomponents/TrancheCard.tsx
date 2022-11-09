@@ -4,7 +4,6 @@ import React, { useMemo } from "react";
 import getWTFApr, { formatAllocPoint } from "../../hooks/getWtfApr";
 import { useWTFPriceLP } from "../../hooks/useWtfPriceFromLP";
 import { Market, Tranche } from "../../types";
-import { Network } from "../../WaterfallDefi";
 
 type Props = {
   selectedMarket: Market;

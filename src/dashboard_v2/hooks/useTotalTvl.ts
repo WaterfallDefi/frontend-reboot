@@ -3,7 +3,6 @@ import BigNumber from "bignumber.js";
 import ky from "ky";
 import { MarketList } from "../../config/markets";
 import { multicall } from "../../hooks/getContract";
-import { Network } from "../../WaterfallDefi";
 
 const BIG_ZERO = new BigNumber(0);
 const BIG_TEN = new BigNumber(10);

@@ -41,6 +41,8 @@ const BLOCK_TIME = (chainId: string) => {
       return 3;
     case "56":
       return 3;
+    case "137":
+      return 2.3;
     default:
       return 3;
   }

@@ -22,15 +22,14 @@ const BLOCK_TIME = (chainId: string) => {
       return 3;
     case "56":
       return 3;
+    case "137":
+      return 2.3;
     default:
       return 3;
   }
 };
 
-export const useEarningTokenTotalSupply = (
-  network: Network,
-  tokenAddress: string
-) => {
+export const useEarningTokenTotalSupply = (network: Network, tokenAddress: string) => {
   const [totalSupply, setTotalSupply] = useState("");
 
   const isBrowserTabActiveRef = useIsBrowserTabActive();
@@ -56,12 +55,7 @@ export const useEarningTokenTotalSupply = (
       ];
       const [_totalSupply] = await multicall(network, VEWTF.abi, calls);
 
-      setTotalSupply(
-        new BigNumber(_totalSupply[0]?._hex)
-          .dividedBy(BIG_TEN.pow(18))
-          .toFormat(4)
-          .toString()
-      );
+      setTotalSupply(new BigNumber(_totalSupply[0]?._hex).dividedBy(BIG_TEN.pow(18)).toFormat(4).toString());
     };
 
     fetchBalance();
@@ -128,12 +122,8 @@ export const useStakingPool = (
       ];
       const [totalLocked] = await multicall(network, VotingEscrow.abi, calls2);
 
-      const rewardPerBlock = new BigNumber(pool.rewardPerBlock?._hex).dividedBy(
-        BIG_TEN.pow(18)
-      );
-      const totalVeWTF = new BigNumber(pool.totalStaked?._hex).dividedBy(
-        BIG_TEN.pow(18)
-      );
+      const rewardPerBlock = new BigNumber(pool.rewardPerBlock?._hex).dividedBy(BIG_TEN.pow(18));
+      const totalVeWTF = new BigNumber(pool.totalStaked?._hex).dividedBy(BIG_TEN.pow(18));
       const _totalVeWTF = new BigNumber(totalVeWTF).plus(2.4883);
       const blockTime = BLOCK_TIME(network.toString());
 
@@ -159,11 +149,7 @@ export const useStakingPool = (
         // const [pending] =
         //   network === "avax" ? await multicall(FeeRewardsAbi, calls3) : await multicallBSC(FeeRewardsAbi, calls3);
         pendingBUSDReward = pending
-          ? numeral(
-              new BigNumber(pending.reward?._hex)
-                .dividedBy(BIG_TEN.pow(18))
-                .toString()
-            ).format("0,0.[00]")
+          ? numeral(new BigNumber(pending.reward?._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[00]")
           : "";
       } catch (e) {
         console.error(e);
@@ -171,17 +157,9 @@ export const useStakingPool = (
 
       setResult({
         isPoolActive,
-        totalStaked: new BigNumber(pool.totalStaked?._hex)
-          .dividedBy(BIG_TEN.pow(18))
-          .toFormat(4)
-          .toString(), //total VeWTF
-        userStaked: new BigNumber(user?.user.amount?._hex)
-          .dividedBy(BIG_TEN.pow(18))
-          .toFormat(4)
-          .toString(),
-        totalLocked: new BigNumber(totalLocked[0]?._hex)
-          .dividedBy(BIG_TEN.pow(18))
-          .toString(),
+        totalStaked: new BigNumber(pool.totalStaked?._hex).dividedBy(BIG_TEN.pow(18)).toFormat(4).toString(), //total VeWTF
+        userStaked: new BigNumber(user?.user.amount?._hex).dividedBy(BIG_TEN.pow(18)).toFormat(4).toString(),
+        totalLocked: new BigNumber(totalLocked[0]?._hex).dividedBy(BIG_TEN.pow(18)).toString(),
         maxAPR: maxAPR,
         pendingBUSDReward,
         rewardPerBlock: rewardPerBlock.toString(),

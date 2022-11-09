@@ -10,7 +10,7 @@ import {
   // getAPYHourly,
 } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market, Tranche } from "../../types";
-import { ModalProps, Network } from "../../WaterfallDefi";
+import { ModalProps } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
 import ClaimRedeposit from "./ClaimRedeposit";

@@ -3,7 +3,6 @@ import BigNumber from "bignumber.js";
 import { multicall } from "./getContract";
 // import { getFarmsAPY } from "services/http";
 import numeral from "numeral";
-import { Network } from "../WaterfallDefi";
 import ky from "ky";
 
 const BIG_ZERO = new BigNumber(0);

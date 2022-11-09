@@ -3,7 +3,6 @@ import { Web3Provider } from "@ethersproject/providers";
 import { Market } from "../../types";
 import { useEffect, useState } from "react";
 import { multicall } from "../../hooks/getContract";
-import { Network } from "../../WaterfallDefi";
 
 export const usePositions = (marketList: Market[]) => {
   const { account } = useWeb3React<Web3Provider>();

@@ -20,14 +20,15 @@ const walletconnect = new WalletConnectConnector({
   rpc: {
     43114: "https://api.avax.network/ext/bc/C/rpc",
     56: "https://bsc-dataseed.binance.org/",
+    137: "https://polygon-rpc.com",
   },
-  supportedChainIds: [43114, 56],
+  supportedChainIds: [43114, 56, 137],
   qrcode: true,
   bridge: "https://bridge.walletconnect.org",
 });
 
 const injected = new InjectedConnector({
-  supportedChainIds: [43114, 56],
+  supportedChainIds: [43114, 56, 137],
 });
 
 const connectorsByName = {
