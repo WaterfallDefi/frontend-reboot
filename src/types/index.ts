@@ -45,7 +45,7 @@ export interface FarmConfig {
 export interface Market {
   portfolio: string;
   network: Network;
-  wrapAvax?: boolean;
+  wrap?: boolean;
   autorollImplemented: boolean;
   isMulticurrency: boolean;
   assets: string[];

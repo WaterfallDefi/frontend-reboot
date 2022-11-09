@@ -150,6 +150,11 @@ export const WrapAVAXAddress: { [network: string]: string } = {
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",
 };
+export const WrapBNBAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+};
 export const WAVAXFallsTrancheMasterAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",

@@ -10,11 +10,11 @@ import { useWeb3React } from "@web3-react/core";
 import useBalance, { useBalances } from "../../hooks/useBalance";
 import useCheckApprove from "../../hooks/useCheckApprove";
 import { Market } from "../../types";
-import { Modal, ModalProps } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useApprove from "../hooks/useApprove";
 import useInvest from "../hooks/useInvest";
 import useInvestDirect from "../hooks/useInvestDirect";
-import useWrapAVAXContract from "../hooks/useWrapAVAX";
+import useWrapAVAXContract, { useWrapBNBContract } from "../hooks/useWrap";
 
 type Props = {
   isRedeposit: boolean;
@@ -78,6 +78,7 @@ function ApproveCardDefault(props: Props) {
   //web3
   const { account } = useWeb3React<Web3Provider>();
   const wrapAvaxContract = useWrapAVAXContract();
+  const wrapBNBContract = useWrapBNBContract();
 
   const network = selectedMarket.network;
 
@@ -200,7 +201,7 @@ function ApproveCardDefault(props: Props) {
     const _redepositBalance: string =
       redepositBalance instanceof Array ? redepositBalance[selectedDepositAssetIndex] : redepositBalance;
     if (compareNum(_balanceInput, isRedeposit ? _redepositBalance : actualBalanceWallet, true)) {
-      if (!selectedMarket.wrapAvax) return "Insufficient Balance";
+      if (!selectedMarket.wrap) return "Insufficient Balance";
     }
     if (compareNum(_balanceInput, _remaining, true)) {
       return "Maximum deposit amount = " + remaining;
@@ -212,14 +213,14 @@ function ApproveCardDefault(props: Props) {
     actualBalanceWallet,
     balanceInput,
     selectedDepositAssetIndex,
-    selectedMarket.wrapAvax,
+    selectedMarket.wrap,
     isRedeposit,
   ]);
 
-  const handleWrapAvax = async () => {
+  const handleWrap = async () => {
     setDepositLoading(true);
     const amount = balanceInput.toString();
-    if (selectedMarket.wrapAvax && Number(balance) < Number(amount)) {
+    if (selectedMarket.wrap && Number(balance) < Number(amount)) {
       //^ breaking this case will never happen but just for safety
       setModal({
         state: Modal.Txn,
@@ -228,9 +229,15 @@ function ApproveCardDefault(props: Props) {
         message: "Wrapping...",
       });
       try {
-        await wrapAvaxContract.deposit({
-          value: parseEther((Number(amount) - Number(balance)).toString()),
-        });
+        if (network === Network.AVAX) {
+          await wrapAvaxContract.deposit({
+            value: parseEther((Number(amount) - Number(balance)).toString()),
+          });
+        } else if (network === Network.BNB) {
+          await wrapBNBContract.deposit({
+            value: parseEther((Number(amount) - Number(balance)).toString()),
+          });
+        }
       } catch (e: any) {
         setModal({
           state: Modal.Txn,
@@ -285,7 +292,7 @@ function ApproveCardDefault(props: Props) {
       redepositBalance instanceof Array ? redepositBalance[selectedDepositAssetIndex] : redepositBalance;
     const _remaining = remainingExact.replace(/,/g, "");
 
-    if (selectedMarket.wrapAvax) {
+    if (selectedMarket.wrap) {
       if (_remaining) setBalanceInput(_remaining);
     } else {
       if (compareNum(_remaining, _balance)) {
@@ -338,14 +345,15 @@ function ApproveCardDefault(props: Props) {
           {formatNumberSeparator(remaining)} {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
       </div>
-      {selectedMarket.wrapAvax &&
+      {selectedMarket.wrap &&
       balanceInput &&
       Number(balanceInput) > 0 &&
       Number(balanceInput.toString()) - Number(balance) > 0 ? (
         <div className="row">
-          <div>AVAX Wrapped On Deposit:</div>
+          <div>{network === Network.AVAX ? "AVAX" : "BNB"} Wrapped On Deposit:</div>
           <div>
-            {formatNumberSeparator((Number(balanceInput.toString()) - Number(balance)).toString())} AVAX to WAVAX
+            {formatNumberSeparator((Number(balanceInput.toString()) - Number(balance)).toString())}{" "}
+            {network === Network.AVAX ? "AVAX" : "BNB"} to {network === Network.AVAX ? "WAVAX" : "WBNB"}
           </div>
         </div>
       ) : null}
@@ -394,9 +402,9 @@ function ApproveCardDefault(props: Props) {
         />
       </div>
       <div className="validate-text">{!depositLoading && validateText}</div>
-      {selectedMarket.wrapAvax && Number(balanceInput.toString()) - Number(balance) > 0 ? (
+      {selectedMarket.wrap && Number(balanceInput.toString()) - Number(balance) > 0 ? (
         <div className="validate-text">
-          Please make sure you have enough AVAX to wrap, or else the transaction will fail!
+          Please make sure you have enough to wrap, or else the transaction will fail!
         </div>
       ) : null}
       {selectTrancheIdx !== undefined ? (
@@ -410,7 +418,7 @@ function ApproveCardDefault(props: Props) {
 
       {account ? (
         approved ? (
-          !selectedMarket.wrapAvax ? (
+          !selectedMarket.wrap ? (
             !compareNum(
               new BigNumber(balanceInput.toString())
                 .minus(new BigNumber(balance instanceof Array ? balance[selectedDepositAssetIndex] : balance))
@@ -425,7 +433,7 @@ function ApproveCardDefault(props: Props) {
           ) : (
             <div className="button">
               <button
-                onClick={handleWrapAvax}
+                onClick={handleWrap}
                 // loading={depositLoading} //reusing this flag
                 disabled={selectedMarket.isRetired}
               >

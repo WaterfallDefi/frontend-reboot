@@ -50,7 +50,7 @@ export const MarketList: Market[] = [
   {
     portfolio: "Polygon Falls",
     network: 137,
-    wrapAvax: false,
+    wrap: false,
     autorollImplemented: true,
     isMulticurrency: false,
     assets: ["USDC"],
@@ -75,31 +75,31 @@ export const MarketList: Market[] = [
         farmName: "Clearpool Folkvang",
         shares: 0.2,
         sAddress: Polygon_Uncollateralized_ClearpoolFolkvangStrat[NETWORK],
-        apiKey: "",
+        apiKey: "cpool_folkvang_usdc",
       },
       {
         farmName: "Clearpool Amber",
         shares: 0.2,
         sAddress: Polygon_Uncollateralized_ClearpoolAmberStrat[NETWORK],
-        apiKey: "",
+        apiKey: "cpool_amber_usdc",
       },
       {
         farmName: "Clearpool Auros",
         shares: 0.2,
         sAddress: Polygon_Uncollateralized_ClearpoolAurosStrat[NETWORK],
-        apiKey: "",
+        apiKey: "cpool_auros_usdc",
       },
       {
         farmName: "Clearpool Bastion",
         shares: 0.2,
         sAddress: Polygon_Uncollateralized_ClearpoolBastionStrat[NETWORK],
-        apiKey: "",
+        apiKey: "cpool_bastion_usdc",
       },
       {
         farmName: "Clearpool Parallel",
         shares: 0.2,
         sAddress: Polygon_Uncollateralized_ClearpoolParallelStrat[NETWORK],
-        apiKey: "",
+        apiKey: "cpool_parallel_usdc",
       },
     ],
     subgraphURL: "https://apipolygon.waterfalldefi.org/subgraphs/name/waterfall/maticUsdcClearpool",
@@ -108,7 +108,7 @@ export const MarketList: Market[] = [
   {
     portfolio: "BNB Falls",
     network: 56,
-    wrapAvax: false,
+    wrap: true,
     autorollImplemented: true,
     isMulticurrency: false,
     assets: ["WBNB"], //changed to array for multicurrency
@@ -149,7 +149,7 @@ export const MarketList: Market[] = [
   {
     portfolio: "DAI Falls",
     network: 43114,
-    wrapAvax: false,
+    wrap: false,
     autorollImplemented: true,
     isMulticurrency: false,
     assets: ["DAI.e"],
@@ -189,7 +189,7 @@ export const MarketList: Market[] = [
   {
     portfolio: "AVAX Falls",
     network: 43114,
-    wrapAvax: true,
+    wrap: true,
     autorollImplemented: true,
     isMulticurrency: false,
     assets: ["WAVAX"],
@@ -229,7 +229,7 @@ export const MarketList: Market[] = [
   {
     portfolio: "BUSD Falls",
     network: 56,
-    wrapAvax: false,
+    wrap: false,
     autorollImplemented: true,
     isMulticurrency: false,
     assets: ["BUSD"],
@@ -275,7 +275,7 @@ export const MarketList: Market[] = [
   {
     portfolio: "USDC Falls",
     network: 43114,
-    wrapAvax: false,
+    wrap: false,
     autorollImplemented: true,
     isMulticurrency: false,
     assets: ["USDC"],
