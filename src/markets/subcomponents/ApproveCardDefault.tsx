@@ -221,10 +221,26 @@ function ApproveCardDefault(props: Props) {
     const amount = balanceInput.toString();
     if (selectedMarket.wrapAvax && Number(balance) < Number(amount)) {
       //^ breaking this case will never happen but just for safety
-      await wrapAvaxContract.deposit({
-        value: parseEther((Number(amount) - Number(balance)).toString()),
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "PENDING",
+        message: "Wrapping...",
       });
-      setDepositLoading(false);
+      try {
+        await wrapAvaxContract.deposit({
+          value: parseEther((Number(amount) - Number(balance)).toString()),
+        });
+      } catch (e: any) {
+        setModal({
+          state: Modal.Txn,
+          txn: undefined,
+          status: "REJECTED",
+          message: "Wrap Failed: " + JSON.stringify(e.data.message),
+        });
+      } finally {
+        setDepositLoading(false);
+      }
     }
   };
 

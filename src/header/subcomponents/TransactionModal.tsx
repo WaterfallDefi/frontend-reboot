@@ -1,10 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import {
-  Modal,
-  ModalProps,
-  Network,
-} from '../../WaterfallDefi';
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 type Props = {
   network: Network;
@@ -44,31 +40,22 @@ function TransactionModal(props: Props) {
             <h1>Transaction Submitted</h1>
             {txn && (
               <a
-                href={`${
-                  network === Network.BNB
-                    ? "https://bscscan.com"
-                    : "https://snowtrace.io"
-                }/tx/${txn}`}
+                href={`${network === Network.BNB ? "https://bscscan.com" : "https://snowtrace.io"}/tx/${txn}`}
                 target="_blank"
                 rel="noreferrer"
               >
-                {network === Network.BNB
-                  ? "View on BSCScan"
-                  : "View on Snowtrace"}
+                {network === Network.BNB ? "View on BSCScan" : "View on Snowtrace"}
               </a>
             )}
-            <button onClick={() => setModal({ state: Modal.None })}>
-              Close
-            </button>
+            <button onClick={() => setModal({ state: Modal.None })}>Close</button>
           </section>
         );
       case ModalStatus.Rejected.valueOf():
         return (
           <section className="transaction">
             <h1>Transaction Rejected</h1>
-            <button onClick={() => setModal({ state: Modal.None })}>
-              Close
-            </button>
+            <p>{props.message}</p>
+            <button onClick={() => setModal({ state: Modal.None })}>Close</button>
           </section>
         );
       case ModalStatus.Reverted.valueOf():
@@ -77,22 +64,14 @@ function TransactionModal(props: Props) {
             <h1>Transaction Reverted</h1>
             {txn && (
               <a
-                href={`${
-                  network === Network.BNB
-                    ? "https://bscscan.com"
-                    : "https://snowtrace.io"
-                }/tx/${txn}`}
+                href={`${network === Network.BNB ? "https://bscscan.com" : "https://snowtrace.io"}/tx/${txn}`}
                 target="_blank"
                 rel="noreferrer"
               >
-                {network === Network.BNB
-                  ? "View on BSCScan"
-                  : "View on Snowtrace"}
+                {network === Network.BNB ? "View on BSCScan" : "View on Snowtrace"}
               </a>
             )}
-            <button onClick={() => setModal({ state: Modal.None })}>
-              Close
-            </button>
+            <button onClick={() => setModal({ state: Modal.None })}>Close</button>
           </section>
         );
       case ModalStatus.Completed.valueOf():
@@ -101,22 +80,14 @@ function TransactionModal(props: Props) {
             <h1>Transaction Completed</h1>
             {txn && (
               <a
-                href={`${
-                  network === Network.BNB
-                    ? "https://bscscan.com"
-                    : "https://snowtrace.io"
-                }/tx/${txn}`}
+                href={`${network === Network.BNB ? "https://bscscan.com" : "https://snowtrace.io"}/tx/${txn}`}
                 target="_blank"
                 rel="noreferrer"
               >
-                {network === Network.BNB
-                  ? "View on BSCScan"
-                  : "View on Snowtrace"}
+                {network === Network.BNB ? "View on BSCScan" : "View on Snowtrace"}
               </a>
             )}
-            <button onClick={() => setModal({ state: Modal.None })}>
-              Dismiss
-            </button>
+            <button onClick={() => setModal({ state: Modal.None })}>Dismiss</button>
           </section>
         );
       case ModalStatus.Error.valueOf():
@@ -124,9 +95,7 @@ function TransactionModal(props: Props) {
           <section className="transaction">
             <h1>Error</h1>
             {message && <p>{message}</p>}
-            <button onClick={() => setModal({ state: Modal.None })}>
-              Dismiss
-            </button>
+            <button onClick={() => setModal({ state: Modal.None })}>Dismiss</button>
           </section>
         );
       case ModalStatus.MissingModalProps.valueOf():
@@ -134,9 +103,7 @@ function TransactionModal(props: Props) {
         return (
           <section className="transaction">
             <h1>Error: Missing Modal Props</h1>
-            <button onClick={() => setModal({ state: Modal.None })}>
-              Dismiss
-            </button>
+            <button onClick={() => setModal({ state: Modal.None })}>Dismiss</button>
           </section>
         );
     }
