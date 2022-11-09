@@ -269,12 +269,16 @@ function Header(props: Props) {
                     >
                       BNB
                     </div>,
-                    <div
-                      className="network matic option"
-                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)}
-                    >
-                      MATIC
-                    </div>,
+                    location.pathname !== "/stake" ? (
+                      <div
+                        className="network matic option"
+                        onClick={() =>
+                          !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)
+                        }
+                      >
+                        MATIC
+                      </div>
+                    ) : null,
                   ]
                 : network === Network.BNB
                 ? [
@@ -284,12 +288,16 @@ function Header(props: Props) {
                     >
                       AVAX
                     </div>,
-                    <div
-                      className="network matic option"
-                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)}
-                    >
-                      MATIC
-                    </div>,
+                    location.pathname !== "/stake" ? (
+                      <div
+                        className="network matic option"
+                        onClick={() =>
+                          !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)
+                        }
+                      >
+                        MATIC
+                      </div>
+                    ) : null,
                   ]
                 : [
                     <div
