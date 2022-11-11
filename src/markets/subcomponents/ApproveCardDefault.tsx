@@ -15,6 +15,7 @@ import useApprove from "../hooks/useApprove";
 import useInvest from "../hooks/useInvest";
 import useInvestDirect from "../hooks/useInvestDirect";
 import useWrapAVAXContract, { useWrapBNBContract } from "../hooks/useWrap";
+import { useMetamaskBalance } from "../hooks/useMetamaskBalance";
 
 type Props = {
   isRedeposit: boolean;
@@ -124,6 +125,8 @@ function ApproveCardDefault(props: Props) {
 
   const multicurrencyBalancesWallet = useBalances(network, selectedMarket.depositAssetAddresses);
 
+  const { balance: metamaskBalance, fetchBalance: fetchMetamaskBalance } = useMetamaskBalance();
+
   const balance = useMemo(() => {
     return !isRedeposit
       ? selectedMarket.isMulticurrency
@@ -206,12 +209,26 @@ function ApproveCardDefault(props: Props) {
     if (compareNum(_balanceInput, _remaining, true)) {
       return "Maximum deposit amount = " + remaining;
     }
+    if (
+      selectedMarket.wrap &&
+      balanceInput &&
+      Number(balanceInput) > 0 &&
+      Number(balanceInput.toString()) - Number(balance) > 0
+    ) {
+      if (
+        compareNum((Number(balanceInput.toString()) - Number(balance)).toString(), metamaskBalance.toString(), true)
+      ) {
+        return "Insufficient Balance to Wrap";
+      }
+    }
   }, [
     remaining,
     remainingExact,
     redepositBalance,
     actualBalanceWallet,
     balanceInput,
+    balance,
+    metamaskBalance,
     selectedDepositAssetIndex,
     selectedMarket.wrap,
     isRedeposit,
@@ -246,6 +263,7 @@ function ApproveCardDefault(props: Props) {
           message: "Wrap Failed: " + JSON.stringify(e.data.message),
         });
       } finally {
+        fetchMetamaskBalance();
         setDepositLoading(false);
       }
     }
@@ -348,15 +366,23 @@ function ApproveCardDefault(props: Props) {
       {selectedMarket.wrap &&
       balanceInput &&
       Number(balanceInput) > 0 &&
-      Number(balanceInput.toString()) - Number(balance) > 0 ? (
-        <div className="row">
-          <div>{network === Network.AVAX ? "AVAX" : "BNB"} Wrapped On Deposit:</div>
-          <div>
-            {formatNumberSeparator((Number(balanceInput.toString()) - Number(balance)).toString())}{" "}
-            {network === Network.AVAX ? "AVAX" : "BNB"} to {network === Network.AVAX ? "WAVAX" : "WBNB"}
-          </div>
-        </div>
-      ) : null}
+      Number(balanceInput.toString()) - Number(balance) > 0
+        ? [
+            <div className="row" key="metamaskBalance">
+              <div>{network === Network.AVAX ? "AVAX" : "BNB"} Wallet Balance:</div>
+              <div>
+                {formatNumberSeparator(metamaskBalance.toString())} {network === Network.AVAX ? "AVAX" : "BNB"}
+              </div>
+            </div>,
+            <div className="row" key="wrappedOnDeposit">
+              <div>{network === Network.AVAX ? "AVAX" : "BNB"} Wrapped On Deposit:</div>
+              <div>
+                {formatNumberSeparator((Number(balanceInput.toString()) - Number(balance)).toString())}{" "}
+                {network === Network.AVAX ? "AVAX" : "BNB"} to {network === Network.AVAX ? "WAVAX" : "WBNB"}
+              </div>
+            </div>,
+          ]
+        : null}
       <div className="separator" />
       <div className="row">
         {selectedMarket.isMulticurrency ? (
@@ -402,11 +428,6 @@ function ApproveCardDefault(props: Props) {
         />
       </div>
       <div className="validate-text">{!depositLoading && validateText}</div>
-      {selectedMarket.wrap && Number(balanceInput.toString()) - Number(balance) > 0 ? (
-        <div className="validate-text">
-          Please make sure you have enough to wrap, or else the transaction will fail!
-        </div>
-      ) : null}
       {selectTrancheIdx !== undefined ? (
         <div className="important-notes">
           <div>Important Notes</div>
@@ -430,12 +451,22 @@ function ApproveCardDefault(props: Props) {
             ) : (
               <div>Not enough!</div>
             )
+          ) : !compareNum(
+              new BigNumber(balanceInput.toString())
+                .minus(new BigNumber(balance instanceof Array ? balance[selectedDepositAssetIndex] : balance))
+                .toString(),
+              "0",
+              true
+            ) ? (
+            <HandleDepositButton />
           ) : (
             <div className="button">
               <button
                 onClick={handleWrap}
-                // loading={depositLoading} //reusing this flag
-                disabled={selectedMarket.isRetired}
+                disabled={
+                  selectedMarket.isRetired ||
+                  (Number(balanceInput.toString()) - Number(balance)).toString() > metamaskBalance.toString()
+                }
               >
                 Wrap AVAX
               </button>

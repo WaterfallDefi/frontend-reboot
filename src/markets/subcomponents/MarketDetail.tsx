@@ -161,8 +161,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <div className="tvl-bar blurb">
-        {selectedMarket.strategyBlurbs.map((b) => (
-          <p>
+        {selectedMarket.strategyBlurbs.map((b, i) => (
+          <p key={i}>
             {b}
             <br />
           </p>

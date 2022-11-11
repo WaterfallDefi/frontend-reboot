@@ -264,6 +264,7 @@ function Header(props: Props) {
               ? network === Network.AVAX
                 ? [
                     <div
+                      key="bnb"
                       className="network bnb option"
                       onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
                     >
@@ -271,6 +272,7 @@ function Header(props: Props) {
                     </div>,
                     location.pathname !== "/stake" ? (
                       <div
+                        key="matic"
                         className="network matic option"
                         onClick={() =>
                           !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)
@@ -283,6 +285,7 @@ function Header(props: Props) {
                 : network === Network.BNB
                 ? [
                     <div
+                      key="avax"
                       className="network avax option"
                       onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AVAX, setNetwork)}
                     >
@@ -290,6 +293,7 @@ function Header(props: Props) {
                     </div>,
                     location.pathname !== "/stake" ? (
                       <div
+                        key="matic"
                         className="network matic option"
                         onClick={() =>
                           !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)
@@ -301,12 +305,14 @@ function Header(props: Props) {
                   ]
                 : [
                     <div
+                      key="bnb"
                       className="network bnb option"
                       onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
                     >
                       BNB
                     </div>,
                     <div
+                      key="avax"
                       className="network avax option"
                       onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AVAX, setNetwork)}
                     >
@@ -326,10 +332,10 @@ function Header(props: Props) {
             </button>
           ) : (
             [
-              <div className="connect-wallet-btn">
+              <div key="connect" className="connect-wallet-btn">
                 <div>{formatAccountAddress(account)}</div>
               </div>,
-              <div className="logout-btn" onClick={logout}>
+              <div key="logout" className="logout-btn" onClick={logout}>
                 <Logout />
               </div>,
             ]
