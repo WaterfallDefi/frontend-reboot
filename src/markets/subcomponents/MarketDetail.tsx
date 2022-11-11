@@ -160,6 +160,14 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
+      <div className="tvl-bar blurb">
+        {selectedMarket.strategyBlurbs.map((b) => (
+          <p>
+            {b}
+            <br />
+          </p>
+        ))}
+      </div>
       <div className="charts">
         <div className="chart-block portfolio-block">
           <div className="background left-br right-br">

@@ -208,6 +208,10 @@
           }
         }
       }
+
+      &.blurb {
+        flex-direction: column;
+      }
     }
 
     .charts {

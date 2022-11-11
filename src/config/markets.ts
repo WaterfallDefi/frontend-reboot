@@ -102,6 +102,9 @@ export const MarketList: Market[] = [
         apiKey: "cpool_parallel_usdc",
       },
     ],
+    strategyBlurbs: [
+      "Clearpool provides institutional borrowers with fast, flexible and efficient access to unsecured liquidity from a diversified and decentralized network of global lenders. (https://clearpool.finance)",
+    ],
     subgraphURL: "https://apipolygon.waterfalldefi.org/subgraphs/name/waterfall/maticUsdcClearpool",
     isRetired: false,
   },
@@ -144,6 +147,10 @@ export const MarketList: Market[] = [
         apiKey: "venus_bnb",
       },
     ],
+    strategyBlurbs: [
+      "Alpaca Finance is the largest lending protocol allowing leveraged yield farming on BNB Chain and Fantom. (https://www.alpacafinance.org)",
+      "Venus enables users to utilize their cryptocurrencies by supplying collateral to the network that may be borrowed by pledging over-collateralized cryptocurrencies. (https://venus.io)",
+    ],
     subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/bsc-alpVeBnb",
   },
   {
@@ -182,6 +189,10 @@ export const MarketList: Market[] = [
         sAddress: DAITraderJoeStrategyAddress2[NETWORK],
         apiKey: "joe_dai_e",
       },
+    ],
+    strategyBlurbs: [
+      "The BENQI Liquidity Market (BLM) protocol enables users to effortlessly lend, borrow, and earn interest with their digital assets. (https://benqi.fi)",
+      "Trader Joe provides users with a true one-stop-shop DeFi experience on Avalanche. (https://traderjoexyz.com)",
     ],
     subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_dai",
     isRetired: false,
@@ -222,6 +233,10 @@ export const MarketList: Market[] = [
         sAddress: WAVAXTraderJoeStrategyAddress2[NETWORK],
         apiKey: "joe_avax",
       },
+    ],
+    strategyBlurbs: [
+      "The BENQI Liquidity Market (BLM) protocol enables users to effortlessly lend, borrow, and earn interest with their digital assets. (https://benqi.fi)",
+      "Trader Joe provides users with a true one-stop-shop DeFi experience on Avalanche. (https://traderjoexyz.com)",
     ],
     subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_avax",
     isRetired: false,
@@ -269,6 +284,11 @@ export const MarketList: Market[] = [
         apiKey: "stargate_bnb_busd",
       },
     ],
+    strategyBlurbs: [
+      "Alpaca Finance is the largest lending protocol allowing leveraged yield farming on BNB Chain and Fantom. (https://www.alpacafinance.org)",
+      "Venus enables users to utilize their cryptocurrencies by supplying collateral to the network that may be borrowed by pledging over-collateralized cryptocurrencies. (https://venus.io)",
+      "Stargate is a fully composable liquidity transport protocol that lives at the heart of Omnichain DeFi (https://stargate.finance)",
+    ],
     subgraphURL: "https://apitest2.waterfalldefi.org/subgraphs/name/waterfall/bsc_test_alpVeStar",
     isRetired: false,
   },
@@ -308,6 +328,10 @@ export const MarketList: Market[] = [
         sAddress: StargateBenqi_BenqiStrategyAddress[NETWORK],
         apiKey: "qi_usdc",
       },
+    ],
+    strategyBlurbs: [
+      "The BENQI Liquidity Market (BLM) protocol enables users to effortlessly lend, borrow, and earn interest with their digital assets. (https://benqi.fi)",
+      "Stargate is a fully composable liquidity transport protocol that lives at the heart of Omnichain DeFi (https://stargate.finance)",
     ],
     subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiStarUsdc",
     isRetired: false,

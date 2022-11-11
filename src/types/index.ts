@@ -76,6 +76,7 @@ export interface Market {
   depositAssetContract?: Contract;
   rewardPerBlock?: string;
   strategyFarms: StrategyFarm[];
+  strategyBlurbs: string[];
   subgraphURL: string;
   isRetired?: boolean;
 }
