@@ -21,7 +21,7 @@
       width: 100%;
     }
 
-    border-radius: 12px;
+    border-radius: 8px;
     left: calc(50vw - 210px);
     padding: 16px;
     background: $layer-color-dark;
@@ -57,7 +57,7 @@
           background-color: $highlight-color;
           color: $base-color;
           font-weight: 600;
-          border-radius: 5px;
+          border-radius: 8px;
           cursor: pointer;
         }
       }
@@ -69,13 +69,13 @@
           padding: 16px;
           background-color: $base-color-dark;
           color: $base-color;
-          border-radius: 12px;
+          border-radius: 8px;
           font-weight: 600;
         }
         .connect {
           padding: 0 16px;
           height: 48px;
-          border-radius: 12px;
+          border-radius: 8px;
           border: 1px solid $text-color-darker;
           background-color: $base-color-dark;
           display: flex;
@@ -131,7 +131,7 @@
           height: 44px;
           background-color: $highlight-color;
           color: $base-color;
-          border-radius: 5px;
+          border-radius: 8px;
         }
       }
     }

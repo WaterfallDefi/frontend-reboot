@@ -16,7 +16,7 @@
       height: 42px;
       font-size: $font-size-md;
       font-weight: 500;
-      border-radius: 5px;
+      border-radius: 8px;
       margin-right: 8px;
       margin-bottom: 8px;
       background: $layer-color-dark;
@@ -54,8 +54,8 @@
         background-color: $layer-color-dark-2;
         color: $base-color;
         padding: 12px;
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
         text-align: right;
       }
       .wrapper {
@@ -101,13 +101,13 @@
               font-size: $font-size-md;
               height: 30px;
               padding: 0 12px;
-              border-radius: 4px;
+              border-radius: 8px;
               background-color: $highlight-color;
               color: $base-color;
 
               &.autoroll-btn {
                 width: 100%;
-                border-radius: 4px;
+                border-radius: 8px;
                 height: 28px;
                 font-size: $font-size-md;
                 border: 1px solid $text-color-lightest;

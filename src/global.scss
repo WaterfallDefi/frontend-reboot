@@ -38,12 +38,12 @@ $font-size-xl: 30px;
     display: flex;
     align-items: center;
     &.first {
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
     }
     &.last {
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
+      border-top-right-radius: 8px;
+      border-bottom-right-radius: 8px;
     }
     background-color: $layer-color;
     @media screen and (max-width: 1024px) {
@@ -60,7 +60,7 @@ $font-size-xl: 30px;
 @mixin table-row() {
   display: flex;
   align-items: center;
-  border-radius: 12px;
+  border-radius: 8px;
   height: 169px;
   background-color: $layer-color;
   margin: 0 20px 16px 20px;
@@ -151,7 +151,7 @@ $font-size-xl: 30px;
           gap: 5px;
           grid-auto-flow: column;
           background-color: $base-color;
-          border-radius: 4px;
+          border-radius: 8px;
           padding: 5px;
           text-align: center;
           color: $highlight-color;
@@ -275,7 +275,7 @@ $font-size-xl: 30px;
       @media screen and (max-width: 1024px) {
         margin-left: 10%;
       }
-      border-radius: 4px;
+      border-radius: 8px;
       height: 24px;
       line-height: 24px;
       border: 0;
@@ -386,7 +386,7 @@ $font-size-xl: 30px;
     height: 56px;
     font-weight: 600;
     font-size: $font-size-md;
-    border-radius: 5px;
+    border-radius: 8px;
     color: $base-color;
     background: $highlight-color;
     border: none;
@@ -540,7 +540,7 @@ $font-size-xl: 30px;
             border: rgb(224, 78, 41) 1px solid;
             color: rgb(224, 78, 41);
             box-sizing: border-box;
-            border-radius: 4px;
+            border-radius: 8px;
             transform: rotate(-30deg);
             position: absolute;
             left: -20px;
@@ -647,7 +647,7 @@ $font-size-xl: 30px;
       .approve-card {
         padding: 25px;
         background: $base-color;
-        border-radius: 5px;
+        border-radius: 8px;
         border: $highlight-color-dark 2px solid;
         z-index: 1;
 
@@ -677,7 +677,7 @@ $font-size-xl: 30px;
             height: 50px;
             text-align: right;
             font-size: $font-size-lg;
-            border-radius: 5px;
+            border-radius: 8px;
           }
           .max-input {
             display: flex;
@@ -685,7 +685,7 @@ $font-size-xl: 30px;
             justify-content: center;
             color: $base-color;
             background: $highlight-color;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: $font-size-md;
             padding: 0 12px;
             margin-right: 8px;

@@ -13,7 +13,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
       align-items: center;
       justify-content: space-between;
       color: $text-color;
-      border-radius: 12px;
+      border-radius: 8px;
       & > div {
         p {
           font-weight: 500;
@@ -138,7 +138,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
             width: 50%;
             justify-content: space-between;
             button {
-              border-radius: 5px;
+              border-radius: 8px;
               width: 150px;
               background-color: $highlight-color;
               color: $base-color;
@@ -242,7 +242,7 @@ $evenPadding: calc((100vw - 1072px) / 2);
         padding: 24px 32px;
         background: $base-color;
         box-shadow: 0px 8px 40px 0px rgba(0, 108, 253, 0.1);
-        border-radius: 12px;
+        border-radius: 8px;
         display: flex;
         flex-direction: column;
         color: $text-color;

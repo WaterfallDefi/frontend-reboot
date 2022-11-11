@@ -5,7 +5,7 @@
   margin: 0 auto;
 
   .dash-banner {
-    border-radius: 24px;
+    border-radius: 8px;
     padding: 24px 24px 24px 42px;
     background: $layer-color;
     position: relative;
@@ -66,23 +66,6 @@
     }
   }
 
-  .sub-banner {
-    height: 169px;
-    border-radius: 24px;
-    padding: 26px 0;
-    background: $base-color;
-    position: relative;
-    transform: translateY(-56px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-
-    .twitter {
-      width: calc(100% - 48px);
-    }
-  }
-
   &.dark {
     background: $base-color-dark;
     .dash-banner {
@@ -96,9 +79,6 @@
           }
         }
       }
-    }
-    .sub-banner {
-      background: $layer-color-dark-2;
     }
 
     .info-wrapper {
