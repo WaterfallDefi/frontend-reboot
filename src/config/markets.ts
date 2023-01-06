@@ -289,7 +289,7 @@ export const MarketList: Market[] = [
       "Venus enables users to utilize their cryptocurrencies by supplying collateral to the network that may be borrowed by pledging over-collateralized cryptocurrencies. (https://venus.io)",
       "Stargate is a fully composable liquidity transport protocol that lives at the heart of Omnichain DeFi (https://stargate.finance)",
     ],
-    subgraphURL: "https://apitest2.waterfalldefi.org/subgraphs/name/waterfall/bsc_test_alpVeStar",
+    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/busd-alpVeStar",
     isRetired: false,
   },
   {
