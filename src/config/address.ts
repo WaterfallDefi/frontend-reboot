@@ -113,18 +113,12 @@ export const TestLPRewardAddress: { [network: string]: string } = {
 export const DAIFallsTrancheMasterAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //test address
-  // [NETWORKS.MAINNET]: "0x9c59d895A660F30C8B335AF3a26a371b17192382"
-  //LIVE ADDRESS!
-  [NETWORKS.MAINNET]: "0xa32290f53Fd616e1a0B2B2dFcfB843a112e959d1",
+  [NETWORKS.MAINNET]: "0xbcf5F24a18b97c50925281f5bB62269A7abEbf4e",
 };
 export const DAIFallsMasterWTFAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //test address
-  // [NETWORKS.MAINNET]: "0x11f21b204D224Bd955a9aEd302f68F0f87962c1B"
-  //LIVE ADDRESS!
-  [NETWORKS.MAINNET]: "0xb1fe3F585D0C787ad4Bf1A6B5D44A3c63C697228",
+  [NETWORKS.MAINNET]: "0x4c2c11d9B37Cf7EbC9a89D608015d1E9C976449C",
 };
 export const DAI_E_DepositAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
@@ -134,16 +128,12 @@ export const DAI_E_DepositAddress: { [network: string]: string } = {
 export const DAITraderJoeStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //test address
-  // [NETWORKS.MAINNET]: "0x6d4123fA5De696d459155B5978b9f33e87d1e5a2"
-  //LIVE ADDRESS!
-  [NETWORKS.MAINNET]: "0x3bF3942A2714ac8FF650F9043542E7C365b48Dfc",
+  [NETWORKS.MAINNET]: "0x0C6b0a4ba2584575FE98E1f754B3F8C8cCE7E5b9",
 };
 export const DAIBenqiStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //LIVE ADDRESS!
-  [NETWORKS.MAINNET]: "0x6ab6eCEF94a6695Bf414228264591F47Dc26474A",
+  [NETWORKS.MAINNET]: "0xd0fF2217872DfA377842d35742374A6d0d2D53C4",
 };
 export const WrapAVAXAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
@@ -158,16 +148,12 @@ export const WrapBNBAddress: { [network: string]: string } = {
 export const WAVAXFallsTrancheMasterAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //test
-  // [NETWORKS.MAINNET]: "0xA88C319D2947f54D728C9E95122A61E512cEF64e"
-  [NETWORKS.MAINNET]: "0x12D7D07F9A1A659Be4E1E2945c8229B387840D2B",
+  [NETWORKS.MAINNET]: "0x8546BEDb7f49B5f669Fe33d9dE4f1bB250225053",
 };
 export const WAVAXFallsMasterWTFAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //test
-  // [NETWORKS.MAINNET]: "0x7424F32E9B038555086d11cff17930e56AdE6979"
-  [NETWORKS.MAINNET]: "0x71259FF0d07F5f784550b4c693c1FaeF0dDb0C04",
+  [NETWORKS.MAINNET]: "0x936D2f1F5defE0618C99185631D181E441e3d725",
 };
 export const WAVAXDepositAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
@@ -177,16 +163,12 @@ export const WAVAXDepositAddress: { [network: string]: string } = {
 export const WAVAXTraderJoeStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //test
-  // [NETWORKS.MAINNET]: "0xC986263a124fb36359B7b99F35E5E7bEEcD65579"
-  [NETWORKS.MAINNET]: "0x25431344a6A2ff4626D4A24519336DB996EeF701",
+  [NETWORKS.MAINNET]: "0xbddD24D7cB820161005ea518C35318e7Fc6F0962",
 };
 export const WAVAXBenqiStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  //test
-  // [NETWORKS.MAINNET]: "0x57c5a9808022aD244E1487F204A01349c90726f9"
-  [NETWORKS.MAINNET]: "0xc6af16467151f6de1Cb7c91BF4A0403B7F5f07d4",
+  [NETWORKS.MAINNET]: "0x004f7d68C490022b3083a9E3599c69ae48e1C5dF",
 };
 
 export const DAIFallsTrancheMasterAddress2: { [network: string]: string } = {
@@ -340,26 +322,31 @@ export const BUSDTriple_StargateStrategyAddress: { [network: string]: string } =
   [NETWORKS.MAINNET]: "0xfF106F62855984D474c8360E680D06350e3ca898",
 };
 
-//may 20th stargate + benqi falls
-export const StargateBenqi_TrancheMasterAddress: { [network: string]: string } = {
+//2023 jan 10th new USDC falls
+export const AVAX_USDC_TrancheMasterAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x38179F0262812682FC679852B54e48bb10a11ab9",
+  [NETWORKS.MAINNET]: "0x345dB241B8E53F1d89b1c9Ac6B7d8897f54DA66C",
 };
-export const StargateBenqi_MasterWTFAddress: { [network: string]: string } = {
+export const AVAX_USDC_MasterWTFAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x734cB7d32DE1726f4642A535339a2Edee2D238b8",
+  [NETWORKS.MAINNET]: "0x3eEE868fC91585D08c26563Ac5d3761504252aEA",
 };
-export const StargateBenqi_StargateStrategyAddress: { [network: string]: string } = {
+export const AVAX_USDC_StargateStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x486c1c21EbeA566A21e39217317c32Fe112Fc949",
+  [NETWORKS.MAINNET]: "0x4757Cf38e7Eb15c4bA4ADfB5765300E9a49F18e2",
 };
-export const StargateBenqi_BenqiStrategyAddress: { [network: string]: string } = {
+export const AVAX_USDC_BenqiStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x24929175d25Bc48957A999764a00400AdB95EFEe",
+  [NETWORKS.MAINNET]: "0xa3Ce761E596fe8e9ECb5b7043a943675Cb88EeCD",
+};
+export const AVAX_USDC_TraderJoeStrategyAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xc45451cAef6028264662c741C90471Efd25f40f8",
 };
 
 export const USDC_Bridged_Address_AVAX: { [network: string]: string } = {

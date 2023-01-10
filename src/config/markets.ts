@@ -20,10 +20,6 @@ import {
   BNB_Only_Falls_MasterWTFAddress,
   BNB_Only_Falls_AlpacaStrategyAddress,
   BNB_Only_Falls_VenusStrategyAddress,
-  StargateBenqi_TrancheMasterAddress,
-  StargateBenqi_MasterWTFAddress,
-  StargateBenqi_StargateStrategyAddress,
-  StargateBenqi_BenqiStrategyAddress,
   USDC_Address_AVAX,
   Polygon_Uncollateralized_TrancheMasterAddress,
   Polygon_Uncollateralized_MasterWTFAddress,
@@ -33,6 +29,11 @@ import {
   Polygon_Uncollateralized_ClearpoolAurosStrat,
   Polygon_Uncollateralized_ClearpoolBastionStrat,
   Polygon_Uncollateralized_ClearpoolParallelStrat,
+  AVAX_USDC_TrancheMasterAddress,
+  AVAX_USDC_MasterWTFAddress,
+  AVAX_USDC_StargateStrategyAddress,
+  AVAX_USDC_BenqiStrategyAddress,
+  AVAX_USDC_TraderJoeStrategyAddress,
 } from "./address";
 // import Tranches from "./abis/TrancheMaster.json";
 // import MC_Tranches from "./abis/MC_TrancheMaster.json";
@@ -307,10 +308,10 @@ export const MarketList: Market[] = [
     totalTranchesTarget: "",
     status: "",
     nextTime: "",
-    address: StargateBenqi_TrancheMasterAddress[NETWORK],
+    address: AVAX_USDC_TrancheMasterAddress[NETWORK],
     abi: AVAXTrancheMasterAutorollABI,
     masterChefAbi: MasterChef.abi,
-    masterChefAddress: StargateBenqi_MasterWTFAddress[NETWORK],
+    masterChefAddress: AVAX_USDC_MasterWTFAddress[NETWORK],
     pools: [],
     depositAssetAddress: USDC_Address_AVAX[NETWORK],
     depositAssetAddresses: [],
@@ -318,15 +319,21 @@ export const MarketList: Market[] = [
     strategyFarms: [
       {
         farmName: "Stargate USDC",
-        shares: 0.7,
-        sAddress: StargateBenqi_StargateStrategyAddress[NETWORK],
+        shares: 0.34,
+        sAddress: AVAX_USDC_StargateStrategyAddress[NETWORK],
         apiKey: "stargate_avax_usdc",
       },
       {
         farmName: "Benqi USDC",
-        shares: 0.3,
-        sAddress: StargateBenqi_BenqiStrategyAddress[NETWORK],
+        shares: 0.33,
+        sAddress: AVAX_USDC_BenqiStrategyAddress[NETWORK],
         apiKey: "qi_usdc",
+      },
+      {
+        farmName: "Trader Joe USDC",
+        shares: 0.33,
+        sAddress: AVAX_USDC_TraderJoeStrategyAddress[NETWORK],
+        apiKey: "",
       },
     ],
     strategyBlurbs: [
