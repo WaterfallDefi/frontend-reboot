@@ -156,7 +156,15 @@ function Header(props: Props) {
             className="link"
             to={"/"}
             data-selected={location.pathname === "/"}
-            onClick={() => location.pathname === "/" && setMarkets(undefined)}
+            onClick={() => {
+              if (location.pathname === "/") {
+                setMarkets(undefined);
+              }
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
           >
             Markets
           </Link>
