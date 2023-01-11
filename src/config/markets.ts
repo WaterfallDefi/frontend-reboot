@@ -333,7 +333,7 @@ export const MarketList: Market[] = [
         farmName: "Trader Joe USDC",
         shares: 0.33,
         sAddress: AVAX_USDC_TraderJoeStrategyAddress[NETWORK],
-        apiKey: "",
+        apiKey: "joe_usdc",
       },
     ],
     strategyBlurbs: [
