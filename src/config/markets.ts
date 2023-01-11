@@ -152,7 +152,7 @@ export const MarketList: Market[] = [
       "Alpaca Finance is the largest lending protocol allowing leveraged yield farming on BNB Chain and Fantom. (https://www.alpacafinance.org)",
       "Venus enables users to utilize their cryptocurrencies by supplying collateral to the network that may be borrowed by pledging over-collateralized cryptocurrencies. (https://venus.io)",
     ],
-    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/bsc-alpVeBnb",
+    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/bsc-bnb",
   },
   {
     portfolio: "DAI Falls",
@@ -290,7 +290,7 @@ export const MarketList: Market[] = [
       "Venus enables users to utilize their cryptocurrencies by supplying collateral to the network that may be borrowed by pledging over-collateralized cryptocurrencies. (https://venus.io)",
       "Stargate is a fully composable liquidity transport protocol that lives at the heart of Omnichain DeFi (https://stargate.finance)",
     ],
-    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/busd-alpVeStar",
+    subgraphURL: "https://api2.waterfalldefi.org/subgraphs/name/waterfall/bsc-busd",
     isRetired: false,
   },
   {

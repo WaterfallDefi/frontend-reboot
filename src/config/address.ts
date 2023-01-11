@@ -292,34 +292,34 @@ export const BUSD4_VenusStrat: { [network: string]: string } = {
   [NETWORKS.MAINNET]: "0xF7ea83A4E4AF2554e883af4e42c026c91644d544",
 };
 
-//april 28th stargate + alpaca + venus falls
+//jan 11th 2023
 export const BUSDTripleStratTrancheMasterAddress: {
   [network: string]: string;
 } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xf23D0b80Ca2e61F837B990c8D390F1327376E361",
+  [NETWORKS.MAINNET]: "0x527976dC86c3C0f58Cc064142D082eF739ACEEa2",
 };
 export const BUSDTripleStratMasterWTFAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xFccE0005423Ed8c5EC37Cb315CF0c9ef597250EB",
+  [NETWORKS.MAINNET]: "0x1c71C3c32F47D9490647f711026a08240e7e90aE",
 };
 
 export const BUSDTriple_AlpacaStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xbF6Edb397f3bF899b1D8463FD4aAf15C5502e0EE",
+  [NETWORKS.MAINNET]: "0xBB75e16f9bfC931cDd4d9Dc5C15dBFD9ed7fcf85",
 };
 export const BUSDTriple_VenusStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x46dd0Dc25918730bb8528994B1E8abFd58fb9c8e",
+  [NETWORKS.MAINNET]: "0xd7c9FEFafd6DCeA10A3E8f1c39839f6842622B52",
 };
 export const BUSDTriple_StargateStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xfF106F62855984D474c8360E680D06350e3ca898",
+  [NETWORKS.MAINNET]: "0x881a0E89A3F010635E8967BB90F8E7132eF0f09F",
 };
 
 //2023 jan 10th new USDC falls
@@ -363,25 +363,25 @@ export const USDC_Address_AVAX: { [network: string]: string } = {
 export const BNB_Only_Falls_TrancheMasterAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x57B505d46a7B88e78C3C5b165DE7A7068cc4E0Da",
+  [NETWORKS.MAINNET]: "0xfCF623250346c8753cA60846F93A96f5f9fBcA25",
 };
 
 export const BNB_Only_Falls_MasterWTFAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xb56DCf1FF9fd986548B55DB65B215acc896f143E",
+  [NETWORKS.MAINNET]: "0x864654f77C6429Ed04bf1ac06fE095BcbA2de80f",
 };
 
 export const BNB_Only_Falls_AlpacaStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xa32290f53Fd616e1a0B2B2dFcfB843a112e959d1",
+  [NETWORKS.MAINNET]: "0xFC7c300aDEF4D01A462f442692B8E869f4F681d0",
 };
 
 export const BNB_Only_Falls_VenusStrategyAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x4961446Bd81c1420bd6901E50F951eeaCc5aC1d7",
+  [NETWORKS.MAINNET]: "0x60222019Ad22c59bdA2c6433570a4b63d5601d9a",
 };
 
 export const USDC_Address_Matic: { [network: string]: string } = {
