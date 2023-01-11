@@ -26,7 +26,7 @@ export const getAPYHourly = async (date: string, date2: string) => {
   return hourly;
 };
 
-const getSubgraphQuery = async (subgraphURL: string, account: string) => {
+const getSubgraphQuery = async (subgraphURL: string, account: string | null | undefined) => {
   let res;
   try {
     res = await ky
@@ -100,6 +100,8 @@ export const fetchSubgraphQuery = async (account: string | null | undefined, dec
     };
 
     const { trancheCycles, userInvests } = _subgraphResult;
+    console.log(marketIdx);
+    console.log(trancheCycles);
     if (trancheCycles) {
       for (let i = 0; i < trancheCycles.length; i++) {
         const { id } = trancheCycles[i];
