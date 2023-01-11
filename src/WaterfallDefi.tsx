@@ -108,11 +108,19 @@ function WaterfallDefi() {
                 setMarkets={setMarkets}
                 setModal={setModal}
               />,
+              <MyPortfolio
+                key="portfolio"
+                mode={Mode.Dark}
+                network={network}
+                markets={markets ? markets : []}
+                setMarkets={setMarkets}
+                setModal={setModal}
+              />,
             ],
             true
           )}
         />
-        <Route
+        {/* <Route
           path="/portfolio"
           element={layout(
             [
@@ -127,7 +135,7 @@ function WaterfallDefi() {
             ],
             true
           )}
-        />
+        /> */}
         <Route
           path="/stake"
           element={layout([<Stake key="stake" mode={Mode.Dark} network={network} setModal={setModal} />], false)}

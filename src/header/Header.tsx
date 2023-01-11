@@ -162,9 +162,17 @@ function Header(props: Props) {
           </Link>
         </div>
         <div className="menu-block-wrapper">
-          <Link className="link" to={"/portfolio"} data-selected={location.pathname === "/portfolio"}>
+          <p
+            className="link"
+            onClick={() => {
+              window.scrollTo({
+                top: document.documentElement.scrollHeight + 500,
+                behavior: "smooth",
+              });
+            }}
+          >
             My Portfolio
-          </Link>
+          </p>
         </div>
         {network !== Network.Polygon && (
           <div className="menu-block-wrapper">
