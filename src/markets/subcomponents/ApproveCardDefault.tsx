@@ -255,6 +255,12 @@ function ApproveCardDefault(props: Props) {
             value: parseEther((Number(amount) - Number(balance)).toString()),
           });
         }
+        setModal({
+          state: Modal.Txn,
+          txn: undefined,
+          status: "SUBMITTED",
+          message: "Wrap Submitted",
+        });
       } catch (e: any) {
         setModal({
           state: Modal.Txn,
@@ -263,6 +269,8 @@ function ApproveCardDefault(props: Props) {
           message: "Wrap Failed: " + JSON.stringify(e.data.message),
         });
       } finally {
+        setBalanceInput("0");
+        !selectedMarket.isMulticurrency ? fetchBalance() : multicurrencyBalancesWallet.fetchBalances();
         fetchMetamaskBalance();
         setDepositLoading(false);
       }
