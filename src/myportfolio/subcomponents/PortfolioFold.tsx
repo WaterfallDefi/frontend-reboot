@@ -107,6 +107,7 @@ function PortfolioFold(props: Props) {
       });
     } finally {
       // setWithdrawAllLoading(false);
+      setMarkets(undefined);
     }
   };
 
@@ -124,6 +125,7 @@ function PortfolioFold(props: Props) {
       console.error(e);
     } finally {
       setRedeemLoading(false);
+      setMarkets(undefined);
     }
   };
 
