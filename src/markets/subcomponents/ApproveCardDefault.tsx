@@ -468,7 +468,7 @@ function ApproveCardDefault(props: Props) {
                   (Number(balanceInput.toString()) - Number(balance)).toString() > metamaskBalance.toString()
                 }
               >
-                Wrap AVAX
+                Wrap
               </button>
             </div>
           )
