@@ -195,7 +195,7 @@ export const MarketList: Market[] = [
       "The BENQI Liquidity Market (BLM) protocol enables users to effortlessly lend, borrow, and earn interest with their digital assets. (https://benqi.fi)",
       "Trader Joe provides users with a true one-stop-shop DeFi experience on Avalanche. (https://traderjoexyz.com)",
     ],
-    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_dai",
+    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/avax-dai",
     isRetired: false,
   },
   {
@@ -239,7 +239,7 @@ export const MarketList: Market[] = [
       "The BENQI Liquidity Market (BLM) protocol enables users to effortlessly lend, borrow, and earn interest with their digital assets. (https://benqi.fi)",
       "Trader Joe provides users with a true one-stop-shop DeFi experience on Avalanche. (https://traderjoexyz.com)",
     ],
-    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiJoe_avax",
+    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/avax-avax",
     isRetired: false,
   },
   {
@@ -340,7 +340,7 @@ export const MarketList: Market[] = [
       "The BENQI Liquidity Market (BLM) protocol enables users to effortlessly lend, borrow, and earn interest with their digital assets. (https://benqi.fi)",
       "Stargate is a fully composable liquidity transport protocol that lives at the heart of Omnichain DeFi (https://stargate.finance)",
     ],
-    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/qiStarUsdc",
+    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/avax-usdc",
     isRetired: false,
   },
 ];
