@@ -9,7 +9,7 @@ function Dashboard() {
 
   const totalTvl = useTotalTvl();
 
-  const totalCapitalDeployed = 98916547;
+  const totalCapitalDeployed = 141923240;
 
   return (
     <div className="dashboard-wrapper dark">
