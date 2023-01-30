@@ -5,7 +5,7 @@ import { Metamask } from "../header/svgs/Metamask";
 import useTotalTvl from "./hooks/useTotalTvl";
 
 function Dashboard() {
-  const { price, marketCap } = useWTFPriceLP();
+  // const { price, marketCap } = useWTFPriceLP();
 
   const totalTvl = useTotalTvl();
 
@@ -15,14 +15,14 @@ function Dashboard() {
     <div className="dashboard-wrapper dark">
       <div className="dash-banner">
         <div className="content">
-          <div className="block">
+          {/* <div className="block">
             <span className="title">WTF Price</span>
             <span className="value">$ {price ? numeral(price).format("0,0.[00]") : "-"}</span>
           </div>
           <div className="block">
             <span className="title">Market Cap</span>
             <span className="value">$ {marketCap ? numeral(marketCap).format("0,0") : "-"}</span>
-          </div>
+          </div> */}
           <div className="block">
             <span className="title">Total Value Locked</span>
             <span className="value">$ {totalTvl}</span>

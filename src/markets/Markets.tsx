@@ -7,9 +7,9 @@ import { Web3Provider } from "@ethersproject/providers";
 
 import numeral from "numeral";
 
-import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
+// import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
-import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
+// import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import TableRow from "../shared/TableRow";
 import { Market } from "../types";
 import { ModalProps, Mode, Network } from "../WaterfallDefi";
@@ -37,7 +37,8 @@ type TableRowData = {
   network: string;
   assets: string[];
   duration: string;
-  apr_markets: { tranchesApr: (string | number)[]; wtfApr: (string | undefined)[] };
+  apr_markets: { tranchesApr: (string | number)[] };
+  // wtfApr: (string | undefined)[] };
   tvl: string;
   status: string;
 };
@@ -54,7 +55,7 @@ function Markets(props: Props) {
   const [headerSort, setHeaderSort] = useState<number>(-1);
   const [sortAsc, setSortAsc] = useState<boolean>(true);
 
-  const { price: wtfPrice } = useWTFPriceLP();
+  // const { price: wtfPrice } = useWTFPriceLP();
   const coingeckoPrices: CoingeckoPrices = useCoingeckoPrices();
 
   //we are using markets as a network switch reset indicator, if flipped to undefined
@@ -86,26 +87,27 @@ function Markets(props: Props) {
     return markets
       ? markets
           .map((m: Market) => {
-            const wtfAprs = m.tranches.map((_t, _i) => {
-              return getWTFApr(
-                m.network,
-                formatAllocPoint(m?.pools[_i], m?.totalAllocPoints),
-                m?.tranches[_i],
-                m.duration,
-                m.rewardPerBlock,
-                wtfPrice,
-                m?.assets,
-                coingeckoPrices
-              );
-            });
+            // const wtfAprs = m.tranches.map((_t, _i) => {
+            //   return getWTFApr(
+            //     m.network,
+            //     formatAllocPoint(m?.pools[_i], m?.totalAllocPoints),
+            //     m?.tranches[_i],
+            //     m.duration,
+            //     m.rewardPerBlock,
+            //     wtfPrice,
+            //     m?.assets,
+            //     coingeckoPrices
+            //   );
+            // });
 
             const tranchesApr = m.tranches.map((_t, _i) => {
-              const wtfAPR = wtfAprs[_i];
+              // const wtfAPR = wtfAprs[_i];
               const trancheAPR: string = _t.apy;
               const totalAPR =
-                wtfAPR !== "0.00" && wtfAPR !== undefined
-                  ? Number(trancheAPR) + Number(numeral(wtfAPR).value())
-                  : trancheAPR;
+                // wtfAPR !== "0.00" && wtfAPR !== undefined
+                //   ? Number(trancheAPR) + Number(numeral(wtfAPR).value())
+                //   :
+                trancheAPR;
               return totalAPR;
             });
 
@@ -132,7 +134,8 @@ function Markets(props: Props) {
                   Number(m.duration) / 86400 >= 1
                     ? Number(m.duration) / 86400 + " Days"
                     : Number(m.duration) / 60 + " Mins",
-                apr_markets: { tranchesApr: tranchesApr, wtfApr: wtfAprs },
+                apr_markets: { tranchesApr: tranchesApr },
+                // wtfApr: wtfAprs },
                 tvl: tvl,
                 status: m.isRetired ? "Expired" : m.status[0] + m.status.slice(1).toLowerCase(),
               },
@@ -190,7 +193,7 @@ function Markets(props: Props) {
           })
           .map((m) => <TableRow key={m.data.portfolio} setSelectedMarket={() => goToMarket(m.market)} data={m.data} />)
       : [];
-  }, [markets, headerSort, wtfPrice, coingeckoPrices, goToMarket]);
+  }, [markets, headerSort, coingeckoPrices, goToMarket]);
 
   return (
     <div className={"markets-wrapper " + mode}>

@@ -16,7 +16,7 @@ import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
 import { getEstimateYield } from "./hooks/getEstimateYield";
 import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
-import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
+// import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import PortfolioFold from "./subcomponents/PortfolioFold";
 
 const BIG_TEN = new BigNumber(10);
@@ -69,7 +69,7 @@ type TableRowData = {
 function MyPortfolio(props: Props) {
   const { mode, network, markets, setModal, setMarkets } = props;
   const { account } = useWeb3React<Web3Provider>();
-  const { price: wtfPrice } = useWTFPriceLP();
+  // const { price: wtfPrice } = useWTFPriceLP();
 
   const positions = usePositions(markets);
 
@@ -258,17 +258,19 @@ function MyPortfolio(props: Props) {
                 )
               : [];
 
-            const wtfAPY = isCurrentCycle
-              ? getWTFApr(
-                  network,
-                  formatAllocPoint(_market.pools[_userInvest.tranche], _market.totalAllocPoints),
-                  _market.tranches[_userInvest.tranche],
-                  _market.duration,
-                  _market.rewardPerBlock,
-                  wtfPrice,
-                  _market.assets
-                )
-              : "-";
+            const wtfAPY =
+              // isCurrentCycle
+              //   ? getWTFApr(
+              //       network,
+              //       formatAllocPoint(_market.pools[_userInvest.tranche], _market.totalAllocPoints),
+              //       _market.tranches[_userInvest.tranche],
+              //       _market.duration,
+              //       _market.rewardPerBlock,
+              //       wtfPrice,
+              //       _market.assets
+              //     )
+              //   :
+              "-";
 
             const netAPY = wtfAPY !== "-" ? Number(trancheAPY) + Number(numeral(wtfAPY).value()) : trancheAPY;
 
@@ -344,18 +346,7 @@ function MyPortfolio(props: Props) {
         );
       })
       .flat();
-  }, [
-    positions,
-    subgraph,
-    selectedAsset,
-    selectedTranche,
-    selectedStatus,
-    markets,
-    network,
-    setMarkets,
-    setModal,
-    wtfPrice,
-  ]);
+  }, [positions, subgraph, selectedAsset, selectedTranche, selectedStatus, markets, network, setMarkets, setModal]);
 
   const userInvestsPayloadRendered = useMemo(
     () =>

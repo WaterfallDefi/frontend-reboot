@@ -2,7 +2,7 @@ import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
 import React, { useMemo } from "react";
 import getWTFApr, { formatAllocPoint } from "../../hooks/getWtfApr";
-import { useWTFPriceLP } from "../../hooks/useWtfPriceFromLP";
+// import { useWTFPriceLP } from "../../hooks/useWtfPriceFromLP";
 import { Market, Tranche } from "../../types";
 
 type Props = {
@@ -70,21 +70,21 @@ function TrancheCard(props: Props) {
 
   const trancheApr = tranche.apy;
   // const wtfPrice = useWTFPrice();
-  const { price: wtfPrice } = useWTFPriceLP();
+  // const { price: wtfPrice } = useWTFPriceLP();
   //   const { weekDistribution } = useWTF(); !!!
   // const isHide = weekDistribution.toString() !== "0" ? "visible" : "hidden";
   const isHide = selectedMarket.rewardPerBlock !== "0" ? "visible" : "hidden";
 
-  const wtfApr = getWTFApr(
-    selectedMarket.network,
-    formatAllocPoint(selectedMarket.pools[trancheIndex], selectedMarket.totalAllocPoints),
-    selectedMarket.tranches[trancheIndex],
-    selectedMarket.duration,
-    selectedMarket.rewardPerBlock,
-    wtfPrice,
-    selectedMarket.assets,
-    coingeckoPrices
-  );
+  // const wtfApr = getWTFApr(
+  //   selectedMarket.network,
+  //   formatAllocPoint(selectedMarket.pools[trancheIndex], selectedMarket.totalAllocPoints),
+  //   selectedMarket.tranches[trancheIndex],
+  //   selectedMarket.duration,
+  //   selectedMarket.rewardPerBlock,
+  //   wtfPrice,
+  //   selectedMarket.assets,
+  //   coingeckoPrices
+  // );
 
   const tranchePrincipal: string = !selectedMarket.autorollImplemented
     ? tranche.principal
@@ -123,7 +123,7 @@ function TrancheCard(props: Props) {
         <div className="checkbox" />
       </div>
       <div className={"apr " + type}>
-        APR {trancheApr}% {isHide ? <span>+ {wtfApr}%</span> : null}
+        APR {trancheApr}%{/* {isHide ? <span>+ {wtfApr}%</span> : null} */}
       </div>
       <div className="risk-text">{riskText}</div>
       <div className="separator" />
