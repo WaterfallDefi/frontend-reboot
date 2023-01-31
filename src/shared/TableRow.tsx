@@ -26,7 +26,7 @@ const formatTimestamp = (num: string | number) => {
 function TableRow(props: Props) {
   const { data, setSelectedMarket, foldElement } = props;
   const [foldOpen, setFoldOpen] = useState<boolean>(false);
-  const [hoverTooltip, setHoverTooltip] = useState<boolean>(false);
+  // const [hoverTooltip, setHoverTooltip] = useState<boolean>(false);
 
   const columns = () => {
     const elements = [];
@@ -76,8 +76,8 @@ function TableRow(props: Props) {
                     {columnData.tranchesApr.length === 2 ? "Fixed" : "Senior"}
                     <div
                       className="tooltip"
-                      onMouseEnter={() => setHoverTooltip(true)}
-                      onMouseLeave={() => setHoverTooltip(false)}
+                      // onMouseEnter={() => setHoverTooltip(true)}
+                      // onMouseLeave={() => setHoverTooltip(false)}
                     >
                       <Tooltip />
                     </div>
@@ -91,8 +91,8 @@ function TableRow(props: Props) {
                       {numeral(columnData.tranchesApr[0]).format("0,0.[00]")} %
                     </span>
                     <br />
-                    <span className={"wtf" + (hoverTooltip ? " hovered" : "")} style={{ fontSize: 10 }}>
-                      {"( +" + columnData.wtfApr[0] + "% WTF )"}
+                    <span className="wtf hovered" style={{ fontSize: 10 }}>
+                      {/* {"( +" + columnData.wtfApr[0] + "% WTF )"} */}
                     </span>
                   </div>
                 </div>
@@ -101,8 +101,8 @@ function TableRow(props: Props) {
                     {columnData.tranchesApr.length === 2 ? "Variable" : "Mezzanine"}
                     <div
                       className="tooltip"
-                      onMouseEnter={() => setHoverTooltip(true)}
-                      onMouseLeave={() => setHoverTooltip(false)}
+                      // onMouseEnter={() => setHoverTooltip(true)}
+                      // onMouseLeave={() => setHoverTooltip(false)}
                     >
                       <Tooltip />
                     </div>
@@ -117,8 +117,8 @@ function TableRow(props: Props) {
                       {numeral(columnData.tranchesApr[1]).format("0,0.[00]")} %
                     </span>
                     <br />
-                    <span className={"wtf" + (hoverTooltip ? " hovered" : "")} style={{ fontSize: 10 }}>
-                      {"( +" + columnData.wtfApr[1] + "% WTF )"}
+                    <span className="wtf hovered" style={{ fontSize: 10 }}>
+                      {/* {"( +" + columnData.wtfApr[1] + "% WTF )"} */}
                     </span>
                   </div>
                 </div>
@@ -128,8 +128,8 @@ function TableRow(props: Props) {
                       Junior
                       <div
                         className="tooltip"
-                        onMouseEnter={() => setHoverTooltip(true)}
-                        onMouseLeave={() => setHoverTooltip(false)}
+                        // onMouseEnter={() => setHoverTooltip(true)}
+                        // onMouseLeave={() => setHoverTooltip(false)}
                       >
                         <Tooltip />
                       </div>
@@ -143,8 +143,8 @@ function TableRow(props: Props) {
                         {numeral(columnData.tranchesApr[2]).format("0,0.[00]")} %
                       </span>
                       <br />
-                      <span className={"wtf" + (hoverTooltip ? " hovered" : "")} style={{ fontSize: 10 }}>
-                        {"( +" + columnData.wtfApr[2] + "% WTF )"}
+                      <span className="wtf hovered" style={{ fontSize: 10 }}>
+                        {/* {"( +" + columnData.wtfApr[2] + "% WTF )"} */}
                       </span>
                     </div>
                   </div>

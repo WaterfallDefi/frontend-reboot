@@ -1,5 +1,5 @@
 import Stakings from "../../config/staking";
-import IncreaseAction from "../../stake/subcomponents/IncreaseAction";
+// import IncreaseAction from "../../stake/subcomponents/IncreaseAction";
 import { ModalProps, Network } from "../../WaterfallDefi";
 import React from "react";
 
@@ -18,7 +18,7 @@ function ClaimModal(props: Props) {
   return (
     <div className="modal claim">
       <h1>Claim</h1>
-      <p>To claim your locked WTF, stake it for at least three months and increase your yield!</p>
+      {/* <p>To claim your locked WTF, stake it for at least three months and increase your yield!</p>
       <IncreaseAction
         network={network}
         stakingConfig={stakingConfig}
@@ -27,7 +27,7 @@ function ClaimModal(props: Props) {
         wtfRewardsBalance={balance}
         claimReward={claimReward}
         setModal={setModal}
-      />
+      /> */}
     </div>
   );
 }
