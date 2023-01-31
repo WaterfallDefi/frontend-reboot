@@ -45,6 +45,7 @@ const getTotalTVL = async () => {
           : []),
       ];
 
+      console.log(JSON.stringify(calls));
       const [t0, t1, t2] = await multicall(_mkt?.network, _mkt?.abi, calls);
       const _tranches = [t0, t1, t2];
       _tranches.forEach((_t, _i) => {

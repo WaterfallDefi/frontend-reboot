@@ -14,12 +14,10 @@
         { "internalType": "uint256", "name": "_duration", "type": "uint256" },
         {
           "components": [
-            { "internalType": "uint256", "name": "apy", "type": "uint256" },
             { "internalType": "uint256", "name": "fee", "type": "uint256" },
-            { "internalType": "uint256", "name": "target", "type": "uint256" },
             { "internalType": "bool", "name": "principalFee", "type": "bool" }
           ],
-          "internalType": "struct TrancheMasterAuto.TrancheParams[]",
+          "internalType": "struct TrancheMasterPerpetual.TrancheParams[]",
           "name": "_params",
           "type": "tuple[]"
         }
@@ -92,8 +90,6 @@
       "anonymous": false,
       "inputs": [
         { "indexed": false, "internalType": "uint256", "name": "tid", "type": "uint256" },
-        { "indexed": false, "internalType": "uint256", "name": "target", "type": "uint256" },
-        { "indexed": false, "internalType": "uint256", "name": "apy", "type": "uint256" },
         { "indexed": false, "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "indexed": false, "internalType": "bool", "name": "principalFee", "type": "bool" }
       ],
@@ -126,8 +122,6 @@
       "anonymous": false,
       "inputs": [
         { "indexed": false, "internalType": "uint256", "name": "tid", "type": "uint256" },
-        { "indexed": false, "internalType": "uint256", "name": "target", "type": "uint256" },
-        { "indexed": false, "internalType": "uint256", "name": "apy", "type": "uint256" },
         { "indexed": false, "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "indexed": false, "internalType": "bool", "name": "principalFee", "type": "bool" }
       ],
@@ -195,8 +189,6 @@
     },
     {
       "inputs": [
-        { "internalType": "uint256", "name": "target", "type": "uint256" },
-        { "internalType": "uint256", "name": "apy", "type": "uint256" },
         { "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "internalType": "bool", "name": "principalFee", "type": "bool" }
       ],
@@ -287,6 +279,16 @@
       "stateMutability": "payable",
       "type": "function"
     },
+    {
+      "inputs": [
+        { "internalType": "uint256", "name": "amountIn", "type": "uint256" },
+        { "internalType": "uint256", "name": "tid", "type": "uint256" }
+      ],
+      "name": "investDirectPending",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
     { "inputs": [], "name": "pause", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
     {
       "inputs": [],
@@ -309,6 +311,7 @@
       "stateMutability": "view",
       "type": "function"
     },
+    { "inputs": [], "name": "queueWithdrawal", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
     {
       "inputs": [{ "internalType": "address[]", "name": "_strategyAddresses", "type": "address[]" }],
       "name": "recoverFund",
@@ -331,10 +334,15 @@
       "type": "function"
     },
     {
+      "inputs": [{ "internalType": "uint256", "name": "tid", "type": "uint256" }],
+      "name": "redeemDirectPending",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [
         { "internalType": "uint256", "name": "tid", "type": "uint256" },
-        { "internalType": "uint256", "name": "target", "type": "uint256" },
-        { "internalType": "uint256", "name": "apy", "type": "uint256" },
         { "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "internalType": "bool", "name": "principalFee", "type": "bool" }
       ],
@@ -385,19 +393,23 @@
       "stateMutability": "view",
       "type": "function"
     },
+    { "inputs": [], "name": "start", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
     { "inputs": [], "name": "stop", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
+    {
+      "inputs": [
+        { "internalType": "address[]", "name": "_strategies", "type": "address[]" },
+        { "internalType": "uint256[]", "name": "_ratios", "type": "uint256[]" }
+      ],
+      "name": "stopAndUpdateStrategiesAndRatios",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
     {
       "inputs": [],
       "name": "strategy",
       "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [{ "internalType": "bool", "name": "_auto", "type": "bool" }],
-      "name": "switchAuto",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -407,12 +419,10 @@
       ],
       "name": "trancheSnapshots",
       "outputs": [
-        { "internalType": "uint256", "name": "target", "type": "uint256" },
         { "internalType": "uint256", "name": "principal", "type": "uint256" },
         { "internalType": "uint256", "name": "capital", "type": "uint256" },
         { "internalType": "uint256", "name": "validPercent", "type": "uint256" },
         { "internalType": "uint256", "name": "rate", "type": "uint256" },
-        { "internalType": "uint256", "name": "apy", "type": "uint256" },
         { "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "internalType": "uint256", "name": "startAt", "type": "uint256" },
         { "internalType": "uint256", "name": "stopAt", "type": "uint256" }
@@ -424,11 +434,9 @@
       "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
       "name": "tranches",
       "outputs": [
-        { "internalType": "uint256", "name": "target", "type": "uint256" },
         { "internalType": "uint256", "name": "principal", "type": "uint256" },
         { "internalType": "uint256", "name": "autoPrincipal", "type": "uint256" },
         { "internalType": "uint256", "name": "validPercent", "type": "uint256" },
-        { "internalType": "uint256", "name": "apy", "type": "uint256" },
         { "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "internalType": "uint256", "name": "autoValid", "type": "uint256" },
         { "internalType": "bool", "name": "principalFee", "type": "bool" }
@@ -468,6 +476,23 @@
         { "internalType": "uint256", "name": "principal", "type": "uint256" },
         { "internalType": "bool", "name": "rebalanced", "type": "bool" }
       ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        { "internalType": "address", "name": "", "type": "address" },
+        { "internalType": "uint256", "name": "", "type": "uint256" }
+      ],
+      "name": "userInvestPending",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "name": "userInvestPendingAddressArr",
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
     },
