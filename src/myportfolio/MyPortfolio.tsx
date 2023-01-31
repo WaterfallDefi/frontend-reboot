@@ -15,7 +15,7 @@ import { fetchSubgraphQuery } from "./hooks/useSubgraphQuery";
 import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
 import { getEstimateYield } from "./hooks/getEstimateYield";
-import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
+// import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 // import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import PortfolioFold from "./subcomponents/PortfolioFold";
 
@@ -192,21 +192,25 @@ function MyPortfolio(props: Props) {
 
     for (let marketIdx = 0; marketIdx < _investHistoryResult.length; marketIdx++) {
       if (!_investHistoryResult[marketIdx]) continue;
-      const { userInvests, trancheCycles } = _investHistoryResult[marketIdx];
+      const {
+        userInvests,
+        //ALWAYS 24 HOURS
+        // trancheCycles
+      } = _investHistoryResult[marketIdx];
       const filtered = userInvests?.filter((_userInvest: any) => {
-        if (!trancheCycles) return false;
-        const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+        // if (!trancheCycles) return false;
+        // const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
         if (!markets[marketIdx].isMulticurrency && _userInvest.principal === "0") return false;
         if (markets[marketIdx].isMulticurrency && _userInvest.MCprincipal.every((p: string) => Number(p) === 0))
           return false;
         if (selectedTranche > -1 && selectedTranche !== _userInvest.tranche) return false;
         if (selectedAsset !== "ALL" && !markets[marketIdx].assets.includes(selectedAsset.toString())) return false;
-        if (
-          selectedStatus > -1 &&
-          trancheCycles[trancheCycleId] &&
-          selectedStatus !== trancheCycles[trancheCycleId].state
-        )
-          return false;
+        // if (
+        //   selectedStatus > -1 &&
+        //   trancheCycles[trancheCycleId] &&
+        //   selectedStatus !== trancheCycles[trancheCycleId].state
+        // )
+        //   return false;
         return true;
       });
 
@@ -216,45 +220,57 @@ function MyPortfolio(props: Props) {
     return userInvestsPayload
       .map((_userInvestMarket: { userInvests: UserInvest[] }, __idx) => {
         const { userInvests } = _userInvestMarket;
-        const { trancheCycles } = _investHistoryResult[__idx];
+
+        //no more tranche cycles!
+        // const { trancheCycles } = _investHistoryResult[__idx];
 
         return userInvests.map<{ data: TableRowData; foldElement: JSX.Element }>(
           (_userInvest: UserInvest, _idx: number) => {
-            const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
+            // const trancheCycleId = _userInvest.tranche + "-" + _userInvest.cycle;
 
-            const trancheCycle: any = trancheCycles[trancheCycleId];
+            // const trancheCycle: any = trancheCycles[trancheCycleId];
 
             const _market: Market = markets[__idx];
 
             const tranchesDisplayText =
               _market.trancheCount === 3 ? ["Senior", "Mezzanine", "Junior"] : ["Fixed", "Variable"];
 
+            //this logic needs to be completely changed
             const status =
-              trancheCycle?.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING
-                ? PORTFOLIO_STATUS.PENDING
-                : Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1
-                ? PORTFOLIO_STATUS.ACTIVE
-                : (Number(_market.cycle) !== trancheCycle?.cycle && trancheCycle?.state === 1) ||
-                  trancheCycle?.state === 2
-                ? "MATURED"
-                : "";
+              // trancheCycle?.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING
+              //   ? PORTFOLIO_STATUS.PENDING
+              //   : Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1
+              //   ? PORTFOLIO_STATUS.ACTIVE
+              //   : (Number(_market.cycle) !== trancheCycle?.cycle && trancheCycle?.state === 1) ||
+              //     trancheCycle?.state === 2
+              //   ? "MATURED"
+              //   :
+              "";
 
             const isCurrentCycle = _market && _market.cycle === _userInvest.cycle.toString();
 
             const trancheAPY = isCurrentCycle ? _market.tranches[_userInvest.tranche].apy : _userInvest.earningsAPY;
 
-            const isActiveCycle = Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1;
+            //this logic needs to be completely changed
+            const isActiveCycle =
+              // Number(_market.cycle) === trancheCycle?.cycle && trancheCycle?.state === 1;
+              true;
 
             const estimateYield = getEstimateYield(
               _userInvest.principal,
               trancheAPY,
-              trancheCycle?.startAt,
+              // trancheCycle?.startAt,
               isActiveCycle
             );
 
             const multicurrencyEstimateYield = _userInvest.MCprincipal
               ? _userInvest.MCprincipal.map((p) =>
-                  getEstimateYield(p, trancheAPY, trancheCycle?.startAt, isActiveCycle)
+                  getEstimateYield(
+                    p,
+                    trancheAPY,
+                    // trancheCycle?.startAt,
+                    isActiveCycle
+                  )
                 )
               : [];
 
@@ -286,7 +302,10 @@ function MyPortfolio(props: Props) {
                 network: networkStrings[_market.network],
                 assets: _market.assets,
                 trancheCycle: {
-                  trancheCycle: trancheCycle?.state !== 0 ? trancheCycle : undefined,
+                  trancheCycle:
+                    //no more trancheCycle
+                    // trancheCycle?.state !== 0 ? trancheCycle :
+                    undefined,
                   duration: _market.duration,
                 },
                 tranche: tranchesDisplayText[_userInvest.tranche],
@@ -304,11 +323,11 @@ function MyPortfolio(props: Props) {
                 status: status,
                 yield: {
                   yield:
-                    trancheCycle?.state !== 2
-                      ? !_market.isMulticurrency
-                        ? estimateYield
-                        : multicurrencyEstimateYield
-                      : undefined,
+                    //no more trancheCycles
+                    // trancheCycle?.state !== 2
+                    //   ?
+                    !_market.isMulticurrency ? estimateYield : multicurrencyEstimateYield,
+                  // : undefined,
                   assets: _market.assets,
                   interest: _userInvest.interest,
                 },
@@ -324,8 +343,8 @@ function MyPortfolio(props: Props) {
                     totalAmounts={_userInvest.MCprincipal}
                     assets={_market.assets}
                     isCurrentCycle={isCurrentCycle}
-                    isPending={trancheCycle?.state === 0 || _market.status === PORTFOLIO_STATUS.PENDING}
-                    isActive={trancheCycle?.state === 1}
+                    isPending={false} //set to always false, the product is always running
+                    isActive={true} //set to always true, the product is always running
                     currentTranche={_userInvest.tranche}
                     fee={_market.tranches[_userInvest.tranche].fee}
                     isMulticurrency={_market.isMulticurrency}
@@ -346,7 +365,17 @@ function MyPortfolio(props: Props) {
         );
       })
       .flat();
-  }, [positions, subgraph, selectedAsset, selectedTranche, selectedStatus, markets, network, setMarkets, setModal]);
+  }, [
+    positions,
+    subgraph,
+    selectedAsset,
+    selectedTranche,
+    // selectedStatus,
+    markets,
+    network,
+    setMarkets,
+    setModal,
+  ]);
 
   const userInvestsPayloadRendered = useMemo(
     () =>

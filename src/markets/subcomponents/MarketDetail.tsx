@@ -7,7 +7,7 @@ import { useWeb3React } from "@web3-react/core";
 
 import {
   fetchSingleSubgraphCycleQuery,
-  // getAPYHourly,
+  //   getAPYHourly,
 } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market, Tranche } from "../../types";
 import { ModalProps } from "../../WaterfallDefi";
@@ -72,14 +72,11 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     const fetchSubgraph = async () => {
       const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(selectedMarket.subgraphURL);
-      console.log("subgraph query");
-      console.log(subgraphQuery);
       const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
         y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
         x: new Date(Number(tc.endAt) * 1000),
       }));
-      console.log(data);
       setAPYData(data);
     };
 

@@ -32,17 +32,10 @@ const getSubgraphQuery = async (subgraphURL: string, account: string | null | un
     res = await ky
       .post(subgraphURL, {
         json: {
+          // removed trancheCycles from query
+          // not yet remove target from query: too dangerous
+          // not yet remove apy from query: too dangerous
           query: `{
-            trancheCycles(first:1000,orderBy: id, orderDirection: asc) {
-              id
-              cycle
-              state
-              principal
-              capital
-              rate
-              startAt
-              endAt
-            }
             tranches {
               id
               cycle
@@ -90,45 +83,60 @@ export const fetchSubgraphQuery = async (account: string | null | undefined, dec
 
     //all markets appear to have duration 0
     // const _duration = _market.duration || "0";
-    const _duration = "0";
+    // const _duration = "0";
 
     const _userInvests: UserInvest[] = [];
-    const _trancheCycles: { [key: string]: TrancheCycle } = {};
+
+    //no more trancheCycles, its all 24 hour now
+    // const _trancheCycles: { [key: string]: TrancheCycle } = {};
     let returnData = {
       userInvests: _userInvests,
-      trancheCycles: _trancheCycles,
     };
 
-    const { trancheCycles, userInvests } = _subgraphResult;
-    console.log(marketIdx);
-    console.log(trancheCycles);
-    if (trancheCycles) {
-      for (let i = 0; i < trancheCycles.length; i++) {
-        const { id } = trancheCycles[i];
-        _trancheCycles[id] = trancheCycles[i];
-      }
-    }
+    const { userInvests } = _subgraphResult;
+
+    // if (trancheCycles) {
+    //   for (let i = 0; i < trancheCycles.length; i++) {
+    //     const { id } = trancheCycles[i];
+    //     _trancheCycles[id] = trancheCycles[i];
+    //   }
+    // }
     if (userInvests) {
       for (let i = 0; i < userInvests.length; i++) {
         const { capital, cycle, harvestAt, id, investAt, owner, principal, tranche } = userInvests[i];
-        const trancheCycleId = tranche + "-" + cycle;
-        const _farmDuration =
-          _trancheCycles[trancheCycleId]?.endAt > +_trancheCycles[trancheCycleId]?.startAt + +Number(_duration)
-            ? new BigNumber(_trancheCycles[trancheCycleId]?.endAt - _trancheCycles[trancheCycleId]?.startAt)
-            : new BigNumber(_duration);
-        const interest = new BigNumber(capital).isZero()
-          ? new BigNumber(principal)
-              .times(_trancheCycles[trancheCycleId]?.rate || 0)
-              .dividedBy(BIG_TEN.pow(18))
-              .minus(new BigNumber(principal))
-          : new BigNumber(capital).minus(new BigNumber(principal));
+        // const trancheCycleId = tranche + "-" + cycle;
+
+        //!! no more trancheCycles
+
+        // const _farmDuration =
+        //   _trancheCycles[trancheCycleId]?.endAt > +_trancheCycles[trancheCycleId]?.startAt + +Number(_duration)
+        //     ? new BigNumber(_trancheCycles[trancheCycleId]?.endAt - _trancheCycles[trancheCycleId]?.startAt)
+        //     : new BigNumber(_duration);
+        const interest =
+          //!! need to untangle this
+
+          // new BigNumber(capital).isZero()
+          //   ? new BigNumber(principal)
+          //       .times(_trancheCycles[trancheCycleId]?.rate || 0)
+          //       .dividedBy(BIG_TEN.pow(18))
+          //       .minus(new BigNumber(principal))
+          //   :
+          new BigNumber(capital).minus(new BigNumber(principal));
+
+        //!! need to untangle this
+
+        //we should be able to calculate this without a _farmDuration since its always 24 hours
         const earningsAPY = new BigNumber(interest)
           .dividedBy(new BigNumber(principal))
           .times(new BigNumber(365 * 86400 * 100))
           // .dividedBy(new BigNumber(_trancheCycles[trancheCycleId]?.endAt - _trancheCycles[trancheCycleId]?.startAt))
-          .dividedBy(new BigNumber(_farmDuration)) //multi-farm
+          // .dividedBy(new BigNumber(_farmDuration))
+
+          //new line of code should be:
+          //++ .dividedBy(new BigNumber("duration equivalent to one day"))
           .toFormat(2)
           .toString();
+
         const _ui: UserInvest = {
           capital: new BigNumber(capital).isZero()
             ? numeral(
@@ -160,13 +168,14 @@ export const fetchSubgraphQuery = async (account: string | null | undefined, dec
     }
     returnData = {
       userInvests: _userInvests,
-      trancheCycles: _trancheCycles,
+      // trancheCycles: _trancheCycles,
     };
     historyQueryResult[marketIdx] = returnData;
   }
   return historyQueryResult;
 };
 
+//FOR HISTORICAL PERFORMANCE
 export const getSubgraphCyclesOnly = async (subgraphURL: string) => {
   let res;
   try {
@@ -195,21 +204,23 @@ export const getSubgraphCyclesOnly = async (subgraphURL: string) => {
   return res;
 };
 
-export const fetchSubgraphCycleQuery = async () => {
-  const subgraphResult: any = [];
-  for (let marketIdx = 0; marketIdx < MarketList.length; marketIdx++) {
-    const p = MarketList[marketIdx];
+//shouldn't be needed anymore
+// export const fetchSubgraphCycleQuery = async () => {
+//   const subgraphResult: any = [];
+//   for (let marketIdx = 0; marketIdx < MarketList.length; marketIdx++) {
+//     const p = MarketList[marketIdx];
 
-    const res: any = await getSubgraphCyclesOnly(p.subgraphURL);
-    subgraphResult[marketIdx] = { data: res.data, assets: p.assets };
-  }
-  return subgraphResult;
-};
+//     const res: any = await getSubgraphCyclesOnly(p.subgraphURL);
+//     subgraphResult[marketIdx] = { data: res.data, assets: p.assets };
+//   }
+//   return subgraphResult;
+// };
 
 export const useHistoricalAPY = async (earlierDate: string, laterDate: string) => {
   return await getAPYHourly(earlierDate, laterDate);
 };
 
+//FOR HISTORICAL PERFORMANCE
 export const fetchSingleSubgraphCycleQuery = async (subgraphURL: string) => {
   return await getSubgraphCyclesOnly(subgraphURL);
 };
