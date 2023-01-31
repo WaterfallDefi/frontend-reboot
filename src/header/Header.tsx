@@ -182,13 +182,14 @@ function Header(props: Props) {
             My Portfolio
           </p>
         </div>
-        {network !== Network.Polygon && (
+        {/* no more wtf */}
+        {/* {network !== Network.Polygon && (
           <div className="menu-block-wrapper">
             <Link className="link" to={"/stake"} data-selected={location.pathname === "/stake"}>
               Stake
             </Link>
           </div>
-        )}
+        )} */}
         <div className="menu-block-wrapper">
           <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
         </div>
@@ -229,7 +230,8 @@ function Header(props: Props) {
               My Portfolio
             </Link>
           </div>
-          {network !== Network.Polygon && (
+          {/* no more WTF */}
+          {/* {network !== Network.Polygon && (
             <div className="mobile-menu-block-wrapper">
               <Link
                 className="link"
@@ -240,7 +242,7 @@ function Header(props: Props) {
                 Stake
               </Link>
             </div>
-          )}
+          )} */}
           <div className="mobile-menu-block-wrapper">
             <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
           </div>
