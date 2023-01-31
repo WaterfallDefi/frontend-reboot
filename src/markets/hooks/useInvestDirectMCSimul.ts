@@ -15,7 +15,7 @@ const _invest = async (
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
   const _amount = amount.map((a) => BigNumber.from(utils.parseEther(a).toString()).toString());
-  const tx = await contract.investDirect(selectTrancheIdx, _amount, _amount);
+  const tx = await contract.investDirectPending(selectTrancheIdx, _amount, _amount);
 
   setModal({
     state: Modal.Txn,

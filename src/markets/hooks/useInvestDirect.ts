@@ -1,22 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from "react";
 
-import {
-  BigNumber,
-  utils,
-} from 'ethers';
+import { BigNumber, utils } from "ethers";
 
-import { Contract } from '@ethersproject/contracts';
+import { Contract } from "@ethersproject/contracts";
 
-import {
-  getContract,
-  getSigner,
-} from '../../hooks/getContract';
-import { Market } from '../../types';
-import {
-  Modal,
-  ModalProps,
-  Network,
-} from '../../WaterfallDefi';
+import { getContract, getSigner } from "../../hooks/getContract";
+import { Market } from "../../types";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 const invest = async (
   contract: Contract,
@@ -27,26 +17,20 @@ const invest = async (
   isUSDC: boolean,
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>
 ) => {
-  const _amount = !isUSDC
-    ? utils.parseEther(amount).toString()
-    : utils.parseUnits(amount, 6).toString();
-  const _zero = !isUSDC
-    ? utils.parseEther("0").toString()
-    : utils.parseUnits(amount, 6).toString();
+  const _amount = !isUSDC ? utils.parseEther(amount).toString() : utils.parseUnits(amount, 6).toString();
+  const _zero = !isUSDC ? utils.parseEther("0").toString() : utils.parseUnits(amount, 6).toString();
   let tx;
   if (multicurrencyIdx === -1) {
-    tx = await contract.investDirect(_amount, selectTrancheIdx, _amount);
+    //lsd finance: investDirectPending instead of investDirect
+    tx = await contract.investDirectPending(_amount, selectTrancheIdx, _amount);
   } else {
     const _amountArray: BigNumber[] = [];
     for (let index = 0; index < multicurrencyTokenCount; index++) {
       _amountArray.push(BigNumber.from(_zero));
     }
     _amountArray[multicurrencyIdx] = BigNumber.from(_amount);
-    tx = await contract.investDirect(
-      selectTrancheIdx,
-      _amountArray,
-      _amountArray
-    );
+    //lsd finance: investDirectPending instead of investDirect
+    tx = await contract.investDirectPending(selectTrancheIdx, _amountArray, _amountArray);
   }
 
   setModal({
