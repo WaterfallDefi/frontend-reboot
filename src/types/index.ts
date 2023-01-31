@@ -92,16 +92,17 @@ export type StrategyFarm = {
   apiKey: string;
 };
 
-export type TrancheCycle = {
-  capital: string;
-  cycle: number;
-  endAt: number;
-  id: string;
-  principal: string;
-  rate: string;
-  startAt: number;
-  state: number;
-};
+//NO MORE TRANCHE CYCLES
+// export type TrancheCycle = {
+//   capital: string;
+//   cycle: number;
+//   endAt: number;
+//   id: string;
+//   principal: string;
+//   rate: string;
+//   startAt: number;
+//   state: number;
+// };
 
 export type UserInvest = {
   capital: string;

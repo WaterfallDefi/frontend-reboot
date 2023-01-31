@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import numeral from "numeral";
 import { useState } from "react";
-import Tooltip from "./svgs/Tooltip";
+// import Tooltip from "./svgs/Tooltip";
 
 const COLORS: { [key: string]: string } = {
   Senior: "#FCB500",

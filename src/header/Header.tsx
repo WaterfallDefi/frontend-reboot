@@ -12,7 +12,6 @@ import useAuth, { setupNetwork, useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
 import TransactionModal from "./subcomponents/TransactionModal";
 import RedepositModal from "./subcomponents/RedepositModal";
-import ClaimModal from "./subcomponents/ClaimModal";
 import TermsModal from "./subcomponents/TermsModal";
 import { Market } from "../types";
 import { Burger } from "./svgs/burger";
@@ -132,21 +131,21 @@ function Header(props: Props) {
           selectedDepositAssetIndex={modal.redepositProps.selectedDepositAssetIndex}
           balance={modal.redepositProps.balance}
           simulDeposit={modal.redepositProps.simulDeposit}
-          coingeckoPrices={modal.redepositProps.coingeckoPrices}
+          // coingeckoPrices={modal.redepositProps.coingeckoPrices}
           setSelectedDepositAssetIndex={modal.redepositProps.setSelectedDepositAssetIndex}
           setSimulDeposit={modal.redepositProps.setSimulDeposit}
           setModal={modal.redepositProps.setModal}
           setMarkets={modal.redepositProps.setMarkets}
         />
       ) : null}
-      {modal.state === Modal.Claim && modal.claimProps ? (
+      {/* {modal.state === Modal.Claim && modal.claimProps ? (
         <ClaimModal
           network={modal.claimProps.network}
           balance={modal.claimProps.balance}
           setModal={modal.claimProps.setModal}
           claimReward={modal.claimProps.claimReward}
         />
-      ) : null}
+      ) : null} */}
       <div className="pc-left">
         <div className="waterfall-defi-logo">
           <WaterFallDark />

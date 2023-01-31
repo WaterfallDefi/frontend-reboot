@@ -24,7 +24,7 @@ const BIG_TEN = new BigNumber(10);
 type Props = {
   selectedMarket: Market;
   setSelectedMarket: React.Dispatch<React.SetStateAction<Market | undefined>>;
-  coingeckoPrices: any;
+  // coingeckoPrices: any;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
@@ -38,7 +38,13 @@ const getLockupPeriod = (duration: string) => {
 };
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
-  const { selectedMarket, setSelectedMarket, coingeckoPrices, setModal, setMarkets } = props;
+  const {
+    selectedMarket,
+    setSelectedMarket,
+    // coingeckoPrices,
+    setModal,
+    setMarkets,
+  } = props;
 
   const { account } = useWeb3React<Web3Provider>();
 
@@ -202,7 +208,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       <Deposit
         isRedeposit={false}
         selectedMarket={selectedMarket}
-        coingeckoPrices={coingeckoPrices}
+        // coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}
         setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
         simulDeposit={simulDeposit}

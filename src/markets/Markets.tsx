@@ -229,7 +229,7 @@ function Markets(props: Props) {
         <MarketDetail
           selectedMarket={selectedMarket}
           setSelectedMarket={setSelectedMarket}
-          coingeckoPrices={coingeckoPrices}
+          // coingeckoPrices={coingeckoPrices}
           setModal={setModal}
           setMarkets={setMarkets}
         />

@@ -3,7 +3,7 @@ import ky from "ky";
 import numeral from "numeral";
 
 import { MarketList } from "../../config/markets";
-import { TrancheCycle, UserInvest } from "../../types";
+import { UserInvest } from "../../types";
 
 const BIG_TEN = new BigNumber(10);
 

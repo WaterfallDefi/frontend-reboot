@@ -8,7 +8,7 @@ type Props = {
   selectedDepositAssetIndex: number;
   balance: string | string[];
   simulDeposit: boolean;
-  coingeckoPrices: any;
+  // coingeckoPrices: any;
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
@@ -21,7 +21,7 @@ function RedepositModal(props: Props) {
     selectedDepositAssetIndex,
     balance,
     simulDeposit,
-    coingeckoPrices,
+    // coingeckoPrices,
     setSelectedDepositAssetIndex,
     setSimulDeposit,
     setModal,
@@ -38,7 +38,7 @@ function RedepositModal(props: Props) {
         selectedDepositAssetIndex={selectedDepositAssetIndex}
         setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
         simulDeposit={simulDeposit}
-        coingeckoPrices={coingeckoPrices}
+        // coingeckoPrices={coingeckoPrices}
         setSimulDeposit={setSimulDeposit}
         setModal={setModal}
         setMarkets={setMarkets}

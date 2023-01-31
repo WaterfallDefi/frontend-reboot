@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import React from "react";
 import { Market } from "../../types";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps } from "../../WaterfallDefi";
 // import useClaimAll from "../hooks/useClaimAll";
 import useWithdraw from "../hooks/useWithdraw";
 // import usePendingWTFReward from "../hooks/usePendingWTFReward";

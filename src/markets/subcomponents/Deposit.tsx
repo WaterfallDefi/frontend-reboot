@@ -17,7 +17,7 @@ const BIG_TEN = new BigNumber(10);
 type Props = {
   isRedeposit: boolean;
   selectedMarket: Market;
-  coingeckoPrices: any;
+  // coingeckoPrices: any;
   selectedDepositAssetIndex: number;
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
   simulDeposit: boolean;
@@ -66,7 +66,7 @@ function Deposit(props: Props) {
   const {
     isRedeposit,
     selectedMarket,
-    coingeckoPrices,
+    // coingeckoPrices,
     selectedDepositAssetIndex,
     setSelectedDepositAssetIndex,
     simulDeposit,
@@ -212,7 +212,8 @@ function Deposit(props: Props) {
                 trancheIndex={i}
                 selected={selectTrancheIdx === i}
                 setSelectTrancheIdx={setSelectTrancheIdx}
-                coingeckoPrices={coingeckoPrices}
+                //do we need this???
+                // coingeckoPrices={coingeckoPrices}
                 remaining={
                   !selectedMarket.isMulticurrency
                     ? getRemaining(

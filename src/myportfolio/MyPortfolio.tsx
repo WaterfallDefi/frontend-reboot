@@ -77,6 +77,8 @@ function MyPortfolio(props: Props) {
 
   const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
   const [selectedTranche, setSelectedTranche] = useState(-1);
+
+  //aiyah... X_X return to this once we've figured out statuses
   const [selectedStatus, setSelectedStatus] = useState(-1);
 
   const [headerSort, setHeaderSort] = useState<number>(-1);

@@ -1,7 +1,7 @@
 import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
 import React, { useMemo } from "react";
-import getWTFApr, { formatAllocPoint } from "../../hooks/getWtfApr";
+// import getWTFApr, { formatAllocPoint } from "../../hooks/getWtfApr";
 // import { useWTFPriceLP } from "../../hooks/useWtfPriceFromLP";
 import { Market, Tranche } from "../../types";
 
@@ -12,7 +12,7 @@ type Props = {
   trancheIndex: number;
   selected: boolean;
   setSelectTrancheIdx: React.Dispatch<React.SetStateAction<number | undefined>>;
-  coingeckoPrices: any;
+  // coingeckoPrices: any;
   remaining: string;
   isActive: boolean;
 };
@@ -49,7 +49,7 @@ function TrancheCard(props: Props) {
     trancheIndex,
     selected,
     setSelectTrancheIdx,
-    coingeckoPrices,
+    // coingeckoPrices,
     remaining,
     isActive,
   } = props;
@@ -73,7 +73,7 @@ function TrancheCard(props: Props) {
   // const { price: wtfPrice } = useWTFPriceLP();
   //   const { weekDistribution } = useWTF(); !!!
   // const isHide = weekDistribution.toString() !== "0" ? "visible" : "hidden";
-  const isHide = selectedMarket.rewardPerBlock !== "0" ? "visible" : "hidden";
+  // const isHide = selectedMarket.rewardPerBlock !== "0" ? "visible" : "hidden";
 
   // const wtfApr = getWTFApr(
   //   selectedMarket.network,
