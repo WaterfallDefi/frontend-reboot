@@ -1,27 +1,26 @@
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Market } from "../../types";
 import { Modal, ModalProps, Network } from "../../WaterfallDefi";
-import useClaimAll from "../hooks/useClaimAll";
+// import useClaimAll from "../hooks/useClaimAll";
 import useWithdraw from "../hooks/useWithdraw";
-import usePendingWTFReward from "../hooks/usePendingWTFReward";
+// import usePendingWTFReward from "../hooks/usePendingWTFReward";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
-import useAutoroll from "../hooks/useAutoroll";
+// import useAutoroll from "../hooks/useAutoroll";
 
 type Props = {
-  network: Network;
+  // network: Network;
   selectedMarket: Market;
-  coingeckoPrices: any;
+  // coingeckoPrices: any;
   selectedDepositAssetIndex: number;
   balance: string | string[];
-  simulDeposit: boolean;
+  // simulDeposit: boolean;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
-  setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
-  setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
+  // setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
+  // setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
-  // flexGrow: boolean;
 };
 
 const BIG_TEN = new BigNumber(10);
@@ -32,31 +31,35 @@ const formatBigNumber2HexString = (bn: BigNumber) => {
 
 function ClaimRedeposit(props: Props) {
   const {
-    network,
+    // network,
     selectedMarket,
-    coingeckoPrices,
+    // coingeckoPrices,
     selectedDepositAssetIndex,
     balance,
-    simulDeposit,
+    // simulDeposit,
     setModal,
-    setSelectedDepositAssetIndex,
-    setSimulDeposit,
+    // setSelectedDepositAssetIndex,
+    // setSimulDeposit,
     setMarkets,
-    // flexGrow,
   } = props;
 
   // const [claimRewardLoading, setClaimRewardLoading] = useState(false);
   // const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
 
-  const [autoroll, setAutoroll] = useState(false);
-  const [autorollPending, setAutorollPending] = useState<boolean>(true);
-  const [awaitingAutorollConfirm, setAwaitingAutorollConfirm] = useState<boolean>(false);
-  const [autorollBalance, setAutorollBalance] = useState<string | undefined>();
+  //Always Autoroll
+  // const [autoroll, setAutoroll] = useState(false);
 
-  const { getAutoroll, changeAutoroll, getAutorollBalance } = useAutoroll(
-    selectedMarket.network,
-    selectedMarket.address
-  );
+  // const [autorollPending, setAutorollPending] = useState<boolean>(true);
+
+  //Always Autoroll
+  // const [awaitingAutorollConfirm, setAwaitingAutorollConfirm] = useState<boolean>(false);
+
+  // const [autorollBalance, setAutorollBalance] = useState<string | undefined>();
+
+  // const { getAutoroll, changeAutoroll, getAutorollBalance } = useAutoroll(
+  //   selectedMarket.network,
+  //   selectedMarket.address
+  // );
 
   const { onWithdraw } = useWithdraw(
     selectedMarket.network,
@@ -66,73 +69,82 @@ function ClaimRedeposit(props: Props) {
     setMarkets
   );
 
-  const { onClaimAll } = useClaimAll(selectedMarket.network, selectedMarket.masterChefAddress, setModal);
+  //no more WTF
+
+  // const { onClaimAll } = useClaimAll(selectedMarket.network, selectedMarket.masterChefAddress, setModal);
 
   const { account } = useWeb3React<Web3Provider>();
 
-  const { totalPendingReward } = usePendingWTFReward(
-    selectedMarket.network,
-    selectedMarket.masterChefAddress,
-    selectedMarket.trancheCount
-  );
+  //no more WTF
 
-  useEffect(() => {
-    if (selectedMarket.autorollImplemented && autorollPending) {
-      getAutoroll().then((res) => {
-        setAutoroll(res);
-        setAutorollPending(false);
-      });
-    }
-  }, [selectedMarket.autorollImplemented, getAutoroll, autorollPending]);
+  // const { totalPendingReward } = usePendingWTFReward(
+  //   selectedMarket.network,
+  //   selectedMarket.masterChefAddress,
+  //   selectedMarket.trancheCount
+  // );
 
-  useEffect(() => {
-    if (selectedMarket.autorollImplemented && !autorollBalance) {
-      getAutorollBalance().then((res) => {
-        if (res?.invested) {
-          let rate = 1;
-          if (selectedMarket.assets[0] === "WAVAX" && coingeckoPrices) {
-            rate = coingeckoPrices["wrapped-avax"].usd;
-          }
-          const _autoRollBalance = new BigNumber(res.invested._hex || "0")
-            .dividedBy(BIG_TEN.pow(18))
-            .times(rate)
-            .toString();
+  //always autoroll
 
-          setAutorollBalance(numeral(_autoRollBalance).format("0,0.[00]"));
-        }
-      });
-    }
-  }, [selectedMarket.autorollImplemented, getAutorollBalance, selectedMarket.assets, coingeckoPrices, autorollBalance]);
+  // useEffect(() => {
+  //   if (selectedMarket.autorollImplemented && autorollPending) {
+  //     getAutoroll().then((res) => {
+  //       setAutoroll(res);
+  //       setAutorollPending(false);
+  //     });
+  //   }
+  // }, [selectedMarket.autorollImplemented, getAutoroll, autorollPending]);
 
-  const claimReward = async (_lockDurationIfLockNotExists: string, _lockDurationIfLockExists: string) => {
-    // setClaimRewardLoading(true);
+  // useEffect(() => {
+  //   if (selectedMarket.autorollImplemented && !autorollBalance) {
+  //     getAutorollBalance().then((res) => {
+  //       if (res?.invested) {
+  //         let rate = 1;
+  //         if (selectedMarket.assets[0] === "WAVAX" && coingeckoPrices) {
+  //           rate = coingeckoPrices["wrapped-avax"].usd;
+  //         }
+  //         const _autoRollBalance = new BigNumber(res.invested._hex || "0")
+  //           .dividedBy(BIG_TEN.pow(18))
+  //           .times(rate)
+  //           .toString();
 
-    setModal({
-      state: Modal.Txn,
-      txn: undefined,
-      status: "PENDING",
-      message: "Claiming",
-    });
-    try {
-      await onClaimAll(_lockDurationIfLockNotExists, _lockDurationIfLockExists);
-      setModal({
-        state: Modal.Txn,
-        txn: undefined,
-        status: "SUCCESS",
-        message: "Claim Success",
-      });
-    } catch (e) {
-      console.error(e);
-      setModal({
-        state: Modal.Txn,
-        txn: undefined,
-        status: "REJECTED",
-        message: "Claim Fail",
-      });
-    } finally {
-      // setClaimRewardLoading(false);
-    }
-  };
+  //         setAutorollBalance(numeral(_autoRollBalance).format("0,0.[00]"));
+  //       }
+  //     });
+  //   }
+  // }, [selectedMarket.autorollImplemented, getAutorollBalance, selectedMarket.assets, coingeckoPrices, autorollBalance]);
+
+  //NO MORE WTF
+
+  // const claimReward = async (_lockDurationIfLockNotExists: string, _lockDurationIfLockExists: string) => {
+  //   // setClaimRewardLoading(true);
+
+  //   setModal({
+  //     state: Modal.Txn,
+  //     txn: undefined,
+  //     status: "PENDING",
+  //     message: "Claiming",
+  //   });
+  //   try {
+  //     await onClaimAll(_lockDurationIfLockNotExists, _lockDurationIfLockExists);
+  //     setModal({
+  //       state: Modal.Txn,
+  //       txn: undefined,
+  //       status: "SUCCESS",
+  //       message: "Claim Success",
+  //     });
+  //   } catch (e) {
+  //     console.error(e);
+  //     setModal({
+  //       state: Modal.Txn,
+  //       txn: undefined,
+  //       status: "REJECTED",
+  //       message: "Claim Fail",
+  //     });
+  //   } finally {
+  //     // setClaimRewardLoading(false);
+  //   }
+  // };
+
   const withdrawAll = async () => {
     // setWithdrawAllLoading(true);
 
@@ -169,34 +181,38 @@ function ClaimRedeposit(props: Props) {
     }
   };
 
-  const rollDepositPopup = () => {
-    setModal({
-      state: Modal.Redeposit,
-      redepositProps: {
-        selectedMarket: selectedMarket,
-        selectedDepositAssetIndex: selectedDepositAssetIndex,
-        balance: balance,
-        simulDeposit: simulDeposit,
-        coingeckoPrices: coingeckoPrices,
-        setSelectedDepositAssetIndex: setSelectedDepositAssetIndex,
-        setSimulDeposit: setSimulDeposit,
-        setModal: setModal,
-        setMarkets: setMarkets,
-      },
-    });
-  };
+  //Always Autoroll: no autoroll deposit
 
-  const claimPopup = () => {
-    setModal({
-      state: Modal.Claim,
-      claimProps: {
-        network: network,
-        balance: totalPendingReward,
-        setModal: setModal,
-        claimReward: claimReward,
-      },
-    });
-  };
+  // const rollDepositPopup = () => {
+  //   setModal({
+  //     state: Modal.Redeposit,
+  //     redepositProps: {
+  //       selectedMarket: selectedMarket,
+  //       selectedDepositAssetIndex: selectedDepositAssetIndex,
+  //       balance: balance,
+  //       simulDeposit: simulDeposit,
+  //       coingeckoPrices: coingeckoPrices,
+  //       setSelectedDepositAssetIndex: setSelectedDepositAssetIndex,
+  //       setSimulDeposit: setSimulDeposit,
+  //       setModal: setModal,
+  //       setMarkets: setMarkets,
+  //     },
+  //   });
+  // };
+
+  //no more WTF
+
+  // const claimPopup = () => {
+  //   setModal({
+  //     state: Modal.Claim,
+  //     claimProps: {
+  //       network: network,
+  //       balance: totalPendingReward,
+  //       setModal: setModal,
+  //       claimReward: claimReward,
+  //     },
+  //   });
+  // };
 
   return (
     <div className="claim-redeposit tvl-bar">
@@ -221,17 +237,19 @@ function ClaimRedeposit(props: Props) {
           >
             Withdraw All
           </button>
-          <button
+          {/* Always Autoroll: no roll deposit */}
+          {/* <button
             className="claim-redep-btn"
             onClick={rollDepositPopup}
             disabled={!account || !+balance || selectedMarket?.isRetired || autoroll}
           >
             Roll Deposit
-          </button>
+          </button> */}
         </div>
       </div>
 
-      {account && selectedMarket.autorollImplemented ? (
+      {/* Always Autoroll */}
+      {/* {account && selectedMarket.autorollImplemented ? (
         <div className="autoroll-controls">
           {autorollBalance !== "0" ? (
             <div className="autoroll-balance">Autoroll Balance: ${autorollBalance}</div>
@@ -261,8 +279,10 @@ function ClaimRedeposit(props: Props) {
             {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
           </span>
         </div>
-      ) : null}
-      <div className="wtf-reward">
+      ) : null} */}
+
+      {/* NO MORE WTF */}
+      {/* <div className="wtf-reward">
         <div className="label">WTF Reward</div>
         <div className="rtn-amt">
           {totalPendingReward
@@ -272,7 +292,7 @@ function ClaimRedeposit(props: Props) {
         <div className="buttons">
           <button onClick={() => claimPopup()}>Claim</button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

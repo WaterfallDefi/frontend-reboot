@@ -191,15 +191,15 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         </div>
       </div>
       <ClaimRedeposit
-        network={selectedMarket.network}
+        // network={selectedMarket.network}
         selectedMarket={selectedMarket}
-        coingeckoPrices={coingeckoPrices}
+        // coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}
         balance={selectedMarket.isMulticurrency ? MCbalance : balance}
-        simulDeposit={simulDeposit}
+        // simulDeposit={simulDeposit}
         setModal={setModal}
-        setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
-        setSimulDeposit={setSimulDeposit}
+        // setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
+        // setSimulDeposit={setSimulDeposit}
         setMarkets={setMarkets}
       />
       <Deposit

@@ -124,20 +124,6 @@ $font-size-xl: 30px;
         & > span:nth-of-type(1) {
           width: 70px;
           text-align: left;
-
-          .tooltip {
-            width: 12px;
-            height: 12px;
-            margin-top: 8.5px;
-            color: $base-color;
-            svg {
-              transform: translateY(-5px);
-            }
-
-            @media screen and (max-width: 1024px) {
-              display: none;
-            }
-          }
         }
         & > span:nth-of-type(2) {
           text-align: left;
@@ -171,16 +157,6 @@ $font-size-xl: 30px;
         }
         & svg {
           margin-left: 5px;
-        }
-        .wtf {
-          opacity: 0;
-          color: $base-color;
-          &.hovered {
-            opacity: 1;
-          }
-          @media screen and (max-width: 1024px) {
-            opacity: 1;
-          }
         }
       }
     }
