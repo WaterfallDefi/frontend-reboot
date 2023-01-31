@@ -16,7 +16,7 @@ const useRedeemDirect = (
 
   const handleRedeemDirect = useCallback(
     async (i: number) => {
-      const tx = await contract.redeemDirect(i);
+      const tx = await contract.redeemDirectPending(i);
       const receipt = await tx.wait();
       setMarkets(undefined);
 

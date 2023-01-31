@@ -22,7 +22,7 @@ const useWithdraw = (
 
   const handleWithdraw = useCallback(
     async (amount: string, multicurrencyAmount?: string[]) => {
-      const tx = await trancheContract.withdraw(multicurrencyAmount ? multicurrencyAmount : amount);
+      const tx = await trancheContract.queueWithdrawal(multicurrencyAmount ? multicurrencyAmount : amount);
       const receipt = await tx.wait();
       if (receipt.status === 1) {
         setModal({
