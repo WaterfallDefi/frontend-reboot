@@ -53,7 +53,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const [simulDeposit, setSimulDeposit] = useState(false);
 
   const { balance, invested, fetchBalance } = useTrancheBalance(
-    //don't need { invested } for now
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
