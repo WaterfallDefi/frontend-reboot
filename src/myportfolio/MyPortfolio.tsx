@@ -107,7 +107,7 @@ function MyPortfolio(props: Props) {
             userInvest:
               positions.length > 0
                 ? numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
-                    "0,0.[0000]"
+                    "0,0.[000000]"
                   )
                 : "-",
             assetsWithdrawable: "-",
@@ -120,7 +120,7 @@ function MyPortfolio(props: Props) {
             userInvest:
               positions.length > 0
                 ? numeral(new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
-                    "0,0.[0000]"
+                    "0,0.[000000]"
                   )
                 : "-",
             assetsWithdrawable: "-",
@@ -137,7 +137,7 @@ function MyPortfolio(props: Props) {
                       .plus(new BigNumber(positions[0][1][1]._hex))
                       .dividedBy(BIG_TEN.pow(18))
                       .toString()
-                  ).format("0,0.[0000]")
+                  ).format("0,0.[000000]")
                 : "-",
             assetsWithdrawable: balance,
             assetsInvested: invested,
