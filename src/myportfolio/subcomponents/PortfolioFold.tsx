@@ -1,24 +1,16 @@
 import numeral from "numeral";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import BigNumber from "bignumber.js";
-import useAutoroll from "../../markets/hooks/useAutoroll";
 import useRedeemDirect from "../../markets/hooks/useRedeemDirect";
 import { useTrancheBalance } from "../../markets/hooks/useTrancheBalance";
 import useWithdraw from "../../markets/hooks/useWithdraw";
 import { Market } from "../../types";
 import { Modal, ModalProps, Network } from "../../WaterfallDefi";
-import usePendingWTFReward from "../../markets/hooks/usePendingWTFReward";
 
 const BIG_TEN = new BigNumber(10);
 
 const formatBigNumber2HexString = (bn: BigNumber) => {
   return "0x" + bn.toString(16);
-};
-
-const formatNumberDisplay = (num: string | undefined, decimals = 18) => {
-  if (!num) return "-";
-  return numeral(new BigNumber(num).dividedBy(BIG_TEN.pow(decimals)).toFormat(4).toString()).format("0,0.[0000]");
-  // .replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 };
 
 type Props = {
@@ -68,25 +60,10 @@ function PortfolioFold(props: Props) {
 
   const { balance } = useTrancheBalance(network, trancheMasterAddress, abi, isMulticurrency);
 
-  const { getAutoroll, changeAutoroll } = useAutoroll(network, trancheMasterAddress);
-
-  const { tranchesPendingReward } = usePendingWTFReward(network, masterWTFAddress, trancheCount);
-
-  useEffect(() => {
-    if (autorollImplemented) {
-      getAutoroll().then((res) => {
-        setAutoroll(res);
-        setAutorollPending(false);
-      });
-    }
-  }, [autorollImplemented, getAutoroll]);
+  // const { getAutoroll, changeAutoroll } = useAutoroll(network, trancheMasterAddress);
 
   // const [withdrawAllLoading, setWithdrawAllLoading] = useState(false);
   const [redeemLoading, setRedeemLoading] = useState(false);
-
-  const [autoroll, setAutoroll] = useState(false);
-  const [autorollPending, setAutorollPending] = useState<boolean>(true);
-  const [awaitingAutorollConfirm, setAwaitingAutorollConfirm] = useState<boolean>(false);
 
   //TODO: handle tracking ALL multicurrency deposits for a specific held MC falls position
   // !isMulticurrency ? useTrancheBalance(trancheMasterAddress) : useAllMulticurrencyTrancheBalance(trancheMasterAddress, assets.length);
@@ -153,46 +130,6 @@ function PortfolioFold(props: Props) {
           </div>
         </div>
 
-        {autorollImplemented ? (
-          <div className="card">
-            <div className="card-title">Auto Rolling</div>
-            <div className="card-value">
-              {awaitingAutorollConfirm ? "Switch Auto Txn Pending..." : "Autoroll: " + (autoroll ? "On" : "Off")}{" "}
-            </div>
-            <div className="card-action">
-              {!autorollPending ? (
-                <button
-                  className={"autoroll-btn " + (autoroll ? "stop" : "start")}
-                  // disabled={awaitingAutorollConfirm}
-                  onClick={() => {
-                    setAwaitingAutorollConfirm(true);
-                    changeAutoroll(!autoroll).then((res) => {
-                      getAutoroll().then((res2) => {
-                        setAutoroll(res2);
-                        setAwaitingAutorollConfirm(false);
-                      });
-                    });
-                  }}
-                >
-                  {autoroll ? "Stop Autoroll" : "Start Autoroll"}
-                </button>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
-
-        <div className="card">
-          <div className="card-title">WTF Reward</div>
-          <div className="card-value">
-            {isCurrentCycle && isActive
-              ? numeral(formatNumberDisplay(tranchesPendingReward[currentTranche])).format("0,0.[0000]")
-              : "-"}{" "}
-            WTF
-          </div>
-          {/* <div className="card-action">
-            <button>Claim</button>
-          </div> */}
-        </div>
         <div className="prompt">
           {/* Union */}
           <div>

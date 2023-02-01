@@ -12,13 +12,11 @@ import useCheckApprove from "../../hooks/useCheckApprove";
 import { Market } from "../../types";
 import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useApprove from "../hooks/useApprove";
-import useInvest from "../hooks/useInvest";
 import useInvestDirect from "../hooks/useInvestDirect";
 import useWrapAVAXContract, { useWrapBNBContract } from "../hooks/useWrap";
 import { useMetamaskBalance } from "../hooks/useMetamaskBalance";
 
 type Props = {
-  isRedeposit: boolean;
   selectedMarket: Market;
   selectedDepositAssetIndex: number;
   setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
@@ -61,12 +59,11 @@ function ApproveCardDefault(props: Props) {
     setModal,
     setMarkets,
     selectTrancheIdx,
-    redepositBalance,
+    // redepositBalance,
     remaining,
     remainingExact,
     enabled,
     isSoldOut,
-    isRedeposit,
   } = props;
 
   //user inputs
@@ -106,16 +103,6 @@ function ApproveCardDefault(props: Props) {
     setModal,
     setMarkets
   );
-  const { onInvest } = useInvest(
-    network,
-    selectedMarket.address,
-    selectedMarket.abi,
-    selectedMarket.isMulticurrency ? selectedDepositAssetIndex : -1,
-    selectedMarket.assets.length,
-    selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e",
-    setModal,
-    setMarkets
-  );
 
   const {
     balance: balanceWallet,
@@ -128,20 +115,10 @@ function ApproveCardDefault(props: Props) {
   const { balance: metamaskBalance, fetchBalance: fetchMetamaskBalance } = useMetamaskBalance();
 
   const balance = useMemo(() => {
-    return !isRedeposit
-      ? selectedMarket.isMulticurrency
-        ? multicurrencyBalancesWallet.balances.map((mcb) => numeral(mcb).format("0,0.[0000]"))
-        : numeral(balanceWallet).format("0,0.[0000]")
-      : redepositBalance instanceof Array
-      ? redepositBalance.map((rdb) => numeral(rdb).format("0,0.[0000]"))
-      : numeral(redepositBalance).format("0,0.[0000]");
-  }, [
-    isRedeposit,
-    selectedMarket.isMulticurrency,
-    multicurrencyBalancesWallet.balances,
-    balanceWallet,
-    redepositBalance,
-  ]);
+    return selectedMarket.isMulticurrency
+      ? multicurrencyBalancesWallet.balances.map((mcb) => numeral(mcb).format("0,0.[0000]"))
+      : numeral(balanceWallet).format("0,0.[0000]");
+  }, [selectedMarket.isMulticurrency, multicurrencyBalancesWallet.balances, balanceWallet]);
 
   const tokenButtonColors = useMemo(
     () =>
@@ -201,9 +178,8 @@ function ApproveCardDefault(props: Props) {
   const validateText = useMemo(() => {
     const _remaining = remainingExact.replace(/,/g, "");
     const _balanceInput = balanceInput;
-    const _redepositBalance: string =
-      redepositBalance instanceof Array ? redepositBalance[selectedDepositAssetIndex] : redepositBalance;
-    if (compareNum(_balanceInput, isRedeposit ? _redepositBalance : actualBalanceWallet, true)) {
+
+    if (compareNum(_balanceInput, actualBalanceWallet, true)) {
       if (!selectedMarket.wrap) return "Insufficient Balance";
     }
     if (compareNum(_balanceInput, _remaining, true)) {
@@ -221,18 +197,7 @@ function ApproveCardDefault(props: Props) {
         return "Insufficient Balance to Wrap";
       }
     }
-  }, [
-    remaining,
-    remainingExact,
-    redepositBalance,
-    actualBalanceWallet,
-    balanceInput,
-    balance,
-    metamaskBalance,
-    selectedDepositAssetIndex,
-    selectedMarket.wrap,
-    isRedeposit,
-  ]);
+  }, [remaining, remainingExact, actualBalanceWallet, balanceInput, balance, metamaskBalance, selectedMarket.wrap]);
 
   const handleWrap = async () => {
     setDepositLoading(true);
@@ -292,9 +257,7 @@ function ApproveCardDefault(props: Props) {
     });
     const amount = balanceInput.toString();
     try {
-      !isRedeposit
-        ? await onInvestDirect(amount, selectTrancheIdx.toString())
-        : await onInvest(amount, selectTrancheIdx.toString());
+      await onInvestDirect(amount, selectTrancheIdx.toString());
       setDepositLoading(false);
       setBalanceInput("0");
       !selectedMarket.isMulticurrency ? fetchBalance() : multicurrencyBalancesWallet.fetchBalances();
@@ -314,15 +277,13 @@ function ApproveCardDefault(props: Props) {
   const handleMaxInput = () => {
     const _balance =
       balance instanceof Array ? balance[selectedDepositAssetIndex].replace(/,/g, "") : balance.replace(/,/g, "");
-    const _redepositBalance =
-      redepositBalance instanceof Array ? redepositBalance[selectedDepositAssetIndex] : redepositBalance;
     const _remaining = remainingExact.replace(/,/g, "");
 
     if (selectedMarket.wrap) {
       if (_remaining) setBalanceInput(_remaining);
     } else {
       if (compareNum(_remaining, _balance)) {
-        if (_balance) setBalanceInput(isRedeposit ? _redepositBalance : actualBalanceWallet);
+        if (_balance) setBalanceInput(actualBalanceWallet);
       } else if (compareNum(_balance, _remaining, true)) {
         if (_remaining) setBalanceInput(_remaining);
       }
@@ -359,7 +320,7 @@ function ApproveCardDefault(props: Props) {
   return (
     <div className="approve-card">
       <div className="row">
-        <div>{isRedeposit ? "Total Roll-deposit Amount" : "Wallet Balance"}</div>
+        <div>Wallet Balance</div>
         <div>
           {formatNumberSeparator(balance instanceof Array ? balance[selectedDepositAssetIndex] : balance)}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}

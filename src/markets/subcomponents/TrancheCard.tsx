@@ -1,8 +1,6 @@
 import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
-import React, { useMemo } from "react";
-// import getWTFApr, { formatAllocPoint } from "../../hooks/getWtfApr";
-// import { useWTFPriceLP } from "../../hooks/useWtfPriceFromLP";
+import React from "react";
 import { Market, Tranche } from "../../types";
 
 type Props = {
@@ -17,15 +15,15 @@ type Props = {
   isActive: boolean;
 };
 
-const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
-  if (num1 === undefined) return;
-  if (num2 === undefined) return;
-  const _num1 = new BigNumber(num1);
-  const _num2 = new BigNumber(num2);
+// const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
+//   if (num1 === undefined) return;
+//   if (num2 === undefined) return;
+//   const _num1 = new BigNumber(num1);
+//   const _num2 = new BigNumber(num2);
 
-  if (largerOnly) return _num1.comparedTo(_num2) > 0 ? true : false;
-  return _num1.comparedTo(_num2) >= 0 ? true : false;
-};
+//   if (largerOnly) return _num1.comparedTo(_num2) > 0 ? true : false;
+//   return _num1.comparedTo(_num2) >= 0 ? true : false;
+// };
 
 const getPercentage = (num: string | undefined, total: string | undefined) => {
   if (!num || !total) return "0";
@@ -56,22 +54,6 @@ function TrancheCard(props: Props) {
   const isSoldout = false;
 
   const trancheApr = tranche.apy;
-  // const wtfPrice = useWTFPrice();
-  // const { price: wtfPrice } = useWTFPriceLP();
-  //   const { weekDistribution } = useWTF(); !!!
-  // const isHide = weekDistribution.toString() !== "0" ? "visible" : "hidden";
-  // const isHide = selectedMarket.rewardPerBlock !== "0" ? "visible" : "hidden";
-
-  // const wtfApr = getWTFApr(
-  //   selectedMarket.network,
-  //   formatAllocPoint(selectedMarket.pools[trancheIndex], selectedMarket.totalAllocPoints),
-  //   selectedMarket.tranches[trancheIndex],
-  //   selectedMarket.duration,
-  //   selectedMarket.rewardPerBlock,
-  //   wtfPrice,
-  //   selectedMarket.assets,
-  //   coingeckoPrices
-  // );
 
   const tranchePrincipal: string = !selectedMarket.autorollImplemented
     ? tranche.principal

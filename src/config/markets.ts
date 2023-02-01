@@ -1,7 +1,6 @@
 import { DAI_E_DepositAddress, LSD_BenqiStrat, LSD_MasterWTF, LSD_TraderJoeStrat, LSD_TrancheMaster } from "./address";
 import LSD_Finance from "./abis/LSD_Finance.json";
 import MasterChef from "./abis/MasterChef.json";
-import WTF from "./abis/WTF.json";
 import { Market, NETWORKS } from "../types";
 
 type NETWORKS_TYPE = typeof NETWORKS[keyof typeof NETWORKS];
@@ -26,14 +25,11 @@ export const MarketList: Market[] = [
     nextTime: "",
     address: LSD_TrancheMaster[NETWORK],
     abi: LSD_Finance.abi,
-    masterChefAbi: MasterChef.abi,
-    masterChefAddress: LSD_MasterWTF[NETWORK],
+    masterChefAbi: MasterChef.abi, //do we even need this anymore??
+    masterChefAddress: LSD_MasterWTF[NETWORK], //do we even need this anymore??
     pools: [],
     depositAssetAddress: DAI_E_DepositAddress[NETWORK],
     depositAssetAddresses: [],
-    depositAssetAbi: WTF.abi,
-    // strategyAddress: StrategyAddress[NETWORK],
-    // strategyAbi: StrategyAbi,
     strategyFarms: [
       {
         farmName: "Benqi",

@@ -26,12 +26,6 @@ export interface Pool {
   totalSupply: string;
 }
 
-export interface StakingConfig {
-  rewardTokenAddress: string;
-  earningTokenAddress: string;
-  name: string;
-}
-
 export interface FarmConfig {
   lpTokenAddress: string;
   lpRewardAddress: string;
@@ -72,7 +66,6 @@ export interface Market {
   totalAllocPoints?: string;
   depositAssetAddress: string;
   depositAssetAddresses: string[];
-  depositAssetAbi: any;
   depositAssetContract?: Contract;
   rewardPerBlock?: string;
   strategyFarms: StrategyFarm[];
@@ -91,18 +84,6 @@ export type StrategyFarm = {
   sAddress: string;
   apiKey: string;
 };
-
-//NO MORE TRANCHE CYCLES
-// export type TrancheCycle = {
-//   capital: string;
-//   cycle: number;
-//   endAt: number;
-//   id: string;
-//   principal: string;
-//   rate: string;
-//   startAt: number;
-//   state: number;
-// };
 
 export type UserInvest = {
   capital: string;

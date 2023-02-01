@@ -1,21 +1,14 @@
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from "react";
 
-import BigNumber from 'bignumber.js';
-import numeral from 'numeral';
+import BigNumber from "bignumber.js";
+import numeral from "numeral";
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 
-import ERC20 from '../config/abis/WTF.json';
-import { Network } from '../WaterfallDefi';
-import {
-  getContract,
-  multicall,
-} from './getContract';
+import ERC20 from "../config/abis/WTF.json";
+import { Network } from "../WaterfallDefi";
+import { getContract, multicall } from "./getContract";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -24,26 +17,11 @@ const useBalance = (network: Network, address: string) => {
   const [actualBalance, setActualBalance] = useState("0");
   const { account } = useWeb3React<Web3Provider>();
 
-  // const isBrowserTabActiveRef = useIsBrowserTabActive();
-
-  // const [refreshCounter, setRefreshCounter] = useState<number>(0);
-
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     if (isBrowserTabActiveRef.current) {
-  //       setRefreshCounter((prev) => prev + 1);
-  //     }
-  //   }, 10000);
-  //   return () => clearInterval(interval);
-  // }, [isBrowserTabActiveRef]);
-
   const fetchBalance = useCallback(async () => {
     if (!account) return;
     const contract = getContract(ERC20.abi, address, network);
     const tokenBalance = await contract.balanceOf(account);
-    const value = new BigNumber(tokenBalance.toString()).dividedBy(
-      BIG_TEN.pow(18)
-    );
+    const value = new BigNumber(tokenBalance.toString()).dividedBy(BIG_TEN.pow(18));
     setBalance(numeral(value.toString()).format("0,0.[0000]"));
     setActualBalance(value.toString());
   }, [account, address, network]);
@@ -59,19 +37,6 @@ export const useBalances = (network: Network, addresses: string[]) => {
   const [balances, setBalances] = useState<string[]>([]);
   const [actualBalances, setActualBalances] = useState<string[]>([]);
   const { account } = useWeb3React<Web3Provider>();
-
-  // const isBrowserTabActiveRef = useIsBrowserTabActive();
-
-  // const [refreshCounter, setRefreshCounter] = useState<number>(0);
-
-  // useEffect(() => {
-  //   const interval = setInterval(async () => {
-  //     if (isBrowserTabActiveRef.current) {
-  //       setRefreshCounter((prev) => prev + 1);
-  //     }
-  //   }, 10000);
-  //   return () => clearInterval(interval);
-  // }, [isBrowserTabActiveRef]);
 
   const fetchBalances = useCallback(async () => {
     if (!account) return;
@@ -90,16 +55,10 @@ export const useBalances = (network: Network, addresses: string[]) => {
 
     setBalances(
       bignumbers.map((v: any) =>
-        numeral(
-          new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()
-        ).format("0,0.[0000]")
+        numeral(new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[0000]")
       )
     );
-    setActualBalances(
-      bignumbers.map((v: any) =>
-        new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()
-      )
-    );
+    setActualBalances(bignumbers.map((v: any) => new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()));
   }, [account, addresses, network]);
 
   useEffect(() => {

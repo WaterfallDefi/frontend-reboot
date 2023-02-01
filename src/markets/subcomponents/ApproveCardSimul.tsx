@@ -12,7 +12,6 @@ import { Market } from "../../types";
 import { Modal, ModalProps } from "../../WaterfallDefi";
 import { useMultiApprove } from "../hooks/useApprove";
 import useInvestDirectMCSimul from "../hooks/useInvestDirectMCSimul";
-import useInvestMCSimul from "../hooks/useInvestMCSimul";
 
 type Props = {
   selectedMarket: Market;
@@ -27,7 +26,6 @@ type Props = {
   }[];
   enabled: boolean;
   isSoldOut: boolean;
-  isRedeposit?: boolean;
 };
 
 const formatNumberSeparator = (num: string) => numeral(num).format("0,0.[0000]");
@@ -58,7 +56,6 @@ function ApproveCardSimul(props: Props) {
     remainingSimul,
     enabled,
     isSoldOut,
-    isRedeposit,
   } = props;
   //user inputs
   const [balanceInputSimul, setBalanceInputSimul] = useState<string[]>([]);
@@ -82,13 +79,6 @@ function ApproveCardSimul(props: Props) {
   const { onMultiApprove } = useMultiApprove(network, selectedMarket.depositAssetAddresses, selectedMarket.address);
 
   const { onInvestDirectMCSimul } = useInvestDirectMCSimul(
-    network,
-    selectedMarket.address,
-    selectedMarket.abi,
-    setModal,
-    setMarkets
-  );
-  const { onInvestMCSimul } = useInvestMCSimul(
     network,
     selectedMarket.address,
     selectedMarket.abi,
@@ -206,9 +196,7 @@ function ApproveCardSimul(props: Props) {
     });
     const _amount = balanceInputSimul; //feels like .toString() is unnecessary if it's already typed? - 0xA
     try {
-      const success = !isRedeposit
-        ? await onInvestDirectMCSimul(_amount, selectTrancheIdx.toString())
-        : await onInvestMCSimul(_amount, selectTrancheIdx.toString());
+      const success = await onInvestDirectMCSimul(_amount, selectTrancheIdx.toString());
       if (success) {
         // successNotification("Deposit Success", "");
       } else {
@@ -291,7 +279,7 @@ function ApproveCardSimul(props: Props) {
         <div key={asset}>
           <div style={{ marginTop: index !== 0 ? 50 : 0 }}>
             <div className="row">
-              <div>{isRedeposit ? "Total Roll-deposit Amount" : "Wallet Balance"}</div>
+              <div>Wallet Balance</div>
               <div>
                 {formatNumberSeparator(numeral(multicurrencyBalancesWallet.balances[index]).format("0,0.[0000]"))}{" "}
                 {asset}

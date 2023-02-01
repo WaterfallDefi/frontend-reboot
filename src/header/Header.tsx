@@ -11,7 +11,6 @@ import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
 import useAuth, { setupNetwork, useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
 import TransactionModal from "./subcomponents/TransactionModal";
-import RedepositModal from "./subcomponents/RedepositModal";
 import TermsModal from "./subcomponents/TermsModal";
 import { Market } from "../types";
 import { Burger } from "./svgs/burger";
@@ -125,27 +124,6 @@ function Header(props: Props) {
           setModal={setModal}
         />
       ) : null}
-      {modal.state === Modal.Redeposit && modal.redepositProps ? (
-        <RedepositModal
-          selectedMarket={modal.redepositProps.selectedMarket}
-          selectedDepositAssetIndex={modal.redepositProps.selectedDepositAssetIndex}
-          balance={modal.redepositProps.balance}
-          simulDeposit={modal.redepositProps.simulDeposit}
-          // coingeckoPrices={modal.redepositProps.coingeckoPrices}
-          setSelectedDepositAssetIndex={modal.redepositProps.setSelectedDepositAssetIndex}
-          setSimulDeposit={modal.redepositProps.setSimulDeposit}
-          setModal={modal.redepositProps.setModal}
-          setMarkets={modal.redepositProps.setMarkets}
-        />
-      ) : null}
-      {/* {modal.state === Modal.Claim && modal.claimProps ? (
-        <ClaimModal
-          network={modal.claimProps.network}
-          balance={modal.claimProps.balance}
-          setModal={modal.claimProps.setModal}
-          claimReward={modal.claimProps.claimReward}
-        />
-      ) : null} */}
       <div className="pc-left">
         <div className="waterfall-defi-logo">
           <WaterFallDark />
@@ -181,14 +159,6 @@ function Header(props: Props) {
             My Portfolio
           </p>
         </div>
-        {/* no more wtf */}
-        {/* {network !== Network.Polygon && (
-          <div className="menu-block-wrapper">
-            <Link className="link" to={"/stake"} data-selected={location.pathname === "/stake"}>
-              Stake
-            </Link>
-          </div>
-        )} */}
         <div className="menu-block-wrapper">
           <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
         </div>
@@ -229,19 +199,6 @@ function Header(props: Props) {
               My Portfolio
             </Link>
           </div>
-          {/* no more WTF */}
-          {/* {network !== Network.Polygon && (
-            <div className="mobile-menu-block-wrapper">
-              <Link
-                className="link"
-                to={"/stake"}
-                data-selected={location.pathname === "/stake"}
-                onClick={() => setMobileDropdownOpen(false)}
-              >
-                Stake
-              </Link>
-            </div>
-          )} */}
           <div className="mobile-menu-block-wrapper">
             <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
           </div>

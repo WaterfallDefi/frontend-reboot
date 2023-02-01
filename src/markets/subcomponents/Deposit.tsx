@@ -15,7 +15,6 @@ import TrancheCard from "./TrancheCard";
 const BIG_TEN = new BigNumber(10);
 
 type Props = {
-  isRedeposit: boolean;
   selectedMarket: Market;
   // coingeckoPrices: any;
   selectedDepositAssetIndex: number;
@@ -27,15 +26,15 @@ type Props = {
   balance: string | string[];
 };
 
-const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
-  if (num1 === undefined) return false; //modified, this case will never happen
-  if (num2 === undefined) return false; // ""
-  const _num1 = new BigNumber(num1);
-  const _num2 = new BigNumber(num2);
+// const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
+//   if (num1 === undefined) return false; //modified, this case will never happen
+//   if (num2 === undefined) return false; // ""
+//   const _num1 = new BigNumber(num1);
+//   const _num2 = new BigNumber(num2);
 
-  if (largerOnly) return _num1.comparedTo(_num2) > 0 ? true : false;
-  return _num1.comparedTo(_num2) >= 0 ? true : false;
-};
+//   if (largerOnly) return _num1.comparedTo(_num2) > 0 ? true : false;
+//   return _num1.comparedTo(_num2) >= 0 ? true : false;
+// };
 
 const handleReminder = (startTime: number, endTime: number) => {
   if (!window || !startTime || !endTime) return;
@@ -64,7 +63,6 @@ const formatTimestamp = (num: string | number) => {
 
 function Deposit(props: Props) {
   const {
-    isRedeposit,
     selectedMarket,
     // coingeckoPrices,
     selectedDepositAssetIndex,
@@ -239,7 +237,6 @@ function Deposit(props: Props) {
         </div>
         {!simulDeposit ? (
           <ApproveCardDefault
-            isRedeposit={isRedeposit}
             selectedMarket={selectedMarket}
             selectedDepositAssetIndex={selectedDepositAssetIndex}
             setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
@@ -255,7 +252,6 @@ function Deposit(props: Props) {
           />
         ) : (
           <ApproveCardSimul
-            isRedeposit={isRedeposit}
             selectedMarket={selectedMarket}
             setSimulDeposit={setSimulDeposit}
             setModal={setModal}

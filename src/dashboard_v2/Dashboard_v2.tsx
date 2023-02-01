@@ -1,5 +1,4 @@
 import "./Dashboard.scss";
-// import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 // import numeral from "numeral";
 import { Metamask } from "../header/svgs/Metamask";
 import useTotalTvl from "./hooks/useTotalTvl";

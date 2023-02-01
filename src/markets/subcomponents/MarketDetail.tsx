@@ -5,10 +5,7 @@ import numeral from "numeral";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
-import {
-  fetchSingleSubgraphCycleQuery,
-  //   getAPYHourly,
-} from "../../myportfolio/hooks/useSubgraphQuery";
+import { fetchSingleSubgraphCycleQuery } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market, Tranche } from "../../types";
 import { ModalProps } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
@@ -52,17 +49,12 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   // const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
-  const { balance, invested, fetchBalance } = useTrancheBalance(
+  const { balance, fetchBalance } = useTrancheBalance(
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
     selectedMarket.isMulticurrency
   );
-
-  console.log("user balance");
-  console.log(balance);
-  console.log("user invested");
-  console.log(invested);
 
   const { MCbalance, fetchMCBalance } = useMulticurrencyTrancheBalance(
     //don't need { MCinvested } for now
@@ -210,7 +202,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         setMarkets={setMarkets}
       />
       <Deposit
-        isRedeposit={false}
         selectedMarket={selectedMarket}
         // coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}

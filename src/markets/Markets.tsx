@@ -7,9 +7,7 @@ import { Web3Provider } from "@ethersproject/providers";
 
 import numeral from "numeral";
 
-// import getWTFApr, { formatAllocPoint } from "../hooks/getWtfApr";
 import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
-// import { useWTFPriceLP } from "../hooks/useWtfPriceFromLP";
 import TableRow from "../shared/TableRow";
 import { Market } from "../types";
 import { ModalProps, Mode, Network } from "../WaterfallDefi";
@@ -87,27 +85,9 @@ function Markets(props: Props) {
     return markets
       ? markets
           .map((m: Market) => {
-            // const wtfAprs = m.tranches.map((_t, _i) => {
-            //   return getWTFApr(
-            //     m.network,
-            //     formatAllocPoint(m?.pools[_i], m?.totalAllocPoints),
-            //     m?.tranches[_i],
-            //     m.duration,
-            //     m.rewardPerBlock,
-            //     wtfPrice,
-            //     m?.assets,
-            //     coingeckoPrices
-            //   );
-            // });
-
             const tranchesApr = m.tranches.map((_t, _i) => {
-              // const wtfAPR = wtfAprs[_i];
               const trancheAPR: string = _t.apy;
-              const totalAPR =
-                // wtfAPR !== "0.00" && wtfAPR !== undefined
-                //   ? Number(trancheAPR) + Number(numeral(wtfAPR).value())
-                //   :
-                trancheAPR;
+              const totalAPR = trancheAPR;
               return totalAPR;
             });
 

@@ -27,8 +27,8 @@ export enum Modal {
   None = 0,
   Txn = 1,
   ConnectWallet = 2,
-  Redeposit = 3,
-  Claim = 4,
+  // Redeposit = 3, unused
+  // Claim = 4, unused
   Terms = 5,
 }
 
@@ -37,23 +37,6 @@ export type ModalProps = {
   txn?: string;
   status?: string;
   message?: string;
-  redepositProps?: {
-    selectedMarket: Market;
-    selectedDepositAssetIndex: number;
-    balance: string | string[];
-    simulDeposit: boolean;
-    coingeckoPrices: any;
-    setSelectedDepositAssetIndex: React.Dispatch<React.SetStateAction<number>>;
-    setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
-    setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
-    setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
-  };
-  claimProps?: {
-    network: Network;
-    balance: string;
-    setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
-    claimReward: (_lockDurationIfLockNotExists: string, _lockDurationIfLockExists: string) => Promise<void>;
-  };
 };
 
 function WaterfallDefi() {
@@ -108,39 +91,11 @@ function WaterfallDefi() {
                 setMarkets={setMarkets}
                 setModal={setModal}
               />,
-              <MyPortfolio
-                key="portfolio"
-                mode={Mode.Dark}
-                network={network}
-                markets={markets ? markets : []}
-                setMarkets={setMarkets}
-                setModal={setModal}
-              />,
+              <MyPortfolio key="portfolio" mode={Mode.Dark} markets={markets ? markets : []} />,
             ],
             true
           )}
         />
-        {/* <Route
-          path="/portfolio"
-          element={layout(
-            [
-              <MyPortfolio
-                key="portfolio"
-                mode={Mode.Dark}
-                network={network}
-                markets={markets ? markets : []}
-                setMarkets={setMarkets}
-                setModal={setModal}
-              />,
-            ],
-            true
-          )}
-        /> */}
-        {/* <Route
-          path="/stake"
-          element={layout([<Stake key="stake" mode={Mode.Dark} network={network} setModal={setModal} />], false)}
-        />
-        <Route path="/blog" element={layout([<Blog />], false)} /> */}
       </Routes>
       <Footer mode={Mode.Dark} />
     </BrowserRouter>
