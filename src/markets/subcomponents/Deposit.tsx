@@ -251,20 +251,7 @@ function Deposit(props: Props) {
             remaining={remaining}
             remainingExact={remainingExact}
             enabled={selectTrancheIdx !== undefined}
-            isSoldOut={
-              selectTrancheIdx
-                ? !selectedMarket.autorollImplemented
-                  ? compareNum(
-                      selectedMarket.tranches[selectTrancheIdx].principal,
-                      selectedMarket.tranches[selectTrancheIdx].target
-                    )
-                  : compareNum(
-                      Number(selectedMarket.tranches[selectTrancheIdx].autoPrincipal) +
-                        Number(selectedMarket.tranches[selectTrancheIdx].principal),
-                      selectedMarket.tranches[selectTrancheIdx].target
-                    )
-                : false
-            }
+            isSoldOut={false}
           />
         ) : (
           <ApproveCardSimul
@@ -292,14 +279,7 @@ function Deposit(props: Props) {
                   })
             }
             enabled={selectTrancheIdx !== undefined}
-            isSoldOut={
-              selectTrancheIdx
-                ? compareNum(
-                    selectedMarket.tranches[selectTrancheIdx].principal,
-                    selectedMarket.tranches[selectTrancheIdx].target
-                  )
-                : false
-            }
+            isSoldOut={false}
           />
         )}
       </div>

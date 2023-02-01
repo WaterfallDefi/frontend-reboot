@@ -81,10 +81,6 @@ export const fetchSubgraphQuery = async (account: string | null | undefined, dec
     if (!_subgraphResult) continue;
     // const _market = markets[marketIdx];
 
-    //all markets appear to have duration 0
-    // const _duration = _market.duration || "0";
-    // const _duration = "0";
-
     const _userInvests: UserInvest[] = [];
 
     //no more trancheCycles, its all 24 hour now

@@ -22,7 +22,7 @@ const invest = async (
   let tx;
   if (multicurrencyIdx === -1) {
     //lsd finance: investDirectPending instead of investDirect
-    tx = await contract.investDirectPending(_amount, selectTrancheIdx, _amount);
+    tx = await contract.investDirectPending(_amount, selectTrancheIdx);
   } else {
     const _amountArray: BigNumber[] = [];
     for (let index = 0; index < multicurrencyTokenCount; index++) {

@@ -53,20 +53,7 @@ function TrancheCard(props: Props) {
     remaining,
     isActive,
   } = props;
-  const isSoldout = useMemo(
-    () =>
-      isActive
-        ? true
-        : !selectedMarket.autorollImplemented
-        ? compareNum(tranche.principal, tranche.target)
-        : compareNum(
-            new BigNumber(tranche.autoPrincipal ? tranche.autoPrincipal : "0")
-              .plus(new BigNumber(tranche.principal))
-              .toString(),
-            Number(tranche.target).toString()
-          ),
-    [isActive, selectedMarket.autorollImplemented, tranche.principal, tranche.target, tranche.autoPrincipal]
-  );
+  const isSoldout = false;
 
   const trancheApr = tranche.apy;
   // const wtfPrice = useWTFPrice();
