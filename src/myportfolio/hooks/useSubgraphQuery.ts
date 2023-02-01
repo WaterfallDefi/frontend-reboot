@@ -29,19 +29,35 @@ export const getAPYHourly = async (date: string, date2: string) => {
 const getSubgraphQuery = async (subgraphURL: string, account: string | null | undefined) => {
   let res;
   try {
+    console.log("account");
+    console.log(account);
     res = await ky
       .post(subgraphURL, {
         json: {
           // removed trancheCycles from query
-          // not yet remove target from query: too dangerous
-          // not yet remove apy from query: too dangerous
+          // remove target from tranches
+          // remove apy from tranches
           query: `{
             tranches {
               id
               cycle
-              target
-              apy
               fee
+            }
+            userInvestedAmountAndPrincipal(orderBy: cycleForPrincipal, orderDirection: desc ,where: {owner: "${account}"}) {
+              owner
+              invested
+              cycleForPrincipal
+              principal
+            }
+            userInvestPendings(orderBy: cycle, orderDirection: desc ,where: { owner: "${account}" }) {
+              id
+              owner
+              tranche
+              cycle
+              principal
+              capital
+              investAt
+              harvestAt
             }
             userInvests(orderBy: cycle, orderDirection: desc ,where: { owner: "${account}" }) {
               id
@@ -57,6 +73,9 @@ const getSubgraphQuery = async (subgraphURL: string, account: string | null | un
         },
       })
       .json();
+
+    console.log("the subgraph");
+    console.log(res);
   } catch (e) {
     console.error(e);
   }
@@ -91,12 +110,6 @@ export const fetchSubgraphQuery = async (account: string | null | undefined, dec
 
     const { userInvests } = _subgraphResult;
 
-    // if (trancheCycles) {
-    //   for (let i = 0; i < trancheCycles.length; i++) {
-    //     const { id } = trancheCycles[i];
-    //     _trancheCycles[id] = trancheCycles[i];
-    //   }
-    // }
     if (userInvests) {
       for (let i = 0; i < userInvests.length; i++) {
         const { capital, cycle, harvestAt, id, investAt, owner, principal, tranche } = userInvests[i];

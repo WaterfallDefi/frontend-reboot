@@ -52,13 +52,18 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   // const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
-  const { balance, fetchBalance } = useTrancheBalance(
+  const { balance, invested, fetchBalance } = useTrancheBalance(
     //don't need { invested } for now
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
     selectedMarket.isMulticurrency
   );
+
+  console.log("user balance");
+  console.log(balance);
+  console.log("user invested");
+  console.log(invested);
 
   const { MCbalance, fetchMCBalance } = useMulticurrencyTrancheBalance(
     //don't need { MCinvested } for now

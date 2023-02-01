@@ -1,16 +1,12 @@
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from "react";
 
-import BigNumber from 'bignumber.js';
+import BigNumber from "bignumber.js";
 
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from "@ethersproject/providers";
+import { useWeb3React } from "@web3-react/core";
 
-import { getContract } from '../../hooks/getContract';
-import { Network } from '../../WaterfallDefi';
+import { getContract } from "../../hooks/getContract";
+import { Network } from "../../WaterfallDefi";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -24,12 +20,7 @@ type MCBalanceObject = {
   MCinvested: string[];
 };
 
-export const useTrancheBalance = (
-  network: Network,
-  trancheMasterAddress: string,
-  abi: any,
-  disable: boolean
-) => {
+export const useTrancheBalance = (network: Network, trancheMasterAddress: string, abi: any, disable: boolean) => {
   const [result, setResult] = useState<BalanceObject>({
     balance: "",
     invested: "",
@@ -41,25 +32,13 @@ export const useTrancheBalance = (
 
   const fetchBalance = useCallback(async () => {
     try {
-      const trancheMasterContract = await getContract(
-        abi,
-        trancheMasterAddress,
-        network
-      );
+      const trancheMasterContract = await getContract(abi, trancheMasterAddress, network);
       const result = await trancheMasterContract.balanceOf(account);
 
       setResult({
-        balance: result.balance
-          ? new BigNumber(result.balance?._hex)
-              .dividedBy(BIG_TEN.pow(18))
-              .toString()
-          : "0",
+        balance: result.balance ? new BigNumber(result.balance?._hex).dividedBy(BIG_TEN.pow(18)).toString() : "0",
         //don't need invested for now
-        invested: result.invested
-          ? new BigNumber(result.invested?._hex)
-              .dividedBy(BIG_TEN.pow(18))
-              .toString()
-          : "0",
+        invested: result.invested ? new BigNumber(result.invested?._hex).dividedBy(BIG_TEN.pow(18)).toString() : "0",
       });
     } catch (e) {
       console.error(e);
@@ -70,7 +49,7 @@ export const useTrancheBalance = (
     if (account && !disable) fetchBalance();
   }, [account, disable, fetchBalance]);
 
-  return { balance: result.balance, fetchBalance };
+  return { balance: result.balance, invested: result.invested, fetchBalance };
 };
 
 export const useMulticurrencyTrancheBalance = (
@@ -96,18 +75,12 @@ export const useMulticurrencyTrancheBalance = (
 
   const fetchMCBalance = useCallback(async () => {
     try {
-      const trancheMasterContract = await getContract(
-        abi,
-        trancheMasterAddress,
-        network
-      );
+      const trancheMasterContract = await getContract(abi, trancheMasterAddress, network);
       const balanceOf = await trancheMasterContract.balanceOf(account);
 
       setResult({
         MCbalance: balanceOf[0].map((b: any) => b._hex),
-        MCinvested: balanceOf[1].map((b: any) =>
-          new BigNumber(b._hex).dividedBy(BIG_TEN.pow(18)).toString()
-        ),
+        MCinvested: balanceOf[1].map((b: any) => new BigNumber(b._hex).dividedBy(BIG_TEN.pow(18)).toString()),
       });
     } catch (e) {
       console.error(e);
