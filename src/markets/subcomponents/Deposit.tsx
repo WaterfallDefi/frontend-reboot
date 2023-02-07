@@ -6,7 +6,6 @@ import Countdown from "react-countdown";
 
 import { Market, PORTFOLIO_STATUS } from "../../types";
 import { ModalProps } from "../../WaterfallDefi";
-import { getRemainingMulticurrency } from "../hooks/getRemaining";
 import { Hill } from "../svgs/Hill";
 import ApproveCardDefault from "./ApproveCardDefault";
 import ApproveCardSimul from "./ApproveCardSimul";
@@ -93,8 +92,6 @@ function Deposit(props: Props) {
       new BigNumber(t.percent.hex).dividedBy(BIG_TEN.pow(5))
     )
   );
-
-  const remainingDepositableSimul = maxDeposits.map((md, i) => new BigNumber(md).minus(deposited[i]));
 
   const returnWidth = (assetIndex: number) =>
     deposited[assetIndex]
