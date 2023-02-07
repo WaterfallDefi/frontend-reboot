@@ -19,11 +19,6 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   selectTrancheIdx: number | undefined;
-  remainingSimul: {
-    remaining: string;
-    remainingExact: string;
-    depositableOrInTranche: string;
-  }[];
   enabled: boolean;
   isSoldOut: boolean;
 };
@@ -53,7 +48,6 @@ function ApproveCardSimul(props: Props) {
     setModal,
     setMarkets,
     selectTrancheIdx,
-    remainingSimul,
     enabled,
     isSoldOut,
   } = props;
@@ -145,28 +139,17 @@ function ApproveCardSimul(props: Props) {
   };
 
   const validateTextSimul = useMemo(() => {
-    const _remainings = remainingSimul.map((r) => r.remainingExact.replace(/,/g, ""));
     const _balanceInputs = balanceInputSimul;
     const _balances = multicurrencyBalancesWallet.balances;
-    const _sum: BigNumber = balanceInputSimul.reduce((acc, next) => acc.plus(new BigNumber(next)), new BigNumber(0));
     const validateTexts = _balanceInputs.map((b, i) => {
       let toReturn = ""; //falsy
       if (compareNum(b, _balances[i], true)) {
         toReturn = "Insufficient Balance";
       }
-      if (compareNum(b, _remainings[i], true)) {
-        toReturn = "Maximum deposit amount = {remaining}" + _remainings[i];
-      }
-      if (
-        remainingSimul[i].depositableOrInTranche === "inTranche" &&
-        compareNum(_sum.toString(), _remainings[i], true)
-      ) {
-        toReturn = "Total deposit amount exceeds tranche allowance";
-      }
       return toReturn;
     });
     return validateTexts;
-  }, [remainingSimul, balanceInputSimul, multicurrencyBalancesWallet]);
+  }, [balanceInputSimul, multicurrencyBalancesWallet]);
 
   // const handleWrapAvax = async () => {
   //   setDepositLoading(true);
@@ -219,30 +202,8 @@ function ApproveCardSimul(props: Props) {
   };
 
   const handleMaxInputSimul = (index: number) => {
-    const _balance = multicurrencyBalancesWallet.balances[index].replace(/,/g, "");
-    const _remaining = remainingSimul[index].remaining.replace(/,/g, "");
     const balanceInputSimulCopy = [...balanceInputSimul];
-    if (compareNum(_remaining, _balance)) {
-      if (_balance) {
-        balanceInputSimulCopy[index] = _balance;
-        setBalanceInputSimul(balanceInputSimulCopy);
-      }
-    } else if (compareNum(_balance, _remaining, true)) {
-      if (_remaining) {
-        if (remainingSimul[index].depositableOrInTranche === "inTranche") {
-          const _sum: BigNumber = balanceInputSimulCopy.reduce(
-            (acc, next, i) => (i !== index ? acc.plus(new BigNumber(next)) : acc),
-            new BigNumber(0)
-          );
-          const _remainingInTranche = new BigNumber(_remaining).minus(_sum).toString();
-          balanceInputSimulCopy[index] = _remainingInTranche;
-          setBalanceInputSimul(balanceInputSimulCopy);
-        } else {
-          balanceInputSimulCopy[index] = _remaining;
-          setBalanceInputSimul(balanceInputSimulCopy);
-        }
-      }
-    }
+    setBalanceInputSimul(balanceInputSimulCopy);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, asset: string, index: number) => {
@@ -283,12 +244,6 @@ function ApproveCardSimul(props: Props) {
               <div>
                 {formatNumberSeparator(numeral(multicurrencyBalancesWallet.balances[index]).format("0,0.[0000]"))}{" "}
                 {asset}
-              </div>
-            </div>
-            <div className="row">
-              <div>{"Remaining:"}</div>
-              <div>
-                {formatNumberSeparator(remainingSimul[index].remaining)} {asset}
               </div>
             </div>
             <div className="row">

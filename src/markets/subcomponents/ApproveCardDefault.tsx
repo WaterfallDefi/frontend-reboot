@@ -24,9 +24,6 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   selectTrancheIdx: number | undefined;
-  redepositBalance: string | string[];
-  remaining: string;
-  remainingExact: string;
   enabled: boolean;
   isSoldOut: boolean;
 };
@@ -59,9 +56,6 @@ function ApproveCardDefault(props: Props) {
     setModal,
     setMarkets,
     selectTrancheIdx,
-    // redepositBalance,
-    remaining,
-    remainingExact,
     enabled,
     isSoldOut,
   } = props;
@@ -176,14 +170,10 @@ function ApproveCardDefault(props: Props) {
   };
 
   const validateText = useMemo(() => {
-    const _remaining = remainingExact.replace(/,/g, "");
     const _balanceInput = balanceInput;
 
     if (compareNum(_balanceInput, actualBalanceWallet, true)) {
       if (!selectedMarket.wrap) return "Insufficient Balance";
-    }
-    if (compareNum(_balanceInput, _remaining, true)) {
-      return "Maximum deposit amount = " + remaining;
     }
     if (
       selectedMarket.wrap &&
@@ -197,7 +187,7 @@ function ApproveCardDefault(props: Props) {
         return "Insufficient Balance to Wrap";
       }
     }
-  }, [remaining, remainingExact, actualBalanceWallet, balanceInput, balance, metamaskBalance, selectedMarket.wrap]);
+  }, [actualBalanceWallet, balanceInput, balance, metamaskBalance, selectedMarket.wrap]);
 
   const handleWrap = async () => {
     setDepositLoading(true);
@@ -277,17 +267,8 @@ function ApproveCardDefault(props: Props) {
   const handleMaxInput = () => {
     const _balance =
       balance instanceof Array ? balance[selectedDepositAssetIndex].replace(/,/g, "") : balance.replace(/,/g, "");
-    const _remaining = remainingExact.replace(/,/g, "");
 
-    if (selectedMarket.wrap) {
-      if (_remaining) setBalanceInput(_remaining);
-    } else {
-      if (compareNum(_remaining, _balance)) {
-        if (_balance) setBalanceInput(actualBalanceWallet);
-      } else if (compareNum(_balance, _remaining, true)) {
-        if (_remaining) setBalanceInput(_remaining);
-      }
-    }
+    if (_balance) setBalanceInput(actualBalanceWallet);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -324,12 +305,6 @@ function ApproveCardDefault(props: Props) {
         <div>
           {formatNumberSeparator(balance instanceof Array ? balance[selectedDepositAssetIndex] : balance)}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
-        </div>
-      </div>
-      <div className="row">
-        <div>Remaining</div>
-        <div>
-          {formatNumberSeparator(remaining)} {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
       </div>
       {selectedMarket.wrap &&

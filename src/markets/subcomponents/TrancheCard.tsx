@@ -10,24 +10,6 @@ type Props = {
   trancheIndex: number;
   selected: boolean;
   setSelectTrancheIdx: React.Dispatch<React.SetStateAction<number | undefined>>;
-  // coingeckoPrices: any;
-  remaining: string;
-  isActive: boolean;
-};
-
-// const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
-//   if (num1 === undefined) return;
-//   if (num2 === undefined) return;
-//   const _num1 = new BigNumber(num1);
-//   const _num2 = new BigNumber(num2);
-
-//   if (largerOnly) return _num1.comparedTo(_num2) > 0 ? true : false;
-//   return _num1.comparedTo(_num2) >= 0 ? true : false;
-// };
-
-const getPercentage = (num: string | undefined, total: string | undefined) => {
-  if (!num || !total) return "0";
-  return new BigNumber(num).dividedBy(new BigNumber(total)).times(100).toFormat(2).toString();
 };
 
 const formatNumberSeparator = (num: string) => {
@@ -48,8 +30,6 @@ function TrancheCard(props: Props) {
     selected,
     setSelectTrancheIdx,
     // coingeckoPrices,
-    remaining,
-    isActive,
   } = props;
   const isSoldout = false;
 
@@ -101,18 +81,6 @@ function TrancheCard(props: Props) {
           {"TVL: "}
           {prefix + " " + tvl + " " + suffix}
         </div>
-        <div className="remaining">
-          Remaining: {Number(remaining.replaceAll(",", "")) > 0 ? remaining : "0"}{" "}
-          {selectedMarket.assets[selectedDepositAssetIndex]}
-        </div>
-      </div>
-      <div className="progress-bar">
-        <div
-          className={type}
-          style={{
-            width: getPercentage(tranchePrincipal, tranche.target) + "%",
-          }}
-        />
       </div>
     </div>
   );

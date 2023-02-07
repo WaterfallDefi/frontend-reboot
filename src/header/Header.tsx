@@ -17,9 +17,6 @@ import { Burger } from "./svgs/burger";
 import { WaterFallDark } from "./svgs";
 import { Logout } from "./svgs/logout";
 
-//this is for mobile, do later
-// import { Burger } from "./svgs/burger";
-
 const formatAccountAddress = (address?: string | null) => {
   if (!address) return "";
   return address.slice(0, 6) + "..." + address.slice(-4);

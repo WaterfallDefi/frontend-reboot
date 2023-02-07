@@ -6,7 +6,7 @@ import Countdown from "react-countdown";
 
 import { Market, PORTFOLIO_STATUS } from "../../types";
 import { ModalProps } from "../../WaterfallDefi";
-import getRemaining, { getRemainingMulticurrency } from "../hooks/getRemaining";
+import { getRemainingMulticurrency } from "../hooks/getRemaining";
 import { Hill } from "../svgs/Hill";
 import ApproveCardDefault from "./ApproveCardDefault";
 import ApproveCardSimul from "./ApproveCardSimul";
@@ -93,29 +93,8 @@ function Deposit(props: Props) {
       new BigNumber(t.percent.hex).dividedBy(BIG_TEN.pow(5))
     )
   );
-  const remainingDepositable = new BigNumber(maxDeposits[selectedDepositAssetIndex]).minus(
-    deposited[selectedDepositAssetIndex]
-  );
-  const remainingDepositableSimul = maxDeposits.map((md, i) => new BigNumber(md).minus(deposited[i]));
 
-  const { remaining, remainingExact } =
-    selectTrancheIdx !== undefined
-      ? !selectedMarket.isMulticurrency
-        ? getRemaining(
-            selectedMarket.tranches[selectTrancheIdx]?.target,
-            !selectedMarket.autorollImplemented
-              ? selectedMarket.tranches[selectTrancheIdx]?.principal
-              : new BigNumber(selectedMarket.tranches[selectTrancheIdx]?.principal)
-                  .plus(selectedMarket.tranches[selectTrancheIdx]?.autoPrincipal)
-                  .toString(),
-            selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e" ? 6 : 18
-          )
-        : getRemainingMulticurrency(
-            selectedMarket.tranches[selectTrancheIdx]?.target,
-            selectedMarket.tranches[selectTrancheIdx]?.principal,
-            remainingDepositable
-          )
-      : { remaining: "", remainingExact: "" };
+  const remainingDepositableSimul = maxDeposits.map((md, i) => new BigNumber(md).minus(deposited[i]));
 
   const returnWidth = (assetIndex: number) =>
     deposited[assetIndex]
@@ -210,27 +189,6 @@ function Deposit(props: Props) {
                 trancheIndex={i}
                 selected={selectTrancheIdx === i}
                 setSelectTrancheIdx={setSelectTrancheIdx}
-                //do we need this???
-                // coingeckoPrices={coingeckoPrices}
-                remaining={
-                  !selectedMarket.isMulticurrency
-                    ? getRemaining(
-                        selectedMarket.tranches[i]?.target,
-                        !selectedMarket.autorollImplemented
-                          ? selectedMarket.tranches[i]?.principal
-                          : (
-                              Number(selectedMarket.tranches[i]?.principal) +
-                              Number(selectedMarket.tranches[i]?.autoPrincipal)
-                            ).toString(),
-                        selectedMarket.assets[0] === "USDC" || selectedMarket.assets[0] === "USDC.e" ? 6 : 18
-                      ).remaining
-                    : getRemainingMulticurrency(
-                        selectedMarket.tranches[i]?.target,
-                        selectedMarket.tranches[i]?.principal,
-                        remainingDepositable
-                      ).remaining
-                }
-                isActive={selectedMarket.status === "ACTIVE"}
               />
             );
           })}
@@ -244,9 +202,6 @@ function Deposit(props: Props) {
             setModal={setModal}
             setMarkets={setMarkets}
             selectTrancheIdx={selectTrancheIdx}
-            redepositBalance={balance}
-            remaining={remaining}
-            remainingExact={remainingExact}
             enabled={selectTrancheIdx !== undefined}
             isSoldOut={false}
           />
@@ -257,23 +212,6 @@ function Deposit(props: Props) {
             setModal={setModal}
             setMarkets={setMarkets}
             selectTrancheIdx={selectTrancheIdx}
-            remainingSimul={
-              selectTrancheIdx !== undefined && selectedMarket.isMulticurrency
-                ? remainingDepositableSimul.map((remainingDepositable) =>
-                    getRemainingMulticurrency(
-                      selectedMarket.tranches[selectTrancheIdx].target,
-                      selectedMarket.tranches[selectTrancheIdx].principal,
-                      remainingDepositable
-                    )
-                  )
-                : selectedMarket.assets.map(() => {
-                    return {
-                      remaining: "",
-                      remainingExact: "",
-                      depositableOrInTranche: "",
-                    };
-                  })
-            }
             enabled={selectTrancheIdx !== undefined}
             isSoldOut={false}
           />
