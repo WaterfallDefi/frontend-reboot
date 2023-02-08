@@ -26,19 +26,23 @@ function TrancheStructure(props: Props) {
 
   const [hoveredTranche, setHoveredTranche] = useState<number>(-1);
 
+  const sum = Number(tranches[0]?.autoPrincipal) + Number(tranches[1]?.autoPrincipal);
+
   const values = [
-    Number(getPercentage(tranches[0]?.target, totalTranchesTarget)),
-    Number(getPercentage(tranches[1]?.target, totalTranchesTarget)),
-    Number(getPercentage(tranches[2]?.target, totalTranchesTarget)),
+    Number(tranches[0]?.autoPrincipal) / Number(sum),
+    Number(tranches[1]?.autoPrincipal) / Number(sum),
+    Number(tranches[2]?.autoPrincipal),
   ];
 
-  function getSubordination() {
-    if (tranches.length === 3) {
-      return hoveredTranche === 0 ? values[1] + values[2] : hoveredTranche === 1 ? values[2] : "";
-    } else {
-      return hoveredTranche === 0 ? Number(getPercentage(tranches[1]?.target, totalTranchesTarget)) : "";
-    }
-  }
+  //we need to figure out how to calculate subordination
+
+  // function getSubordination() {
+  //   if (tranches.length === 3) {
+  //     return hoveredTranche === 0 ? values[1] + values[2] : hoveredTranche === 1 ? values[2] : "";
+  //   } else {
+  //     return hoveredTranche === 0 ? Number(getPercentage(tranches[1]?.target, totalTranchesTarget)) : "";
+  //   }
+  // }
 
   const payload =
     tranches.length === 3
@@ -70,7 +74,7 @@ function TrancheStructure(props: Props) {
   return (
     <div className={"chart-block tranche-structure"}>
       <div className="background left-br right-br">
-        <h3>Tranche Structure</h3>
+        <h3>Tranche Structure (Dynamic)</h3>
         <div className="tranche-chart">
           {hoveredTranche !== -1 ? (
             <div className="subordination" key="subordination">
@@ -85,16 +89,20 @@ function TrancheStructure(props: Props) {
               <br /> */}
               {hoveredTranche === 0 && (
                 <span className="comment">
-                  Repayment of Interest and Principal is paid out to this segment first. {payload[hoveredTranche].name}{" "}
-                  Tranche users have principal protection until the portfolio strategy experiences{" "}
-                  {numeral(getSubordination().toString()).format("0,0.[0000]")}% loss or more.
+                  Repayment of Interest and Principal is paid out to this segment first.
+                  {/* {payload[hoveredTranche].name}{" "} */}
+                  {/* Tranche users have principal protection until the portfolio strategy experiences{" "}
+                  {numeral(getSubordination().toString()).format("0,0.[0000]")}% loss or more. */}
                 </span>
               )}
               {hoveredTranche === 1 && hoveredTranche !== payload.length - 1 && (
                 <span className="comment">
-                  Mezzanine Tranche: Repayment of Interest and Principal is paid after Senior Tranche. Mezzanine Tranche
-                  users have principal protection until the portfolio strategy experiences{" "}
-                  {numeral(getSubordination().toString()).format("0,0.[0000]")}% loss or more.
+                  Variable tranche receives all the residual return, after paying back the Fixed tranche. Variable
+                  tranche is subject to first loss should the portfolio experience any drawdowns.
+                  {/* Mezzanine Tranche
+                  Repayment of Interest and Principal is paid after Senior Tranche.
+                  Mezzanine users have principal protection until the portfolio strategy experiences{" "}
+                  {numeral(getSubordination().toString()).format("0,0.[0000]")}% loss or more. */}
                 </span>
               )}
               {hoveredTranche === payload.length - 1 && (
@@ -112,9 +120,9 @@ function TrancheStructure(props: Props) {
                 setHoveredTranche(i);
               }}
               className={"tranche-stack" + (hoveredTranche === i ? " hovered" : "")}
-              style={{ height: t.value * 1.9 + "px", background: COLORS[t.name] }}
+              style={{ height: t.value * 125 + "px", background: COLORS[t.name] }}
             >
-              <span>{t.value}%</span>
+              <span>{numeral(t.value * 100).format("0,0")}%</span>
             </div>
           ))}
         </div>

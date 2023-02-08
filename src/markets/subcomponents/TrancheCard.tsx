@@ -35,9 +35,7 @@ function TrancheCard(props: Props) {
 
   const trancheApr = tranche.apy;
 
-  const tranchePrincipal: string = !selectedMarket.autorollImplemented
-    ? tranche.principal
-    : (Number(tranche.principal) + Number(tranche.autoPrincipal)).toString();
+  const tranchePrincipal: string = Number(tranche.autoPrincipal).toString();
 
   const type: string =
     selectedMarket.trancheCount === 3
