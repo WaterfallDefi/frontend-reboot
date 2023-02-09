@@ -57,14 +57,11 @@ function ClaimRedeposit(props: Props) {
   useEffect(() => {
     if (withdrawalQueuedPending) {
       getUserInfo().then((res) => {
-        setWithdrawalQueued(res);
+        setWithdrawalQueued(!res); //isAuto true = invested, isAuto false = withdrawal queued
         setWithdrawalQueuedPending(false);
       });
     }
   }, [getUserInfo, withdrawalQueuedPending]);
-
-  console.log("userInfo.isAuto");
-  console.log(withdrawalQueued);
 
   const withdrawAll = async () => {
     // setWithdrawAllLoading(true);
@@ -103,8 +100,19 @@ function ClaimRedeposit(props: Props) {
         Assets In Cycle:{" "}
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
-            ? numeral(invested).format("0,0.[0000]")
-            : numeral(new BigNumber(invested[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(18))).format(
+            ? numeral(withdrawalQueued ? 0 : invested).format("0,0.[0000]")
+            : // change this from [selectedDepositAssetIndex] to display all assets at once
+              numeral(new BigNumber(invested[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(18))).format(
+                "0,0.[00000]"
+              )}{" "}
+          {selectedMarket.assets[selectedDepositAssetIndex]}
+        </div>
+        Assets Pending Cycle Exit:{" "}
+        <div className="rtn-amt">
+          {!selectedMarket.isMulticurrency
+            ? numeral(withdrawalQueued ? invested : 0).format("0,0.[0000]")
+            : // change this from [selectedDepositAssetIndex] to display all assets at once
+              numeral(new BigNumber(invested[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(18))).format(
                 "0,0.[00000]"
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
