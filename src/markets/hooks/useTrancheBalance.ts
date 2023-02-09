@@ -91,5 +91,5 @@ export const useMulticurrencyTrancheBalance = (
     if (account && !disable) fetchMCBalance();
   }, [account, disable, fetchMCBalance]);
 
-  return { MCbalance: result.MCbalance, fetchMCBalance };
+  return { MCbalance: result.MCbalance, MCinvested: result.MCinvested, fetchMCBalance };
 };

@@ -73,7 +73,7 @@ function PortfolioFold(props: Props) {
 
     try {
       if (!balance) return;
-      await onWithdraw(formatBigNumber2HexString(new BigNumber(balance).times(BIG_TEN.pow(18))));
+      await onWithdraw();
     } catch (e) {
       console.error(e);
       setModal({

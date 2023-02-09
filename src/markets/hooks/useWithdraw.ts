@@ -20,37 +20,34 @@ const useWithdraw = (
     [abi, trancheMasterAddress, network, signer]
   );
 
-  const handleWithdraw = useCallback(
-    async (amount: string, multicurrencyAmount?: string[]) => {
-      const tx = await trancheContract.queueWithdrawal(multicurrencyAmount ? multicurrencyAmount : amount);
-      const receipt = await tx.wait();
-      if (receipt.status === 1) {
-        setModal({
-          state: Modal.Txn,
-          txn: tx.hash,
-          status: "COMPLETED",
-          message: "Withdraw Success",
-        });
-      } else {
-        setModal({
-          state: Modal.Txn,
-          txn: tx.hash,
-          status: "REVERTED",
-          message: "Withdraw Failed",
-        });
-      }
+  const handleWithdraw = useCallback(async () => {
+    const tx = await trancheContract.queueWithdrawal();
+    const receipt = await tx.wait();
+    if (receipt.status === 1) {
+      setModal({
+        state: Modal.Txn,
+        txn: tx.hash,
+        status: "COMPLETED",
+        message: "Withdraw Success",
+      });
+    } else {
+      setModal({
+        state: Modal.Txn,
+        txn: tx.hash,
+        status: "REVERTED",
+        message: "Withdraw Failed",
+      });
+    }
 
-      setMarkets(undefined);
+    setMarkets(undefined);
 
-      //TODO: update trancheBalance
-      //TODO: update positions
-      //   // account && dispatch(getTrancheBalance({ account }));
-      //   market && account && dispatch(getPosition({ market, account }));
+    //TODO: update trancheBalance
+    //TODO: update positions
+    //   // account && dispatch(getTrancheBalance({ account }));
+    //   market && account && dispatch(getPosition({ market, account }));
 
-      // [account]
-    },
-    [trancheContract, setModal, setMarkets]
-  );
+    // [account]
+  }, [trancheContract, setModal, setMarkets]);
 
   return { onWithdraw: handleWithdraw };
 };

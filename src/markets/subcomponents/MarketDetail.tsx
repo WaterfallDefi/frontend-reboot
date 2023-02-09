@@ -49,14 +49,15 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   // const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
-  const { balance, fetchBalance } = useTrancheBalance(
+  //NEW SHIT: invested is assets in cycle => queueWithdrawal
+  const { balance, invested, fetchBalance } = useTrancheBalance(
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
     selectedMarket.isMulticurrency
   );
 
-  const { MCbalance, fetchMCBalance } = useMulticurrencyTrancheBalance(
+  const { MCbalance, MCinvested, fetchMCBalance } = useMulticurrencyTrancheBalance(
     //don't need { MCinvested } for now
     selectedMarket.network,
     selectedMarket.address,
@@ -195,6 +196,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         // coingeckoPrices={coingeckoPrices}
         selectedDepositAssetIndex={selectedDepositAssetIndex}
         balance={selectedMarket.isMulticurrency ? MCbalance : balance}
+        invested={selectedMarket.isMulticurrency ? MCinvested : invested}
         // simulDeposit={simulDeposit}
         setModal={setModal}
         // setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}

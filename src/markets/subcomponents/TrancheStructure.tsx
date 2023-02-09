@@ -31,7 +31,7 @@ function TrancheStructure(props: Props) {
   const values = [
     Number(tranches[0]?.autoPrincipal) / Number(sum),
     Number(tranches[1]?.autoPrincipal) / Number(sum),
-    Number(tranches[2]?.autoPrincipal),
+    Number(tranches[2]?.autoPrincipal) / Number(sum), //we may never need this
   ];
 
   //we need to figure out how to calculate subordination
