@@ -107,6 +107,18 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
+        <div className="buttons">
+          <button
+            className="claim-redep-btn"
+            onClick={() => {
+              withdrawAll();
+            }}
+            // loading={withdrawAllLoading}
+            disabled={!account || !+invested || withdrawalQueued}
+          >
+            Queue Withdrawal
+          </button>
+        </div>
         Assets Pending Cycle Exit:{" "}
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
@@ -125,18 +137,6 @@ function ClaimRedeposit(props: Props) {
                 "0,0.[00000]"
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
-        </div>
-        <div className="buttons">
-          <button
-            className="claim-redep-btn"
-            onClick={() => {
-              withdrawAll();
-            }}
-            // loading={withdrawAllLoading}
-            disabled={!account || !+invested}
-          >
-            Queue Withdrawal
-          </button>
         </div>
       </div>
     </div>
