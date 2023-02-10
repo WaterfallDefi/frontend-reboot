@@ -56,7 +56,7 @@ function PortfolioFold(props: Props) {
 
   const { onRedeemDirect } = useRedeemDirect(network, trancheMasterAddress, abi, setModal, setMarkets);
 
-  const { onWithdraw } = useWithdraw(network, trancheMasterAddress, abi, setModal, setMarkets);
+  const { onWithdraw, onQueueWithdraw } = useWithdraw(network, trancheMasterAddress, abi, setModal, setMarkets);
 
   const { balance } = useTrancheBalance(network, trancheMasterAddress, abi, isMulticurrency);
 
@@ -73,7 +73,7 @@ function PortfolioFold(props: Props) {
 
     try {
       if (!balance) return;
-      await onWithdraw();
+      await onWithdraw(formatBigNumber2HexString(new BigNumber(balance).times(BIG_TEN.pow(18))));
     } catch (e) {
       console.error(e);
       setModal({

@@ -22,9 +22,9 @@ type Props = {
 
 const BIG_TEN = new BigNumber(10);
 
-// const formatBigNumber2HexString = (bn: BigNumber) => {
-//   return "0x" + bn.toString(16);
-// };
+const formatBigNumber2HexString = (bn: BigNumber) => {
+  return "0x" + bn.toString(16);
+};
 
 function ClaimRedeposit(props: Props) {
   const {
@@ -42,7 +42,7 @@ function ClaimRedeposit(props: Props) {
   const [withdrawalQueued, setWithdrawalQueued] = useState(false);
   const [withdrawalQueuedPending, setWithdrawalQueuedPending] = useState(true);
 
-  const { onWithdraw } = useWithdraw(
+  const { onWithdraw, onQueueWithdraw } = useWithdraw(
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
@@ -74,7 +74,12 @@ function ClaimRedeposit(props: Props) {
     });
     try {
       if (!balance) return;
-      await onWithdraw();
+      await onWithdraw(
+        formatBigNumber2HexString(
+          !(balance instanceof Array) ? new BigNumber(balance).times(BIG_TEN.pow(18)) : new BigNumber(0)
+        ),
+        balance instanceof Array ? balance : undefined
+      );
       setModal({
         state: Modal.Txn,
         txn: undefined,
@@ -88,6 +93,37 @@ function ClaimRedeposit(props: Props) {
         txn: undefined,
         status: "REJECTED",
         message: "Withdraw Fail ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const queueWithdrawAll = async () => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Queueing Withdrawal",
+    });
+    try {
+      if (!balance) return;
+      await onQueueWithdraw;
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Queue Withdrawal Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Queue Withdrawal Failed ",
       });
     } finally {
       // setWithdrawAllLoading(false);
@@ -111,7 +147,7 @@ function ClaimRedeposit(props: Props) {
           <button
             className="claim-redep-btn"
             onClick={() => {
-              withdrawAll();
+              queueWithdrawAll();
             }}
             // loading={withdrawAllLoading}
             disabled={!account || !+invested || withdrawalQueued}
@@ -137,6 +173,18 @@ function ClaimRedeposit(props: Props) {
                 "0,0.[00000]"
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
+        </div>
+        <div className="buttons">
+          <button
+            className="claim-redep-btn"
+            onClick={() => {
+              withdrawAll();
+            }}
+            // loading={withdrawAllLoading}
+            disabled={!account || !+balance}
+          >
+            Withdraw
+          </button>
         </div>
       </div>
     </div>

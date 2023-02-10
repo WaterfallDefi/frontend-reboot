@@ -20,7 +20,7 @@ const useWithdraw = (
     [abi, trancheMasterAddress, network, signer]
   );
 
-  const handleWithdraw = useCallback(async () => {
+  const handleQueueWithdraw = useCallback(async () => {
     const tx = await trancheContract.queueWithdrawal();
     const receipt = await tx.wait();
     if (receipt.status === 1) {
@@ -28,28 +28,52 @@ const useWithdraw = (
         state: Modal.Txn,
         txn: tx.hash,
         status: "COMPLETED",
-        message: "Withdraw Success",
+        message: "Queue Withdrawal Success",
       });
     } else {
       setModal({
         state: Modal.Txn,
         txn: tx.hash,
         status: "REVERTED",
-        message: "Withdraw Failed",
+        message: "Queue Withdrawal Failed",
       });
     }
+  }, [trancheContract, setModal]);
 
-    setMarkets(undefined);
+  const handleWithdraw = useCallback(
+    async (amount: string, multicurrencyAmount?: string[]) => {
+      const tx = await trancheContract.withdraw(multicurrencyAmount ? multicurrencyAmount : amount);
+      const receipt = await tx.wait();
+      if (receipt.status === 1) {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "COMPLETED",
+          message: "Withdraw Success",
+        });
+      } else {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "REVERTED",
+          message: "Withdraw Failed",
+        });
+      }
 
-    //TODO: update trancheBalance
-    //TODO: update positions
-    //   // account && dispatch(getTrancheBalance({ account }));
-    //   market && account && dispatch(getPosition({ market, account }));
+      setMarkets(undefined);
 
-    // [account]
-  }, [trancheContract, setModal, setMarkets]);
+      //TODO?: update trancheBalance
 
-  return { onWithdraw: handleWithdraw };
+      //TODO?: update positions
+      //   // account && dispatch(getTrancheBalance({ account }));
+      //   market && account && dispatch(getPosition({ market, account }));
+
+      // [account]
+    },
+    [trancheContract, setModal, setMarkets]
+  );
+
+  return { onWithdraw: handleWithdraw, onQueueWithdraw: handleQueueWithdraw };
 };
 
 export default useWithdraw;
