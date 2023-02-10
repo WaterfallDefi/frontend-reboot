@@ -13,6 +13,7 @@ const COLORS: { [key: string]: string } = {
 
 type Props = {
   data: any;
+  pointer: boolean;
   setSelectedMarket?: () => void;
   foldElement?: JSX.Element;
 };
@@ -24,7 +25,7 @@ const formatTimestamp = (num: string | number) => {
 };
 
 function TableRow(props: Props) {
-  const { data, setSelectedMarket, foldElement } = props;
+  const { data, pointer, setSelectedMarket, foldElement } = props;
   const [foldOpen, setFoldOpen] = useState<boolean>(false);
   // const [hoverTooltip, setHoverTooltip] = useState<boolean>(false);
 
@@ -240,7 +241,7 @@ function TableRow(props: Props) {
   return (
     <div className="row-wrapper">
       <div
-        className={"table-row" + (foldOpen ? " fold-open" : "")}
+        className={"table-row" + (pointer ? " pointer" : "") + (foldOpen ? " fold-open" : "")}
         onClick={() => {
           //markets on click
           setSelectedMarket && setSelectedMarket();

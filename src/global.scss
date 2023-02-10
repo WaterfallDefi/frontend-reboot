@@ -64,7 +64,11 @@ $font-size-xl: 30px;
   height: 169px;
   background-color: $layer-color;
   margin: 0 20px 16px 20px;
-  cursor: pointer;
+
+  &.pointer {
+    cursor: pointer;
+  }
+
   @media screen and (max-width: 1024px) {
     flex-wrap: wrap;
     height: 420px;

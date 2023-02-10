@@ -25,6 +25,16 @@ export const usePositions = (marketList: Market[]) => {
                 name: "userInvest",
                 params: [account, 1],
               },
+              {
+                address: marketList[i].address,
+                name: "userInvestPending",
+                params: [account, 0],
+              },
+              {
+                address: marketList[i].address,
+                name: "userInvestPending",
+                params: [account, 1],
+              },
               ...(marketList[i].trancheCount === 3
                 ? [
                     {
@@ -52,6 +62,16 @@ export const usePositions = (marketList: Market[]) => {
               {
                 address: marketList[i].address,
                 name: "userInvest",
+                params: [account, 1, a],
+              },
+              {
+                address: marketList[i].address,
+                name: "userInvestPending",
+                params: [account, 0, a],
+              },
+              {
+                address: marketList[i].address,
+                name: "userInvestPending",
                 params: [account, 1, a],
               },
               ...(marketList[i].trancheCount === 3

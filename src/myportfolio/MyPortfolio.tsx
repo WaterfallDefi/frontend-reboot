@@ -26,6 +26,7 @@ import { useTrancheBalance } from "../markets/hooks/useTrancheBalance";
 import { MarketList } from "../config/markets";
 import { APYData } from "../markets/subcomponents/MarketDetail";
 import { fetchSingleSubgraphCycleQuery } from "./hooks/useSubgraphQuery";
+import NoData from "./svgs/NoData";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -36,7 +37,15 @@ const STATUSES: { name: string; value: string; status: number }[] = [
   { name: "Matured", value: "EXPIRED", status: 2 },
 ];
 
-const headers = ["Tranche", "Latest APY", "Principal", "Assets Withdrawable", "Assets Invested"];
+const headers = [
+  "Portfolio Name",
+  "Tranche",
+  "Latest APY",
+  "Principal Pending",
+  "Principal Invested",
+  "Assets Invested",
+  "Assets Withdrawable",
+];
 
 type Props = {
   //may need network yo
@@ -50,9 +59,10 @@ function MyPortfolio(props: Props) {
   // const { price: wtfPrice } = useWTFPriceLP();
 
   const positions = usePositions(markets);
+  //positions return array tuple: [0: Fixed Tranche Invested, 1: Variable Tranche Invested, 2: Fixed Tranche Pending, 3: Variable Tranche Pending]
 
-  // console.log("MY PORTFOLIO POSITION");
-  // console.log(positions[0]);
+  console.log("MY PORTFOLIO POSITION");
+  console.log(positions);
 
   //new shit
   //**CURRENTLY HARDCODED TO MarketList[0] : THIS NEEDS TO CHANGE IF WE EVER ADD MORE PRODUCTS
@@ -94,53 +104,82 @@ function MyPortfolio(props: Props) {
   //refine this later
   const usersInvestsPayload = useMemo(
     () =>
-      [
-        {
-          data: {
-            trancheName: "Fixed",
-            APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
-            userInvest:
-              positions.length > 0
-                ? numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
-                    "0,0.[000000]"
-                  )
-                : "-",
-            assetsWithdrawable: "",
-            assetsInvested: "",
-          },
-        },
-        {
-          data: {
-            trancheName: "Variable",
-            APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
-            userInvest:
-              positions.length > 0
-                ? numeral(new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
-                    "0,0.[000000]"
-                  )
-                : "-",
-            assetsWithdrawable: "",
-            assetsInvested: "",
-          },
-        },
-        {
-          data: {
-            trancheName: "Aggregate",
-            APY: "",
-            userInvest:
-              positions.length > 0
-                ? numeral(
-                    new BigNumber(positions[0][0][1]._hex)
-                      .plus(new BigNumber(positions[0][1][1]._hex))
-                      .dividedBy(BIG_TEN.pow(18))
-                      .toString()
-                  ).format("0,0.[000000]")
-                : "-",
-            assetsWithdrawable: balance,
-            assetsInvested: invested,
-          },
-        },
-      ].map((tr: any, i) => <TableRow key={i} data={tr.data} />),
+      positions.length > 0
+        ? [
+            {
+              data: {
+                name: "LSD Finance",
+                trancheName: "Fixed",
+                APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
+                userInvestPending:
+                  positions.length > 0
+                    ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                        "0,0.[000000]"
+                      )
+                    : "-",
+                userInvest:
+                  positions.length > 0
+                    ? numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                        "0,0.[000000]"
+                      )
+                    : "-",
+                assetsInvested: "",
+                assetsWithdrawable: "",
+              },
+              pointer: false,
+            },
+            {
+              data: {
+                name: "LSD Finance",
+                trancheName: "Variable",
+                APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
+                userInvestPending:
+                  positions.length > 0
+                    ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                        "0,0.[000000]"
+                      )
+                    : "-",
+                userInvest:
+                  positions.length > 0
+                    ? numeral(new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                        "0,0.[000000]"
+                      )
+                    : "-",
+                assetsInvested: "",
+                assetsWithdrawable: "",
+              },
+              pointer: false,
+            },
+            {
+              data: {
+                name: "LSD Finance",
+                trancheName: "Aggregate",
+                APY: "",
+                userInvestPending:
+                  positions.length > 0
+                    ? numeral(
+                        new BigNumber(positions[0][2][0]._hex)
+                          .plus(new BigNumber(positions[0][3][0]._hex))
+                          .dividedBy(BIG_TEN.pow(18))
+                          .toString()
+                      ).format("0,0.[000000]")
+                    : "-",
+                userInvest:
+                  positions.length > 0
+                    ? numeral(
+                        new BigNumber(positions[0][0][1]._hex)
+                          .plus(new BigNumber(positions[0][1][1]._hex))
+                          .dividedBy(BIG_TEN.pow(18))
+                          .toString()
+                      ).format("0,0.[000000]")
+                    : "-",
+                assetsInvested: invested,
+                assetsWithdrawable: balance,
+              },
+              pointer: true,
+            },
+          ].map((tr: any, i) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
+        : undefined,
     [latestAPYs, positions, balance, invested]
   );
 
@@ -202,14 +241,14 @@ function MyPortfolio(props: Props) {
           </div>
         ))}
       </div>
-      {usersInvestsPayload}
-      {/* {sortAsc ? userInvestsPayloadRendered : [...userInvestsPayloadRendered].reverse()}
-      {userInvestsPayloadRendered.length === 0 ? (
+      {usersInvestsPayload ? (
+        usersInvestsPayload
+      ) : (
         <div className="no-data">
           <NoData />
           <span>No Data</span>
         </div>
-      ) : null} */}
+      )}
     </div>
   );
 }

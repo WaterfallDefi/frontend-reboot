@@ -171,7 +171,14 @@ function Markets(props: Props) {
                 return 0;
             }
           })
-          .map((m) => <TableRow key={m.data.portfolio} setSelectedMarket={() => goToMarket(m.market)} data={m.data} />)
+          .map((m) => (
+            <TableRow
+              key={m.data.portfolio}
+              setSelectedMarket={() => goToMarket(m.market)}
+              data={m.data}
+              pointer={true}
+            />
+          ))
       : [];
   }, [markets, headerSort, coingeckoPrices, goToMarket]);
 
