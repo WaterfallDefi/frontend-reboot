@@ -2,6 +2,7 @@ import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
 import React from "react";
 import { Market, Tranche } from "../../types";
+import { APYData } from "./MarketDetail";
 
 type Props = {
   selectedMarket: Market;
@@ -10,6 +11,7 @@ type Props = {
   trancheIndex: number;
   selected: boolean;
   setSelectTrancheIdx: React.Dispatch<React.SetStateAction<number | undefined>>;
+  latestAPY: APYData | undefined;
 };
 
 const formatNumberSeparator = (num: string) => {
@@ -30,6 +32,7 @@ function TrancheCard(props: Props) {
     selected,
     setSelectTrancheIdx,
     // coingeckoPrices,
+    latestAPY,
   } = props;
   const isSoldout = false;
 
@@ -70,7 +73,7 @@ function TrancheCard(props: Props) {
         <div className="checkbox" />
       </div>
       <div className={"apr " + type}>
-        APR {trancheApr}%{/* {isHide ? <span>+ {wtfApr}%</span> : null} */}
+        APR {latestAPY ? latestAPY.y : "-"}%{/* {isHide ? <span>+ {wtfApr}%</span> : null} */}
       </div>
       <div className="risk-text">{riskText}</div>
       <div className="separator" />

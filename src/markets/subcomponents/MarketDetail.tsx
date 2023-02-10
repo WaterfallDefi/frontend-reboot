@@ -26,6 +26,12 @@ type Props = {
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
+export type APYData = {
+  id: string;
+  y: number;
+  x: Date;
+};
+
 // const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
 
 const getLockupPeriod = (duration: string) => {
@@ -70,7 +76,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     account && selectedMarket.isMulticurrency ? fetchMCBalance() : fetchBalance();
   }, [account, fetchMCBalance, fetchBalance, selectedMarket.isMulticurrency]);
 
-  const [APYData, setAPYData] = useState<any>([]);
+  const [APYData, setAPYData] = useState<APYData[]>([]);
+  const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
 
   useEffect(() => {
     const fetchSubgraph = async () => {
@@ -85,6 +92,16 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
 
     fetchSubgraph();
   }, [selectedMarket.subgraphURL]);
+
+  useEffect(() => {
+    const _latestAPY = [];
+    //fixed tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
+    _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop());
+    //variable tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
+    _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
+    //...junior tranche?? do we need??
+    setLatestAPYs(_latestAPY);
+  }, [APYData]);
 
   const principalTVL = selectedMarket.tranches.reduce((acc: number, next: Tranche) => acc + Number(next.target), 0);
 
@@ -213,6 +230,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         setModal={setModal}
         setMarkets={setMarkets}
         balance={selectedMarket.isMulticurrency ? MCbalance : balance}
+        latestAPYs={latestAPYs}
       />
     </div>
   );

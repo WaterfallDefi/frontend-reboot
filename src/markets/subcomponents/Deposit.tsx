@@ -10,6 +10,7 @@ import { Hill } from "../svgs/Hill";
 import ApproveCardDefault from "./ApproveCardDefault";
 import ApproveCardSimul from "./ApproveCardSimul";
 import TrancheCard from "./TrancheCard";
+import { APYData } from "./MarketDetail";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -23,6 +24,7 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   balance: string | string[];
+  latestAPYs: (APYData | undefined)[];
 };
 
 // const compareNum = (num1: string | number | undefined, num2: string | undefined, largerOnly = false) => {
@@ -71,6 +73,7 @@ function Deposit(props: Props) {
     setModal,
     setMarkets,
     balance,
+    latestAPYs,
   } = props;
 
   const [selectTrancheIdx, setSelectTrancheIdx] = useState<number | undefined>(undefined);
@@ -186,6 +189,7 @@ function Deposit(props: Props) {
                 trancheIndex={i}
                 selected={selectTrancheIdx === i}
                 setSelectTrancheIdx={setSelectTrancheIdx}
+                latestAPY={latestAPYs[i]}
               />
             );
           })}
