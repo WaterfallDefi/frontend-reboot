@@ -6,7 +6,6 @@ import Countdown from "react-countdown";
 
 import { Market, PORTFOLIO_STATUS } from "../../types";
 import { ModalProps } from "../../WaterfallDefi";
-import { Hill } from "../svgs/Hill";
 import ApproveCardDefault from "./ApproveCardDefault";
 import ApproveCardSimul from "./ApproveCardSimul";
 import TrancheCard from "./TrancheCard";
@@ -109,7 +108,6 @@ function Deposit(props: Props) {
     <div className="deposit dark-deposit">
       {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? (
         <div className="next-cycle-wrapper">
-          <Hill />
           <div className="next-cycle">
             Next Cycle
             <Countdown

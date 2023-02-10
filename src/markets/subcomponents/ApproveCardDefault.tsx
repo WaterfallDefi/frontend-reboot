@@ -393,7 +393,7 @@ function ApproveCardDefault(props: Props) {
             ) ? (
               <HandleDepositButton />
             ) : (
-              <div>Not enough!</div>
+              <div />
             )
           ) : !compareNum(
               new BigNumber(balanceInput.toString())

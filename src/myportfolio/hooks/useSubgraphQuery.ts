@@ -1,6 +1,7 @@
 import ky from "ky";
 
 //FOR HISTORICAL PERFORMANCE
+//we are going to have to extend the first: variable in this query once we go past 333 cycles (so, just shy of one year)
 export const getSubgraphCyclesOnly = async (subgraphURL: string) => {
   let res;
   try {

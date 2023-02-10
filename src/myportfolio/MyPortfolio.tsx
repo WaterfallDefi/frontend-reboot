@@ -1,6 +1,6 @@
 import "./MyPortfolio.scss";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
@@ -24,6 +24,8 @@ import { useTrancheBalance } from "../markets/hooks/useTrancheBalance";
 
 //new shit
 import { MarketList } from "../config/markets";
+import { APYData } from "../markets/subcomponents/MarketDetail";
+import { fetchSingleSubgraphCycleQuery } from "./hooks/useSubgraphQuery";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -34,7 +36,7 @@ const STATUSES: { name: string; value: string; status: number }[] = [
   { name: "Matured", value: "EXPIRED", status: 2 },
 ];
 
-const headers = ["Tranche", "Principal", "Assets Withdrawable", "Assets Invested"];
+const headers = ["Tranche", "Latest APY", "Principal", "Assets Withdrawable", "Assets Invested"];
 
 type Props = {
   //may need network yo
@@ -49,15 +51,38 @@ function MyPortfolio(props: Props) {
 
   const positions = usePositions(markets);
 
-  console.log("MY PORTFOLIO POSITION");
-  console.log(positions[0]);
+  // console.log("MY PORTFOLIO POSITION");
+  // console.log(positions[0]);
 
   //new shit
+  //**CURRENTLY HARDCODED TO MarketList[0] : THIS NEEDS TO CHANGE IF WE EVER ADD MORE PRODUCTS
   const {
     balance,
     invested,
     // fetchBalance
   } = useTrancheBalance(MarketList[0].network, MarketList[0].address, MarketList[0].abi, MarketList[0].isMulticurrency);
+
+  const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
+
+  useEffect(() => {
+    const fetchSubgraph = async () => {
+      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(MarketList[0].subgraphURL);
+      const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
+        id: tc.id,
+        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
+        x: new Date(Number(tc.endAt) * 1000),
+      }));
+      const _latestAPY = [];
+      //fixed tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
+      _latestAPY.push(data.filter((apy: APYData) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop());
+      //variable tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
+      _latestAPY.push(data.filter((apy: APYData) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
+      //...junior tranche?? do we need??
+      setLatestAPYs(_latestAPY);
+    };
+
+    fetchSubgraph();
+  }, [markets]);
 
   const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
   const [selectedTranche, setSelectedTranche] = useState(-1);
@@ -73,32 +98,35 @@ function MyPortfolio(props: Props) {
         {
           data: {
             trancheName: "Fixed",
+            APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
             userInvest:
               positions.length > 0
                 ? numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
                     "0,0.[000000]"
                   )
                 : "-",
-            assetsWithdrawable: "-",
-            assetsInvested: "-",
+            assetsWithdrawable: "",
+            assetsInvested: "",
           },
         },
         {
           data: {
             trancheName: "Variable",
+            APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
             userInvest:
               positions.length > 0
                 ? numeral(new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
                     "0,0.[000000]"
                   )
                 : "-",
-            assetsWithdrawable: "-",
-            assetsInvested: "-",
+            assetsWithdrawable: "",
+            assetsInvested: "",
           },
         },
         {
           data: {
             trancheName: "Aggregate",
+            APY: "",
             userInvest:
               positions.length > 0
                 ? numeral(
@@ -113,7 +141,7 @@ function MyPortfolio(props: Props) {
           },
         },
       ].map((tr: any, i) => <TableRow key={i} data={tr.data} />),
-    [positions, balance, invested]
+    [latestAPYs, positions, balance, invested]
   );
 
   const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
