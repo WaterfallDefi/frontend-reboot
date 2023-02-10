@@ -54,6 +54,7 @@ type Props = {
 };
 
 function MyPortfolio(props: Props) {
+  //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
   const { mode, markets } = props;
   // const { account } = useWeb3React<Web3Provider>();
   // const { price: wtfPrice } = useWTFPriceLP();
@@ -100,6 +101,19 @@ function MyPortfolio(props: Props) {
 
   const [headerSort, setHeaderSort] = useState<number>(-1);
   const [sortAsc, setSortAsc] = useState<boolean>(true);
+
+  const investPendingAgg = useMemo(
+    () =>
+      positions.length > 0
+        ? numeral(
+            new BigNumber(positions[0][2][0]._hex)
+              .plus(new BigNumber(positions[0][3][0]._hex))
+              .dividedBy(BIG_TEN.pow(18))
+              .toString()
+          ).format("0,0.[000000]")
+        : "-",
+    [positions]
+  );
 
   //refine this later
   const usersInvestsPayload = useMemo(
@@ -155,24 +169,8 @@ function MyPortfolio(props: Props) {
                 name: "LSD Finance",
                 trancheName: "Aggregate",
                 APY: "",
-                userInvestPending:
-                  positions.length > 0
-                    ? numeral(
-                        new BigNumber(positions[0][2][0]._hex)
-                          .plus(new BigNumber(positions[0][3][0]._hex))
-                          .dividedBy(BIG_TEN.pow(18))
-                          .toString()
-                      ).format("0,0.[000000]")
-                    : "-",
-                userInvest:
-                  positions.length > 0
-                    ? numeral(
-                        new BigNumber(positions[0][0][1]._hex)
-                          .plus(new BigNumber(positions[0][1][1]._hex))
-                          .dividedBy(BIG_TEN.pow(18))
-                          .toString()
-                      ).format("0,0.[000000]")
-                    : "-",
+                userInvestPending: investPendingAgg,
+                userInvest: invested,
                 assetsInvested: invested,
                 assetsWithdrawable: balance,
               },
@@ -180,7 +178,7 @@ function MyPortfolio(props: Props) {
             },
           ].map((tr: any, i) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
         : undefined,
-    [latestAPYs, positions, balance, invested]
+    [latestAPYs, positions, balance, invested, investPendingAgg]
   );
 
   const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -242,7 +240,13 @@ function MyPortfolio(props: Props) {
         ))}
       </div>
       {usersInvestsPayload ? (
-        usersInvestsPayload
+        Number(invested) === 0 && Number(balance) === 0 && Number(investPendingAgg) === 0 ? (
+          <div className="no-data">
+            <span>No Positions</span>
+          </div>
+        ) : (
+          usersInvestsPayload
+        )
       ) : (
         <div className="no-data">
           <NoData />
