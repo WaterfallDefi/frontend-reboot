@@ -43,7 +43,6 @@ const headers = [
   "Latest APY",
   "Principal Pending",
   "Principal Invested",
-  "Assets Invested",
   "Assets Withdrawable",
 ];
 
@@ -137,7 +136,6 @@ function MyPortfolio(props: Props) {
                         "0,0.[000000]"
                       )
                     : "-",
-                assetsInvested: "",
                 assetsWithdrawable: "",
               },
               pointer: false,
@@ -149,17 +147,22 @@ function MyPortfolio(props: Props) {
                 APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
                 userInvestPending:
                   positions.length > 0
-                    ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
-                        "0,0.[000000]"
-                      )
-                    : "-",
+                    ? // numeral(
+                      new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()
+                    : // )
+                      // .format(
+                      //     "0,0.[000000]"
+                      //   )
+                      "-",
                 userInvest:
                   positions.length > 0
-                    ? numeral(new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
-                        "0,0.[000000]"
-                      )
-                    : "-",
-                assetsInvested: "",
+                    ? //  numeral(
+                      new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()
+                    : // )
+                      // .format(
+                      //     "0,0.[000000]"
+                      //   )
+                      "-",
                 assetsWithdrawable: "",
               },
               pointer: false,
@@ -171,7 +174,6 @@ function MyPortfolio(props: Props) {
                 APY: "",
                 userInvestPending: investPendingAgg,
                 userInvest: invested,
-                assetsInvested: invested,
                 assetsWithdrawable: balance,
               },
               pointer: true,
