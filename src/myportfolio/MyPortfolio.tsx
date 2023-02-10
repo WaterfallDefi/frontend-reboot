@@ -43,6 +43,7 @@ const headers = [
   "Latest APY",
   "Principal Pending",
   "Principal Invested",
+  "Assets + Yield",
   "Assets Withdrawable",
 ];
 
@@ -60,9 +61,6 @@ function MyPortfolio(props: Props) {
 
   const positions = usePositions(markets);
   //positions return array tuple: [0: Fixed Tranche Invested, 1: Variable Tranche Invested, 2: Fixed Tranche Pending, 3: Variable Tranche Pending]
-
-  console.log("MY PORTFOLIO POSITION");
-  console.log(positions);
 
   //new shit
   //**CURRENTLY HARDCODED TO MarketList[0] : THIS NEEDS TO CHANGE IF WE EVER ADD MORE PRODUCTS
@@ -114,6 +112,19 @@ function MyPortfolio(props: Props) {
     [positions]
   );
 
+  const investAgg = useMemo(
+    () =>
+      positions.length > 0
+        ? numeral(
+            new BigNumber(positions[0][0][1]._hex)
+              .plus(new BigNumber(positions[0][1][1]._hex))
+              .dividedBy(BIG_TEN.pow(18))
+              .toString()
+          ).format("0,0.[000000]")
+        : "-",
+    [positions]
+  );
+
   //refine this later
   const usersInvestsPayload = useMemo(
     () =>
@@ -136,6 +147,7 @@ function MyPortfolio(props: Props) {
                         "0,0.[000000]"
                       )
                     : "-",
+                assetsPlusReturn: "",
                 assetsWithdrawable: "",
               },
               pointer: false,
@@ -163,6 +175,7 @@ function MyPortfolio(props: Props) {
                       //     "0,0.[000000]"
                       //   )
                       "-",
+                assetsPlusReturn: "",
                 assetsWithdrawable: "",
               },
               pointer: false,
@@ -173,14 +186,15 @@ function MyPortfolio(props: Props) {
                 trancheName: "Aggregate",
                 APY: "",
                 userInvestPending: investPendingAgg,
-                userInvest: invested,
+                userInvest: investAgg,
+                assetsPlusReturn: invested,
                 assetsWithdrawable: balance,
               },
               pointer: true,
             },
           ].map((tr: any, i) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
         : undefined,
-    [latestAPYs, positions, balance, invested, investPendingAgg]
+    [latestAPYs, positions, balance, invested, investPendingAgg, investAgg]
   );
 
   const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
