@@ -42,8 +42,8 @@ const headers = [
   "Tranche",
   "Latest APY",
   "Principal Pending",
-  "Principal Invested",
-  "Assets + Yield",
+  "Principal",
+  "Principal + Yield",
   "Assets Withdrawable",
 ];
 
