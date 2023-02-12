@@ -140,8 +140,8 @@ function MyPortfolio(props: Props) {
         ? [
             {
               data: {
-                name: "LSD Finance",
-                trancheName: "Fixed",
+                portfolio: "LSD Finance",
+                tranche: "Fixed",
                 APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
                 userInvestPending:
                   positions.length > 0
@@ -163,8 +163,8 @@ function MyPortfolio(props: Props) {
             },
             {
               data: {
-                name: "LSD Finance",
-                trancheName: "Variable",
+                portfolio: "LSD Finance",
+                tranche: "Variable",
                 APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
                 userInvestPending:
                   positions.length > 0
@@ -192,12 +192,12 @@ function MyPortfolio(props: Props) {
             },
             {
               data: {
-                name: "LSD Finance",
-                trancheName: "Aggregate",
+                portfolio: "LSD Finance",
+                tranche: "Aggregate",
                 APY: "",
                 userInvestPending: investPendingAgg,
-                userInvest: investAgg,
                 nextCycle: dateToNextCycle,
+                userInvest: investAgg,
                 assetsPlusReturn: invested,
                 assetsWithdrawable: balance,
               },

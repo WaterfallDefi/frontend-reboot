@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import numeral from "numeral";
 import { useState } from "react";
+import Countdown from "react-countdown";
 // import Tooltip from "./svgs/Tooltip";
 
 const COLORS: { [key: string]: string } = {
@@ -114,30 +115,6 @@ function TableRow(props: Props) {
               </div>
             );
             break;
-          case "apr_portfolio":
-            elements.push(
-              <div className="col apr_portfolio" key={key}>
-                <div className="apr-wrapper">
-                  <div>
-                    <section>
-                      <span className="title">Total APR:</span>
-                      <span className="total" style={{ color: COLORS[columnData.trancheName] }}>
-                        {columnData.totalAPR} %
-                      </span>
-                    </section>
-                    <section>
-                      <span className="title">{columnData.trancheName} APR:</span>
-                      <span>{columnData.APR} %</span>
-                    </section>
-                    <section>
-                      <span className="title">WTF APR:</span>
-                      <span>{columnData.wtfAPR}</span>
-                    </section>
-                  </div>
-                </div>
-              </div>
-            );
-            break;
           case "status":
             elements.push(
               <div className="col" key={key}>
@@ -145,85 +122,79 @@ function TableRow(props: Props) {
               </div>
             );
             break;
-          case "trancheCycle":
+          // case "yield":
+          //   if (typeof columnData.yield === "object") {
+          //     elements.push(
+          //       <div className="col yield" key={key}>
+          //         <span className="mob-title">Yield</span>
+          //         {columnData.yield.map((y: any, i: number) => (
+          //           <div className="mc-yield" key={i}>
+          //             <span>{y}</span>
+          //             <div
+          //               key={columnData.assets[i] + "-img"}
+          //               className="coin"
+          //               style={{ backgroundImage: `url(/coins/${columnData.assets[i]}.png)` }}
+          //             />
+          //             <span key={columnData.assets[i] + "-span"}>{columnData.assets[i]}</span>
+          //           </div>
+          //         ))}
+          //       </div>
+          //     );
+          //   } else {
+          //     elements.push(
+          //       <div className="col yield" key={key}>
+          //         <span className="mob-title">Yield</span>
+          //         <span>{columnData.yield}</span>
+          //       </div>
+          //     );
+          //   }
+          //   break;
+          // case "principal":
+          //   if (columnData.assets.length > 1) {
+          //     elements.push(
+          //       <div className="col principal" key={key}>
+          //         <span className="mob-title">Principal</span>
+          //         {columnData.MCprincipal.map((p: any, i: number) => (
+          //           <div className="mc-principal" key={i}>
+          //             <span>{p}</span>
+          //             <div
+          //               key={columnData.assets[i] + "-img"}
+          //               className="coin"
+          //               style={{ backgroundImage: `url(/coins/${columnData.assets[i]}.png)` }}
+          //             />
+          //             <span key={columnData.assets[i] + "-span"}>{columnData.assets[i]}</span>
+          //           </div>
+          //         ))}
+          //       </div>
+          //     );
+          //   } else {
+          //     elements.push(
+          //       <div className="col principal" key={key}>
+          //         <span className="mob-title">Principal</span>
+          //         <span>{columnData.principal + " " + columnData.assets[0]}</span>
+          //       </div>
+          //     );
+          //   }
+          //   break;
+          case "nextCycle":
             elements.push(
-              <div className="col trancheCycle" key={key}>
-                <span className="mob-title">Cycle</span>
-                {columnData.trancheCycle ? (
-                  <div className="tranche-cycle">
-                    <span>{formatTimestamp(columnData.trancheCycle.startAt)}</span>
-                    <span>↓</span>
-                    <span>
-                      {
-                        //multi-farm
-                        formatTimestamp(
-                          columnData.trancheCycle.endAt >
-                            +columnData.trancheCycle.startAt + +Number(columnData.trancheCycle.duration)
-                            ? columnData.trancheCycle.endAt
-                            : +columnData.trancheCycle.startAt + +Number(columnData.duration)
-                        )
-                      }
-                    </span>
-                  </div>
-                ) : (
-                  <span>"--"</span>
-                )}
+              <div className="col" key={key}>
+                <Countdown
+                  date={columnData * 1000}
+                  renderer={({ days, hours, minutes, seconds, completed }) => {
+                    return (
+                      <span>
+                        {!completed && (
+                          <>
+                            {days}D {hours}H {minutes}M {seconds}S
+                          </>
+                        )}
+                      </span>
+                    );
+                  }}
+                />
               </div>
             );
-            break;
-          case "yield":
-            if (typeof columnData.yield === "object") {
-              elements.push(
-                <div className="col yield" key={key}>
-                  <span className="mob-title">Yield</span>
-                  {columnData.yield.map((y: any, i: number) => (
-                    <div className="mc-yield" key={i}>
-                      <span>{y}</span>
-                      <div
-                        key={columnData.assets[i] + "-img"}
-                        className="coin"
-                        style={{ backgroundImage: `url(/coins/${columnData.assets[i]}.png)` }}
-                      />
-                      <span key={columnData.assets[i] + "-span"}>{columnData.assets[i]}</span>
-                    </div>
-                  ))}
-                </div>
-              );
-            } else {
-              elements.push(
-                <div className="col yield" key={key}>
-                  <span className="mob-title">Yield</span>
-                  <span>{columnData.yield}</span>
-                </div>
-              );
-            }
-            break;
-          case "principal":
-            if (columnData.assets.length > 1) {
-              elements.push(
-                <div className="col principal" key={key}>
-                  <span className="mob-title">Principal</span>
-                  {columnData.MCprincipal.map((p: any, i: number) => (
-                    <div className="mc-principal" key={i}>
-                      <span>{p}</span>
-                      <div
-                        key={columnData.assets[i] + "-img"}
-                        className="coin"
-                        style={{ backgroundImage: `url(/coins/${columnData.assets[i]}.png)` }}
-                      />
-                      <span key={columnData.assets[i] + "-span"}>{columnData.assets[i]}</span>
-                    </div>
-                  ))}
-                </div>
-              );
-            } else {
-              elements.push(
-                <div className="col principal" key={key}>
-                  <span className="mob-title">Principal</span>
-                  <span>{columnData.principal + " " + columnData.assets[0]}</span>
-                </div>
-              );
-            }
             break;
           default:
             elements.push(
