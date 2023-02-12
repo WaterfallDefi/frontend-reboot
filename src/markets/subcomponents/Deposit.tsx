@@ -104,49 +104,52 @@ function Deposit(props: Props) {
       : 0;
   const widths = selectedMarket.isMulticurrency ? selectedMarket.assets.map((a, i) => returnWidth(i)) : [];
 
+  console.log("actual start at");
+  console.log(selectedMarket.actualStartAt);
+
   return (
     <div className="deposit dark-deposit">
-      {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? (
-        <div className="next-cycle-wrapper">
-          <div className="next-cycle">
-            Next Cycle
-            <Countdown
-              date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt)) * 1000}
-              renderer={({ days, hours, minutes, seconds, completed }) => {
-                return (
-                  <span>
-                    {!completed && (
-                      <>
-                        {days}D {hours}H {minutes}M {seconds}S
-                      </>
-                    )}
-                  </span>
-                );
-              }}
-            />
-          </div>
-          <div className="active-cycle">
-            Active Cycle
-            {" " + formatTimestamp(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0)} -
-            {" " +
-              formatTimestamp(
-                Number(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0) +
-                  Number(selectedMarket.duration ? selectedMarket.duration : 0)
-              )}{" "}
-          </div>
-          <div
-            className="button"
-            onClick={() =>
-              handleReminder(
-                Number(selectedMarket.actualStartAt),
-                Number(selectedMarket.actualStartAt) + Number(selectedMarket.duration)
-              )
-            }
-          >
-            Remind Me
-          </div>
+      {/* {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? ( */}
+      <div className="next-cycle-wrapper">
+        <div className="next-cycle">
+          Next Cycle{" "}
+          <Countdown
+            date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt) + 1000000) * 1000}
+            renderer={({ days, hours, minutes, seconds, completed }) => {
+              return (
+                <span>
+                  {!completed && (
+                    <>
+                      {days}D {hours}H {minutes}M {seconds}S
+                    </>
+                  )}
+                </span>
+              );
+            }}
+          />
         </div>
-      ) : null}
+        <div className="active-cycle">
+          Active Cycle
+          {" " + formatTimestamp(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0)} -
+          {" " +
+            formatTimestamp(
+              Number(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0) +
+                Number(selectedMarket.duration ? selectedMarket.duration : 0)
+            )}{" "}
+        </div>
+        <div
+          className="button"
+          onClick={() =>
+            handleReminder(
+              Number(selectedMarket.actualStartAt),
+              Number(selectedMarket.actualStartAt) + Number(selectedMarket.duration)
+            )
+          }
+        >
+          Remind Me
+        </div>
+      </div>
+      {/* ) : null} */}
       <div className="top-bar">
         <div className="step-bar">
           <div className="step">1</div>
