@@ -72,7 +72,7 @@ function MyPortfolio(props: Props) {
   } = useTrancheBalance(MarketList[0].network, MarketList[0].address, MarketList[0].abi, MarketList[0].isMulticurrency);
 
   const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
-  const [remSecsToNextCycle, setRemSecsToNextCycle] = useState<Number>(0);
+  const [dateToNextCycle, setDateToNextCycle] = useState<Number>(0);
 
   useEffect(() => {
     const fetchSubgraph = async () => {
@@ -96,8 +96,8 @@ function MyPortfolio(props: Props) {
 
   useEffect(() => {
     markets.length > 0 && markets[0].duration && markets[0].actualStartAt
-      ? setRemSecsToNextCycle(Number(markets[0].duration) + Number(markets[0].actualStartAt) + 1000000)
-      : setRemSecsToNextCycle(0);
+      ? setDateToNextCycle(Number(markets[0].duration) + Number(markets[0].actualStartAt) + 1000000)
+      : setDateToNextCycle(0);
   }, [markets]);
 
   const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
@@ -149,7 +149,7 @@ function MyPortfolio(props: Props) {
                         "0,0.[000000]"
                       )
                     : "-",
-                nextCycle: remSecsToNextCycle,
+                nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
                     ? numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
@@ -175,7 +175,7 @@ function MyPortfolio(props: Props) {
                       //     "0,0.[000000]"
                       //   )
                       "-",
-                nextCycle: remSecsToNextCycle,
+                nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
                     ? //  numeral(
@@ -197,7 +197,7 @@ function MyPortfolio(props: Props) {
                 APY: "",
                 userInvestPending: investPendingAgg,
                 userInvest: investAgg,
-                nextCycle: remSecsToNextCycle,
+                nextCycle: dateToNextCycle,
                 assetsPlusReturn: invested,
                 assetsWithdrawable: balance,
               },
@@ -205,7 +205,7 @@ function MyPortfolio(props: Props) {
             },
           ].map((tr: any, i) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
         : undefined,
-    [latestAPYs, positions, balance, invested, investPendingAgg, investAgg]
+    [latestAPYs, positions, balance, invested, investPendingAgg, investAgg, dateToNextCycle]
   );
 
   const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
