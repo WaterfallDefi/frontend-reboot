@@ -104,9 +104,6 @@ function Deposit(props: Props) {
       : 0;
   const widths = selectedMarket.isMulticurrency ? selectedMarket.assets.map((a, i) => returnWidth(i)) : [];
 
-  console.log("actual start at");
-  console.log(selectedMarket.actualStartAt);
-
   return (
     <div className="deposit dark-deposit">
       {/* {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? ( */}

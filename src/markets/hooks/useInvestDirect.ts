@@ -45,7 +45,7 @@ const invest = async (
       state: Modal.Txn,
       txn: tx.hash,
       status: "COMPLETED",
-      message: "Deposit Success",
+      message: "Deposit Success: Funds Pending For Next Cycle Investment",
     });
   } else {
     setModal({
