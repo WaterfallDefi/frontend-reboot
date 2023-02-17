@@ -10,7 +10,7 @@ export const DAI_E_DepositAddress: { [network: string]: string } = {
 export const LSD_TrancheMaster: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xa398b0A1eEBf59F62aCbd0719Db237e83E36d2F5",
+  [NETWORKS.MAINNET]: "0x8724577f1EB7353648708Da043Db403d46451669",
 };
 
 export const LSD_MasterWTF: { [network: string]: string } = {
