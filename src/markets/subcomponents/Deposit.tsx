@@ -5,11 +5,10 @@ import dayjs from "dayjs";
 import Countdown from "react-countdown";
 
 import { Market, PORTFOLIO_STATUS } from "../../types";
-import { ModalProps } from "../../WaterfallDefi";
+import { APYData, ModalProps } from "../../WaterfallDefi";
 import ApproveCardDefault from "./ApproveCardDefault";
 import ApproveCardSimul from "./ApproveCardSimul";
 import TrancheCard from "./TrancheCard";
-import { APYData } from "./MarketDetail";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -112,13 +111,13 @@ function Deposit(props: Props) {
           Next Cycle <br />
           <span className="countdown">
             <Countdown
-              date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt) + 1000000) * 1000}
+              date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt)) * 1000}
               renderer={({ days, hours, minutes, seconds, completed }) => {
                 return (
                   <span>
                     {!completed && (
                       <>
-                        {days} Days {hours} Hours {minutes} Minutes {seconds} Seconds
+                        {hours} Hours {minutes} Minutes {seconds} Seconds
                       </>
                     )}
                   </span>

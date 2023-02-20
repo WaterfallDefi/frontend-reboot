@@ -5,9 +5,8 @@ import numeral from "numeral";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
-import { fetchSingleSubgraphCycleQuery } from "../../myportfolio/hooks/useSubgraphQuery";
 import { Market, Tranche } from "../../types";
-import { ModalProps } from "../../WaterfallDefi";
+import { APYData, ModalProps } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
 import ClaimRedeposit from "./ClaimRedeposit";
@@ -16,29 +15,23 @@ import PortfolioChart from "./PortfolioChart";
 import StrategyChart from "./StrategyChart";
 import TrancheStructure from "./TrancheStructure";
 
-const BIG_TEN = new BigNumber(10);
-
 type Props = {
   selectedMarket: Market;
   setSelectedMarket: React.Dispatch<React.SetStateAction<Market | undefined>>;
   // coingeckoPrices: any;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
-};
-
-export type APYData = {
-  id: string;
-  y: number;
-  x: Date;
+  APYData: APYData[];
+  latestAPYs: (APYData | undefined)[];
 };
 
 // const COLORS = ["#FFB0E3", "#4A63B9", "#85C872", "#F7C05F"];
 
-const getLockupPeriod = (duration: string) => {
-  const lockupPeriod = Number(duration) / 86400;
-  //for testing
-  return lockupPeriod >= 1 ? numeral(lockupPeriod).format("0.[0]") + " Days" : Number(duration) / 60 + " Mins";
-};
+// const getLockupPeriod = (duration: string) => {
+//   const lockupPeriod = Number(duration) / 86400;
+//   //for testing
+//   return lockupPeriod >= 1 ? numeral(lockupPeriod).format("0.[0]") + " Days" : Number(duration) / 60 + " Mins";
+// };
 
 const MarketDetail: React.FC<Props> = (props: Props) => {
   const {
@@ -47,6 +40,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     // coingeckoPrices,
     setModal,
     setMarkets,
+    APYData,
+    latestAPYs,
   } = props;
 
   const { account } = useWeb3React<Web3Provider>();
@@ -75,33 +70,6 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   useEffect(() => {
     account && selectedMarket.isMulticurrency ? fetchMCBalance() : fetchBalance();
   }, [account, fetchMCBalance, fetchBalance, selectedMarket.isMulticurrency]);
-
-  const [APYData, setAPYData] = useState<APYData[]>([]);
-  const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
-
-  useEffect(() => {
-    const fetchSubgraph = async () => {
-      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(selectedMarket.subgraphURL);
-      const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
-        id: tc.id,
-        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
-        x: new Date(Number(tc.endAt) * 1000),
-      }));
-      setAPYData(data);
-    };
-
-    fetchSubgraph();
-  }, [selectedMarket.subgraphURL]);
-
-  useEffect(() => {
-    const _latestAPY = [];
-    //fixed tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
-    _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop());
-    //variable tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
-    _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
-    //...junior tranche?? do we need??
-    setLatestAPYs(_latestAPY);
-  }, [APYData]);
 
   const principalTVL = selectedMarket.tranches.reduce((acc: number, next: Tranche) => acc + Number(next.target), 0);
 

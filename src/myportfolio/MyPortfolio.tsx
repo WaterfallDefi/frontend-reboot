@@ -14,6 +14,7 @@ import {
   // PORTFOLIO_STATUS, UserInvest
 } from "../types";
 import {
+  APYData,
   // ModalProps,
   Mode,
 } from "../WaterfallDefi";
@@ -24,8 +25,6 @@ import { useTrancheBalance } from "../markets/hooks/useTrancheBalance";
 
 //new shit
 import { MarketList } from "../config/markets";
-import { APYData } from "../markets/subcomponents/MarketDetail";
-import { fetchSingleSubgraphCycleQuery } from "./hooks/useSubgraphQuery";
 import NoData from "./svgs/NoData";
 
 const BIG_TEN = new BigNumber(10);
@@ -52,11 +51,12 @@ type Props = {
   //may need network yo
   mode: Mode;
   markets: Market[];
+  latestAPYs: (APYData | undefined)[];
 };
 
 function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
-  const { mode, markets } = props;
+  const { mode, markets, latestAPYs } = props;
   // const { account } = useWeb3React<Web3Provider>();
   // const { price: wtfPrice } = useWTFPriceLP();
 
@@ -71,32 +71,11 @@ function MyPortfolio(props: Props) {
     // fetchBalance
   } = useTrancheBalance(MarketList[0].network, MarketList[0].address, MarketList[0].abi, MarketList[0].isMulticurrency);
 
-  const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
   const [dateToNextCycle, setDateToNextCycle] = useState<Number>(0);
 
   useEffect(() => {
-    const fetchSubgraph = async () => {
-      const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(MarketList[0].subgraphURL);
-      const data = subgraphQuery.data.trancheCycles.map((tc: any) => ({
-        id: tc.id,
-        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
-        x: new Date(Number(tc.endAt) * 1000),
-      }));
-      const _latestAPY = [];
-      //fixed tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
-      _latestAPY.push(data.filter((apy: APYData) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop());
-      //variable tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
-      _latestAPY.push(data.filter((apy: APYData) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
-      //...junior tranche?? do we need??
-      setLatestAPYs(_latestAPY);
-    };
-
-    fetchSubgraph();
-  }, [markets]);
-
-  useEffect(() => {
     markets.length > 0 && markets[0].duration && markets[0].actualStartAt
-      ? setDateToNextCycle(Number(markets[0].duration) + Number(markets[0].actualStartAt) + 1000000)
+      ? setDateToNextCycle(Number(markets[0].duration) + Number(markets[0].actualStartAt))
       : setDateToNextCycle(0);
   }, [markets]);
 

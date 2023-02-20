@@ -8,6 +8,9 @@ import BigNumber from "bignumber.js";
 import numeral from "numeral";
 import useUserInfo from "../hooks/useUserInfo";
 import Arrow from "../svgs/Arrow";
+import { usePositions } from "../../myportfolio/hooks/usePositions";
+import { MarketList } from "../../config/markets";
+import useRedeemDirect from "../hooks/useRedeemDirect";
 
 type Props = {
   // network: Network;
@@ -43,7 +46,27 @@ function ClaimRedeposit(props: Props) {
   const [withdrawalQueued, setWithdrawalQueued] = useState(false);
   const [withdrawalQueuedPending, setWithdrawalQueuedPending] = useState(true);
 
+  const positions = usePositions(MarketList);
+
+  const fixedPendingEntry =
+    positions.length > 0
+      ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[000000]")
+      : "-";
+
+  const degenPendingEntry =
+    positions.length > 0
+      ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[000000]")
+      : "-";
+
   const { onWithdraw, onQueueWithdraw } = useWithdraw(
+    selectedMarket.network,
+    selectedMarket.address,
+    selectedMarket.abi,
+    setModal,
+    setMarkets
+  );
+
+  const { onRedeemDirect } = useRedeemDirect(
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
@@ -131,9 +154,70 @@ function ClaimRedeposit(props: Props) {
     }
   };
 
+  const redeemPending = async (trancheId: number) => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Redeeming Assets Pending Cycle Entry",
+    });
+    try {
+      if (!balance) return;
+      await onRedeemDirect(trancheId);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Redeem Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Redeem Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
   return (
     <div className="claim-redeposit">
-      <div className="pocket assetsPendingEntry"></div>
+      <div className="pocket assetsPendingEntry">
+        <div className="rtn-amt">
+          {fixedPendingEntry} {selectedMarket.assets[selectedDepositAssetIndex]} <span className="label">(Fixed) </span>
+          <br />
+          {degenPendingEntry} {selectedMarket.assets[selectedDepositAssetIndex]} <span className="label">(Degen)</span>
+        </div>
+        <div className="label">Assets Pending Cycle Entry</div>
+        <div className="buttons">
+          <button
+            className="claim-redep-btn"
+            onClick={() => {
+              onRedeemDirect(0);
+            }}
+            // loading={withdrawAllLoading}
+            disabled={!account || fixedPendingEntry === "0"}
+          >
+            Redeem Fixed
+          </button>
+          <button
+            className="claim-redep-btn"
+            onClick={() => {
+              onRedeemDirect(1);
+            }}
+            // loading={withdrawAllLoading}
+            disabled={!account || degenPendingEntry === "0"}
+          >
+            Redeem Degen
+          </button>
+        </div>
+      </div>
+
       <div className="arrowFlip">
         <Arrow />
       </div>

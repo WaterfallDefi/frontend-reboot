@@ -16,12 +16,6 @@ function Dashboard() {
             <span className="title">Total Value Locked</span>
             <span className="value">$ {totalTvl}</span>
           </div>
-          <div className="block">
-            <span className="title" />
-            <div className="icon-group">
-              <Metamask />
-            </div>
-          </div>
         </div>
       </div>
     </div>

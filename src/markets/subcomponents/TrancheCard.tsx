@@ -2,7 +2,7 @@ import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
 import React from "react";
 import { Market, Tranche } from "../../types";
-import { APYData } from "./MarketDetail";
+import { APYData } from "../../WaterfallDefi";
 
 type Props = {
   selectedMarket: Market;
