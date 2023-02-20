@@ -129,7 +129,14 @@ function WaterfallDefi() {
                 APYData={APYData}
                 latestAPYs={latestAPYs}
               />,
-              <MyPortfolio key="portfolio" mode={Mode.Dark} markets={markets ? markets : []} latestAPYs={latestAPYs} />,
+              <MyPortfolio
+                key="portfolio"
+                mode={Mode.Dark}
+                markets={markets ? markets : []}
+                latestAPYs={latestAPYs}
+                setModal={setModal}
+                setMarkets={setMarkets}
+              />,
             ],
             true
           )}

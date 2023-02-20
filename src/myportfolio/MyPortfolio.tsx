@@ -15,6 +15,8 @@ import {
 } from "../types";
 import {
   APYData,
+  Modal,
+  ModalProps,
   // ModalProps,
   Mode,
 } from "../WaterfallDefi";
@@ -26,8 +28,15 @@ import { useTrancheBalance } from "../markets/hooks/useTrancheBalance";
 //new shit
 import { MarketList } from "../config/markets";
 import NoData from "./svgs/NoData";
+import useWithdraw from "../markets/hooks/useWithdraw";
+import useRedeemDirect from "../markets/hooks/useRedeemDirect";
+import useUserInfo from "../markets/hooks/useUserInfo";
 
 const BIG_TEN = new BigNumber(10);
+
+const formatBigNumber2HexString = (bn: BigNumber) => {
+  return "0x" + bn.toString(16);
+};
 
 // const STATUSES: { name: string; value: string; status: number }[] = [
 //   { name: "All", value: "ALL", status: -1 },
@@ -52,11 +61,13 @@ type Props = {
   mode: Mode;
   markets: Market[];
   latestAPYs: (APYData | undefined)[];
+  setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
+  setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
-  const { mode, markets, latestAPYs } = props;
+  const { mode, markets, latestAPYs, setModal, setMarkets } = props;
   // const { account } = useWeb3React<Web3Provider>();
   // const { price: wtfPrice } = useWTFPriceLP();
 
@@ -71,7 +82,12 @@ function MyPortfolio(props: Props) {
     // fetchBalance
   } = useTrancheBalance(MarketList[0].network, MarketList[0].address, MarketList[0].abi, MarketList[0].isMulticurrency);
 
+  const { getUserInfo } = useUserInfo(MarketList[0].network, MarketList[0].address, MarketList[0].abi);
+
   const [dateToNextCycle, setDateToNextCycle] = useState<Number>(0);
+
+  const [withdrawalQueued, setWithdrawalQueued] = useState(false);
+  const [withdrawalQueuedPending, setWithdrawalQueuedPending] = useState(true);
 
   useEffect(() => {
     markets.length > 0 && markets[0].duration && markets[0].actualStartAt
@@ -79,12 +95,130 @@ function MyPortfolio(props: Props) {
       : setDateToNextCycle(0);
   }, [markets]);
 
+  useEffect(() => {
+    if (withdrawalQueuedPending) {
+      getUserInfo().then((res) => {
+        setWithdrawalQueued(!res); //isAuto true = invested, isAuto false = withdrawal queued
+        setWithdrawalQueuedPending(false);
+      });
+    }
+  }, [getUserInfo, withdrawalQueuedPending]);
+
   // const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
   // const [selectedTranche, setSelectedTranche] = useState(-1);
   // const [selectedStatus, setSelectedStatus] = useState(-1);
 
-  const [headerSort, setHeaderSort] = useState<number>(-1);
-  const [sortAsc, setSortAsc] = useState<boolean>(true);
+  const { onWithdraw, onQueueWithdraw } = useWithdraw(
+    MarketList[0].network,
+    MarketList[0].address,
+    MarketList[0].abi,
+    setModal,
+    setMarkets
+  );
+
+  const { onRedeemDirect } = useRedeemDirect(
+    MarketList[0].network,
+    MarketList[0].address,
+    MarketList[0].abi,
+    setModal,
+    setMarkets
+  );
+
+  // const [headerSort, setHeaderSort] = useState<number>(-1);
+  // const [sortAsc, setSortAsc] = useState<boolean>(true);
+
+  const withdrawAll = async () => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Withdrawing",
+    });
+    try {
+      if (!balance) return;
+      await onWithdraw(formatBigNumber2HexString(new BigNumber(balance).times(BIG_TEN.pow(18))));
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Withdraw Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Withdraw Fail ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const queueWithdrawAll = async () => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Queueing Withdrawal",
+    });
+    try {
+      if (!balance) return;
+      await onQueueWithdraw;
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Queue Withdrawal Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Queue Withdrawal Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const redeemPending = async (trancheId: number) => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Redeeming Assets Pending Cycle Entry",
+    });
+    try {
+      if (!balance) return;
+      await onRedeemDirect(trancheId);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Redeem Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Redeem Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
 
   const investPendingAgg = useMemo(
     () =>
@@ -227,14 +361,14 @@ function MyPortfolio(props: Props) {
           <div
             key={i}
             className={"header" + (i === 0 ? " first" : i === headers.length - 1 ? " last" : "")}
-            onClick={() => {
-              if (headerSort !== i) {
-                setSortAsc(true);
-                setHeaderSort(i);
-              } else {
-                setSortAsc(!sortAsc);
-              }
-            }}
+            // onClick={() => {
+            //   if (headerSort !== i) {
+            //     setSortAsc(true);
+            //     setHeaderSort(i);
+            //   } else {
+            //     setSortAsc(!sortAsc);
+            //   }
+            // }}
           >
             <span className="header-title">
               {h}
@@ -251,7 +385,67 @@ function MyPortfolio(props: Props) {
             <span>No Positions</span>
           </div>
         ) : (
-          usersInvestsPayload
+          [
+            usersInvestsPayload,
+            <div className="my-portfolio-buttons">
+              <button
+                className="claim-redep-btn"
+                onClick={() => {
+                  redeemPending(0);
+                }}
+                // loading={withdrawAllLoading}
+
+                //**refactor this!
+                disabled={
+                  (positions.length > 0
+                    ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                        "0,0.[000000]"
+                      )
+                    : "-") === "0"
+                }
+              >
+                Redeem Fixed
+              </button>
+              <button
+                className="claim-redep-btn"
+                onClick={() => {
+                  redeemPending(1);
+                }}
+                // loading={withdrawAllLoading}
+
+                //** refactor this!
+                disabled={
+                  (positions.length > 0
+                    ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                        "0,0.[000000]"
+                      )
+                    : "-") === "0"
+                }
+              >
+                Redeem Degen
+              </button>
+              <button
+                className="claim-redep-btn"
+                onClick={() => {
+                  queueWithdrawAll();
+                }}
+                // loading={withdrawAllLoading}
+                disabled={!+invested || withdrawalQueued}
+              >
+                Queue Withdrawal
+              </button>
+              <button
+                className="claim-redep-btn"
+                onClick={() => {
+                  withdrawAll();
+                }}
+                // loading={withdrawAllLoading}
+                disabled={!+balance}
+              >
+                Withdraw
+              </button>
+            </div>,
+          ]
         )
       ) : (
         <div className="no-data">

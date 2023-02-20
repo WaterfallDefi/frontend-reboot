@@ -198,7 +198,7 @@ function ClaimRedeposit(props: Props) {
           <button
             className="claim-redep-btn"
             onClick={() => {
-              onRedeemDirect(0);
+              redeemPending(0);
             }}
             // loading={withdrawAllLoading}
             disabled={!account || fixedPendingEntry === "0"}
@@ -208,7 +208,7 @@ function ClaimRedeposit(props: Props) {
           <button
             className="claim-redep-btn"
             onClick={() => {
-              onRedeemDirect(1);
+              redeemPending(1);
             }}
             // loading={withdrawAllLoading}
             disabled={!account || degenPendingEntry === "0"}
