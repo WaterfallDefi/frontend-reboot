@@ -185,13 +185,20 @@ function TableRow(props: Props) {
                       <span>
                         {!completed && (
                           <>
-                            {days}D {hours}H {minutes}M {seconds}S
+                            {hours}H {minutes}M {seconds}S
                           </>
                         )}
                       </span>
                     );
                   }}
                 />
+              </div>
+            );
+            break;
+          case "tranche":
+            elements.push(
+              <div className={"col " + columnData} key={key}>
+                {columnData}
               </div>
             );
             break;

@@ -128,15 +128,14 @@ function Header(props: Props) {
           <Link
             className="link"
             to={"/"}
-            data-selected={location.pathname === "/"}
             onClick={() => {
               if (location.pathname === "/") {
                 setMarkets(undefined);
               }
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
+              const markets = document.getElementById("markets");
+              if (markets) {
+                markets?.scrollIntoView({ behavior: "smooth" });
+              }
             }}
           >
             Markets
@@ -146,23 +145,23 @@ function Header(props: Props) {
           <p
             className="link"
             onClick={() => {
-              window.scrollTo({
-                top: document.documentElement.scrollHeight + 500,
-                behavior: "smooth",
-              });
+              const myPortfolio = document.getElementById("my-portfolio");
+              if (myPortfolio) {
+                myPortfolio?.scrollIntoView({ behavior: "smooth" });
+              }
             }}
           >
             My Portfolio
           </p>
         </div>
-        <div className="menu-block-wrapper">
+        {/* <div className="menu-block-wrapper">
           <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
         </div>
         <div className="menu-block-wrapper">
           <Link className="link" to={"/blog"} data-selected={location.pathname === "/blog"}>
             Blog
           </Link>
-        </div>
+        </div> */}
       </div>
       <div className="mobile-left">
         <div onClick={() => setMobileDropdownOpen(true)}>

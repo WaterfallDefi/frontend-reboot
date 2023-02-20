@@ -85,6 +85,13 @@ $font-size-xl: 30px;
     flex-grow: 1;
     color: $text-color-dark;
 
+    &.Fixed {
+      color: rgba(252, 182, 4, 0.8);
+    }
+    &.Degen {
+      color: #76bb68;
+    }
+
     .mob-title {
       display: none;
     }
@@ -601,7 +608,7 @@ $font-size-xl: 30px;
             justify-content: space-between;
           }
           .separator {
-            background: $highlight-color-dark;
+            background: $highlight-color;
             height: 1px;
             margin: 40px 0px;
           }
@@ -628,7 +635,7 @@ $font-size-xl: 30px;
           }
         }
         .separator {
-          background: $highlight-color-dark;
+          background: $highlight-color;
           height: 1px;
           margin: 40px 0px;
         }
@@ -765,7 +772,7 @@ $font-size-xl: 30px;
       .deposit-item {
         .tranches {
           .tranche {
-            border: $highlight-color-dark 2px solid;
+            border: $layer-color-dark 2px solid;
             background: $layer-color-dark;
             &.selected {
               border-color: $highlight-color;
@@ -783,7 +790,7 @@ $font-size-xl: 30px;
               color: $text-color-dark;
             }
             .separator {
-              background: $highlight-color-dark;
+              background: $text-color-dark;
             }
           }
         }
@@ -795,7 +802,7 @@ $font-size-xl: 30px;
             color: $text-color-dark;
           }
           .separator {
-            background: $highlight-color-dark;
+            background: $text-color-dark;
           }
           .input-wrapper {
             .max-input {

@@ -93,9 +93,6 @@ function Markets(props: Props) {
     [account, network, setDisableHeaderNetworkSwitch, setNetwork]
   );
 
-  console.log("latest APYs");
-  console.log(latestAPYs);
-
   const tableRows = useMemo(() => {
     return markets
       ? markets
@@ -193,10 +190,10 @@ function Markets(props: Props) {
             />
           ))
       : [];
-  }, [markets, headerSort, coingeckoPrices, goToMarket]);
+  }, [markets, headerSort, coingeckoPrices, latestAPYs, goToMarket]);
 
   return (
-    <div className={"markets-wrapper " + mode}>
+    <div className={"markets-wrapper " + mode} id="markets">
       {!selectedMarket ? <Dashboard /> : null}
       {!selectedMarket ? (
         <div className="header-row">

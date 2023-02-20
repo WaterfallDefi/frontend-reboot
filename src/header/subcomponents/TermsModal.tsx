@@ -13,9 +13,8 @@ function TermsModal(props: Props) {
       <title className="modal-title">Terms Of Service</title>
       <section className="terms-of-service">
         <p>
-          Welcome to Waterfall DeFi (<a href="https://waterfalldefi.org">https://waterfalldefi.org</a>), a
-          website-hosted user interface (the “Interface” or “App”) provided by Waterfall DeFi Foundation (“we” or “us”).
-          The Interface provides access to a decentralized protocol on the Binance Smart Chain (SBC) that allows
+          Welcome to YEGO Finance, a website-hosted user interface (the “Interface” or “App”) provided by YEGO Finance
+          (“we” or “us”). The Interface provides access to a decentralized protocol on the Arbitrum Network that allows
           suppliers and borrowers of certain digital assets to participate in tokenized risk management (the
           “Protocol”). This Terms of Service Agreement (the “Agreement”) is between you (referenced herein as “user” or
           “you”) and us. This Agreement explains the terms and conditions by which you may access and use the Interface.
@@ -32,12 +31,11 @@ function TermsModal(props: Props) {
         <p>
           We reserve the right, in our sole discretion, to modify this Agreement from time to time. If we make any
           modifications, we will notify you by updating the date at the top of the Agreement and by maintaining a
-          current version of the Agreement at <a href="https://waterfalldefi.org">https://waterfalldefi.org</a>. All
-          modifications will be effective when they are posted, and your continued use of the Interface will serve as
-          confirmation of your acceptance of those modifications. If you do not agree with any modifications to this
-          Agreement, you must immediately stop accessing and using the Interface. We encourage you to frequently review
-          the Terms to ensure you understand the terms and conditions that apply to your access to, and use of, the
-          Services.<span className="Apple-converted-space">&nbsp;</span>
+          current version of the Agreement. All modifications will be effective when they are posted, and your continued
+          use of the Interface will serve as confirmation of your acceptance of those modifications. If you do not agree
+          with any modifications to this Agreement, you must immediately stop accessing and using the Interface. We
+          encourage you to frequently review the Terms to ensure you understand the terms and conditions that apply to
+          your access to, and use of, the Services.<span className="Apple-converted-space">&nbsp;</span>
         </p>
         <h4>
           <br />
@@ -429,10 +427,10 @@ function TermsModal(props: Props) {
         <p>
           We will use our best efforts to resolve any potential disputes through informal, good faith negotiations. If a
           potential dispute arises, you must contact us by sending an email to
-          <a href="mailto:info@waterfalldefi.org"> info@waterfalldefi.org</a>, so that we can attempt to resolve it
-          without resorting to formal dispute resolution. If we aren’t able to reach an informal resolution within sixty
-          days of your email, then you and we both agree to resolve the potential dispute according to the process set
-          forth below.
+          {/* <a href="mailto:info@waterfalldefi.org"> info@waterfalldefi.org</a>, */}
+          so that we can attempt to resolve it without resorting to formal dispute resolution. If we aren’t able to
+          reach an informal resolution within sixty days of your email, then you and we both agree to resolve the
+          potential dispute according to the process set forth below.
         </p>
         <p>
           Any claim or controversy arising out of or relating to the Interface, this Agreement, or any other acts or

@@ -231,7 +231,7 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
-        <div className="label">Assets In Cycle</div>
+        <div className="label extrapadding">Assets In Cycle</div>
         <div className="buttons">
           <button
             className="claim-redep-btn"
@@ -258,7 +258,7 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
-        <div className="label">Assets Pending Cycle Exit</div>
+        <div className="label extrapadding">Assets Pending Cycle Exit</div>
       </div>
       <div className="arrowFlip">
         <Arrow />
@@ -272,7 +272,7 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
-        <div className="label">Assets Withdrawable</div>
+        <div className="label extrapadding">Assets Withdrawable</div>
         <div className="buttons">
           <button
             className="claim-redep-btn"

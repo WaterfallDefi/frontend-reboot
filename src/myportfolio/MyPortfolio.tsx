@@ -29,12 +29,12 @@ import NoData from "./svgs/NoData";
 
 const BIG_TEN = new BigNumber(10);
 
-const STATUSES: { name: string; value: string; status: number }[] = [
-  { name: "All", value: "ALL", status: -1 },
-  { name: "Pending", value: "PENDING", status: 0 },
-  { name: "Active", value: "ACTIVE", status: 1 },
-  { name: "Matured", value: "EXPIRED", status: 2 },
-];
+// const STATUSES: { name: string; value: string; status: number }[] = [
+//   { name: "All", value: "ALL", status: -1 },
+//   { name: "Pending", value: "PENDING", status: 0 },
+//   { name: "Active", value: "ACTIVE", status: 1 },
+//   { name: "Matured", value: "EXPIRED", status: 2 },
+// ];
 
 const headers = [
   "Portfolio Name",
@@ -79,9 +79,9 @@ function MyPortfolio(props: Props) {
       : setDateToNextCycle(0);
   }, [markets]);
 
-  const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
-  const [selectedTranche, setSelectedTranche] = useState(-1);
-  const [selectedStatus, setSelectedStatus] = useState(-1);
+  // const [selectedAsset, setSelectedAsset] = useState<string>("ALL");
+  // const [selectedTranche, setSelectedTranche] = useState(-1);
+  // const [selectedStatus, setSelectedStatus] = useState(-1);
 
   const [headerSort, setHeaderSort] = useState<number>(-1);
   const [sortAsc, setSortAsc] = useState<boolean>(true);
@@ -119,7 +119,7 @@ function MyPortfolio(props: Props) {
         ? [
             {
               data: {
-                portfolio: "LSD Finance",
+                portfolio: "YEGO Finance",
                 tranche: "Fixed",
                 APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
                 userInvestPending:
@@ -142,7 +142,7 @@ function MyPortfolio(props: Props) {
             },
             {
               data: {
-                portfolio: "LSD Finance",
+                portfolio: "YEGO Finance",
                 tranche: "Degen",
                 APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
                 userInvestPending:
@@ -171,7 +171,7 @@ function MyPortfolio(props: Props) {
             },
             {
               data: {
-                portfolio: "LSD Finance",
+                portfolio: "YEGO Finance",
                 tranche: "Aggregate",
                 APY: "",
                 userInvestPending: investPendingAgg,
@@ -187,19 +187,19 @@ function MyPortfolio(props: Props) {
     [latestAPYs, positions, balance, invested, investPendingAgg, investAgg, dateToNextCycle]
   );
 
-  const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedAsset(event.target.value);
-  };
-  const handleTranchesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTranche(Number(event.target.value));
-  };
-  const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedStatus(Number(event.target.value));
-  };
+  // const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedAsset(event.target.value);
+  // };
+  // const handleTranchesChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedTranche(Number(event.target.value));
+  // };
+  // const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   setSelectedStatus(Number(event.target.value));
+  // };
 
   return (
-    <div className={"my-portfolio-wrapper " + mode}>
-      <div className="filters">
+    <div className={"my-portfolio-wrapper " + mode} id="my-portfolio">
+      {/* <div className="filters">
         <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleStatusChange(e)}>
           {STATUSES.map((s, i) => (
             <option key={i} value={s.status.toString()}>
@@ -221,7 +221,7 @@ function MyPortfolio(props: Props) {
           <option value="1">Mezzanine / Variable</option>
           <option value="2">Junior</option>
         </select>
-      </div>
+      </div> */}
       <div className="header-row">
         {headers.map((h, i) => (
           <div
@@ -238,9 +238,9 @@ function MyPortfolio(props: Props) {
           >
             <span className="header-title">
               {h}
-              {headerSort !== i && <span className="asc">▲</span>}
+              {/* {headerSort !== i && <span className="asc">▲</span>}
               {headerSort === i && sortAsc && <span className="asc active">▲</span>}
-              {headerSort === i && !sortAsc && <span className="desc active">▼</span>}
+              {headerSort === i && !sortAsc && <span className="desc active">▼</span>} */}
             </span>
           </div>
         ))}

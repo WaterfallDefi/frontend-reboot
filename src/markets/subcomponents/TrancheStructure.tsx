@@ -97,8 +97,8 @@ function TrancheStructure(props: Props) {
               )}
               {hoveredTranche === 1 && hoveredTranche !== payload.length - 1 && (
                 <span className="comment">
-                  Variable tranche receives all the residual return, after paying back the Fixed tranche. Variable
-                  tranche is subject to first loss should the portfolio experience any drawdowns.
+                  Degen tranche receives all the residual return, after paying back the Fixed tranche. Degen tranche is
+                  subject to first loss should the portfolio experience any drawdowns.
                   {/* Mezzanine Tranche
                   Repayment of Interest and Principal is paid after Senior Tranche.
                   Mezzanine users have principal protection until the portfolio strategy experiences{" "}
@@ -107,8 +107,8 @@ function TrancheStructure(props: Props) {
               )}
               {hoveredTranche === payload.length - 1 && (
                 <span className="comment">
-                  Junior tranche receives all the residual return, after paying back Senior and Mezzanine tranches in
-                  order. Junior tranches are subject to first loss should the portfolio experience any drawdowns.
+                  Degen tranche receives all the residual return, after paying back Fixed tranche. Degen tranches are
+                  subject to first loss should the portfolio experience any drawdowns.
                 </span>
               )}
             </div>
