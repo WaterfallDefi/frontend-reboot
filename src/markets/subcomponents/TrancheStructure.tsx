@@ -18,7 +18,7 @@ const COLORS: { [key: string]: string } = {
   Mezzanine: "#00A14A",
   Junior: "#0066FF",
   Fixed: "#FCB500",
-  Variable: "#0066FF",
+  Degen: "#76bb68",
 };
 
 function TrancheStructure(props: Props) {
@@ -66,7 +66,7 @@ function TrancheStructure(props: Props) {
             value: values[0],
           },
           {
-            name: "Variable",
+            name: "Degen",
             value: values[1],
           },
         ];

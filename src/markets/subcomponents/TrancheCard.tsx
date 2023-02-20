@@ -43,7 +43,7 @@ function TrancheCard(props: Props) {
   const type: string =
     selectedMarket.trancheCount === 3
       ? ["senior", "mezzanine", "junior"][trancheIndex]
-      : ["fixed", "variable"][trancheIndex];
+      : ["fixed", "degen"][trancheIndex];
 
   const riskText: string =
     selectedMarket.trancheCount === 3

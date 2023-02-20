@@ -15,6 +15,7 @@ import TermsModal from "./subcomponents/TermsModal";
 import { Market } from "../types";
 import { Burger } from "./svgs/burger";
 import { WaterFallDark } from "./svgs";
+import yego from "./pngs/y3go.png";
 import { Logout } from "./svgs/logout";
 
 const formatAccountAddress = (address?: string | null) => {
@@ -122,9 +123,7 @@ function Header(props: Props) {
         />
       ) : null}
       <div className="pc-left">
-        <div className="waterfall-defi-logo">
-          <WaterFallDark />
-        </div>
+        <div className="yego-logo" />
         <div className="menu-block-wrapper">
           <Link
             className="link"

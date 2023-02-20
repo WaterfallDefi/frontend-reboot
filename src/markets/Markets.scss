@@ -147,30 +147,16 @@
       .tvl-div {
         width: 269px;
         display: flex;
-        flex-direction: column;
-        .subdiv {
-          display: flex;
-          justify-content: space-between;
-          .tvl {
-            font-size: $font-size-md;
-            color: $highlight-color;
-          }
-          .max-tvl {
-            font-size: $font-size-md;
-            color: rgba(252, 182, 4, 0.8);
-          }
+        align-items: center;
+        .tvl {
+          font-size: $font-size-md;
+          color: $highlight-color;
+          margin-left: 15px;
         }
-      }
-
-      .lockup-div {
-        display: flex;
-        width: 210px;
-        @media screen and (max-width: 1024px) {
-          width: calc(100% - 10px);
+        .max-tvl {
+          font-size: $font-size-md;
+          color: rgba(252, 182, 4, 0.8);
         }
-        padding-top: 12px;
-        justify-content: space-between;
-        font-size: $font-size-md;
       }
 
       .status-div {
@@ -209,6 +195,11 @@
             color: #00b8b8;
           }
         }
+      }
+
+      &.wallet-not-connected {
+        justify-content: center;
+        margin-bottom: 30px;
       }
 
       &.blurb {
@@ -320,8 +311,8 @@
                     color: #00a14a;
                   }
                   &.junior,
-                  &.variable {
-                    color: #0066ff;
+                  &.degen {
+                    color: $highlight-color;
                   }
                 }
                 .label {
@@ -353,6 +344,27 @@
 
     .claim-redeposit {
       margin-bottom: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+
+      .pocket {
+        display: flex;
+        flex-direction: column;
+        width: 16.5%;
+        height: 100px;
+        border-radius: 8px;
+        background: $layer-color-dark;
+        align-items: center;
+        gap: 5px;
+        padding-bottom: 8px;
+      }
+
+      .arrowFlip {
+        transform: rotate(180deg);
+        color: $layer-color-dark;
+      }
 
       .user-deposit {
         display: flex;
@@ -365,19 +377,12 @@
       .label {
         padding-top: 2px;
         color: $base-color;
-        font-size: $font-size-md;
+        font-size: $font-size-sm;
       }
       .rtn-amt {
         padding-top: 2px;
         color: $highlight-color;
-        font-size: $font-size-md;
-      }
-      .wtf-reward {
-        display: flex;
-        @media screen and (max-width: 1024px) {
-          flex-direction: column;
-        }
-        gap: 24px;
+        font-size: $font-size-lg;
       }
 
       .buttons {
@@ -401,64 +406,6 @@
             color: $base-color;
             cursor: auto;
             opacity: 0.5;
-          }
-        }
-      }
-
-      .autoroll-controls {
-        display: flex;
-        @media screen and (max-width: 1024px) {
-          flex-direction: column;
-
-          .autoroll-lbl {
-            text-align: right;
-          }
-        }
-
-        gap: 24px;
-        .autoroll-balance {
-          margin-top: 2px;
-          font-size: $font-size-md;
-        }
-        .control-wrapper {
-          display: flex;
-          .control {
-            background-color: "#FFFFFF";
-            border-radius: 8px;
-            width: 100%;
-
-            .autoroll-btn {
-              width: 100%;
-              border-radius: 8px;
-              height: 28px;
-              font-size: $font-size-md;
-              border: 1px solid $highlight-color;
-              margin-right: 24px;
-
-              color: $base-color;
-              cursor: pointer;
-              &.start {
-                background-color: $highlight-color;
-              }
-              &.stop {
-                background-color: $text-color-lighter;
-              }
-              &:disabled {
-                background-color: $text-color-lightest;
-                cursor: auto;
-              }
-            }
-          }
-        }
-        .autoroll-lbl {
-          margin-top: 2px;
-          font-size: $font-size-md;
-          font-weight: 600;
-          &.on {
-            color: $highlight-color;
-          }
-          &.off {
-            color: $base-color;
           }
         }
       }

@@ -109,21 +109,23 @@ function Deposit(props: Props) {
       {/* {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? ( */}
       <div className="next-cycle-wrapper">
         <div className="next-cycle">
-          Next Cycle{" "}
-          <Countdown
-            date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt) + 1000000) * 1000}
-            renderer={({ days, hours, minutes, seconds, completed }) => {
-              return (
-                <span>
-                  {!completed && (
-                    <>
-                      {days}D {hours}H {minutes}M {seconds}S
-                    </>
-                  )}
-                </span>
-              );
-            }}
-          />
+          Next Cycle <br />
+          <span className="countdown">
+            <Countdown
+              date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt) + 1000000) * 1000}
+              renderer={({ days, hours, minutes, seconds, completed }) => {
+                return (
+                  <span>
+                    {!completed && (
+                      <>
+                        {days} Days {hours} Hours {minutes} Minutes {seconds} Seconds
+                      </>
+                    )}
+                  </span>
+                );
+              }}
+            />
+          </span>
         </div>
         <div className="active-cycle">
           Active Cycle

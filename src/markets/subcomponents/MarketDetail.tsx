@@ -148,24 +148,11 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       </div>
       <div className="tvl-bar">
         <div className="tvl-div">
-          <div className="subdiv">
-            <div className="subdiv-title">TVL: </div>
-            <div>
-              <span className="tvl">{numeral(selectedMarket.tvl).format("0,0.0000")} </span>
-              {selectedMarket.assets[0] === "WBNB" || "WAVAX" ? selectedMarket.assets[0] : "$"}
-            </div>
+          <div className="title">TVL: </div>
+          <div>
+            <span className="tvl">{numeral(selectedMarket.tvl).format("0,0.0000")} </span>
+            {selectedMarket.assets[0] === "WBNB" || "WAVAX" ? selectedMarket.assets[0] : "$"}
           </div>
-          <div className="subdiv">
-            <div className="subdiv-title">Principal TVL:</div>{" "}
-            <div>
-              <span className="max-tvl">{numeral(principalTVL).format("0,0.0000")}</span>{" "}
-              {selectedMarket.assets[0] === "WBNB" || "WAVAX" ? selectedMarket.assets[0] : "$"}
-            </div>
-          </div>
-        </div>
-        <div className="lockup-div">
-          <div className="title">Lock-up period:</div>
-          {selectedMarket.duration ? getLockupPeriod(selectedMarket.duration) : "-"}
         </div>
         <div className="status-div">
           Status:{" "}
@@ -207,19 +194,25 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
-      <ClaimRedeposit
-        // network={selectedMarket.network}
-        selectedMarket={selectedMarket}
-        // coingeckoPrices={coingeckoPrices}
-        selectedDepositAssetIndex={selectedDepositAssetIndex}
-        balance={selectedMarket.isMulticurrency ? MCbalance : balance}
-        invested={selectedMarket.isMulticurrency ? MCinvested : invested}
-        // simulDeposit={simulDeposit}
-        setModal={setModal}
-        // setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
-        // setSimulDeposit={setSimulDeposit}
-        setMarkets={setMarkets}
-      />
+      {account ? (
+        <ClaimRedeposit
+          // network={selectedMarket.network}
+          selectedMarket={selectedMarket}
+          // coingeckoPrices={coingeckoPrices}
+          selectedDepositAssetIndex={selectedDepositAssetIndex}
+          balance={selectedMarket.isMulticurrency ? MCbalance : balance}
+          invested={selectedMarket.isMulticurrency ? MCinvested : invested}
+          // simulDeposit={simulDeposit}
+          setModal={setModal}
+          // setSelectedDepositAssetIndex={setSelectedDepositAssetIndex}
+          // setSimulDeposit={setSimulDeposit}
+          setMarkets={setMarkets}
+        />
+      ) : (
+        <div className="tvl-bar wallet-not-connected">
+          <div>Wallet Not Connected</div>
+        </div>
+      )}
       <Deposit
         selectedMarket={selectedMarket}
         // coingeckoPrices={coingeckoPrices}

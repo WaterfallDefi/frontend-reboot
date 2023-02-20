@@ -7,6 +7,7 @@ import useWithdraw from "../hooks/useWithdraw";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
 import useUserInfo from "../hooks/useUserInfo";
+import Arrow from "../svgs/Arrow";
 
 type Props = {
   // network: Network;
@@ -131,9 +132,12 @@ function ClaimRedeposit(props: Props) {
   };
 
   return (
-    <div className="claim-redeposit tvl-bar">
-      <div className="user-deposit">
-        Assets In Cycle:{" "}
+    <div className="claim-redeposit">
+      <div className="pocket assetsPendingEntry"></div>
+      <div className="arrowFlip">
+        <Arrow />
+      </div>
+      <div className="pocket assetsInvested">
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
             ? numeral(withdrawalQueued ? 0 : invested).format("0,0.[0000]")
@@ -143,6 +147,7 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
+        <div className="label">Assets In Cycle</div>
         <div className="buttons">
           <button
             className="claim-redep-btn"
@@ -155,7 +160,11 @@ function ClaimRedeposit(props: Props) {
             Queue Withdrawal
           </button>
         </div>
-        Assets Pending Cycle Exit:{" "}
+      </div>
+      <div className="arrowFlip">
+        <Arrow />
+      </div>
+      <div className="pocket assetsPendingExit">
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
             ? numeral(withdrawalQueued ? invested : 0).format("0,0.[0000]")
@@ -165,7 +174,12 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
-        Assets Withdrawable:{" "}
+        <div className="label">Assets Pending Cycle Exit</div>
+      </div>
+      <div className="arrowFlip">
+        <Arrow />
+      </div>
+      <div className="pocket assetsWithdrawable">
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
             ? numeral(balance).format("0,0.[0000]")
@@ -174,6 +188,7 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
+        <div className="label">Assets Withdrawable</div>
         <div className="buttons">
           <button
             className="claim-redep-btn"

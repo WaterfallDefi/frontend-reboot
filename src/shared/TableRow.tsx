@@ -86,12 +86,11 @@ function TableRow(props: Props) {
                   </div>
                 </div>
                 <div className="tranche-apr">
-                  <span>{columnData.tranchesApr.length === 2 ? "Variable" : "Mezzanine"}</span>
+                  <span>{columnData.tranchesApr.length === 2 ? "Degen" : "Mezzanine"}</span>
                   <div>
                     <span
                       style={{
-                        color:
-                          columnData.tranchesApr.length === 3 ? "rgba(3, 161, 75, 0.8)" : "rgba(12, 108, 254, 0.8)",
+                        color: "#76bb68",
                       }}
                     >
                       {numeral(columnData.tranchesApr[1]).format("0,0.[00]")} %
@@ -104,7 +103,7 @@ function TableRow(props: Props) {
                     <div>
                       <span
                         style={{
-                          color: "rgba(12, 108, 254, 0.8)",
+                          color: "#76bb68",
                         }}
                       >
                         {numeral(columnData.tranchesApr[2]).format("0,0.[00]")} %

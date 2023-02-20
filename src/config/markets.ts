@@ -9,7 +9,7 @@ const NETWORK = "MAINNET" as NETWORKS_TYPE; //exposing network switch here, sinc
 
 export const MarketList: Market[] = [
   {
-    portfolio: "LSD Finance - Test on AVAX",
+    portfolio: "YEGO Finance",
     network: 43114,
     wrap: false,
     autorollImplemented: true,

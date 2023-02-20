@@ -164,7 +164,7 @@ function MyPortfolio(props: Props) {
             {
               data: {
                 portfolio: "LSD Finance",
-                tranche: "Variable",
+                tranche: "Degen",
                 APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
                 userInvestPending:
                   positions.length > 0

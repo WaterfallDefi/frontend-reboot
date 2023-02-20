@@ -1,14 +1,14 @@
 $base-color: #ffffff;
-$base-color-dark: #04050e;
+$base-color-dark: #a1a1a1;
 $header-color-dark: #030c1b;
 $text-color: rgba(51, 51, 51, 0.85);
 $text-color-lighter: rgba(51, 51, 51, 0.5);
 $text-color-lightest: rgba(51, 51, 51, 0.15);
-$highlight-color: #0066ff;
+$highlight-color: #76bb68;
 $highlight-color-dark: rgba(0, 102, 255, 0.2);
 $layer-color: rgb(245, 250, 255);
-$layer-color-dark: rgb(19, 19, 44);
-$layer-color-dark-2: rgb(24, 24, 57);
+$layer-color-dark: rgba(51, 51, 51, 1);
+$layer-color-dark-2: rgba(51, 51, 51, 0.66);
 $text-color-dark: rgba(255, 255, 255, 0.85);
 $text-color-darker: rgba(255, 255, 255, 0.7);
 
@@ -382,15 +382,29 @@ $font-size-xl: 30px;
       flex-direction: column;
       align-items: center;
       padding: 30px 0;
+      background: $layer-color-dark;
+      border-radius: 8px;
+      margin-bottom: 15px;
 
       .next-cycle {
         font-size: $font-size-md;
-        color: $highlight-color;
+        text-align: center;
+        color: $base-color;
+
+        .countdown {
+          font-size: $font-size-xl;
+        }
       }
       .active-cycle {
         font-size: $font-size-md;
         color: $text-color;
         margin-top: 13px;
+      }
+      .button {
+        background: $base-color-dark;
+        padding: 8px;
+        border-radius: 8px;
+        margin-top: 5px;
       }
     }
 
@@ -551,11 +565,11 @@ $font-size-xl: 30px;
                   background-color: rgba(252, 182, 4, 0.8);
                 }
                 &.mezzanine {
-                  background-color: rgba(3, 161, 75, 0.8);
+                  background-color: $highlight-color;
                 }
                 &.junior,
-                &.variable {
-                  background-color: rgba(12, 108, 254, 0.8);
+                &.degen {
+                  background-color: $highlight-color;
                 }
               }
             }
@@ -569,11 +583,11 @@ $font-size-xl: 30px;
               color: rgba(252, 182, 4, 0.8);
             }
             &.mezzanine {
-              color: rgba(3, 161, 75, 0.8);
+              color: $highlight-color;
             }
             &.junior,
-            &.variable {
-              color: rgba(12, 108, 254, 0.8);
+            &.degen {
+              color: $highlight-color;
             }
           }
           .risk-text {
@@ -681,7 +695,7 @@ $font-size-xl: 30px;
           margin-top: 20px;
           & button {
             width: 100%;
-            background: linear-gradient(360deg, rgb(21, 121, 255) 0%, rgb(21, 123, 255) 100%);
+            background: $highlight-color;
             color: rgb(255, 255, 255);
             border-radius: 8px;
             border: 0px;
@@ -712,7 +726,9 @@ $font-size-xl: 30px;
     &.dark-deposit {
       .next-cycle-wrapper {
         .next-cycle {
-          color: $highlight-color;
+          .countdown {
+            color: $highlight-color;
+          }
         }
         .active-cycle {
           color: $text-color-dark;
@@ -783,7 +799,7 @@ $font-size-xl: 30px;
           }
           .input-wrapper {
             .max-input {
-              color: $base-color-dark;
+              color: $base-color;
               background: $highlight-color;
             }
           }
