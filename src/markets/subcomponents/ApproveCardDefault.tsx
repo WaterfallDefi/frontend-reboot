@@ -13,7 +13,7 @@ import { Market } from "../../types";
 import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useApprove from "../hooks/useApprove";
 import useInvestDirect from "../hooks/useInvestDirect";
-import useWrapAVAXContract, { useWrapBNBContract } from "../hooks/useWrap";
+import useWrapAVAXContract from "../hooks/useWrap";
 import { useMetamaskBalance } from "../hooks/useMetamaskBalance";
 
 type Props = {
@@ -70,7 +70,7 @@ function ApproveCardDefault(props: Props) {
   //web3
   const { account } = useWeb3React<Web3Provider>();
   const wrapAvaxContract = useWrapAVAXContract();
-  const wrapBNBContract = useWrapBNBContract();
+  // const wrapBNBContract = useWrapBNBContract();
 
   const network = selectedMarket.network;
 
@@ -205,11 +205,12 @@ function ApproveCardDefault(props: Props) {
           await wrapAvaxContract.deposit({
             value: parseEther((Number(amount) - Number(balance)).toString()),
           });
-        } else if (network === Network.BNB) {
-          await wrapBNBContract.deposit({
-            value: parseEther((Number(amount) - Number(balance)).toString()),
-          });
         }
+        // else if (network === Network.BNB) {
+        //   await wrapBNBContract.deposit({
+        //     value: parseEther((Number(amount) - Number(balance)).toString()),
+        //   });
+        // }
         setModal({
           state: Modal.Txn,
           txn: undefined,

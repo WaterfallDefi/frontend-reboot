@@ -19,16 +19,15 @@ enum ConnectorNames {
 const walletconnect = new WalletConnectConnector({
   rpc: {
     43114: "https://api.avax.network/ext/bc/C/rpc",
-    56: "https://bsc-dataseed.binance.org/",
-    137: "https://polygon-rpc.com",
+    42161: "https://arb1.arbitrum.io/rpc",
   },
-  supportedChainIds: [43114, 56, 137],
+  supportedChainIds: [43114, 42161],
   qrcode: true,
   bridge: "https://bridge.walletconnect.org",
 });
 
 const injected = new InjectedConnector({
-  supportedChainIds: [43114, 56, 137],
+  supportedChainIds: [43114, 42161],
 });
 
 const connectorsByName = {
@@ -43,38 +42,38 @@ const BNBNodes = [
   "https://bsc-dataseed1.ninicoin.io/",
 ];
 const PolygonNodes = ["https://polygon-rpc.com", "https://rpc-mainnet.matic.network", "https://rpc.ankr.com/polygon"];
+const ArbitrumNodes = [
+  "https://arb1.arbitrum.io/rpc",
+  "https://arbitrum.blockpi.network/v1/rpc/public",
+  "https://rpc.ankr.com/arbitrum",
+];
 
 export const setupNetwork = async (network: Network) => {
   const provider = window.ethereum;
 
   const chainNames = {
     43114: "Avalanche",
-    56: "BNB",
-    137: "Polygon",
+    42161: "Arbitrum",
   };
 
   const networkNames = {
     43114: "AVAX",
-    56: "BNB",
-    137: "Polygon",
+    42161: "Arbitrum",
   };
 
   const networkSymbols = {
     43114: "AVAX",
-    56: "BNB",
-    137: "MATIC",
+    42161: "AETH",
   };
 
   const rpcUrls = {
     43114: AVAXNodes,
-    56: BNBNodes,
-    137: PolygonNodes,
+    42161: ArbitrumNodes,
   };
 
   const blockExplorerUrls = {
     43114: ["https://snowtrace.io"],
-    56: ["https://bscscan.com"],
-    137: ["https://polygonscan.com"],
+    42161: ["https://arbiscan.io/"],
   };
 
   if (provider?.request) {

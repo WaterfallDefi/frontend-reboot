@@ -26,14 +26,12 @@ function TransactionModal(props: Props) {
   const InnerElement = () => {
     const blockExplorerUrls = {
       43114: "https://snowtrace.io",
-      56: "https://bscscan.com",
-      137: "https://polygonscan.com",
+      42161: "https://arbiscan.io/",
     };
 
     const viewOns = {
       43114: "View on Snowtrace",
-      56: "View on BSCScan",
-      137: "View on Explorer",
+      42161: "View on Arbiscan",
     };
 
     switch (status) {

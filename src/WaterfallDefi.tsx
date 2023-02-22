@@ -22,8 +22,7 @@ export enum Mode {
 
 export enum Network {
   AVAX = 43114,
-  BNB = 56,
-  Polygon = 137,
+  AETH = 42161,
 }
 
 export enum Modal {

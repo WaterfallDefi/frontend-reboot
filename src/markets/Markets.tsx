@@ -110,8 +110,7 @@ function Markets(props: Props) {
 
             const networkStrings = {
               43114: "AVAX",
-              56: "BNB",
-              137: "MATIC",
+              42161: "AETH",
             };
 
             return {

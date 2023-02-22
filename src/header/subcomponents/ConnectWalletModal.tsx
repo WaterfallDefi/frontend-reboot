@@ -40,7 +40,6 @@ function ConnectWalletModal(props: Props) {
           className="connect walletconnect"
           onClick={() => {
             if (network === Network.AVAX) login("walletconnect");
-            if (network === Network.BNB) login("walletconnect2");
           }}
         >
           <div className="walletconnect">

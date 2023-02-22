@@ -218,68 +218,25 @@ function Header(props: Props) {
           >
             <div
               className={
-                "network" +
-                (network === Network.AVAX ? " avax" : "") +
-                (network === Network.BNB ? " bnb" : "") +
-                (network === Network.Polygon ? " matic" : "")
+                "network" + (network === Network.AVAX ? " avax" : "") + (network === Network.AETH ? " aeth" : "")
               }
             >
               <div className="dropdown-triangle">▼</div>
               {network === Network.AVAX && "AVAX"}
-              {network === Network.BNB && "BNB"}
-              {network === Network.Polygon && "MATIC"}
+              {network === Network.AETH && "AETH"}
             </div>
             {dropdownOpen
               ? network === Network.AVAX
                 ? [
                     <div
-                      key="bnb"
-                      className="network bnb option"
-                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
+                      key="aeth"
+                      className="network aeth option"
+                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AETH, setNetwork)}
                     >
-                      BNB
+                      AETH
                     </div>,
-                    location.pathname !== "/stake" ? (
-                      <div
-                        key="matic"
-                        className="network matic option"
-                        onClick={() =>
-                          !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)
-                        }
-                      >
-                        MATIC
-                      </div>
-                    ) : null,
-                  ]
-                : network === Network.BNB
-                ? [
-                    <div
-                      key="avax"
-                      className="network avax option"
-                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.AVAX, setNetwork)}
-                    >
-                      AVAX
-                    </div>,
-                    location.pathname !== "/stake" ? (
-                      <div
-                        key="matic"
-                        className="network matic option"
-                        onClick={() =>
-                          !disableHeaderNetworkSwitch && switchNetwork(account, Network.Polygon, setNetwork)
-                        }
-                      >
-                        MATIC
-                      </div>
-                    ) : null,
                   ]
                 : [
-                    <div
-                      key="bnb"
-                      className="network bnb option"
-                      onClick={() => !disableHeaderNetworkSwitch && switchNetwork(account, Network.BNB, setNetwork)}
-                    >
-                      BNB
-                    </div>,
                     <div
                       key="avax"
                       className="network avax option"

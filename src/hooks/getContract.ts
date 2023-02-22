@@ -10,8 +10,7 @@ export const getContract = (
 ) => {
   const JsonRpcProviders = {
     43114: new ethers.providers.JsonRpcProvider("https://api.avax.network/ext/bc/C/rpc"),
-    56: new ethers.providers.JsonRpcProvider("https://bsc-dataseed.binance.org/"),
-    137: new ethers.providers.JsonRpcProvider("https://polygon-rpc.com"),
+    42161: new ethers.providers.JsonRpcProvider("https://arb1.arbitrum.io/rpc"),
   };
   const simpleRpcProvider = JsonRpcProviders[network];
   const signerOrProvider = signer ?? simpleRpcProvider;
@@ -36,8 +35,7 @@ interface Call {
 const getMulticallContract = (network: Network, signer?: ethers.Signer | ethers.providers.Provider) => {
   const multicallAddresses = {
     43114: "0x0b78ad358dDa2887285eaD72e84b47242360b872",
-    56: "0x41263cba59eb80dc200f3e2544eda4ed6a90e76c",
-    137: "0xa1B2b503959aedD81512C37e9dce48164ec6a94d",
+    42161: "0x842eC2c7D803033Edf55E478F461FC547Bc54EB2",
   };
   //turn into a switch case if we ever add a third chain
   const multicallAddress = multicallAddresses[network];
