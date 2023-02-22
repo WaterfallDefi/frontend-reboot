@@ -391,7 +391,7 @@
       .buttons {
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 16px;
         height: 100%;
         justify-content: flex-end;
 
@@ -482,15 +482,10 @@
             }
 
             .buttons {
-              display: flex;
-              flex-direction: column;
-              gap: 16px;
               .claim-redep-btn {
-                width: 100%;
                 border: 1px solid $text-color-lightest;
                 color: $highlight-color;
                 background-color: $base-color;
-                font-weight: 600;
 
                 &:disabled {
                   color: $text-color-lighter;

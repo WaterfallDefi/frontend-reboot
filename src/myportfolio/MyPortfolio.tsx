@@ -124,6 +124,32 @@ function MyPortfolio(props: Props) {
     setMarkets
   );
 
+  const investPendingAgg = useMemo(
+    () =>
+      positions.length > 0
+        ? numeral(
+            new BigNumber(positions[0][2][0]._hex)
+              .plus(new BigNumber(positions[0][3][0]._hex))
+              .dividedBy(BIG_TEN.pow(18))
+              .toString()
+          ).format("0,0.[000000]")
+        : "-",
+    [positions]
+  );
+
+  const investAgg = useMemo(
+    () =>
+      positions.length > 0
+        ? numeral(
+            new BigNumber(positions[0][0][1]._hex)
+              .plus(new BigNumber(positions[0][1][1]._hex))
+              .dividedBy(BIG_TEN.pow(18))
+              .toString()
+          ).format("0,0.[000000]")
+        : "-",
+    [positions]
+  );
+
   // const [headerSort, setHeaderSort] = useState<number>(-1);
   // const [sortAsc, setSortAsc] = useState<boolean>(true);
 
@@ -219,32 +245,6 @@ function MyPortfolio(props: Props) {
       // setWithdrawAllLoading(false);
     }
   };
-
-  const investPendingAgg = useMemo(
-    () =>
-      positions.length > 0
-        ? numeral(
-            new BigNumber(positions[0][2][0]._hex)
-              .plus(new BigNumber(positions[0][3][0]._hex))
-              .dividedBy(BIG_TEN.pow(18))
-              .toString()
-          ).format("0,0.[000000]")
-        : "-",
-    [positions]
-  );
-
-  const investAgg = useMemo(
-    () =>
-      positions.length > 0
-        ? numeral(
-            new BigNumber(positions[0][0][1]._hex)
-              .plus(new BigNumber(positions[0][1][1]._hex))
-              .dividedBy(BIG_TEN.pow(18))
-              .toString()
-          ).format("0,0.[000000]")
-        : "-",
-    [positions]
-  );
 
   //refine this later
   const usersInvestsPayload = useMemo(
