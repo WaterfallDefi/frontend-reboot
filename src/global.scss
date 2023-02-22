@@ -520,9 +520,13 @@ $font-size-xl: 30px;
           box-sizing: border-box;
           border-radius: 8px;
           background: $base-color;
-          &.selected {
+          &.fixed.selected {
+            border-color: rgba(252, 182, 4, 0.8);
+            background: $layer-color-dark;
+          }
+          &.degen.selected {
             border-color: $highlight-color;
-            background: $layer-color;
+            background: $layer-color-dark;
           }
           &.disabled {
             opacity: 0.5;
@@ -774,10 +778,6 @@ $font-size-xl: 30px;
           .tranche {
             border: $layer-color-dark 2px solid;
             background: $layer-color-dark;
-            &.selected {
-              border-color: $highlight-color;
-              background: $layer-color-dark;
-            }
 
             .sold-out {
               background-color: $layer-color-dark;
