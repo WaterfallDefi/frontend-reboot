@@ -48,7 +48,7 @@ export type APYData = {
 };
 
 function WaterfallDefi() {
-  const [network, setNetwork] = useState<Network>(Network.AVAX);
+  const [network, setNetwork] = useState<Network>(Network.AETH);
   const [markets, setMarkets] = useState<Market[] | undefined>();
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
   const [disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch] = useState<boolean>(false);

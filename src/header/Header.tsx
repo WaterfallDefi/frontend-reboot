@@ -177,7 +177,13 @@ function Header(props: Props) {
               to={"/"}
               data-selected={location.pathname === "/"}
               onClick={() => {
-                location.pathname === "/" && setMarkets(undefined);
+                if (location.pathname === "/") {
+                  setMarkets(undefined);
+                }
+                const markets = document.getElementById("markets");
+                if (markets) {
+                  markets?.scrollIntoView({ behavior: "smooth" });
+                }
                 setMobileDropdownOpen(false);
               }}
             >
@@ -189,12 +195,18 @@ function Header(props: Props) {
               className="link"
               to={"/portfolio"}
               data-selected={location.pathname === "/portfolio"}
-              onClick={() => setMobileDropdownOpen(false)}
+              onClick={() => {
+                const myPortfolio = document.getElementById("my-portfolio");
+                if (myPortfolio) {
+                  myPortfolio?.scrollIntoView({ behavior: "smooth" });
+                }
+                setMobileDropdownOpen(false);
+              }}
             >
               My Portfolio
             </Link>
           </div>
-          <div className="mobile-menu-block-wrapper">
+          {/* <div className="mobile-menu-block-wrapper">
             <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
           </div>
           <div className="mobile-menu-block-wrapper">
@@ -206,15 +218,15 @@ function Header(props: Props) {
             >
               Blog
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="right">
         <div className="wallet-wrapper">
           <div
             className={"dropdown" + (dropdownOpen ? " open" : "")}
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
+            // onMouseEnter={() => setDropdownOpen(true)}
+            // onMouseLeave={() => setDropdownOpen(false)}
           >
             <div
               className={
@@ -222,11 +234,10 @@ function Header(props: Props) {
               }
             >
               <div className="dropdown-triangle">▼</div>
-              {network === Network.AVAX && "AVAX"}
               {network === Network.AETH && "AETH"}
             </div>
             {dropdownOpen
-              ? network === Network.AVAX
+              ? network === Network.AETH
                 ? [
                     <div
                       key="aeth"
