@@ -174,60 +174,60 @@ export const getMarkets = async (payload: Market[]) => {
             params: [i],
           });
         }
-        const calls2 = [
-          {
-            address: _masterchefAddress,
-            name: "rewardPerBlock",
-          },
-          ...poolCalls,
-        ];
-        const [_rewardPerBlock, ...poolCallsResponse] = await multicall(
-          marketData.network,
-          marketData.masterChefAbi,
-          calls2
-        );
+        // const calls2 = [
+        //   {
+        //     address: _masterchefAddress,
+        //     name: "rewardPerBlock",
+        //   },
+        //   ...poolCalls,
+        // ];
+        // const [_rewardPerBlock, ...poolCallsResponse] = await multicall(
+        //   marketData.network,
+        //   marketData.masterChefAbi,
+        //   calls2
+        // );
 
-        const rewardPerBlock = new BigNumber(_rewardPerBlock[0]._hex).dividedBy(BIG_TEN.pow(18)).toString();
-        const pools: string[] = [];
-        let totalAllocPoints = BIG_ZERO;
-        const _pools = poolCallsResponse.slice(0, marketData.trancheCount);
-        _pools.forEach((_p: any, _i: any) => {
-          const _allocPoint = _p ? new BigNumber(_p?.allocPoint._hex) : BIG_ZERO;
-          totalAllocPoints = totalAllocPoints.plus(_allocPoint);
-          pools.push(_allocPoint.toString());
-        });
+        // const rewardPerBlock = new BigNumber(_rewardPerBlock[0]._hex).dividedBy(BIG_TEN.pow(18)).toString();
+        // const pools: string[] = [];
+        // let totalAllocPoints = BIG_ZERO;
+        // const _pools = poolCallsResponse.slice(0, marketData.trancheCount);
+        // _pools.forEach((_p: any, _i: any) => {
+        //   const _allocPoint = _p ? new BigNumber(_p?.allocPoint._hex) : BIG_ZERO;
+        //   totalAllocPoints = totalAllocPoints.plus(_allocPoint);
+        //   pools.push(_allocPoint.toString());
+        // });
         // const totalAllocPoints = getTotalAllocPoints(pools);
-        marketData = {
-          ...marketData,
-          pools,
-          totalAllocPoints: totalAllocPoints.toString(),
-          rewardPerBlock,
-        };
-        if (marketData.isMulticurrency) {
-          const trancheInvestCalls = marketData.depositAssetAddresses.map((addr: string) => {
-            const _callMap = [];
-            for (let i = 0; i < marketData.trancheCount; i++) {
-              _callMap.push({
-                address: _marketAddress,
-                name: "trancheInvest",
-                params: [cycle[0], i, addr],
-              });
-            }
-            return _callMap;
-          });
-          const calls3 = trancheInvestCalls.reduce((acc: EthersCall[], next: EthersCall[]) => [...acc, ...next], []);
-          const trancheInvestsRes = await multicall(marketData.network, marketData.abi, calls3);
-          const trancheInvestsResUnpacked = trancheInvestsRes.map((res: BigNumber[]) => res[0]);
+        // marketData = {
+        //   ...marketData,
+        //   pools,
+        //   totalAllocPoints: totalAllocPoints.toString(),
+        //   rewardPerBlock,
+        // };
+        // if (marketData.isMulticurrency) {
+        //   const trancheInvestCalls = marketData.depositAssetAddresses.map((addr: string) => {
+        //     const _callMap = [];
+        //     for (let i = 0; i < marketData.trancheCount; i++) {
+        //       _callMap.push({
+        //         address: _marketAddress,
+        //         name: "trancheInvest",
+        //         params: [cycle[0], i, addr],
+        //       });
+        //     }
+        //     return _callMap;
+        //   });
+        // const calls3 = trancheInvestCalls.reduce((acc: EthersCall[], next: EthersCall[]) => [...acc, ...next], []);
+        // const trancheInvestsRes = await multicall(marketData.network, marketData.abi, calls3);
+        // const trancheInvestsResUnpacked = trancheInvestsRes.map((res: BigNumber[]) => res[0]);
 
-          const trancheInvests = tranches.map((t: Tranche, i: number) =>
-            tokenObjs.map((t: Token, j: number) => trancheInvestsResUnpacked[i + tranches.length * j])
-          );
-          marketData = {
-            ...marketData,
-            trancheInvests: trancheInvests,
-            // trancheCount: tranches.length, ...but why would you need to?
-          };
-        }
+        // const trancheInvests = tranches.map((t: Tranche, i: number) =>
+        //   tokenObjs.map((t: Token, j: number) => trancheInvestsResUnpacked[i + tranches.length * j])
+        // );
+        // marketData = {
+        //   ...marketData,
+        //   trancheInvests: trancheInvests,
+        //   // trancheCount: tranches.length, ...but why would you need to?
+        // };
+        // }
         return marketData;
       })
     );
