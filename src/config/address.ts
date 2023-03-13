@@ -31,6 +31,19 @@ export const LSD_BenqiStrat: { [network: string]: string } = {
   [NETWORKS.MAINNET]: "0xfC50DC5D0508808f732F0138Bc5A45bB5e488e07",
 };
 
+//YEGO Arbitrum Test Contract
+export const Arbitrum_TrancheMaster: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x25ff690d84e6cca753BF4814F9Bf3C834b1f3344",
+};
+
+export const Arbitrum_Ethereum_DepositAddress: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0x9D575a9bF57a5e24a99D29724B86ca021A2b0435",
+};
+
 //utility addresses
 export const BUSDAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "9Ad6a4A86CAE27024F693C933488070a70b56f5E",
