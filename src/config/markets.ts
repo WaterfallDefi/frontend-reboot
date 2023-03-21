@@ -53,6 +53,6 @@ export const MarketList: Market[] = [
       },
     ],
     strategyBlurbs: ["YEGO Finance"],
-    subgraphURL: "https://api3.waterfalldefi.org/subgraphs/name/waterfall/avax-dai-perp",
+    subgraphURL: "https://apiarbitrum.yego.finance/subgraphs/name/waterfall/arbitrum-usdc",
   },
 ];
