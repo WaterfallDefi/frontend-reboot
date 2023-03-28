@@ -21,7 +21,7 @@ export const MarketList: Market[] = [
     wrap: false,
     autorollImplemented: true,
     isMulticurrency: false,
-    assets: ["AETH"],
+    assets: ["USDC"],
     tokens: [],
     listingDate: "2023/03/14",
     tranches: [],
