@@ -54,6 +54,7 @@ export const useBalances = (network: Network, addresses: string[]) => {
 
     const bignumbers = tokenBalances.map((tb: BigNumber[]) => tb[0]);
 
+    //if we later have a multicurrency product, change this to account for different decimal places
     setBalances(
       bignumbers.map((v: any) =>
         numeral(new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[0000]")

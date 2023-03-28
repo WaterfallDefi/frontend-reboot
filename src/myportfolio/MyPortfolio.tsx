@@ -130,7 +130,8 @@ function MyPortfolio(props: Props) {
         ? numeral(
             new BigNumber(positions[0][2][0]._hex)
               .plus(new BigNumber(positions[0][3][0]._hex))
-              .dividedBy(BIG_TEN.pow(18))
+              //changed to 6 for USDC
+              .dividedBy(BIG_TEN.pow(6))
               .toString()
           ).format("0,0.[000000]")
         : "-",
@@ -143,7 +144,8 @@ function MyPortfolio(props: Props) {
         ? numeral(
             new BigNumber(positions[0][0][1]._hex)
               .plus(new BigNumber(positions[0][1][1]._hex))
-              .dividedBy(BIG_TEN.pow(18))
+              //changed to 6 for USDC
+              .dividedBy(BIG_TEN.pow(6))
               .toString()
           ).format("0,0.[000000]")
         : "-",
@@ -164,7 +166,8 @@ function MyPortfolio(props: Props) {
     });
     try {
       if (!balance) return;
-      await onWithdraw(formatBigNumber2HexString(new BigNumber(balance).times(BIG_TEN.pow(18))));
+      //changed to 6 for USDC
+      await onWithdraw(formatBigNumber2HexString(new BigNumber(balance).times(BIG_TEN.pow(6))));
       setModal({
         state: Modal.Txn,
         txn: undefined,
@@ -258,14 +261,16 @@ function MyPortfolio(props: Props) {
                 APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
                 userInvestPending:
                   positions.length > 0
-                    ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                    ? //changed to 6 for USDC
+                      numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
                         "0,0.[000000]"
                       )
                     : "-",
                 nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
-                    ? numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                    ? //changed to 6 for USDC
+                      numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
                         "0,0.[000000]"
                       )
                     : "-",
@@ -282,7 +287,8 @@ function MyPortfolio(props: Props) {
                 userInvestPending:
                   positions.length > 0
                     ? // numeral(
-                      new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()
+                      //changed to 6 for USDC
+                      new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()
                     : // )
                       // .format(
                       //     "0,0.[000000]"
@@ -292,7 +298,8 @@ function MyPortfolio(props: Props) {
                 userInvest:
                   positions.length > 0
                     ? //  numeral(
-                      new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(18)).toString()
+                      //changed to 6 for USDC
+                      new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()
                     : // )
                       // .format(
                       //     "0,0.[000000]"
@@ -398,7 +405,8 @@ function MyPortfolio(props: Props) {
                 //**refactor this!
                 disabled={
                   (positions.length > 0
-                    ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                    ? //changed to 6 for USDC
+                      numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
                         "0,0.[000000]"
                       )
                     : "-") === "0"
@@ -416,7 +424,8 @@ function MyPortfolio(props: Props) {
                 //** refactor this!
                 disabled={
                   (positions.length > 0
-                    ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format(
+                    ? //changed to 6 for USDC
+                      numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
                         "0,0.[000000]"
                       )
                     : "-") === "0"

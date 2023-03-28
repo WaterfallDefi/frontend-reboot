@@ -133,6 +133,7 @@ export const getMarkets = async (payload: Market[]) => {
 
           //BONUS: add logic to handle falls that have all variable tranches, not just 2 or 3, although why would we ever need that
 
+          //APY isn't calculated this way anymore
           const _apy =
             _t && _i !== _tranches.length - 1
               ? new BigNumber(_t.apy?._hex).dividedBy(BIG_TEN.pow(18 - 2))
