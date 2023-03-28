@@ -48,14 +48,16 @@ function ClaimRedeposit(props: Props) {
 
   const positions = usePositions(MarketList);
 
+  //changed to 6 digits for USDC
   const fixedPendingEntry =
     positions.length > 0
-      ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[000000]")
+      ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format("0,0.[000000]")
       : "-";
 
+  //changed to 6 digits for USDC
   const degenPendingEntry =
     positions.length > 0
-      ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[000000]")
+      ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format("0,0.[000000]")
       : "-";
 
   const { onWithdraw, onQueueWithdraw } = useWithdraw(
@@ -100,7 +102,8 @@ function ClaimRedeposit(props: Props) {
       if (!balance) return;
       await onWithdraw(
         formatBigNumber2HexString(
-          !(balance instanceof Array) ? new BigNumber(balance).times(BIG_TEN.pow(18)) : new BigNumber(0)
+          //changed to 6 digits for USDC
+          !(balance instanceof Array) ? new BigNumber(balance).times(BIG_TEN.pow(6)) : new BigNumber(0)
         ),
         balance instanceof Array ? balance : undefined
       );
@@ -226,7 +229,7 @@ function ClaimRedeposit(props: Props) {
           {!selectedMarket.isMulticurrency
             ? numeral(withdrawalQueued ? 0 : invested).format("0,0.[0000]")
             : // change this from [selectedDepositAssetIndex] to display all assets at once
-              numeral(new BigNumber(invested[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(18))).format(
+              numeral(new BigNumber(invested[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(6))).format(
                 "0,0.[00000]"
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
@@ -253,7 +256,8 @@ function ClaimRedeposit(props: Props) {
           {!selectedMarket.isMulticurrency
             ? numeral(withdrawalQueued ? invested : 0).format("0,0.[0000]")
             : // change this from [selectedDepositAssetIndex] to display all assets at once
-              numeral(new BigNumber(invested[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(18))).format(
+              //changd to 6 digits for USDC
+              numeral(new BigNumber(invested[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(6))).format(
                 "0,0.[00000]"
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
@@ -267,7 +271,8 @@ function ClaimRedeposit(props: Props) {
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
             ? numeral(balance).format("0,0.[0000]")
-            : numeral(new BigNumber(balance[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(18))).format(
+            : //changed to 6 digits for USDC
+              numeral(new BigNumber(balance[selectedDepositAssetIndex]).dividedBy(BIG_TEN.pow(6))).format(
                 "0,0.[00000]"
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
