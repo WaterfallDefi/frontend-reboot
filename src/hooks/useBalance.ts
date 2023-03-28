@@ -21,7 +21,8 @@ const useBalance = (network: Network, address: string) => {
     if (!account) return;
     const contract = getContract(ERC20.abi, address, network);
     const tokenBalance = await contract.balanceOf(account);
-    const value = new BigNumber(tokenBalance.toString()).dividedBy(BIG_TEN.pow(18));
+    //changed from 18 to 6 for USDC
+    const value = new BigNumber(tokenBalance.toString()).dividedBy(BIG_TEN.pow(6));
     setBalance(numeral(value.toString()).format("0,0.[0000]"));
     setActualBalance(value.toString());
   }, [account, address, network]);
