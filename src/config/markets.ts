@@ -1,11 +1,10 @@
 import {
   Arbitrum_Ethereum_DepositAddress,
   Arbitrum_TrancheMaster,
-  DAI_E_DepositAddress,
   LSD_BenqiStrat,
   LSD_MasterWTF,
   LSD_TraderJoeStrat,
-  LSD_TrancheMaster,
+  USDC_Address_Arbitrum,
 } from "./address";
 import LSD_Finance from "./abis/LSD_Finance.json";
 import MasterChef from "./abis/MasterChef.json";
@@ -33,23 +32,23 @@ export const MarketList: Market[] = [
     nextTime: "",
     address: Arbitrum_TrancheMaster[NETWORK],
     abi: LSD_Finance.abi,
-    masterChefAbi: MasterChef.abi, //do we even need this anymore??
-    masterChefAddress: LSD_MasterWTF[NETWORK], //do we even need this anymore??
+    masterChefAbi: MasterChef.abi, //we don't need this anymore
+    masterChefAddress: LSD_MasterWTF[NETWORK], //we don't need this anymore
     pools: [],
-    depositAssetAddress: Arbitrum_Ethereum_DepositAddress[NETWORK],
+    depositAssetAddress: USDC_Address_Arbitrum[NETWORK],
     depositAssetAddresses: [],
     strategyFarms: [
       {
         farmName: "Farm 1",
         shares: 0.5,
-        sAddress: LSD_BenqiStrat[NETWORK],
-        apiKey: "qi_dai",
+        sAddress: LSD_BenqiStrat[NETWORK], //we don't need this anymore
+        apiKey: "qi_dai", // we don't need this anymore
       },
       {
         farmName: "Farm 2",
         shares: 0.5,
-        sAddress: LSD_TraderJoeStrat[NETWORK],
-        apiKey: "joe_dai",
+        sAddress: LSD_TraderJoeStrat[NETWORK], // we don't need this anymore
+        apiKey: "joe_dai", // we don't need this anymore
       },
     ],
     strategyBlurbs: ["YEGO Finance"],

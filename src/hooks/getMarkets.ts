@@ -85,6 +85,7 @@ export const getMarkets = async (payload: Market[]) => {
         ];
         const calls = [...callsBasic, ...tokenCalls];
 
+        //we don't need this anymore
         let farmsAPY = 0;
         if (farmsAPYResult) {
           for (let i = 0; i < marketData.strategyFarms.length; i++) {

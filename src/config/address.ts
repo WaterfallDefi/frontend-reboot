@@ -43,6 +43,11 @@ export const Arbitrum_Ethereum_DepositAddress: { [network: string]: string } = {
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0x9D575a9bF57a5e24a99D29724B86ca021A2b0435",
 };
+export const USDC_Address_Arbitrum: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+};
 
 //utility addresses
 export const BUSDAddress: { [network: string]: string } = {
@@ -68,13 +73,11 @@ export const WrapBNBAddress: { [network: string]: string } = {
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
 };
-
 export const WAVAXDepositAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
 };
-
 export const WBNB_Address: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
@@ -85,7 +88,6 @@ export const USDT_Address_BNB: { [network: string]: string } = {
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0x55d398326f99059ff775485246999027b3197955",
 };
-
 export const USDC_Bridged_Address_AVAX: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
