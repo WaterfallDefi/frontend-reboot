@@ -192,9 +192,11 @@ function ClaimRedeposit(props: Props) {
     <div className="claim-redeposit">
       <div className="pocket assetsPendingEntry">
         <div className="rtn-amt">
-          {fixedPendingEntry} {selectedMarket.assets[selectedDepositAssetIndex]} <span className="label">(Fixed) </span>
+          {fixedPendingEntry} {selectedMarket.assets[selectedDepositAssetIndex]}{" "}
+          <span className="label">(Risk-Off) </span>
           <br />
-          {degenPendingEntry} {selectedMarket.assets[selectedDepositAssetIndex]} <span className="label">(Degen)</span>
+          {degenPendingEntry} {selectedMarket.assets[selectedDepositAssetIndex]}{" "}
+          <span className="label">(Risk-On)</span>
         </div>
         <div className="label">Assets Pending Cycle Entry</div>
         <div className="buttons">
@@ -206,7 +208,7 @@ function ClaimRedeposit(props: Props) {
             // loading={withdrawAllLoading}
             disabled={!account || fixedPendingEntry === "0"}
           >
-            Redeem Fixed
+            Redeem Risk-Off
           </button>
           <button
             className="claim-redep-btn"
@@ -216,7 +218,7 @@ function ClaimRedeposit(props: Props) {
             // loading={withdrawAllLoading}
             disabled={!account || degenPendingEntry === "0"}
           >
-            Redeem Degen
+            Redeem Risk-On
           </button>
         </div>
       </div>

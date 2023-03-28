@@ -82,7 +82,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           </div>
           <div className="info-block">
             <span className="portfolio-name">{selectedMarket.portfolio}</span>
-            <span className="blocktext listing-date">Listing date: {selectedMarket.listingDate}</span>
+            {/* <span className="blocktext listing-date">Listing date: {selectedMarket.listingDate}</span> */}
           </div>
           <div className="info-block">
             <div className={"assets" + (selectedMarket.isMulticurrency ? " multicurrency" : "")}>

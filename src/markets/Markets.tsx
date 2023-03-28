@@ -34,16 +34,21 @@ type CoingeckoPrices = {
 
 type TableRowData = {
   portfolio: string;
-  network: string;
   assets: string[];
-  duration: string;
   apr_markets: { tranchesApr: (string | number)[] };
   // wtfApr: (string | undefined)[] };
   tvl: string;
   status: string;
 };
 
-const headers = ["Portfolio Name", "Network", "Asset", "Lock-up Period", "Deposit APR", "TVL", "Status"];
+const headers = [
+  "Vault Name",
+  // "Network",
+  "Asset",
+  "Deposit APR",
+  "TVL",
+  "Status",
+];
 
 function Markets(props: Props) {
   const {
@@ -66,7 +71,7 @@ function Markets(props: Props) {
   const [sortAsc, setSortAsc] = useState<boolean>(true);
 
   // const { price: wtfPrice } = useWTFPriceLP();
-  const coingeckoPrices: CoingeckoPrices = useCoingeckoPrices();
+  // const coingeckoPrices: CoingeckoPrices = useCoingeckoPrices();
 
   //we are using markets as a network switch reset indicator, if flipped to undefined
   useEffect(() => {
@@ -108,21 +113,17 @@ function Markets(props: Props) {
               numeral(m.tvl.includes("e-") ? "0" : m.tvl).format("0,0.[0000]") +
               (nonDollarTvl ? " " + m.assets[0] : "");
 
-            const networkStrings = {
-              43114: "AVAX",
-              42161: "AETH",
-            };
+            // const networkStrings = {
+            //   43114: "AVAX",
+            //   42161: "AETH",
+            // };
 
             return {
               market: m,
               data: {
                 portfolio: m.portfolio,
-                network: networkStrings[m.network],
+                // network: networkStrings[m.network],
                 assets: m.assets,
-                duration:
-                  Number(m.duration) / 86400 >= 1
-                    ? Number(m.duration) / 86400 + " Days"
-                    : Number(m.duration) / 60 + " Mins",
                 apr_markets: { tranchesApr: tranchesApr },
                 // wtfApr: wtfAprs },
                 tvl: tvl,
@@ -136,16 +137,8 @@ function Markets(props: Props) {
               case 0:
                 return a.data.portfolio.localeCompare(b.data.portfolio);
               case 1:
-                return a.data.network.localeCompare(b.data.network);
-              case 2:
                 return a.data.assets[0].localeCompare(b.data.assets[0]);
-              case 3:
-                return (a.market.duration ? a.market.duration : 0) < (b.market.duration ? b.market.duration : 0)
-                  ? -1
-                  : (b.market.duration ? b.market.duration : 0) < (a.market.duration ? a.market.duration : 0)
-                  ? 1
-                  : 0;
-              case 4:
+              case 2:
                 return Number(a.data.apr_markets.tranchesApr[a.market.trancheCount - 1]) <
                   Number(b.data.apr_markets.tranchesApr[b.market.trancheCount - 1])
                   ? -1
@@ -153,22 +146,12 @@ function Markets(props: Props) {
                     Number(b.data.apr_markets.tranchesApr[b.market.trancheCount - 1])
                   ? 1
                   : 0;
-              case 5:
-                const aTVL =
-                  a.market.assets[0] === "WBNB"
-                    ? Number(a.market.tvl) * Number(coingeckoPrices?.wbnb?.usd)
-                    : a.market.assets[0] === "WAVAX"
-                    ? Number(a.market.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
-                    : a.market.tvl;
+              case 3:
+                const aTVL = a.market.tvl;
 
-                const bTVL =
-                  b.market.assets[0] === "WBNB"
-                    ? Number(b.market.tvl) * Number(coingeckoPrices?.wbnb?.usd)
-                    : b.market.assets[0] === "WAVAX"
-                    ? Number(b.market.tvl) * Number(coingeckoPrices?.["wrapped-avax"]?.usd)
-                    : b.market.tvl;
+                const bTVL = b.market.tvl;
                 return aTVL < bTVL ? -1 : bTVL < aTVL ? 1 : 0;
-              case 6:
+              case 4:
                 if (a.data.status === "PENDING" && b.data.status === "ACTIVE") {
                   return -1;
                 }
@@ -189,7 +172,7 @@ function Markets(props: Props) {
             />
           ))
       : [];
-  }, [markets, headerSort, coingeckoPrices, latestAPYs, goToMarket]);
+  }, [markets, headerSort, latestAPYs, goToMarket]);
 
   return (
     <div className={"markets-wrapper " + mode} id="markets">

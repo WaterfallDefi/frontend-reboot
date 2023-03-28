@@ -17,8 +17,8 @@ const COLORS: { [key: string]: string } = {
   Senior: "#FCB500",
   Mezzanine: "#00A14A",
   Junior: "#0066FF",
-  Fixed: "#FCB500",
-  Degen: "#76bb68",
+  RiskOff: "#FCB500",
+  RiskOn: "#76bb68",
 };
 
 function TrancheStructure(props: Props) {
@@ -62,11 +62,11 @@ function TrancheStructure(props: Props) {
         ]
       : [
           {
-            name: "Fixed",
+            name: "RiskOff",
             value: values[0],
           },
           {
-            name: "Degen",
+            name: "RiskOn",
             value: values[1],
           },
         ];
@@ -79,7 +79,7 @@ function TrancheStructure(props: Props) {
           {hoveredTranche !== -1 ? (
             <div className="subordination" key="subordination">
               <span className={"tranche-name " + payload[hoveredTranche].name.toLowerCase()}>
-                {payload[hoveredTranche].name}
+                {payload[hoveredTranche].name === "RiskOff" ? "Risk Off" : "Risk On"}
               </span>
               <br />
               {/* {hoveredTranche !== payload.length - 1 && (

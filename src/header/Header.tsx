@@ -14,9 +14,8 @@ import TransactionModal from "./subcomponents/TransactionModal";
 import TermsModal from "./subcomponents/TermsModal";
 import { Market } from "../types";
 import { Burger } from "./svgs/burger";
-import { WaterFallDark } from "./svgs";
-import yego from "./pngs/y3go.png";
 import { Logout } from "./svgs/logout";
+import Arbitrum from "./svgs/arbitrum";
 
 const formatAccountAddress = (address?: string | null) => {
   if (!address) return "";
@@ -138,7 +137,7 @@ function Header(props: Props) {
               }
             }}
           >
-            Markets
+            Vaults
           </Link>
         </div>
         <div className="menu-block-wrapper">
@@ -234,7 +233,7 @@ function Header(props: Props) {
               }
             >
               <div className="dropdown-triangle">▼</div>
-              {network === Network.AETH && "AETH"}
+              {network === Network.AETH && <Arbitrum />}
             </div>
             {dropdownOpen
               ? network === Network.AETH

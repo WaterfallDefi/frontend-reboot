@@ -9,15 +9,15 @@ const BIG_TEN = new BigNumber(10);
 
 const getTotalTVL = async () => {
   let _tvl = BIG_ZERO;
-  const result: any = await ky
-    .get(
-      "https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD&ids=binancecoin,avalanche-2,wrapped-avax,wbnb"
-    )
-    .json();
+  // const result: any = await ky
+  //   .get(
+  //     "https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD&ids=binancecoin,avalanche-2,wrapped-avax,wbnb"
+  //   )
+  //   .json();
 
-  const avaxPrice = result["wrapped-avax"]?.usd;
+  // const avaxPrice = result["wrapped-avax"]?.usd;
 
-  const wbnbPrice = result["wbnb"]?.usd;
+  // const wbnbPrice = result["wbnb"]?.usd;
 
   await Promise.all(
     MarketList.map(async (_mkt, __id) => {
@@ -53,13 +53,13 @@ const getTotalTVL = async () => {
         //changed to 6 for USDC
         const _autoPrincipal = _t ? new BigNumber(_t.autoPrincipal?._hex).dividedBy(BIG_TEN.pow(6)) : BIG_ZERO;
         let rate = 1;
-        if (_mkt?.assets?.includes("WAVAX")) {
-          rate = avaxPrice;
-        }
+        // if (_mkt?.assets?.includes("WAVAX")) {
+        //   rate = avaxPrice;
+        // }
 
-        if (_mkt?.assets?.includes("WBNB")) {
-          rate = wbnbPrice;
-        }
+        // if (_mkt?.assets?.includes("WBNB")) {
+        //   rate = wbnbPrice;
+        // }
         // const _principalInUSD = _principal.times(rate);
         const _principalInUSD = _mkt?.autorollImplemented
           ? _principal.plus(_autoPrincipal).times(rate)

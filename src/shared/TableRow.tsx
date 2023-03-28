@@ -74,7 +74,7 @@ function TableRow(props: Props) {
             elements.push(
               <div className="col apr_markets" key={key}>
                 <div className="tranche-apr">
-                  <span>{columnData.tranchesApr.length === 2 ? "Fixed" : "Senior"}</span>
+                  <span>{columnData.tranchesApr.length === 2 ? "Risk-Off Vault" : "Senior"}</span>
                   <div>
                     <span
                       style={{
@@ -86,7 +86,7 @@ function TableRow(props: Props) {
                   </div>
                 </div>
                 <div className="tranche-apr">
-                  <span>{columnData.tranchesApr.length === 2 ? "Degen" : "Mezzanine"}</span>
+                  <span>{columnData.tranchesApr.length === 2 ? "Risk-On Vault" : "Mezzanine"}</span>
                   <div>
                     <span
                       style={{
