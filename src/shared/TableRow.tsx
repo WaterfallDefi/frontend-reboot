@@ -90,7 +90,7 @@ function TableRow(props: Props) {
                   <div>
                     <span
                       style={{
-                        color: "#76bb68",
+                        color: "rgb(80, 144, 234)",
                       }}
                     >
                       {numeral(columnData.tranchesApr[1]).format("0,0.[00]")} %

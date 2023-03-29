@@ -67,9 +67,9 @@
   }
 
   &.dark {
-    background: $base-color-dark;
+    background: linear-gradient(to right, rgb(10, 41, 75) 0%, rgb(34, 30, 48) 50%, rgb(31, 33, 40) 100%);
     .dash-banner {
-      background-color: $layer-color-dark;
+      background-color: $layer-color-dark-2;
       color: $text-color-dark;
 
       .content {

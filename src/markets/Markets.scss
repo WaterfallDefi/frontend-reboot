@@ -24,9 +24,6 @@
   .row-wrapper {
     .table-row {
       @include table-row;
-      &:hover {
-        border: 2px solid $highlight-color;
-      }
     }
   }
 
@@ -61,7 +58,7 @@
         margin-left: 24px;
         padding: 12px 24px;
         border-radius: 8px;
-        background-color: $base-color;
+        background-color: $layer-color-dark-2;
         @media screen and (max-width: 1024px) {
           flex-wrap: wrap;
           width: 100%;
@@ -111,12 +108,12 @@
               align-items: center;
 
               &.selected {
-                background-color: $text-color-lightest;
+                background-color: $layer-color-dark-2;
               }
 
               .coin {
-                height: 25px;
-                width: 25px;
+                height: 30px;
+                width: 30px;
                 background-size: cover;
                 background-repeat: no-repeat;
                 margin-right: 8px;
@@ -132,7 +129,7 @@
       margin: 24px 0 0 24px;
       padding: 24px;
       border-radius: 8px;
-      background: $layer-color-dark;
+      background: $layer-color-dark-2;
       display: flex;
       @media screen and (max-width: 1024px) {
         width: auto;
@@ -426,7 +423,7 @@
     .row-wrapper {
       .table-row {
         &:hover {
-          border: 2px solid $highlight-color;
+          background-color: $layer-color-dark;
         }
       }
     }
@@ -434,7 +431,7 @@
     .market-detail-wrapper {
       .information {
         .block-wrapper {
-          background-color: $layer-color-dark;
+          background-color: $layer-color-dark-2;
           .info-block {
             .blocktext {
               color: $text-color-dark;
@@ -527,14 +524,14 @@
         .chart-block {
           color: $text-color-dark;
           .background {
-            background: $layer-color-dark;
+            background: $layer-color-dark-2;
 
             h3 {
               margin-left: 12px;
             }
           }
           .selected {
-            background: $text-color-lightest;
+            background: $layer-color-dark;
           }
 
           .farm-key {

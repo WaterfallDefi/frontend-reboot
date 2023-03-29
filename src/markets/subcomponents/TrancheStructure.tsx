@@ -18,7 +18,7 @@ const COLORS: { [key: string]: string } = {
   Mezzanine: "#00A14A",
   Junior: "#0066FF",
   RiskOff: "#FCB500",
-  RiskOn: "#76bb68",
+  RiskOn: "rgb(80, 144, 234)",
 };
 
 function TrancheStructure(props: Props) {
