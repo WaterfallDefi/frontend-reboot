@@ -85,11 +85,11 @@ $font-size-xl: 30px;
     flex-grow: 1;
     color: $text-color-dark;
 
-    &.Fixed {
+    &.Risk-Off {
       color: rgba(252, 182, 4, 0.8);
     }
-    &.Degen {
-      color: #76bb68;
+    &.Risk-On {
+      color: $highlight-color;
     }
 
     .mob-title {
