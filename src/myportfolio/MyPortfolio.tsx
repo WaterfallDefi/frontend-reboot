@@ -257,7 +257,7 @@ function MyPortfolio(props: Props) {
             {
               data: {
                 portfolio: "YEGO Finance",
-                tranche: "Fixed",
+                tranche: "Risk-Off",
                 APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
                 userInvestPending:
                   positions.length > 0
@@ -282,7 +282,7 @@ function MyPortfolio(props: Props) {
             {
               data: {
                 portfolio: "YEGO Finance",
-                tranche: "Degen",
+                tranche: "Risk-On",
                 APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
                 userInvestPending:
                   positions.length > 0
@@ -412,7 +412,7 @@ function MyPortfolio(props: Props) {
                     : "-") === "0"
                 }
               >
-                Redeem Fixed
+                Redeem Risk-Off
               </button>
               <button
                 className="claim-redep-btn"
@@ -431,7 +431,7 @@ function MyPortfolio(props: Props) {
                     : "-") === "0"
                 }
               >
-                Redeem Degen
+                Redeem Risk-On
               </button>
               <button
                 className="claim-redep-btn"
