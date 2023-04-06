@@ -137,13 +137,7 @@ function ClaimRedeposit(props: Props) {
     });
     try {
       if (!balance) return;
-      await onQueueWithdraw;
-      setModal({
-        state: Modal.Txn,
-        txn: undefined,
-        status: "SUCCESS",
-        message: "Queue Withdrawal Success",
-      });
+      onQueueWithdraw();
     } catch (e) {
       console.error(e);
       setModal({

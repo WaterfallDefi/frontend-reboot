@@ -22,6 +22,7 @@ const useWithdraw = (
 
   const handleQueueWithdraw = useCallback(async () => {
     const tx = await trancheContract.queueWithdrawal();
+    console.log("inside handle queue withdraw callback");
     const receipt = await tx.wait();
     if (receipt.status === 1) {
       setModal({
