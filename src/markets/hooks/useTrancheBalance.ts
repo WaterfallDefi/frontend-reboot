@@ -36,9 +36,11 @@ export const useTrancheBalance = (network: Network, trancheMasterAddress: string
       const result = await trancheMasterContract.balanceOf(account);
 
       setResult({
-        balance: result.balance ? new BigNumber(result.balance?._hex).dividedBy(BIG_TEN.pow(18)).toString() : "0",
+        //changed to 6 decimal places instead of 18 for USDC
+        balance: result.balance ? new BigNumber(result.balance?._hex).dividedBy(BIG_TEN.pow(6)).toString() : "0",
         //don't need invested for now
-        invested: result.invested ? new BigNumber(result.invested?._hex).dividedBy(BIG_TEN.pow(18)).toString() : "0",
+        //changed to 6 decimal places instead of 18 for USDC
+        invested: result.invested ? new BigNumber(result.invested?._hex).dividedBy(BIG_TEN.pow(6)).toString() : "0",
       });
     } catch (e) {
       console.error(e);
