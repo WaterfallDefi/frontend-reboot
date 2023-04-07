@@ -4,8 +4,6 @@ import { VictoryPie } from "victory";
 type StrategyFarm = {
   farmName: string;
   shares: number;
-  sAddress: string;
-  apiKey: string;
 };
 
 type Props = {
@@ -18,7 +16,7 @@ function PortfolioChart(props: Props) {
   const { strategyFarms } = props;
 
   const [data, setData] = useState<StrategyFarm[]>([
-    { farmName: "", shares: 1, sAddress: "", apiKey: "" },
+    { farmName: "", shares: 1 },
     ...strategyFarms.map((f) => {
       return { ...f, shares: 0 };
     }),
@@ -29,7 +27,7 @@ function PortfolioChart(props: Props) {
 
   useEffect(() => {
     if (!loaded) {
-      setData([{ farmName: "", shares: 0, sAddress: "", apiKey: "" }, ...strategyFarms]);
+      setData([{ farmName: "", shares: 0 }, ...strategyFarms]);
       setLoaded(true);
     }
   }, [strategyFarms, loaded]);

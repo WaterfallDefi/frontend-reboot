@@ -32,8 +32,6 @@ export const MarketList: Market[] = [
     nextTime: "",
     address: Arbitrum_TrancheMaster[NETWORK],
     abi: LSD_Finance.abi,
-    masterChefAbi: MasterChef.abi, //we don't need this anymore
-    masterChefAddress: LSD_MasterWTF[NETWORK], //we don't need this anymore
     pools: [],
     depositAssetAddress: USDC_Address_Arbitrum[NETWORK],
     depositAssetAddresses: [],
@@ -41,14 +39,10 @@ export const MarketList: Market[] = [
       {
         farmName: "Farm 1",
         shares: 0.5,
-        sAddress: LSD_BenqiStrat[NETWORK], //we don't need this anymore
-        apiKey: "qi_dai", // we don't need this anymore
       },
       {
         farmName: "Farm 2",
         shares: 0.5,
-        sAddress: LSD_TraderJoeStrat[NETWORK], // we don't need this anymore
-        apiKey: "joe_dai", // we don't need this anymore
       },
     ],
     strategyBlurbs: ["YEGO Finance"],

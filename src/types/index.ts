@@ -59,9 +59,6 @@ export interface Market {
   address: string;
   abi: any;
   contract?: Contract;
-  masterChefAddress: string;
-  masterChefAbi: any;
-  masterChefContract?: Contract;
   pools: string[];
   totalAllocPoints?: string;
   depositAssetAddress: string;
@@ -81,8 +78,6 @@ export type Token = {
 export type StrategyFarm = {
   farmName: string;
   shares: number;
-  sAddress: string;
-  apiKey: string;
 };
 
 export type UserInvest = {

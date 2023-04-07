@@ -85,15 +85,14 @@ export const getMarkets = async (payload: Market[]) => {
         ];
         const calls = [...callsBasic, ...tokenCalls];
 
-        //we don't need this anymore
-        let farmsAPY = 0;
-        if (farmsAPYResult) {
-          for (let i = 0; i < marketData.strategyFarms.length; i++) {
-            const sf = marketData.strategyFarms[i];
-            if (!sf || !sf.shares || !farmsAPYResult[sf.apiKey]) continue;
-            farmsAPY += sf.shares * farmsAPYResult[sf.apiKey];
-          }
-        }
+        // let farmsAPY = 0;
+        // if (farmsAPYResult) {
+        //   for (let i = 0; i < marketData.strategyFarms.length; i++) {
+        //     const sf = marketData.strategyFarms[i];
+        //     if (!sf || !sf.shares || !farmsAPYResult[sf.apiKey]) continue;
+        //     farmsAPY += sf.shares * farmsAPYResult[sf.apiKey];
+        //   }
+        // }
 
         const [active, duration, actualStartAt, cycle, ...tranchesAndTokens] = await multicall(
           marketData.network,
@@ -111,16 +110,16 @@ export const getMarkets = async (payload: Market[]) => {
         let tvl = BIG_ZERO;
         let totalTarget = BIG_ZERO;
         // let expectedAPY = new BigNumber("210000000000000000").dividedBy(BIG_TEN.pow(18));
-        let expectedAPY = new BigNumber(farmsAPY);
+        // let expectedAPY = new BigNumber(farmsAPY);
 
-        expectedAPY = expectedAPY.plus(new BigNumber(1));
+        // expectedAPY = expectedAPY.plus(new BigNumber(1));
         const tranches: Tranche[] = [];
         const decimals = marketData.assets[0] === "USDC" ? 6 : 18;
         _tranches.forEach((_t: any, _i: number) => {
           const _target = new BigNumber(_t.target?._hex).dividedBy(BIG_TEN.pow(decimals));
           totalTarget = totalTarget.plus(_target);
         });
-        totalTarget = totalTarget.times(expectedAPY);
+        // totalTarget = totalTarget.times(expectedAPY);
         _tranches.forEach((_t: any, _i: number) => {
           const _principal = _t ? new BigNumber(_t.principal?._hex).dividedBy(BIG_TEN.pow(decimals)) : BIG_ZERO;
           const _autoPrincipal = _t ? new BigNumber(_t.autoPrincipal?._hex).dividedBy(BIG_TEN.pow(decimals)) : BIG_ZERO;
@@ -167,15 +166,15 @@ export const getMarkets = async (payload: Market[]) => {
           tvl: tvl.toString(),
           cycle: cycle.toString(),
         };
-        const _masterchefAddress = marketData.masterChefAddress;
-        const poolCalls = [];
-        for (let i = 0; i < marketData.trancheCount; i++) {
-          poolCalls.push({
-            address: _masterchefAddress,
-            name: "poolInfo",
-            params: [i],
-          });
-        }
+        // const _masterchefAddress = marketData.masterChefAddress;
+        // const poolCalls = [];
+        // for (let i = 0; i < marketData.trancheCount; i++) {
+        //   poolCalls.push({
+        //     address: _masterchefAddress,
+        //     name: "poolInfo",
+        //     params: [i],
+        //   });
+        // }
         // const calls2 = [
         //   {
         //     address: _masterchefAddress,
