@@ -55,6 +55,8 @@ function WaterfallDefi() {
   const [APYData, setAPYData] = useState<APYData[]>([]);
   const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
 
+  //hello
+
   useEffect(() => {
     setModal({
       state: Modal.Terms,
