@@ -32,7 +32,7 @@ export const MarketList: Market[] = [
     status: "",
     nextTime: "",
     address: Arbitrum_TrancheMaster[NETWORK],
-    abi: LSD_Finance.abi,
+    abi: YEGO_Finance.abi,
     pools: [],
     depositAssetAddress: USDC_Address_Arbitrum[NETWORK],
     depositAssetAddresses: [],
