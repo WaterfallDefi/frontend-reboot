@@ -75,6 +75,7 @@ function WaterfallDefi() {
   useEffect(() => {
     const fetchSubgraph = async () => {
       const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(MarketList[0].subgraphURL);
+      if (subgraphQuery.data === undefined) return;
       const data: APYData[] = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
         y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
