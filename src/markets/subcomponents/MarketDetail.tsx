@@ -164,7 +164,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
       </div>
       {account ? (
         <ClaimRedeposit
-          // network={selectedMarket.network}
+          network={selectedMarket.network}
           selectedMarket={selectedMarket}
           // coingeckoPrices={coingeckoPrices}
           selectedDepositAssetIndex={selectedDepositAssetIndex}

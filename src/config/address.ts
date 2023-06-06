@@ -32,10 +32,11 @@ export const LSD_BenqiStrat: { [network: string]: string } = {
 };
 
 //YEGO Arbitrum Test Contract
+//updated 6/6
 export const Arbitrum_TrancheMaster: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x25ff690d84e6cca753BF4814F9Bf3C834b1f3344",
+  [NETWORKS.MAINNET]: "0x5787C5DD64861fAbf886A565e55dfd25b7E9D94d",
 };
 
 export const Arbitrum_Ethereum_DepositAddress: { [network: string]: string } = {

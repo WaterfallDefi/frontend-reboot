@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import React, { useEffect, useState } from "react";
 import { Market } from "../../types";
-import { Modal, ModalProps } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useWithdraw from "../hooks/useWithdraw";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
@@ -11,9 +11,10 @@ import Arrow from "../svgs/Arrow";
 import { usePositions } from "../../myportfolio/hooks/usePositions";
 import { MarketList } from "../../config/markets";
 import useRedeemDirect from "../hooks/useRedeemDirect";
+import { useFarmTokenPendingRewards } from "../hooks/useFarmTokenPendingReward";
 
 type Props = {
-  // network: Network;
+  network: Network;
   selectedMarket: Market;
   // coingeckoPrices: any;
   selectedDepositAssetIndex: number;
@@ -32,7 +33,7 @@ const formatBigNumber2HexString = (bn: BigNumber) => {
 
 function ClaimRedeposit(props: Props) {
   const {
-    // network,
+    network,
     selectedMarket,
     // coingeckoPrices,
     selectedDepositAssetIndex,
@@ -45,6 +46,11 @@ function ClaimRedeposit(props: Props) {
 
   const [withdrawalQueued, setWithdrawalQueued] = useState(false);
   const [withdrawalQueuedPending, setWithdrawalQueuedPending] = useState(true);
+
+  const { rewards, fetchRewards } = useFarmTokenPendingRewards(
+    network,
+    selectedMarket.strategyFarms.map((sf, i) => sf.farmTokenContractAddress)
+  );
 
   const positions = usePositions(MarketList);
 
@@ -286,6 +292,14 @@ function ClaimRedeposit(props: Props) {
             Withdraw
           </button>
         </div>
+      </div>
+      <div className="pocket rewardsWithdrawable">
+        <div className="label extrapadding">Rewards Withdrawable</div>
+        {rewards.map((r, i) => (
+          <div>
+            {selectedMarket.strategyFarms[i].farmName} : {r}
+          </div>
+        ))}
       </div>
     </div>
   );
