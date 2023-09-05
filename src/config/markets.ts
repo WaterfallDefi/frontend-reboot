@@ -1,5 +1,6 @@
 import {
   Arbitrum_Ethereum_DepositAddress,
+  Arbitrum_Rewards_Contract,
   Arbitrum_TrancheMaster,
   LSD_BenqiStrat,
   LSD_MasterWTF,
@@ -8,6 +9,7 @@ import {
 } from "./address";
 import LSD_Finance from "./abis/LSD_Finance.json";
 import YEGO_Finance from "./abis/YEGO_Finance.json";
+import YEGO_RewardTokens from "./abis/YEGO_RewardTokens.json";
 import MasterChef from "./abis/MasterChef.json";
 import { Market, NETWORKS } from "../types";
 
@@ -48,6 +50,8 @@ export const MarketList: Market[] = [
         farmTokenContractAddress: "0x29fD85019646c942285c939A654EFe9adD0F50ac",
       },
     ],
+    rewardsContract: Arbitrum_Rewards_Contract[NETWORK],
+    rewardsContractAbi: YEGO_RewardTokens.abi,
     strategyBlurbs: ["YEGO Finance"],
     subgraphURL: "https://apiarbitrum.yego.finance/subgraphs/name/yego/arbit-usdc",
   },

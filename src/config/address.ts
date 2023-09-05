@@ -50,6 +50,12 @@ export const USDC_Address_Arbitrum: { [network: string]: string } = {
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
 };
+//YEGO Reward Tokens contract
+export const Arbitrum_Rewards_Contract: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xAbf195B75df20c4D46Dcbe54812dEcacA5421048",
+};
 
 //utility addresses
 export const BUSDAddress: { [network: string]: string } = {

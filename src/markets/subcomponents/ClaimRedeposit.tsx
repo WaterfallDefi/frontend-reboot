@@ -12,6 +12,7 @@ import { usePositions } from "../../myportfolio/hooks/usePositions";
 import { MarketList } from "../../config/markets";
 import useRedeemDirect from "../hooks/useRedeemDirect";
 import { useFarmTokenPendingRewards } from "../hooks/useFarmTokenPendingReward";
+import useClaimRewards from "../hooks/useClaimRewards";
 
 type Props = {
   network: Network;
@@ -78,6 +79,14 @@ function ClaimRedeposit(props: Props) {
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
+    setModal,
+    setMarkets
+  );
+
+  const { onClaimRewards } = useClaimRewards(
+    selectedMarket.network,
+    selectedMarket.rewardsContract,
+    selectedMarket.rewardsContractAbi,
     setModal,
     setMarkets
   );
@@ -182,6 +191,28 @@ function ClaimRedeposit(props: Props) {
         txn: undefined,
         status: "REJECTED",
         message: "Redeem Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const claimRewards = async (rewardsTokenAddress: string) => {
+    try {
+      await onClaimRewards(rewardsTokenAddress);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Claim Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Claim Failed ",
       });
     } finally {
       // setWithdrawAllLoading(false);
@@ -301,7 +332,11 @@ function ClaimRedeposit(props: Props) {
               {selectedMarket.strategyFarms[i].farmName} : {r}
             </span>
             {/* reward withdrawal only available for stargate rn */}
-            {selectedMarket.strategyFarms[i].farmName === "Stargate" && <button>WITHDRAW</button>}
+            {selectedMarket.strategyFarms[i].farmName === "Stargate" && (
+              <button onClick={() => claimRewards(selectedMarket.strategyFarms[i].farmTokenContractAddress)}>
+                WITHDRAW
+              </button>
+            )}
           </div>
         ))}
       </div>

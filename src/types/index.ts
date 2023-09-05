@@ -69,6 +69,10 @@ export interface Market {
   strategyBlurbs: string[];
   subgraphURL: string;
   isRetired?: boolean;
+  //NEW - rewards contract address
+  rewardsContract: string;
+  //NEW - rewards contract abi
+  rewardsContractAbi: any;
 }
 export type Token = {
   addr: string;
