@@ -23,7 +23,7 @@ const invest = async (
   if (multicurrencyIdx === -1) {
     //lsd finance: investDirectPending instead of investDirect
     //sept 2023: smart contract code change, revert to investDirect
-    tx = await contract.investDirect(_amount, selectTrancheIdx);
+    tx = await contract.investDirect(_amount, selectTrancheIdx, _amount);
   } else {
     const _amountArray: BigNumber[] = [];
     for (let index = 0; index < multicurrencyTokenCount; index++) {
