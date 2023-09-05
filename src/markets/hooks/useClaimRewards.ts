@@ -6,7 +6,8 @@ import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 
 const useClaimRewards = (
   network: Network,
-  rewardsTokensAddress: string,
+  rewardsTokensContractAddress: string,
+  rewardsTokenAddress: string, //this should probably be an array of addresses when we can handle more than just stargate tokens
   abi: any, //too many different types of abis (autoroll, avax, multicurrency) this ensures accuracy,
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>,
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>
@@ -16,30 +17,29 @@ const useClaimRewards = (
   const signer = getSigner();
 
   const rewardsTokensContract = useMemo(
-    () => getContract(abi, rewardsTokensAddress, network, signer),
-    [abi, rewardsTokensAddress, network, signer]
+    () => getContract(abi, rewardsTokensContractAddress, network, signer),
+    [abi, rewardsTokensContractAddress, network, signer]
   );
 
   const handleClaimRewards = useCallback(async () => {
-    //it's not this
-    // const tx = await rewardsTokensContract.queueWithdrawal();
-    // const receipt = await tx.wait();
-    // if (receipt.status === 1) {
-    //   setModal({
-    //     state: Modal.Txn,
-    //     txn: tx.hash,
-    //     status: "COMPLETED",
-    //     message: "Queue Withdrawal Success",
-    //   });
-    // } else {
-    //   setModal({
-    //     state: Modal.Txn,
-    //     txn: tx.hash,
-    //     status: "REVERTED",
-    //     message: "Queue Withdrawal Failed",
-    //   });
-    // }
-  }, [rewardsTokensContract, setModal]);
+    const tx = await rewardsTokensContract.claimRewards([rewardsTokenAddress]);
+    const receipt = await tx.wait();
+    if (receipt.status === 1) {
+      setModal({
+        state: Modal.Txn,
+        txn: tx.hash,
+        status: "COMPLETED",
+        message: "Claim Rewards Success",
+      });
+    } else {
+      setModal({
+        state: Modal.Txn,
+        txn: tx.hash,
+        status: "REVERTED",
+        message: "Claim Rewards Failed",
+      });
+    }
+  }, [rewardsTokensContract, rewardsTokenAddress, setModal]);
 
   return { onClaimRewards: handleClaimRewards };
 };
