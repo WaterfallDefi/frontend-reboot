@@ -32,7 +32,7 @@ const invest = async (
     _amountArray[multicurrencyIdx] = BigNumber.from(_amount);
     //lsd finance: investDirectPending instead of investDirect
     //sept 2023: smart contract code change, revert to investDirect
-    tx = await contract.investDirect(selectTrancheIdx, _amountArray, _amountArray);
+    tx = await contract.investDirect(_amountArray, selectTrancheIdx, _amountArray);
   }
 
   setModal({
