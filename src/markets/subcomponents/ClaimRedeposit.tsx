@@ -297,7 +297,11 @@ function ClaimRedeposit(props: Props) {
         <div className="label extrapadding">Rewards Withdrawable</div>
         {rewards.map((r, i) => (
           <div className="rtn-amt">
-            {selectedMarket.strategyFarms[i].farmName} : {r}
+            <span>
+              {selectedMarket.strategyFarms[i].farmName} : {r}
+            </span>
+            {/* reward withdrawal only available for stargate rn */}
+            {selectedMarket.strategyFarms[i].farmName === "Stargate" && <button>WITHDRAW</button>}
           </div>
         ))}
       </div>
