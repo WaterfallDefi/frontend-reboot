@@ -8,9 +8,9 @@ import BigNumber from "bignumber.js";
 import numeral from "numeral";
 import useUserInfo from "../hooks/useUserInfo";
 import Arrow from "../svgs/Arrow";
-import { usePositions } from "../../myportfolio/hooks/usePositions";
-import { MarketList } from "../../config/markets";
-import useRedeemDirect from "../hooks/useRedeemDirect";
+// import { usePositions } from "../../myportfolio/hooks/usePositions";
+// import { MarketList } from "../../config/markets";
+// import useRedeemDirect from "../hooks/useRedeemDirect";
 import { useFarmTokenPendingRewards } from "../hooks/useFarmTokenPendingReward";
 import useClaimRewards from "../hooks/useClaimRewards";
 
@@ -53,19 +53,19 @@ function ClaimRedeposit(props: Props) {
     selectedMarket.strategyFarms.map((sf, i) => sf.farmTokenContractAddress)
   );
 
-  const positions = usePositions(MarketList);
+  // const positions = usePositions(MarketList);
 
   //changed to 6 digits for USDC
-  const fixedPendingEntry =
-    positions.length > 0
-      ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format("0,0.[000000]")
-      : "-";
+  // const fixedPendingEntry =
+  //   positions.length > 0
+  //     ? numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format("0,0.[000000]")
+  //     : "-";
 
   //changed to 6 digits for USDC
-  const degenPendingEntry =
-    positions.length > 0
-      ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format("0,0.[000000]")
-      : "-";
+  // const degenPendingEntry =
+  //   positions.length > 0
+  //     ? numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format("0,0.[000000]")
+  //     : "-";
 
   const { onWithdraw, onQueueWithdraw } = useWithdraw(
     selectedMarket.network,
@@ -75,13 +75,13 @@ function ClaimRedeposit(props: Props) {
     setMarkets
   );
 
-  const { onRedeemDirect } = useRedeemDirect(
-    selectedMarket.network,
-    selectedMarket.address,
-    selectedMarket.abi,
-    setModal,
-    setMarkets
-  );
+  // const { onRedeemDirect } = useRedeemDirect(
+  //   selectedMarket.network,
+  //   selectedMarket.address,
+  //   selectedMarket.abi,
+  //   setModal,
+  //   setMarkets
+  // );
 
   const { onClaimRewards } = useClaimRewards(
     selectedMarket.network,
@@ -166,36 +166,36 @@ function ClaimRedeposit(props: Props) {
     }
   };
 
-  const redeemPending = async (trancheId: number) => {
-    // setWithdrawAllLoading(true);
+  // const redeemPending = async (trancheId: number) => {
+  //   // setWithdrawAllLoading(true);
 
-    setModal({
-      state: Modal.Txn,
-      txn: undefined,
-      status: "PENDING",
-      message: "Redeeming Assets Pending Cycle Entry",
-    });
-    try {
-      if (!balance) return;
-      await onRedeemDirect(trancheId);
-      setModal({
-        state: Modal.Txn,
-        txn: undefined,
-        status: "SUCCESS",
-        message: "Redeem Success",
-      });
-    } catch (e) {
-      console.error(e);
-      setModal({
-        state: Modal.Txn,
-        txn: undefined,
-        status: "REJECTED",
-        message: "Redeem Failed ",
-      });
-    } finally {
-      // setWithdrawAllLoading(false);
-    }
-  };
+  //   setModal({
+  //     state: Modal.Txn,
+  //     txn: undefined,
+  //     status: "PENDING",
+  //     message: "Redeeming Assets Pending Cycle Entry",
+  //   });
+  //   try {
+  //     if (!balance) return;
+  //     await onRedeemDirect(trancheId);
+  //     setModal({
+  //       state: Modal.Txn,
+  //       txn: undefined,
+  //       status: "SUCCESS",
+  //       message: "Redeem Success",
+  //     });
+  //   } catch (e) {
+  //     console.error(e);
+  //     setModal({
+  //       state: Modal.Txn,
+  //       txn: undefined,
+  //       status: "REJECTED",
+  //       message: "Redeem Failed ",
+  //     });
+  //   } finally {
+  //     // setWithdrawAllLoading(false);
+  //   }
+  // };
 
   const claimRewards = async (rewardsTokenAddress: string) => {
     try {
@@ -221,7 +221,7 @@ function ClaimRedeposit(props: Props) {
 
   return (
     <div className="claim-redeposit">
-      <div className="pocket assetsPendingEntry">
+      {/* <div className="pocket assetsPendingEntry">
         <div className="rtn-amt">
           {fixedPendingEntry} {selectedMarket.assets[selectedDepositAssetIndex]}{" "}
           <span className="label">(Risk-Off) </span>
@@ -256,7 +256,7 @@ function ClaimRedeposit(props: Props) {
 
       <div className="arrowFlip">
         <Arrow />
-      </div>
+      </div> */}
       <div className="pocket assetsInvested">
         <div className="rtn-amt">
           {!selectedMarket.isMulticurrency
