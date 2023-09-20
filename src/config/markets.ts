@@ -53,6 +53,6 @@ export const MarketList: Market[] = [
     rewardsContract: Arbitrum_Rewards_Contract[NETWORK],
     rewardsContractAbi: YEGO_RewardTokens.abi,
     strategyBlurbs: ["YEGO Finance"],
-    subgraphURL: "https://apiarbitrum.yego.finance/subgraphs/name/yego/arbit-usdc",
+    subgraphURL: "https://apiarbitrum.yego.finance/subgraphs/name/yego/arb-usdc",
   },
 ];
