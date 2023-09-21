@@ -1,7 +1,7 @@
 import "./Markets.scss";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-
+import BigNumber from "bignumber.js";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 
@@ -14,6 +14,8 @@ import { APYData, ModalProps, Mode, Network } from "../WaterfallDefi";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { switchNetwork } from "../header/Header";
 import Dashboard from "../dashboard_v2/Dashboard_v2";
+
+const BIG_TEN = new BigNumber(10);
 
 type Props = {
   mode: Mode;
@@ -103,8 +105,11 @@ function Markets(props: Props) {
       ? markets
           .map((m: Market) => {
             const tranchesApr = latestAPYs.map((_t, _i) => {
-              return String(_t?.y);
+              console.log(_t?.y);
+              return new BigNumber(String(_t?.y)).dividedBy(BIG_TEN.pow(9)).toString();
             });
+
+            console.log(tranchesApr);
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 

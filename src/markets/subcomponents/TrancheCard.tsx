@@ -4,6 +4,8 @@ import React from "react";
 import { Market, Tranche } from "../../types";
 import { APYData } from "../../WaterfallDefi";
 
+const BIG_TEN = new BigNumber(10);
+
 type Props = {
   selectedMarket: Market;
   selectedDepositAssetIndex: number;
@@ -73,7 +75,8 @@ function TrancheCard(props: Props) {
         <div className="checkbox" />
       </div>
       <div className={"apr " + type}>
-        APR {latestAPY ? latestAPY.y : "-"}%{/* {isHide ? <span>+ {wtfApr}%</span> : null} */}
+        APR {latestAPY ? new BigNumber(String(latestAPY.y)).dividedBy(BIG_TEN.pow(9)).toString() : "-"}%
+        {/* {isHide ? <span>+ {wtfApr}%</span> : null} */}
       </div>
       <div className="risk-text">{riskText}</div>
       <div className="separator" />
