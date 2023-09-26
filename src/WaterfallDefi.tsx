@@ -78,7 +78,7 @@ function WaterfallDefi() {
       if (subgraphQuery.data === undefined) return;
       const data: APYData[] = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
-        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(8)).times(100).toNumber(),
+        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(18)).toNumber(),
         x: new Date(Number(tc.endAt) * 1000),
       }));
       setAPYData(data);

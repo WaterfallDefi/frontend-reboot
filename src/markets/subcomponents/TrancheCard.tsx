@@ -75,7 +75,7 @@ function TrancheCard(props: Props) {
         <div className="checkbox" />
       </div>
       <div className={"apr " + type}>
-        APR {latestAPY ? new BigNumber(String(latestAPY.y)).dividedBy(BIG_TEN.pow(9)).toString() : "-"}%
+        APR {latestAPY ? formatTVL(new BigNumber(String(latestAPY.y)).multipliedBy(BIG_TEN.pow(2)).toString()) : "-"}%
         {/* {isHide ? <span>+ {wtfApr}%</span> : null} */}
       </div>
       <div className="risk-text">{riskText}</div>

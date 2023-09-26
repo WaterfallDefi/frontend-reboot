@@ -105,11 +105,8 @@ function Markets(props: Props) {
       ? markets
           .map((m: Market) => {
             const tranchesApr = latestAPYs.map((_t, _i) => {
-              console.log(_t?.y);
-              return new BigNumber(String(_t?.y)).dividedBy(BIG_TEN.pow(9)).toString();
+              return new BigNumber(String(_t?.y)).multipliedBy(BIG_TEN.pow(2)).toString();
             });
-
-            console.log(tranchesApr);
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
