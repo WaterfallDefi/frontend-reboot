@@ -12,6 +12,7 @@ import { fetchSingleSubgraphCycleQuery } from "./myportfolio/hooks/useSubgraphQu
 import MyPortfolio from "./myportfolio/MyPortfolio";
 // import Stake from "./stake/Stake";
 import { Market } from "./types";
+import { useDefiLlamaAPRs } from "./hooks/useCoingeckoPrices";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -55,7 +56,7 @@ function WaterfallDefi() {
   const [APYData, setAPYData] = useState<APYData[]>([]);
   const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
 
-  //hello
+  const defiLlamaAPRs: any = useDefiLlamaAPRs(); //rename file!!!
 
   useEffect(() => {
     setModal({
@@ -78,7 +79,7 @@ function WaterfallDefi() {
       if (subgraphQuery.data === undefined) return;
       const data: APYData[] = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
-        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(18)).toNumber(),
+        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(16)).toNumber(),
         x: new Date(Number(tc.endAt) * 1000),
       }));
       setAPYData(data);
@@ -129,6 +130,7 @@ function WaterfallDefi() {
                 setMarkets={setMarkets}
                 setModal={setModal}
                 APYData={APYData}
+                defiLlamaAPRs={defiLlamaAPRs}
                 latestAPYs={latestAPYs}
               />,
               <MyPortfolio

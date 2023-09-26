@@ -272,6 +272,11 @@
               width: 100%;
             }
 
+            .flex-charts {
+              display: flex;
+              flex-direction: column;
+            }
+
             .hoverPrice {
               position: absolute;
               left: 12px;

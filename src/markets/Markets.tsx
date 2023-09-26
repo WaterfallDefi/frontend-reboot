@@ -7,7 +7,7 @@ import { Web3Provider } from "@ethersproject/providers";
 
 import numeral from "numeral";
 
-import { useCoingeckoPrices } from "../hooks/useCoingeckoPrices";
+import { useDefiLlamaAPRs } from "../hooks/useCoingeckoPrices";
 import TableRow from "../shared/TableRow";
 import { Market } from "../types";
 import { APYData, ModalProps, Mode, Network } from "../WaterfallDefi";
@@ -26,6 +26,7 @@ type Props = {
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   APYData: APYData[];
+  defiLlamaAPRs: any;
   latestAPYs: (APYData | undefined)[];
 };
 
@@ -62,6 +63,7 @@ function Markets(props: Props) {
     setMarkets,
     setModal,
     APYData,
+    defiLlamaAPRs,
     latestAPYs,
   } = props;
 
@@ -73,7 +75,6 @@ function Markets(props: Props) {
   const [sortAsc, setSortAsc] = useState<boolean>(true);
 
   // const { price: wtfPrice } = useWTFPriceLP();
-  // const coingeckoPrices: CoingeckoPrices = useCoingeckoPrices();
 
   //we are using markets as a network switch reset indicator, if flipped to undefined
   useEffect(() => {
@@ -105,7 +106,7 @@ function Markets(props: Props) {
       ? markets
           .map((m: Market) => {
             const tranchesApr = latestAPYs.map((_t, _i) => {
-              return new BigNumber(String(_t?.y)).multipliedBy(BIG_TEN.pow(2)).toString();
+              return new BigNumber(String(_t?.y)).toString();
             });
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
@@ -214,6 +215,7 @@ function Markets(props: Props) {
           setModal={setModal}
           setMarkets={setMarkets}
           APYData={APYData}
+          defiLlamaAPRs={defiLlamaAPRs}
           latestAPYs={latestAPYs}
         />
       ) : null}

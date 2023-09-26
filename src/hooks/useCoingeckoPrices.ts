@@ -1,24 +1,22 @@
 import ky from "ky";
 import { useEffect, useState } from "react";
 
-const getCoingeckoPrices = async () => {
+const getDefiLlamaStargateAPRs = async () => {
   const result = await ky
-    .get(
-      "https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD&ids=binancecoin,avalanche-2,wrapped-avax,wbnb"
-    )
+    .get("https://yields.llama.fi/chart/c24d9138-51aa-48f4-a445-7f33bf7bf5fb")
     .json()
     .then((res: any) => res);
   return result;
 };
 
-export const useCoingeckoPrices = () => {
+export const useDefiLlamaAPRs = () => {
   const [prices, setPrices] = useState({});
 
   //   const { slowRefresh } = useRefresh();
   useEffect(() => {
     const fetchBalance = async () => {
-      const _prices = await getCoingeckoPrices();
-      setPrices(_prices);
+      const _prices = await getDefiLlamaStargateAPRs();
+      setPrices({ stargate: _prices });
     };
     fetchBalance();
   }, []);

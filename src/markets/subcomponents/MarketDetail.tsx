@@ -22,6 +22,7 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   APYData: APYData[];
+  defiLlamaAPRs: any;
   latestAPYs: (APYData | undefined)[];
 };
 
@@ -41,6 +42,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     setModal,
     setMarkets,
     APYData,
+    defiLlamaAPRs,
     latestAPYs,
   } = props;
 
@@ -155,7 +157,11 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           <div className="background left-br right-br">
             <h3>Historical Performance</h3>
             {APYData ? (
-              <StrategyChart data={APYData} trancheCount={selectedMarket.trancheCount} />
+              <StrategyChart
+                APYdata={APYData}
+                defiLlamaAPRs={defiLlamaAPRs}
+                trancheCount={selectedMarket.trancheCount}
+              />
             ) : (
               <div>Loading...</div>
             )}
