@@ -123,6 +123,13 @@
     },
     {
       "inputs": [],
+      "name": "PERCENTAGE_SCALE",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "TIMELOCK_ROLE",
       "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
       "stateMutability": "view",
@@ -140,16 +147,6 @@
       "name": "actualStartAt",
       "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        { "internalType": "uint256", "name": "fee", "type": "uint256" },
-        { "internalType": "bool", "name": "principalFee", "type": "bool" }
-      ],
-      "name": "add",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -206,14 +203,14 @@
     },
     {
       "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-      "name": "farmTokenPools",
+      "name": "farmTokens",
       "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-      "name": "farmTokens",
+      "inputs": [],
+      "name": "farmTokensPool",
       "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
@@ -223,11 +220,12 @@
         { "internalType": "address[]", "name": "_coreAndWNative", "type": "address[]" },
         { "internalType": "address", "name": "_currency", "type": "address" },
         { "internalType": "address[]", "name": "_farmTokens", "type": "address[]" },
-        { "internalType": "address[]", "name": "_farmTokenPools", "type": "address[]" },
+        { "internalType": "address", "name": "_farmTokensPool", "type": "address" },
         { "internalType": "address", "name": "_strategy", "type": "address" },
         { "internalType": "address", "name": "_staker", "type": "address" },
         { "internalType": "address", "name": "_devAddress", "type": "address" },
         { "internalType": "uint256", "name": "_duration", "type": "uint256" },
+        { "internalType": "uint256", "name": "_investmentWindow", "type": "uint256" },
         {
           "components": [
             { "internalType": "uint256", "name": "fee", "type": "uint256" },
@@ -262,13 +260,10 @@
       "type": "function"
     },
     {
-      "inputs": [
-        { "internalType": "uint256", "name": "amountIn", "type": "uint256" },
-        { "internalType": "uint256", "name": "tid", "type": "uint256" }
-      ],
-      "name": "investDirectPending",
-      "outputs": [],
-      "stateMutability": "payable",
+      "inputs": [],
+      "name": "investmentWindow",
+      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+      "stateMutability": "view",
       "type": "function"
     },
     { "inputs": [], "name": "pause", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
@@ -301,16 +296,10 @@
       "stateMutability": "nonpayable",
       "type": "function"
     },
+    { "inputs": [], "name": "redeemDirect", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
     {
       "inputs": [{ "internalType": "uint256", "name": "tid", "type": "uint256" }],
-      "name": "redeemDirect",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [{ "internalType": "uint256", "name": "tid", "type": "uint256" }],
-      "name": "redeemDirectPending",
+      "name": "redeemDirectPartial",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -348,6 +337,13 @@
       "type": "function"
     },
     {
+      "inputs": [{ "internalType": "uint256", "name": "_window", "type": "uint256" }],
+      "name": "setInvestmentWindow",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [{ "internalType": "address", "name": "_staker", "type": "address" }],
       "name": "setStaker",
       "outputs": [],
@@ -380,7 +376,10 @@
     {
       "inputs": [
         { "internalType": "address[]", "name": "_strategies", "type": "address[]" },
-        { "internalType": "uint256[]", "name": "_ratios", "type": "uint256[]" }
+        { "internalType": "uint256[]", "name": "_ratios", "type": "uint256[]" },
+        { "internalType": "address[]", "name": "toAdd", "type": "address[]" },
+        { "internalType": "address[]", "name": "toPause", "type": "address[]" },
+        { "internalType": "address[]", "name": "newTokens", "type": "address[]" }
       ],
       "name": "stopAndUpdateStrategiesAndRatios",
       "outputs": [],
@@ -462,8 +461,7 @@
       "name": "userInvest",
       "outputs": [
         { "internalType": "uint256", "name": "cycle", "type": "uint256" },
-        { "internalType": "uint256", "name": "principal", "type": "uint256" },
-        { "internalType": "bool", "name": "rebalanced", "type": "bool" }
+        { "internalType": "uint256", "name": "principal", "type": "uint256" }
       ],
       "stateMutability": "view",
       "type": "function"
