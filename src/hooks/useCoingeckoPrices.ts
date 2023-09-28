@@ -9,17 +9,28 @@ const getDefiLlamaStargateAPRs = async () => {
   return result;
 };
 
+const getDefiLlamaHopAPRs = async () => {
+  const result = await ky
+    .get("https://yields.llama.fi/chart/9d114ae5-34df-4fa8-bdc0-62cca61f51a9")
+    .json()
+    .then((res: any) => res);
+  return result;
+};
+
 export const useDefiLlamaAPRs = () => {
-  const [prices, setPrices] = useState({});
+  const [stgAPRs, setStgAPRs] = useState({});
+  const [hopAPRs, setHopAPRs] = useState({});
 
   //   const { slowRefresh } = useRefresh();
   useEffect(() => {
     const fetchBalance = async () => {
-      const _prices = await getDefiLlamaStargateAPRs();
-      setPrices({ stargate: _prices });
+      const _stg = await getDefiLlamaStargateAPRs();
+      const _hop = await getDefiLlamaHopAPRs();
+      setStgAPRs({ stargate: _stg });
+      setHopAPRs({ hop: _hop });
     };
     fetchBalance();
   }, []);
 
-  return prices;
+  return { ...stgAPRs, ...hopAPRs };
 };
