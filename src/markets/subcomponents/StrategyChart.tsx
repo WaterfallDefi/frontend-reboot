@@ -8,6 +8,7 @@ type Props = {
   defiLlamaAPRs: any;
   tranches: Tranche[];
   trancheCount: number;
+  toggleChartTranche: number;
   // color: string;
 };
 
@@ -18,7 +19,7 @@ type Props = {
 // }
 
 const StrategyChart = (props: Props) => {
-  const { APYdata, defiLlamaAPRs, tranches, trancheCount } = props;
+  const { APYdata, defiLlamaAPRs, tranches, trancheCount, toggleChartTranche } = props;
   const [hoverYield, setHoverYield] = useState<string>();
 
   const [juniorBaseAPRs, setJuniorBaseAPRs] = useState<any[]>([]);
@@ -160,7 +161,7 @@ const StrategyChart = (props: Props) => {
 
         {
           /* senior tranche base */
-          APYdata && (
+          APYdata && toggleChartTranche === 0 && (
             <VictoryLine
               data={APYdata.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
               style={{ data: { stroke: "#fcb500" } }}
@@ -169,11 +170,13 @@ const StrategyChart = (props: Props) => {
         }
         {
           //senior reward APRs
-          APYdata && <VictoryLine data={seniorRewardAPRs} style={{ data: { stroke: "#ffffff" } }} />
+          APYdata && toggleChartTranche === 0 && (
+            <VictoryLine data={seniorRewardAPRs} style={{ data: { stroke: "#ffffff" } }} />
+          )
         }
         {
           //senior total APRs
-          APYdata && (
+          APYdata && toggleChartTranche === 0 && (
             <VictoryLine
               data={totalAPRs.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
               style={{ data: { stroke: "#0066ff" } }}
@@ -183,16 +186,20 @@ const StrategyChart = (props: Props) => {
 
         {
           // junior tranche base
-          APYdata && <VictoryLine data={juniorBaseAPRs} style={{ data: { stroke: "#fcb500" } }} />
+          APYdata && toggleChartTranche === 1 && (
+            <VictoryLine data={juniorBaseAPRs} style={{ data: { stroke: "#fcb500" } }} />
+          )
         }
 
         {
           //junior reward APRs
-          APYdata && <VictoryLine data={juniorRewardAPRs} style={{ data: { stroke: "#ffffff" } }} />
+          APYdata && toggleChartTranche === 1 && (
+            <VictoryLine data={juniorRewardAPRs} style={{ data: { stroke: "#ffffff" } }} />
+          )
         }
         {
           //junior total APRs
-          APYdata && (
+          APYdata && toggleChartTranche === 1 && (
             <VictoryLine
               data={totalAPRs.filter((tc) => tc.id.slice(0, 2) === "1-" && tc.y !== 0)}
               style={{ data: { stroke: "#0066ff" } }}

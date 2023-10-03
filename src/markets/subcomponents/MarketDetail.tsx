@@ -52,6 +52,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   // const [stratChartColor, setStratChartColor] = useState<string>(COLORS[0]);
   const [simulDeposit, setSimulDeposit] = useState(false);
 
+  const [toggleChartTranche, setToggleChartTranche] = useState<number>(0);
+
   //NEW SHIT: invested is assets in cycle => queueWithdrawal
   const { balance, invested, fetchBalance } = useTrancheBalance(
     selectedMarket.network,
@@ -152,7 +154,11 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
             <PortfolioChart strategyFarms={selectedMarket.strategyFarms} />
           </div>
         </div>
-        <TrancheStructure tranches={selectedMarket.tranches} totalTranchesTarget={selectedMarket.totalTranchesTarget} />
+        <TrancheStructure
+          tranches={selectedMarket.tranches}
+          totalTranchesTarget={selectedMarket.totalTranchesTarget}
+          setToggleChartTranche={setToggleChartTranche}
+        />
         <div className="chart-block historical-performance">
           <div className="background left-br right-br">
             <h3>Historical Performance</h3>
@@ -162,6 +168,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 defiLlamaAPRs={defiLlamaAPRs}
                 tranches={selectedMarket.tranches}
                 trancheCount={selectedMarket.trancheCount}
+                toggleChartTranche={toggleChartTranche}
               />
             ) : (
               <div>Loading...</div>
