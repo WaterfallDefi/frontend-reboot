@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from "victory";
+import { Tranche } from "../../types";
 
 type Props = {
   APYdata: any[] | undefined;
   defiLlamaAPRs: any;
+  tranches: Tranche[];
   trancheCount: number;
   // color: string;
 };
@@ -16,59 +18,90 @@ type Props = {
 // }
 
 const StrategyChart = (props: Props) => {
-  const { APYdata, defiLlamaAPRs, trancheCount } = props;
+  const { APYdata, defiLlamaAPRs, tranches, trancheCount } = props;
   const [hoverYield, setHoverYield] = useState<string>();
+  const [totalAPRs, setTotalAPRs] = useState<any[]>([]);
+  const [rewardAPRs, setRewardAPRs] = useState<any[]>([]);
 
-  const baseAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
-    const aave = defiLlamaAPRs.aave.data.filter((aave: any) => {
-      const aaveTimestamp = new Date(aave.timestamp);
-      const stgTimestamp = new Date(stg.timestamp);
+  // const xys = defiLlamaAPRs.stargate.data.map((rt: any) => {
+  //   return { y: rt.apyReward, x: rt.timestamp };
+  // });
 
-      return (
-        aaveTimestamp.getDate() === stgTimestamp.getDate() &&
-        aaveTimestamp.getMonth() === stgTimestamp.getMonth() &&
-        aaveTimestamp.getFullYear() === stgTimestamp.getFullYear()
+  useEffect(() => {
+    if (APYdata) {
+      const stargateAPRsOnThatDate = APYdata.map((d) =>
+        defiLlamaAPRs.stargate.data.filter((a: any) => {
+          const date = new Date(a.timestamp);
+          return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
+        })
       );
-    })[0];
-    return {
-      x: stg.timestamp,
-      y: stg.apy + (aave ? aave.apy : 0) / 2,
-    };
-  });
-
-  const rewardAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
-    const aave = defiLlamaAPRs.aave.data.filter((aave: any) => {
-      const aaveTimestamp = new Date(aave.timestamp);
-      const stgTimestamp = new Date(stg.timestamp);
-
-      return (
-        aaveTimestamp.getDate() === stgTimestamp.getDate() &&
-        aaveTimestamp.getMonth() === stgTimestamp.getMonth() &&
-        aaveTimestamp.getFullYear() === stgTimestamp.getFullYear()
+      const aaveAPRsOnThatDate = APYdata.map((d) =>
+        defiLlamaAPRs.aave.data.filter((a: any) => {
+          const date = new Date(a.timestamp);
+          return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
+        })
       );
-    })[0];
-    return {
-      x: stg.timestamp,
-      y: stg.apyReward + (aave ? aave.apyReward : 0) / 2,
-    };
-  });
 
-  const totalAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
-    const aave = defiLlamaAPRs.aave.data.filter((aave: any) => {
-      const aaveTimestamp = new Date(aave.timestamp);
-      const stgTimestamp = new Date(stg.timestamp);
+      const sum = Number(tranches[0]?.autoPrincipal) + Number(tranches[1]?.autoPrincipal);
 
-      return (
-        aaveTimestamp.getDate() === stgTimestamp.getDate() &&
-        aaveTimestamp.getMonth() === stgTimestamp.getMonth() &&
-        aaveTimestamp.getFullYear() === stgTimestamp.getFullYear()
-      );
-    })[0];
-    return {
-      x: stg.timestamp,
-      y: stg.apy + (aave ? aave.apy : 0) / 2 + (stg.apyReward + (aave ? aave.apyReward : 0) / 2),
-    };
-  });
+      const thicknesses = [
+        Number(tranches[0]?.autoPrincipal) / Number(sum),
+        Number(tranches[1]?.autoPrincipal) / Number(sum),
+      ];
+
+      const juniorBaseAPR = APYdata.filter((tc) => tc.id.slice(0, 2) === "1-").map((d, i) => {
+        const baseAPR = (stargateAPRsOnThatDate[i][0].apy + aaveAPRsOnThatDate[i][0].apy) / 2;
+        const seniorTrancheAPRs = APYdata.filter((tc: any) => tc.id.slice(0, 2) === "0-");
+        return {
+          id: d.id,
+          x: d.x,
+          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
+          y: (baseAPR - seniorTrancheAPRs[i] * thicknesses[0]) / thicknesses[1],
+        };
+      });
+
+      const seniorRewardAPRs = APYdata.map((d, i) => {
+        return {
+          id: d.id,
+          x: d.x,
+          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
+          y:
+            ((stargateAPRsOnThatDate[i][0].apyReward + aaveAPRsOnThatDate[i][0].apyReward) / 2) * thicknesses[0] < 0.5
+              ? thicknesses[0]
+              : 0.5,
+        };
+      });
+
+      const juniorRewardAPRs = APYdata.map((d, i) => {
+        return {
+          id: d.id,
+          x: d.x,
+          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
+          // * 1 = replace with * seniorTrancheThickness IF seniorTrancheThickness is less than 50, but just 50 if more
+          y:
+            (stargateAPRsOnThatDate[i][0].apyReward + aaveAPRsOnThatDate[i][0].apyReward) / 2 -
+              ((stargateAPRsOnThatDate[i][0].apyReward + aaveAPRsOnThatDate[i][0].apyReward) / 2) * thicknesses[0] <
+            0.5
+              ? thicknesses[0]
+              : 0.5,
+        };
+      });
+
+      const totalRewards = APYdata.map((d, i) => {
+        const reward = seniorRewardAPRs.filter((rew) => rew.id === d.id);
+        const juniorReward = juniorRewardAPRs.filter((rew) => rew.id === d.id);
+        return {
+          id: d.id,
+          x: d.x,
+          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
+          y: d.y + reward.length > 0 ? reward[0] : juniorReward[0],
+        };
+      });
+
+      setRewardAPRs(seniorRewardAPRs);
+      setTotalAPRs(totalRewards);
+    }
+  }, [APYdata, defiLlamaAPRs, tranches]);
 
   return (
     <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>
@@ -116,9 +149,23 @@ const StrategyChart = (props: Props) => {
             },
           }}
         />
-        <VictoryLine data={baseAPRs} style={{ data: { stroke: "#ffffff" } }} />
-        <VictoryLine data={rewardAPRs} style={{ data: { stroke: "#0066ff" } }} />
-        <VictoryLine data={totalAPRs} style={{ data: { stroke: "#1010ff" } }} />
+
+        {
+          /* senior tranche base */
+          APYdata && (
+            <VictoryLine
+              data={APYdata.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
+              style={{ data: { stroke: "#fcb500" } }}
+            />
+          )
+        }
+        {rewardAPRs.length > 0 && <VictoryLine data={rewardAPRs} style={{ data: { stroke: "#ffffff" } }} />}
+        {/* {APYdata && trancheCount === 3 && (
+          <VictoryLine
+            data={APYdata.filter((tc) => tc.id.slice(0, 2) === "2-" && tc.y !== 0)}
+            style={{ data: { stroke: "#0066ff" } }}
+          />
+        )} */}
       </VictoryChart>
     </div>
   );
