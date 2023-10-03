@@ -72,6 +72,7 @@ function MyPortfolio(props: Props) {
   // const { price: wtfPrice } = useWTFPriceLP();
 
   const positions = usePositions(markets);
+  console.log("positions");
   console.log(positions);
   //positions return array tuple: [0: Fixed Tranche Invested, 1: Variable Tranche Invested, 2: Fixed Tranche Pending, 3: Variable Tranche Pending]
 

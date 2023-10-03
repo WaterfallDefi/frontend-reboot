@@ -18,41 +18,57 @@ type Props = {
 const StrategyChart = (props: Props) => {
   const { APYdata, defiLlamaAPRs, trancheCount } = props;
   const [hoverYield, setHoverYield] = useState<string>();
-  const [totalAPRs, setTotalAPRs] = useState<any[]>([]);
-  const [rewardAPRs, setRewardAPRs] = useState<any[]>([]);
 
-  // const xys = defiLlamaAPRs.stargate.data.map((rt: any) => {
-  //   return { y: rt.apyReward, x: rt.timestamp };
-  // });
+  const baseAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
+    const hop = defiLlamaAPRs.hop.data.filter((hop: any) => {
+      const hopTimestamp = new Date(hop.timestamp);
+      const stgTimestamp = new Date(stg.timestamp);
 
-  useEffect(() => {
-    if (APYdata) {
-      const stargateAPRsOnThatDate = APYdata.map((d) =>
-        defiLlamaAPRs.stargate.data.filter((a: any) => {
-          const date = new Date(a.timestamp);
-          return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
-        })
+      return (
+        hopTimestamp.getDate() === stgTimestamp.getDate() &&
+        hopTimestamp.getMonth() === stgTimestamp.getMonth() &&
+        hopTimestamp.getFullYear() === stgTimestamp.getFullYear()
       );
-      const hopAPRsOnThatDate = APYdata.map((d) =>
-        defiLlamaAPRs.stargate.data.filter((a: any) => {
-          const date = new Date(a.timestamp);
-          return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
-        })
+    })[0];
+    return {
+      x: stg.timestamp,
+      y: stg.apy + (hop ? hop.apy : 0) / 2,
+    };
+  });
+
+  const rewardAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
+    const hop = defiLlamaAPRs.hop.data.filter((hop: any) => {
+      const hopTimestamp = new Date(hop.timestamp);
+      const stgTimestamp = new Date(stg.timestamp);
+
+      return (
+        hopTimestamp.getDate() === stgTimestamp.getDate() &&
+        hopTimestamp.getMonth() === stgTimestamp.getMonth() &&
+        hopTimestamp.getFullYear() === stgTimestamp.getFullYear()
       );
-      const rewardAPRsOnly = APYdata.map((d, i) => {
-        return { id: d.id, x: d.x, y: stargateAPRsOnThatDate[i][0].apyReward + hopAPRsOnThatDate[i][0].apyReward };
-      });
-      const usdcPlusRewardAPRs = APYdata.map((d, i) => {
-        return {
-          id: d.id,
-          x: d.x,
-          y: d.y + stargateAPRsOnThatDate[i][0].apyReward + hopAPRsOnThatDate[i][0].apyReward,
-        };
-      });
-      setRewardAPRs(rewardAPRsOnly);
-      setTotalAPRs(usdcPlusRewardAPRs);
-    }
-  }, [APYdata, defiLlamaAPRs]);
+    })[0];
+    return {
+      x: stg.timestamp,
+      y: stg.apyReward + (hop ? hop.apyReward : 0) / 2,
+    };
+  });
+
+  const totalAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
+    const hop = defiLlamaAPRs.hop.data.filter((hop: any) => {
+      const hopTimestamp = new Date(hop.timestamp);
+      const stgTimestamp = new Date(stg.timestamp);
+
+      return (
+        hopTimestamp.getDate() === stgTimestamp.getDate() &&
+        hopTimestamp.getMonth() === stgTimestamp.getMonth() &&
+        hopTimestamp.getFullYear() === stgTimestamp.getFullYear()
+      );
+    })[0];
+    return {
+      x: stg.timestamp,
+      y: stg.apy + (hop ? hop.apy : 0) / 2 + (stg.apyReward + (hop ? hop.apyReward : 0) / 2),
+    };
+  });
 
   return (
     <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>
@@ -100,37 +116,9 @@ const StrategyChart = (props: Props) => {
             },
           }}
         />
-        {APYdata && (
-          <VictoryLine
-            data={APYdata.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
-            style={{ data: { stroke: "#fcb500" } }}
-          />
-        )}
-        {APYdata && (
-          <VictoryLine
-            data={APYdata.filter((tc) => tc.id.slice(0, 2) === "1-" && tc.y !== 0)}
-            style={{ data: { stroke: "#00a14a" } }}
-          />
-        )}
-        {totalAPRs && (
-          <VictoryLine
-            data={totalAPRs.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
-            style={{ data: { stroke: "#0066ff" } }}
-          />
-        )}
-        {totalAPRs && (
-          <VictoryLine
-            data={totalAPRs.filter((tc) => tc.id.slice(0, 2) === "1-" && tc.y !== 0)}
-            style={{ data: { stroke: "#ffffff" } }}
-          />
-        )}
-        {rewardAPRs.length > 0 && <VictoryLine data={rewardAPRs} style={{ data: { stroke: "#ffffff" } }} />}
-        {APYdata && trancheCount === 3 && (
-          <VictoryLine
-            data={APYdata.filter((tc) => tc.id.slice(0, 2) === "2-" && tc.y !== 0)}
-            style={{ data: { stroke: "#0066ff" } }}
-          />
-        )}
+        <VictoryLine data={baseAPRs} style={{ data: { stroke: "#ffffff" } }} />
+        <VictoryLine data={rewardAPRs} style={{ data: { stroke: "#0066ff" } }} />
+        <VictoryLine data={totalAPRs} style={{ data: { stroke: "#1010ff" } }} />
       </VictoryChart>
     </div>
   );
