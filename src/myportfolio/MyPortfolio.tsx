@@ -60,20 +60,19 @@ type Props = {
   //may need network yo
   mode: Mode;
   markets: Market[];
-  latestAPYs: (APYData | undefined)[];
+  latestSeniorAPY: APYData;
+  defiLlamaAPRs: any;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
-  const { mode, markets, latestAPYs, setModal, setMarkets } = props;
+  const { mode, markets, latestSeniorAPY, defiLlamaAPRs, setModal, setMarkets } = props;
   // const { account } = useWeb3React<Web3Provider>();
   // const { price: wtfPrice } = useWTFPriceLP();
 
   const positions = usePositions(markets);
-  console.log("positions");
-  console.log(positions);
   //positions return array tuple: [0: Fixed Tranche Invested, 1: Variable Tranche Invested, 2: Fixed Tranche Pending, 3: Variable Tranche Pending]
 
   //new shit
@@ -250,6 +249,51 @@ function MyPortfolio(props: Props) {
       // setWithdrawAllLoading(false);
     }
   };
+
+  //horrible hack but what can you do?
+  function calculateAPR(selectedMarket: Market) {
+    const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
+
+    const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {
+      const date = new Date(latestSeniorAPY.x);
+      const timestamp = new Date(d.timestamp);
+      return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+    });
+
+    const aaveAPROnThatDate = defiLlamaAPRs.aave.data.filter((d: any) => {
+      const date = new Date(latestSeniorAPY.x);
+      const timestamp = new Date(d.timestamp);
+      return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+    });
+
+    //unhardcode when we have more than one product
+    const sum = Number(selectedMarket.tranches[0]?.autoPrincipal) + Number(selectedMarket.tranches[1]?.autoPrincipal);
+
+    const thicknesses = [
+      Number(selectedMarket.tranches[0]?.autoPrincipal) / Number(sum),
+      Number(selectedMarket.tranches[1]?.autoPrincipal) / Number(sum),
+    ];
+
+    const juniorTrancheAPR =
+      (stargateAPROnThatDate[0].apy + aaveAPROnThatDate[0].apy) / 2 -
+      (latestSeniorAPY.y * thicknesses[0]) / thicknesses[1];
+
+    //hardcoded: AAVE has no apyReward
+    const seniorRewardAPR = (stargateAPROnThatDate[0].apyReward / 2) * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+    const juniorRewardAPR =
+      (stargateAPROnThatDate[0].apyReward + aaveAPROnThatDate[0].apyReward) / 2 -
+      ((stargateAPROnThatDate[0].apyReward + aaveAPROnThatDate[0].apyReward) / 2) *
+        (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
+
+    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
+
+    return [seniorAPYData, juniorAPYData];
+  }
+
+  const latestAPYs = calculateAPR(MarketList[0]);
 
   //refine this later
   const usersInvestsPayload = useMemo(

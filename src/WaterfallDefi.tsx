@@ -54,7 +54,7 @@ function WaterfallDefi() {
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
   const [disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch] = useState<boolean>(false);
   const [APYData, setAPYData] = useState<APYData[]>([]);
-  const [latestAPYs, setLatestAPYs] = useState<(APYData | undefined)[]>([]);
+  const [latestSeniorAPY, setLatestSeniorAPY] = useState<APYData | undefined>();
 
   const defiLlamaAPRs: any = useDefiLlamaAPRs(); //rename file!!!
 
@@ -93,9 +93,10 @@ function WaterfallDefi() {
     //fixed tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
     _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop());
     //variable tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
-    _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
+    // _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
     //...junior tranche?? do we need??
-    setLatestAPYs(_latestAPY);
+
+    setLatestSeniorAPY(_latestAPY[0]);
   }, [APYData]);
 
   const layout = (elements: JSX.Element[], tutorial: boolean) => [
@@ -120,27 +121,36 @@ function WaterfallDefi() {
           path="/"
           element={layout(
             [
-              <Markets
-                key="markets"
-                mode={Mode.Dark}
-                network={network}
-                setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
-                setNetwork={setNetwork}
-                markets={markets}
-                setMarkets={setMarkets}
-                setModal={setModal}
-                APYData={APYData}
-                defiLlamaAPRs={defiLlamaAPRs}
-                latestAPYs={latestAPYs}
-              />,
-              <MyPortfolio
-                key="portfolio"
-                mode={Mode.Dark}
-                markets={markets ? markets : []}
-                latestAPYs={latestAPYs}
-                setModal={setModal}
-                setMarkets={setMarkets}
-              />,
+              latestSeniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave ? (
+                <Markets
+                  key="markets"
+                  mode={Mode.Dark}
+                  network={network}
+                  setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
+                  setNetwork={setNetwork}
+                  markets={markets}
+                  setMarkets={setMarkets}
+                  setModal={setModal}
+                  APYData={APYData}
+                  defiLlamaAPRs={defiLlamaAPRs}
+                  latestSeniorAPY={latestSeniorAPY}
+                />
+              ) : (
+                <div />
+              ),
+              latestSeniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave ? (
+                <MyPortfolio
+                  key="portfolio"
+                  mode={Mode.Dark}
+                  markets={markets ? markets : []}
+                  latestSeniorAPY={latestSeniorAPY}
+                  defiLlamaAPRs={defiLlamaAPRs}
+                  setModal={setModal}
+                  setMarkets={setMarkets}
+                />
+              ) : (
+                <div />
+              ),
             ],
             true
           )}

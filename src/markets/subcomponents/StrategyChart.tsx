@@ -115,10 +115,6 @@ const StrategyChart = (props: Props) => {
     }
   }, [APYdata, defiLlamaAPRs, tranches]);
 
-  console.log("SIGH!");
-  console.log(totalAPRs);
-  console.log(juniorRewardAPRs);
-
   return (
     <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>
       {hoverYield && (
