@@ -20,53 +20,53 @@ const StrategyChart = (props: Props) => {
   const [hoverYield, setHoverYield] = useState<string>();
 
   const baseAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
-    const hop = defiLlamaAPRs.hop.data.filter((hop: any) => {
-      const hopTimestamp = new Date(hop.timestamp);
+    const aave = defiLlamaAPRs.aave.data.filter((aave: any) => {
+      const aaveTimestamp = new Date(aave.timestamp);
       const stgTimestamp = new Date(stg.timestamp);
 
       return (
-        hopTimestamp.getDate() === stgTimestamp.getDate() &&
-        hopTimestamp.getMonth() === stgTimestamp.getMonth() &&
-        hopTimestamp.getFullYear() === stgTimestamp.getFullYear()
+        aaveTimestamp.getDate() === stgTimestamp.getDate() &&
+        aaveTimestamp.getMonth() === stgTimestamp.getMonth() &&
+        aaveTimestamp.getFullYear() === stgTimestamp.getFullYear()
       );
     })[0];
     return {
       x: stg.timestamp,
-      y: stg.apy + (hop ? hop.apy : 0) / 2,
+      y: stg.apy + (aave ? aave.apy : 0) / 2,
     };
   });
 
   const rewardAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
-    const hop = defiLlamaAPRs.hop.data.filter((hop: any) => {
-      const hopTimestamp = new Date(hop.timestamp);
+    const aave = defiLlamaAPRs.aave.data.filter((aave: any) => {
+      const aaveTimestamp = new Date(aave.timestamp);
       const stgTimestamp = new Date(stg.timestamp);
 
       return (
-        hopTimestamp.getDate() === stgTimestamp.getDate() &&
-        hopTimestamp.getMonth() === stgTimestamp.getMonth() &&
-        hopTimestamp.getFullYear() === stgTimestamp.getFullYear()
+        aaveTimestamp.getDate() === stgTimestamp.getDate() &&
+        aaveTimestamp.getMonth() === stgTimestamp.getMonth() &&
+        aaveTimestamp.getFullYear() === stgTimestamp.getFullYear()
       );
     })[0];
     return {
       x: stg.timestamp,
-      y: stg.apyReward + (hop ? hop.apyReward : 0) / 2,
+      y: stg.apyReward + (aave ? aave.apyReward : 0) / 2,
     };
   });
 
   const totalAPRs = defiLlamaAPRs.stargate.data.map((stg: any) => {
-    const hop = defiLlamaAPRs.hop.data.filter((hop: any) => {
-      const hopTimestamp = new Date(hop.timestamp);
+    const aave = defiLlamaAPRs.aave.data.filter((aave: any) => {
+      const aaveTimestamp = new Date(aave.timestamp);
       const stgTimestamp = new Date(stg.timestamp);
 
       return (
-        hopTimestamp.getDate() === stgTimestamp.getDate() &&
-        hopTimestamp.getMonth() === stgTimestamp.getMonth() &&
-        hopTimestamp.getFullYear() === stgTimestamp.getFullYear()
+        aaveTimestamp.getDate() === stgTimestamp.getDate() &&
+        aaveTimestamp.getMonth() === stgTimestamp.getMonth() &&
+        aaveTimestamp.getFullYear() === stgTimestamp.getFullYear()
       );
     })[0];
     return {
       x: stg.timestamp,
-      y: stg.apy + (hop ? hop.apy : 0) / 2 + (stg.apyReward + (hop ? hop.apyReward : 0) / 2),
+      y: stg.apy + (aave ? aave.apy : 0) / 2 + (stg.apyReward + (aave ? aave.apyReward : 0) / 2),
     };
   });
 

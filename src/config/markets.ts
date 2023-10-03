@@ -40,7 +40,7 @@ export const MarketList: Market[] = [
     depositAssetAddresses: [],
     strategyFarms: [
       {
-        farmName: "Hop Protocol",
+        farmName: "AAVE",
         shares: 0.5,
         farmTokenContractAddress: "0x18aEd529b28e3eAd5197280851810FD0a064A9cF",
       },
