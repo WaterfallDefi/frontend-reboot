@@ -28,6 +28,7 @@ export const useDefiLlamaAPRs = () => {
     const fetchBalance = async () => {
       const _stg = await getDefiLlamaStargateAPRs();
       const _aave = await getDefiLlamaAAVEAPRs();
+      console.log(_aave);
       setStgAPRs({ stargate: _stg });
       setAAVEAPRs({ aave: _aave });
     };

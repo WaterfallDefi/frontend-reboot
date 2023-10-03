@@ -99,18 +99,25 @@ const StrategyChart = (props: Props) => {
 
       const totalRewards = APYdata.map((d, i) => {
         const reward = seniorRewardAPRs.filter((rew) => rew.id === d.id);
+        const juniorBase = juniorBaseAPR.filter((rew) => rew.id === d.id); //USING USE EFFECT TEMPORARY STATE AND NOT THE HOOK!!!
         const juniorReward = juniorRewardAPRs.filter((rew) => rew.id === d.id);
         return {
           id: d.id,
           x: d.x,
           //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          y: d.y + (reward.length > 0 ? reward[0].y : juniorReward[0].y),
+          y:
+            (d.id.slice(0, 2) === "0-" ? d.y : juniorBase[0].y) +
+            (d.id.slice(0, 2) === "0-" ? reward[0].y : juniorReward[0].y),
         };
       });
 
       setTotalAPRs(totalRewards);
     }
   }, [APYdata, defiLlamaAPRs, tranches]);
+
+  console.log("SIGH!");
+  console.log(totalAPRs);
+  console.log(juniorRewardAPRs);
 
   return (
     <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>
@@ -163,7 +170,7 @@ const StrategyChart = (props: Props) => {
           /* senior tranche base */
           APYdata && toggleChartTranche === 0 && (
             <VictoryLine
-              data={APYdata.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
+              data={APYdata.filter((tc) => tc.id.slice(0, 2) === "0-")}
               style={{ data: { stroke: "#fcb500" } }}
             />
           )
