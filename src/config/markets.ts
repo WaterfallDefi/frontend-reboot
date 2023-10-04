@@ -7,7 +7,6 @@ import {
   LSD_TraderJoeStrat,
   USDC_Address_Arbitrum,
 } from "./address";
-import LSD_Finance from "./abis/LSD_Finance.json";
 import YEGO_Finance from "./abis/YEGO_Finance.json";
 import YEGO_RewardTokens from "./abis/YEGO_RewardTokens.json";
 import MasterChef from "./abis/MasterChef.json";
@@ -42,17 +41,19 @@ export const MarketList: Market[] = [
       {
         farmName: "AAVE",
         shares: 0.5,
+        dataId: "aave",
         farmTokenContractAddress: "0x18aEd529b28e3eAd5197280851810FD0a064A9cF",
       },
       {
         farmName: "Stargate",
         shares: 0.5,
+        dataId: "stargate",
         farmTokenContractAddress: "0x29fD85019646c942285c939A654EFe9adD0F50ac",
       },
     ],
     rewardsContract: Arbitrum_Rewards_Contract[NETWORK],
     rewardsContractAbi: YEGO_RewardTokens.abi,
     strategyBlurbs: ["YEGO Finance"],
-    subgraphURL: "https://apiarbitrum.yego.finance/subgraphs/name/yego/arb-usdc",
+    subgraphURL: "https://apiarbitrum.yego.finance/subgraphs/name/yego/usdc-arbitrum",
   },
 ];

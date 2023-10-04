@@ -125,19 +125,19 @@ function MyPortfolio(props: Props) {
     setMarkets
   );
 
-  const investPendingAgg = useMemo(
-    () =>
-      positions.length > 0
-        ? numeral(
-            new BigNumber(positions[0][2][0]._hex)
-              .plus(new BigNumber(positions[0][3][0]._hex))
-              //changed to 6 for USDC
-              .dividedBy(BIG_TEN.pow(6))
-              .toString()
-          ).format("0,0.[000000]")
-        : "-",
-    [positions]
-  );
+  // const investPendingAgg = useMemo(
+  //   () =>
+  //     positions.length > 0
+  //       ? numeral(
+  //           new BigNumber(positions[0][2][0]._hex)
+  //             .plus(new BigNumber(positions[0][3][0]._hex))
+  //             //changed to 6 for USDC
+  //             .dividedBy(BIG_TEN.pow(6))
+  //             .toString()
+  //         ).format("0,0.[000000]")
+  //       : "-",
+  //   [positions]
+  // );
 
   const investAgg = useMemo(
     () =>
@@ -305,13 +305,13 @@ function MyPortfolio(props: Props) {
                 portfolio: "YEGO Finance",
                 tranche: "Risk-Off",
                 APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
-                userInvestPending:
-                  positions.length > 0
-                    ? //changed to 6 for USDC
-                      numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
-                        "0,0.[000000]"
-                      )
-                    : "-",
+                // userInvestPending:
+                //   positions.length > 0
+                //     ? //changed to 6 for USDC
+                //       numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
+                //         "0,0.[000000]"
+                //       )
+                //     : "-",
                 nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
@@ -330,16 +330,16 @@ function MyPortfolio(props: Props) {
                 portfolio: "YEGO Finance",
                 tranche: "Risk-On",
                 APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
-                userInvestPending:
-                  positions.length > 0
-                    ? // numeral(
-                      //changed to 6 for USDC
-                      new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()
-                    : // )
-                      // .format(
-                      //     "0,0.[000000]"
-                      //   )
-                      "-",
+                // userInvestPending:
+                //   positions.length > 0
+                //     ? // numeral(
+                //       //changed to 6 for USDC
+                //       new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()
+                //     : // )
+                //       // .format(
+                //       //     "0,0.[000000]"
+                //       //   )
+                //       "-",
                 nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
@@ -361,7 +361,7 @@ function MyPortfolio(props: Props) {
                 portfolio: "YEGO Finance",
                 tranche: "Aggregate",
                 APY: "",
-                userInvestPending: investPendingAgg,
+                // userInvestPending: investPendingAgg,
                 nextCycle: dateToNextCycle,
                 userInvest: investAgg,
                 assetsPlusReturn: invested,
@@ -371,7 +371,7 @@ function MyPortfolio(props: Props) {
             },
           ].map((tr: any, i) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
         : undefined,
-    [latestAPYs, positions, balance, invested, investPendingAgg, investAgg, dateToNextCycle]
+    [latestAPYs, positions, balance, invested, investAgg, dateToNextCycle]
   );
 
   // const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -433,7 +433,7 @@ function MyPortfolio(props: Props) {
         ))}
       </div>
       {usersInvestsPayload ? (
-        Number(invested) === 0 && Number(balance) === 0 && Number(investPendingAgg) === 0 ? (
+        Number(invested) === 0 && Number(balance) === 0 ? (
           <div className="no-data">
             <span>No Positions</span>
           </div>
@@ -441,7 +441,7 @@ function MyPortfolio(props: Props) {
           [
             usersInvestsPayload,
             <div className="my-portfolio-buttons">
-              <button
+              {/* <button
                 className="claim-redep-btn"
                 onClick={() => {
                   redeemPending(0);
@@ -478,7 +478,7 @@ function MyPortfolio(props: Props) {
                 }
               >
                 Redeem Risk-On
-              </button>
+              </button> */}
               <button
                 className="claim-redep-btn"
                 onClick={() => {

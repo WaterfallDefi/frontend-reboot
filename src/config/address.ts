@@ -37,7 +37,8 @@ export const Arbitrum_TrancheMaster: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
   // [NETWORKS.MAINNET]: "0x5787C5DD64861fAbf886A565e55dfd25b7E9D94d",
-  [NETWORKS.MAINNET]: "0xD9B9B5D73E113b05623C3d5d31AeBE35F1e9FFB1",
+  // [NETWORKS.MAINNET]: "0xD9B9B5D73E113b05623C3d5d31AeBE35F1e9FFB1",
+  [NETWORKS.MAINNET]: "0x2F2B5cCb500dAd51972Ca91Dfe372f931F87856D",
 };
 
 export const Arbitrum_Ethereum_DepositAddress: { [network: string]: string } = {

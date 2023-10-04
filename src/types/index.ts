@@ -82,6 +82,7 @@ export type Token = {
 export type StrategyFarm = {
   farmName: string;
   shares: number;
+  dataId: string;
   farmTokenContractAddress: string;
 };
 

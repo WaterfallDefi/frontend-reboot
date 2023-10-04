@@ -21,6 +21,17 @@
     {
       "anonymous": false,
       "inputs": [
+        { "indexed": false, "internalType": "uint256", "name": "trancheId", "type": "uint256" },
+        { "indexed": false, "internalType": "uint256", "name": "cycle", "type": "uint256" },
+        { "indexed": false, "internalType": "address[]", "name": "farmTokens", "type": "address[]" },
+        { "indexed": false, "internalType": "uint256[]", "name": "farmTokensAmt", "type": "uint256[]" }
+      ],
+      "name": "FarmTokensData",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
         { "indexed": false, "internalType": "address", "name": "account", "type": "address" },
         { "indexed": false, "internalType": "uint256", "name": "tid", "type": "uint256" },
         { "indexed": false, "internalType": "uint256", "name": "cycle", "type": "uint256" },
@@ -289,13 +300,6 @@
       "type": "function"
     },
     { "inputs": [], "name": "queueWithdrawal", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
-    {
-      "inputs": [{ "internalType": "address[]", "name": "_strategyAddresses", "type": "address[]" }],
-      "name": "recoverFund",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
     { "inputs": [], "name": "redeemDirect", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
     {
       "inputs": [{ "internalType": "uint256", "name": "tid", "type": "uint256" }],
@@ -375,11 +379,11 @@
     { "inputs": [], "name": "stop", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
     {
       "inputs": [
-        { "internalType": "address[]", "name": "_strategies", "type": "address[]" },
-        { "internalType": "uint256[]", "name": "_ratios", "type": "uint256[]" },
+        { "internalType": "address[]", "name": "strategies", "type": "address[]" },
+        { "internalType": "uint256[]", "name": "ratios", "type": "uint256[]" },
         { "internalType": "address[]", "name": "toAdd", "type": "address[]" },
         { "internalType": "address[]", "name": "toPause", "type": "address[]" },
-        { "internalType": "address[]", "name": "newTokens", "type": "address[]" }
+        { "internalType": "address[]", "name": "updatedTokenList", "type": "address[]" }
       ],
       "name": "stopAndUpdateStrategiesAndRatios",
       "outputs": [],
@@ -402,7 +406,6 @@
       "outputs": [
         { "internalType": "uint256", "name": "principal", "type": "uint256" },
         { "internalType": "uint256", "name": "capital", "type": "uint256" },
-        { "internalType": "uint256", "name": "validPercent", "type": "uint256" },
         { "internalType": "uint256", "name": "rate", "type": "uint256" },
         { "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "internalType": "uint256", "name": "startAt", "type": "uint256" },
@@ -424,7 +427,6 @@
       "outputs": [
         { "internalType": "uint256", "name": "principal", "type": "uint256" },
         { "internalType": "uint256", "name": "autoPrincipal", "type": "uint256" },
-        { "internalType": "uint256", "name": "validPercent", "type": "uint256" },
         { "internalType": "uint256", "name": "fee", "type": "uint256" },
         { "internalType": "uint256", "name": "autoValid", "type": "uint256" },
         { "internalType": "bool", "name": "principalFee", "type": "bool" }
@@ -463,23 +465,6 @@
         { "internalType": "uint256", "name": "cycle", "type": "uint256" },
         { "internalType": "uint256", "name": "principal", "type": "uint256" }
       ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        { "internalType": "address", "name": "", "type": "address" },
-        { "internalType": "uint256", "name": "", "type": "uint256" }
-      ],
-      "name": "userInvestPending",
-      "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-      "name": "userInvestPendingAddressArr",
-      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
     },

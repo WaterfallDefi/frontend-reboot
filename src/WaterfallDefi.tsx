@@ -79,7 +79,7 @@ function WaterfallDefi() {
       if (subgraphQuery.data === undefined) return;
       const data: APYData[] = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
-        y: new BigNumber(tc.aprBeforeFee).dividedBy(BIG_TEN.pow(16)).toNumber(),
+        y: new BigNumber(tc.apr).dividedBy(BIG_TEN.pow(16)).toNumber(),
         x: new Date(Number(tc.endAt) * 1000),
       }));
       setAPYData(data);
@@ -95,6 +95,9 @@ function WaterfallDefi() {
     //variable tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
     // _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
     //...junior tranche?? do we need??
+
+    console.log("APY Data");
+    console.log(APYData);
 
     setLatestSeniorAPY(_latestAPY[0]);
   }, [APYData]);
@@ -113,6 +116,8 @@ function WaterfallDefi() {
     />,
     ...[elements],
   ];
+
+  console.log(latestSeniorAPY);
 
   return (
     <BrowserRouter>

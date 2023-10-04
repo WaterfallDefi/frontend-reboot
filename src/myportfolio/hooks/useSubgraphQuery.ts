@@ -18,7 +18,9 @@ export const getSubgraphCyclesOnly = async (subgraphURL: string) => {
               rate
               startAt
               endAt
-              aprBeforeFee
+              apr
+              farmTokens
+              farmTokensAmt
             }
           }`,
         },
