@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import React, { useEffect, useState } from "react";
-import { Market } from "../../types";
+import { Market, PORTFOLIO_STATUS } from "../../types";
 import { Modal, ModalProps, Network } from "../../WaterfallDefi";
 import useWithdraw from "../hooks/useWithdraw";
 import BigNumber from "bignumber.js";
@@ -13,6 +13,7 @@ import Arrow from "../svgs/Arrow";
 // import useRedeemDirect from "../hooks/useRedeemDirect";
 import { useFarmTokenPendingRewards } from "../hooks/useFarmTokenPendingReward";
 import useClaimRewards from "../hooks/useClaimRewards";
+import useRedeemDirect from "../hooks/useRedeemDirect";
 
 type Props = {
   network: Network;
@@ -75,13 +76,13 @@ function ClaimRedeposit(props: Props) {
     setMarkets
   );
 
-  // const { onRedeemDirect } = useRedeemDirect(
-  //   selectedMarket.network,
-  //   selectedMarket.address,
-  //   selectedMarket.abi,
-  //   setModal,
-  //   setMarkets
-  // );
+  const { onRedeemDirect } = useRedeemDirect(
+    selectedMarket.network,
+    selectedMarket.address,
+    selectedMarket.abi,
+    setModal,
+    setMarkets
+  );
 
   const { onClaimRewards } = useClaimRewards(
     selectedMarket.network,
@@ -166,36 +167,36 @@ function ClaimRedeposit(props: Props) {
     }
   };
 
-  // const redeemPending = async (trancheId: number) => {
-  //   // setWithdrawAllLoading(true);
+  const redeemDirect = async () => {
+    // setWithdrawAllLoading(true);
 
-  //   setModal({
-  //     state: Modal.Txn,
-  //     txn: undefined,
-  //     status: "PENDING",
-  //     message: "Redeeming Assets Pending Cycle Entry",
-  //   });
-  //   try {
-  //     if (!balance) return;
-  //     await onRedeemDirect(trancheId);
-  //     setModal({
-  //       state: Modal.Txn,
-  //       txn: undefined,
-  //       status: "SUCCESS",
-  //       message: "Redeem Success",
-  //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     setModal({
-  //       state: Modal.Txn,
-  //       txn: undefined,
-  //       status: "REJECTED",
-  //       message: "Redeem Failed ",
-  //     });
-  //   } finally {
-  //     // setWithdrawAllLoading(false);
-  //   }
-  // };
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Redeeming Assets Pending Cycle Entry",
+    });
+    try {
+      if (!balance) return;
+      await onRedeemDirect();
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Redeem Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Redeem Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
 
   const claimRewards = async (rewardsTokenAddress: string) => {
     try {
@@ -295,7 +296,19 @@ function ClaimRedeposit(props: Props) {
               )}{" "}
           {selectedMarket.assets[selectedDepositAssetIndex]}
         </div>
-        <div className="label extrapadding">Assets Pending Cycle Exit</div>
+        <div className="label extrapadding">Assets Invested</div>
+        <div className="buttons">
+          <button
+            className="claim-redep-btn"
+            onClick={() => {
+              redeemDirect();
+            }}
+            // loading={withdrawAllLoading}
+            disabled={selectedMarket.status === PORTFOLIO_STATUS.ACTIVE || !withdrawalQueued}
+          >
+            Redeem Direct
+          </button>
+        </div>
       </div>
       <div className="arrowFlip">
         <Arrow />

@@ -91,7 +91,7 @@ function PortfolioFold(props: Props) {
   const redeemDirect = async (i: number) => {
     setRedeemLoading(true);
     try {
-      const result = await onRedeemDirect(i);
+      const result = await onRedeemDirect();
       setModal({
         state: Modal.Txn,
         txn: result.hash,

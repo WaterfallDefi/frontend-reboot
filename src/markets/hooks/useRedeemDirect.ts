@@ -14,25 +14,22 @@ const useRedeemDirect = (
 
   const contract = getContract(abi, trancheMasterAddress, network, signer);
 
-  const handleRedeemDirect = useCallback(
-    async (i: number) => {
-      const tx = await contract.redeemDirectPending(i);
-      const receipt = await tx.wait();
-      setMarkets(undefined);
+  const handleRedeemDirect = useCallback(async () => {
+    const tx = await contract.redeemDirect();
+    const receipt = await tx.wait();
+    setMarkets(undefined);
 
-      if (receipt.status === 1) {
-        setModal({
-          state: Modal.Txn,
-          txn: tx.hash,
-          status: "COMPLETED",
-          message: "Deposit Success",
-        });
-      }
+    if (receipt.status === 1) {
+      setModal({
+        state: Modal.Txn,
+        txn: tx.hash,
+        status: "COMPLETED",
+        message: "Deposit Success",
+      });
+    }
 
-      return receipt.status;
-    },
-    [contract, setMarkets, setModal]
-  );
+    return receipt.status;
+  }, [contract, setMarkets, setModal]);
 
   return { onRedeemDirect: handleRedeemDirect };
 };
