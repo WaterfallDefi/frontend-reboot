@@ -109,12 +109,13 @@ function Markets(props: Props) {
           .map((m: Market) => {
             const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
 
-            const APROnThatDate = m.strategyFarms.map((sf) =>
-              defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-                const date = new Date(latestSeniorAPY.x);
-                const timestamp = new Date(d.timestamp);
-                return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-              })
+            const APROnThatDate = m.strategyFarms.map(
+              (sf) =>
+                defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
+                  const date = new Date(latestSeniorAPY.x);
+                  const timestamp = new Date(d.timestamp);
+                  return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+                })[0]
             );
 
             // const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {
@@ -226,12 +227,13 @@ function Markets(props: Props) {
   function calculateAPR(selectedMarket: Market) {
     const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
 
-    const APROnThatDate = selectedMarket.strategyFarms.map((sf) =>
-      defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-        const date = new Date(latestSeniorAPY.x);
-        const timestamp = new Date(d.timestamp);
-        return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-      })
+    const APROnThatDate = selectedMarket.strategyFarms.map(
+      (sf) =>
+        defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
+          const date = new Date(latestSeniorAPY.x);
+          const timestamp = new Date(d.timestamp);
+          return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+        })[0]
     );
 
     // const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {

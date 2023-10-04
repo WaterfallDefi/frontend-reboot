@@ -96,9 +96,6 @@ function WaterfallDefi() {
     // _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
     //...junior tranche?? do we need??
 
-    console.log("APY Data");
-    console.log(APYData);
-
     setLatestSeniorAPY(_latestAPY[0]);
   }, [APYData]);
 
@@ -118,6 +115,7 @@ function WaterfallDefi() {
   ];
 
   console.log(latestSeniorAPY);
+  console.log(defiLlamaAPRs);
 
   return (
     <BrowserRouter>
