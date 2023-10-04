@@ -111,7 +111,12 @@ function Deposit(props: Props) {
           Next Cycle <br />
           <span className="countdown">
             <Countdown
-              date={(Number(selectedMarket.duration) + Number(selectedMarket.actualStartAt)) * 1000}
+              date={
+                (Number(selectedMarket.duration) +
+                  Number(selectedMarket.actualStartAt) +
+                  Number(selectedMarket.investmentWindow)) *
+                1000
+              }
               renderer={({ days, hours, minutes, seconds, completed }) => {
                 return (
                   <span>

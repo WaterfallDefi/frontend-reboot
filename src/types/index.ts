@@ -48,6 +48,7 @@ export interface Market {
   // lockupPeriod: string;
   duration?: string;
   actualStartAt?: string;
+  investmentWindow?: string;
   cycle?: string;
   tranches: Tranche[];
   trancheCount: number;

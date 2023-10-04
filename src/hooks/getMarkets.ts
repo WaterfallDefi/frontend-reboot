@@ -79,6 +79,10 @@ export const getMarkets = async (payload: Market[]) => {
           },
           {
             address: _marketAddress,
+            name: "investmentWindow",
+          },
+          {
+            address: _marketAddress,
             name: "cycle",
           },
           ...trancheCalls,
@@ -94,7 +98,7 @@ export const getMarkets = async (payload: Market[]) => {
         //   }
         // }
 
-        const [active, duration, actualStartAt, cycle, ...tranchesAndTokens] = await multicall(
+        const [active, duration, actualStartAt, investmentWindow, cycle, ...tranchesAndTokens] = await multicall(
           marketData.network,
           marketData.abi,
           calls
@@ -161,6 +165,7 @@ export const getMarkets = async (payload: Market[]) => {
           // duration: duration.toString(),
           duration: originalDuration,
           actualStartAt: actualStartAt.toString(),
+          investmentWindow: investmentWindow.toString(),
           status,
           totalTranchesTarget: totalTranchesTarget.toString(),
           tvl: tvl.toString(),
