@@ -11,6 +11,7 @@ import numeral from "numeral";
 import TableRow from "../shared/TableRow";
 import {
   Market,
+  StrategyFarm,
   // PORTFOLIO_STATUS, UserInvest
 } from "../types";
 import {
@@ -219,71 +220,83 @@ function MyPortfolio(props: Props) {
     }
   };
 
-  const redeemPending = async (trancheId: number) => {
-    // setWithdrawAllLoading(true);
+  // const redeemPending = async (trancheId: number) => {
+  //   // setWithdrawAllLoading(true);
 
-    setModal({
-      state: Modal.Txn,
-      txn: undefined,
-      status: "PENDING",
-      message: "Redeeming Assets Pending Cycle Entry",
-    });
-    try {
-      if (!balance) return;
-      await onRedeemDirect(trancheId);
-      setModal({
-        state: Modal.Txn,
-        txn: undefined,
-        status: "SUCCESS",
-        message: "Redeem Success",
-      });
-    } catch (e) {
-      console.error(e);
-      setModal({
-        state: Modal.Txn,
-        txn: undefined,
-        status: "REJECTED",
-        message: "Redeem Failed ",
-      });
-    } finally {
-      // setWithdrawAllLoading(false);
-    }
-  };
+  //   setModal({
+  //     state: Modal.Txn,
+  //     txn: undefined,
+  //     status: "PENDING",
+  //     message: "Redeeming Assets Pending Cycle Entry",
+  //   });
+  //   try {
+  //     if (!balance) return;
+  //     await onRedeemDirect(trancheId);
+  //     setModal({
+  //       state: Modal.Txn,
+  //       txn: undefined,
+  //       status: "SUCCESS",
+  //       message: "Redeem Success",
+  //     });
+  //   } catch (e) {
+  //     console.error(e);
+  //     setModal({
+  //       state: Modal.Txn,
+  //       txn: undefined,
+  //       status: "REJECTED",
+  //       message: "Redeem Failed ",
+  //     });
+  //   } finally {
+  //     // setWithdrawAllLoading(false);
+  //   }
+  // };
 
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
     const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
 
-    const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {
-      const date = new Date(latestSeniorAPY.x);
-      const timestamp = new Date(d.timestamp);
-      return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    });
+    const APROnThatDate = selectedMarket.strategyFarms.map(
+      (sf: StrategyFarm) =>
+        defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
+          const date = new Date(latestSeniorAPY.x);
+          const timestamp = new Date(d.timestamp);
+          return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+        })[0]
+    );
 
-    const aaveAPROnThatDate = defiLlamaAPRs.aave.data.filter((d: any) => {
-      const date = new Date(latestSeniorAPY.x);
-      const timestamp = new Date(d.timestamp);
-      return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    });
+    // const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {
+    //   const date = new Date(latestSeniorAPY.x);
+    //   const timestamp = new Date(d.timestamp);
+    //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+    // });
+
+    // const aaveAPROnThatDate = defiLlamaAPRs.aave.data.filter((d: any) => {
+    //   const date = new Date(latestSeniorAPY.x);
+    //   const timestamp = new Date(d.timestamp);
+    //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+    // });
 
     //unhardcode when we have more than one product
-    const sum = Number(selectedMarket.tranches[0]?.autoPrincipal) + Number(selectedMarket.tranches[1]?.autoPrincipal);
+    const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
 
     const thicknesses = [
-      Number(selectedMarket.tranches[0]?.autoPrincipal) / Number(sum),
-      Number(selectedMarket.tranches[1]?.autoPrincipal) / Number(sum),
+      Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
+      Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
     ];
 
     const juniorTrancheAPR =
-      (stargateAPROnThatDate[0].apy + aaveAPROnThatDate[0].apy) / 2 -
+      // stargateAPROnThatDate[0].apy + aaveAPROnThatDate[0].apy
+      APROnThatDate.reduce((acc, next) => acc + next.apy, 0) / APROnThatDate.length -
       (latestSeniorAPY.y * thicknesses[0]) / thicknesses[1];
 
     //hardcoded: AAVE has no apyReward
-    const seniorRewardAPR = (stargateAPROnThatDate[0].apyReward / 2) * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    const seniorRewardAPR =
+      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+      (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
     const juniorRewardAPR =
-      (stargateAPROnThatDate[0].apyReward + aaveAPROnThatDate[0].apyReward) / 2 -
-      ((stargateAPROnThatDate[0].apyReward + aaveAPROnThatDate[0].apyReward) / 2) *
+      APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
+      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
         (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
     const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
@@ -293,7 +306,7 @@ function MyPortfolio(props: Props) {
     return [seniorAPYData, juniorAPYData];
   }
 
-  const latestAPYs = calculateAPR(MarketList[0]);
+  const latestAPYs = calculateAPR(markets[0]);
 
   //refine this later
   const usersInvestsPayload = useMemo(

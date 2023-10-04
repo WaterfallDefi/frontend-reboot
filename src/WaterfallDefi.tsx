@@ -114,9 +114,6 @@ function WaterfallDefi() {
     ...[elements],
   ];
 
-  console.log(latestSeniorAPY);
-  console.log(defiLlamaAPRs);
-
   return (
     <BrowserRouter>
       <Routes>
@@ -141,11 +138,11 @@ function WaterfallDefi() {
               ) : (
                 <div />
               ),
-              latestSeniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave ? (
+              latestSeniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave && markets ? (
                 <MyPortfolio
                   key="portfolio"
                   mode={Mode.Dark}
-                  markets={markets ? markets : []}
+                  markets={markets}
                   latestSeniorAPY={latestSeniorAPY}
                   defiLlamaAPRs={defiLlamaAPRs}
                   setModal={setModal}
