@@ -24,14 +24,34 @@ const useRedeemDirect = (
         state: Modal.Txn,
         txn: tx.hash,
         status: "COMPLETED",
-        message: "Deposit Success",
+        message: "Redemption Success",
       });
     }
 
     return receipt.status;
   }, [contract, setMarkets, setModal]);
 
-  return { onRedeemDirect: handleRedeemDirect };
+  const handleRedeemDirectPartial = useCallback(
+    async (i: number) => {
+      const tx = await contract.redeemDirectPartial(i);
+      const receipt = await tx.wait();
+      setMarkets(undefined);
+
+      if (receipt.status === 1) {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "COMPLETED",
+          message: "Redemption Success",
+        });
+      }
+
+      return receipt.status;
+    },
+    [contract, setMarkets, setModal]
+  );
+
+  return { onRedeemDirect: handleRedeemDirect, onRedeemDirectPartial: handleRedeemDirectPartial };
 };
 
 export default useRedeemDirect;

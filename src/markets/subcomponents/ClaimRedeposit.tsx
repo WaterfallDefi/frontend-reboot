@@ -76,7 +76,7 @@ function ClaimRedeposit(props: Props) {
     setMarkets
   );
 
-  const { onRedeemDirect } = useRedeemDirect(
+  const { onRedeemDirect, onRedeemDirectPartial } = useRedeemDirect(
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
@@ -177,8 +177,39 @@ function ClaimRedeposit(props: Props) {
       message: "Redeeming Assets Pending Cycle Entry",
     });
     try {
-      if (!balance) return;
+      if (!invested) return;
       await onRedeemDirect();
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Redeem Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Redeem Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const redeemDirectPartial = async (i: number) => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Redeeming Assets Pending Cycle Entry",
+    });
+    try {
+      if (!invested) return;
+      await onRedeemDirectPartial(i);
       setModal({
         state: Modal.Txn,
         txn: undefined,
@@ -307,6 +338,26 @@ function ClaimRedeposit(props: Props) {
             disabled={selectedMarket.status === PORTFOLIO_STATUS.ACTIVE || !withdrawalQueued}
           >
             Redeem Direct
+          </button>
+          <button
+            className="claim-redep-btn"
+            onClick={() => {
+              redeemDirectPartial(0);
+            }}
+            // loading={withdrawAllLoading}
+            disabled={selectedMarket.status === PORTFOLIO_STATUS.ACTIVE || !withdrawalQueued}
+          >
+            Redeem Risk-Off
+          </button>
+          <button
+            className="claim-redep-btn"
+            onClick={() => {
+              redeemDirectPartial(1);
+            }}
+            // loading={withdrawAllLoading}
+            disabled={selectedMarket.status === PORTFOLIO_STATUS.ACTIVE || !withdrawalQueued}
+          >
+            Redeem Risk-On
           </button>
         </div>
       </div>
