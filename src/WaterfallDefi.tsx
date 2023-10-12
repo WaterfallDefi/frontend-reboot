@@ -55,6 +55,7 @@ function WaterfallDefi() {
   const [disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch] = useState<boolean>(false);
   const [APYData, setAPYData] = useState<APYData[]>([]);
   const [latestSeniorAPY, setLatestSeniorAPY] = useState<APYData | undefined>();
+  const [latestJuniorAPY, setLatestJuniorAPY] = useState<APYData | undefined>();
 
   const defiLlamaAPRs: any = useDefiLlamaAPRs(); //rename file!!!
 
@@ -92,11 +93,12 @@ function WaterfallDefi() {
     const _latestAPY = [];
     //fixed tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
     _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop());
+
     //variable tranche, APYData already sorted by time, APY will never be 0 and that represents ongoing cycle
-    // _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
-    //...junior tranche?? do we need??
+    _latestAPY.push(APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop());
 
     setLatestSeniorAPY(_latestAPY[0]);
+    setLatestJuniorAPY(_latestAPY[1]);
   }, [APYData]);
 
   const layout = (elements: JSX.Element[], tutorial: boolean) => [
@@ -121,6 +123,7 @@ function WaterfallDefi() {
           path="/"
           element={layout(
             [
+              //render condition latestSeniorAPY
               latestSeniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave ? (
                 <Markets
                   key="markets"
@@ -133,17 +136,18 @@ function WaterfallDefi() {
                   setModal={setModal}
                   APYData={APYData}
                   defiLlamaAPRs={defiLlamaAPRs}
-                  latestSeniorAPY={latestSeniorAPY}
+                  latestSeniorAPY={latestSeniorAPY} //currently used as a render condition
                 />
               ) : (
                 <div />
               ),
-              latestSeniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave && markets ? (
+              latestSeniorAPY && latestJuniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave && markets ? (
                 <MyPortfolio
                   key="portfolio"
                   mode={Mode.Dark}
                   markets={markets}
                   latestSeniorAPY={latestSeniorAPY}
+                  latestJuniorAPY={latestJuniorAPY}
                   defiLlamaAPRs={defiLlamaAPRs}
                   setModal={setModal}
                   setMarkets={setMarkets}

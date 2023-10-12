@@ -74,8 +74,6 @@ function Markets(props: Props) {
   const [headerSort, setHeaderSort] = useState<number>(-1);
   const [sortAsc, setSortAsc] = useState<boolean>(true);
 
-  const [latestAPY, setLatestAPY] = useState<APYData>();
-
   // const { price: wtfPrice } = useWTFPriceLP();
 
   //we are using markets as a network switch reset indicator, if flipped to undefined
@@ -107,7 +105,11 @@ function Markets(props: Props) {
     return markets
       ? markets
           .map((m: Market) => {
-            const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
+            const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
+            const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
+
+            const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
+            const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
             const APROnThatDate = m.strategyFarms.map(
               (sf) =>
@@ -118,19 +120,6 @@ function Markets(props: Props) {
                 })[0]
             );
 
-            // const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {
-            //   const date = new Date(latestSeniorAPY.x);
-            //   const timestamp = new Date(d.timestamp);
-            //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-            // });
-
-            // const aaveAPROnThatDate = defiLlamaAPRs.aave.data.filter((d: any) => {
-            //   const date = new Date(latestSeniorAPY.x);
-            //   const timestamp = new Date(d.timestamp);
-            //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-            // });
-
-            //unhardcode when we have more than one product
             const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
 
             const thicknesses = [
@@ -138,12 +127,6 @@ function Markets(props: Props) {
               Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
             ];
 
-            const juniorTrancheAPR =
-              // stargateAPROnThatDate[0].apy + aaveAPROnThatDate[0].apy
-              APROnThatDate.reduce((acc, next) => acc + next.apy, 0) / APROnThatDate.length -
-              (latestSeniorAPY.y * thicknesses[0]) / thicknesses[1];
-
-            //hardcoded: AAVE has no apyReward
             const seniorRewardAPR =
               (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
               (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
@@ -221,11 +204,15 @@ function Markets(props: Props) {
             />
           ))
       : [];
-  }, [markets, headerSort, latestSeniorAPY, goToMarket, defiLlamaAPRs]);
+  }, [markets, headerSort, latestSeniorAPY, APYData, goToMarket, defiLlamaAPRs]);
 
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
-    const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
+    const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
+    const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
+
+    const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
+    const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
     const APROnThatDate = selectedMarket.strategyFarms.map(
       (sf) =>
@@ -236,19 +223,6 @@ function Markets(props: Props) {
         })[0]
     );
 
-    // const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {
-    //   const date = new Date(latestSeniorAPY.x);
-    //   const timestamp = new Date(d.timestamp);
-    //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    // });
-
-    // const aaveAPROnThatDate = defiLlamaAPRs.aave.data.filter((d: any) => {
-    //   const date = new Date(latestSeniorAPY.x);
-    //   const timestamp = new Date(d.timestamp);
-    //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    // });
-
-    //unhardcode when we have more than one product
     const sum = Number(selectedMarket.tranches[0]?.autoPrincipal) + Number(selectedMarket.tranches[1]?.autoPrincipal);
 
     const thicknesses = [
@@ -256,11 +230,6 @@ function Markets(props: Props) {
       Number(selectedMarket.tranches[1]?.autoPrincipal) / Number(sum),
     ];
 
-    const juniorTrancheAPR =
-      APROnThatDate.reduce((acc, next) => acc + next.apy, 0) / APROnThatDate.length -
-      (latestSeniorAPY.y * thicknesses[0]) / thicknesses[1];
-
-    //hardcoded: AAVE has no apyReward
     const seniorRewardAPR =
       (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
       (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);

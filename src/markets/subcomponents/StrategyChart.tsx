@@ -22,7 +22,6 @@ const StrategyChart = (props: Props) => {
   const { APYdata, defiLlamaAPRs, tranches, trancheCount, toggleChartTranche } = props;
   const [hoverYield, setHoverYield] = useState<string>();
 
-  const [juniorBaseAPRs, setJuniorBaseAPRs] = useState<any[]>([]);
   const [seniorRewardAPRs, setSeniorRewardAPRs] = useState<any[]>([]);
   const [juniorRewardAPRs, setJuniorRewardAPRs] = useState<any[]>([]);
 
@@ -54,21 +53,6 @@ const StrategyChart = (props: Props) => {
         Number(tranches[1]?.autoPrincipal) / Number(sum),
       ];
 
-      const juniorBaseAPR = APYdata.filter((tc) => tc.id.slice(0, 2) === "1-").map((d, i) => {
-        const baseAPR = (stargateAPRsOnThatDate[i][0].apy + aaveAPRsOnThatDate[i][0].apy) / 2;
-
-        //id order matches so can use index
-        const seniorTrancheAPRs = APYdata.filter((tc: any) => tc.id.slice(0, 2) === "0-");
-        return {
-          id: d.id,
-          x: d.x,
-          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          y: (baseAPR - seniorTrancheAPRs[i].y * thicknesses[0]) / thicknesses[1],
-        };
-      });
-
-      setJuniorBaseAPRs(juniorBaseAPR);
-
       const seniorRewardAPRs = APYdata.map((d, i) => {
         return {
           id: d.id,
@@ -99,15 +83,12 @@ const StrategyChart = (props: Props) => {
 
       const totalRewards = APYdata.map((d, i) => {
         const reward = seniorRewardAPRs.filter((rew) => rew.id === d.id);
-        const juniorBase = juniorBaseAPR.filter((rew) => rew.id === d.id); //USING USE EFFECT TEMPORARY STATE AND NOT THE HOOK!!!
         const juniorReward = juniorRewardAPRs.filter((rew) => rew.id === d.id);
         return {
           id: d.id,
           x: d.x,
           //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          y:
-            (d.id.slice(0, 2) === "0-" ? d.y : juniorBase[0].y) +
-            (d.id.slice(0, 2) === "0-" ? reward[0].y : juniorReward[0].y),
+          y: d.y + (d.id.slice(0, 2) === "0-" ? reward[0].y : juniorReward[0].y),
         };
       });
 
@@ -166,7 +147,7 @@ const StrategyChart = (props: Props) => {
           /* senior tranche base */
           APYdata && toggleChartTranche === 0 && (
             <VictoryLine
-              data={APYdata.filter((tc) => tc.id.slice(0, 2) === "0-")}
+              data={APYdata.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
               style={{ data: { stroke: "#fcb500" } }}
             />
           )
@@ -190,7 +171,10 @@ const StrategyChart = (props: Props) => {
         {
           // junior tranche base
           APYdata && toggleChartTranche === 1 && (
-            <VictoryLine data={juniorBaseAPRs} style={{ data: { stroke: "#fcb500" } }} />
+            <VictoryLine
+              data={APYdata.filter((tc) => tc.id.slice(0, 2) === "1-" && tc.y !== 0)}
+              style={{ data: { stroke: "#fcb500" } }}
+            />
           )
         }
 

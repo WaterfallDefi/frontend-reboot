@@ -62,6 +62,7 @@ type Props = {
   mode: Mode;
   markets: Market[];
   latestSeniorAPY: APYData;
+  latestJuniorAPY: APYData;
   defiLlamaAPRs: any;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
@@ -69,7 +70,7 @@ type Props = {
 
 function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
-  const { mode, markets, latestSeniorAPY, defiLlamaAPRs, setModal, setMarkets } = props;
+  const { mode, markets, latestSeniorAPY, latestJuniorAPY, defiLlamaAPRs, setModal, setMarkets } = props;
   // const { account } = useWeb3React<Web3Provider>();
   // const { price: wtfPrice } = useWTFPriceLP();
 
@@ -255,6 +256,8 @@ function MyPortfolio(props: Props) {
   function calculateAPR(selectedMarket: Market) {
     const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
 
+    const juniorTrancheAPR = new BigNumber(String(latestJuniorAPY?.y)).toNumber();
+
     const APROnThatDate = selectedMarket.strategyFarms.map(
       (sf: StrategyFarm) =>
         defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
@@ -264,19 +267,6 @@ function MyPortfolio(props: Props) {
         })[0]
     );
 
-    // const stargateAPROnThatDate = defiLlamaAPRs.stargate.data.filter((d: any) => {
-    //   const date = new Date(latestSeniorAPY.x);
-    //   const timestamp = new Date(d.timestamp);
-    //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    // });
-
-    // const aaveAPROnThatDate = defiLlamaAPRs.aave.data.filter((d: any) => {
-    //   const date = new Date(latestSeniorAPY.x);
-    //   const timestamp = new Date(d.timestamp);
-    //   return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    // });
-
-    //unhardcode when we have more than one product
     const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
 
     const thicknesses = [
@@ -284,12 +274,6 @@ function MyPortfolio(props: Props) {
       Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
     ];
 
-    const juniorTrancheAPR =
-      // stargateAPROnThatDate[0].apy + aaveAPROnThatDate[0].apy
-      APROnThatDate.reduce((acc, next) => acc + next.apy, 0) / APROnThatDate.length -
-      (latestSeniorAPY.y * thicknesses[0]) / thicknesses[1];
-
-    //hardcoded: AAVE has no apyReward
     const seniorRewardAPR =
       (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
       (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
