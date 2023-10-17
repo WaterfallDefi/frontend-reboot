@@ -48,12 +48,22 @@ export type APYData = {
   x: Date;
 };
 
+export type APYDataFull = {
+  id: string;
+  y: number;
+  x: Date; //endAt - end of duration
+  startAt: Date; //start of duration
+  farmTokens: any; //type this
+  farmTokensAmt: any; //type this
+  principal: any; // type this
+};
+
 function WaterfallDefi() {
   const [network, setNetwork] = useState<Network>(Network.AETH);
   const [markets, setMarkets] = useState<Market[] | undefined>();
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
   const [disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch] = useState<boolean>(false);
-  const [APYData, setAPYData] = useState<APYData[]>([]);
+  const [APYData, setAPYData] = useState<APYDataFull[]>([]);
   const [latestSeniorAPY, setLatestSeniorAPY] = useState<APYData | undefined>();
   const [latestJuniorAPY, setLatestJuniorAPY] = useState<APYData | undefined>();
 
@@ -78,10 +88,14 @@ function WaterfallDefi() {
     const fetchSubgraph = async () => {
       const subgraphQuery: any = await fetchSingleSubgraphCycleQuery(MarketList[0].subgraphURL);
       if (subgraphQuery.data === undefined) return;
-      const data: APYData[] = subgraphQuery.data.trancheCycles.map((tc: any) => ({
+      const data: APYDataFull[] = subgraphQuery.data.trancheCycles.map((tc: any) => ({
         id: tc.id,
         y: new BigNumber(tc.apr).dividedBy(BIG_TEN.pow(16)).toNumber(),
         x: new Date(Number(tc.endAt) * 1000),
+        startAt: new Date(Number(tc.startAt) * 1000),
+        farmTokens: tc.farmTokens,
+        farmTokensAmt: tc.farmTokensAmt,
+        principal: new BigNumber(tc.principal).dividedBy(BIG_TEN.pow(6)).toString(), //set to 6 for usdc
       }));
       setAPYData(data);
     };

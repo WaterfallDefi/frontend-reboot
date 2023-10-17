@@ -7,10 +7,9 @@ import { Web3Provider } from "@ethersproject/providers";
 
 import numeral from "numeral";
 
-import { useDefiLlamaAPRs } from "../hooks/useCoingeckoPrices";
 import TableRow from "../shared/TableRow";
 import { Market } from "../types";
-import { APYData, ModalProps, Mode, Network } from "../WaterfallDefi";
+import { APYData, APYDataFull, ModalProps, Mode, Network } from "../WaterfallDefi";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { switchNetwork } from "../header/Header";
 import Dashboard from "../dashboard_v2/Dashboard_v2";
@@ -25,7 +24,7 @@ type Props = {
   markets: Market[] | undefined;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
-  APYData: APYData[];
+  APYData: APYDataFull[];
   defiLlamaAPRs: any;
   latestSeniorAPY: APYData;
 };
@@ -105,6 +104,8 @@ function Markets(props: Props) {
     return markets
       ? markets
           .map((m: Market) => {
+            console.log(APYData);
+
             const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
             const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
 
