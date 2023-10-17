@@ -14,6 +14,7 @@ import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
 import StrategyChart from "./StrategyChart";
 import TrancheStructure from "./TrancheStructure";
+import { CoingeckoPrices } from "../Markets";
 
 type Props = {
   selectedMarket: Market;
@@ -22,7 +23,7 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   APYData: APYData[];
-  defiLlamaAPRs: any;
+  coingeckoPrices: CoingeckoPrices;
   latestAPYs: (APYData | undefined)[];
 };
 
@@ -42,7 +43,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     setModal,
     setMarkets,
     APYData,
-    defiLlamaAPRs,
+    coingeckoPrices,
     latestAPYs,
   } = props;
 
@@ -165,7 +166,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
             {APYData ? (
               <StrategyChart
                 APYdata={APYData}
-                defiLlamaAPRs={defiLlamaAPRs}
+                coingeckoPrices={coingeckoPrices}
                 tranches={selectedMarket.tranches}
                 trancheCount={selectedMarket.trancheCount}
                 toggleChartTranche={toggleChartTranche}

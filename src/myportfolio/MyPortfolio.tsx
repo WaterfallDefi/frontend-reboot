@@ -32,6 +32,7 @@ import NoData from "./svgs/NoData";
 import useWithdraw from "../markets/hooks/useWithdraw";
 import useRedeemDirect from "../markets/hooks/useRedeemDirect";
 import useUserInfo from "../markets/hooks/useUserInfo";
+import { CoingeckoPrices } from "../markets/Markets";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -63,14 +64,14 @@ type Props = {
   markets: Market[];
   latestSeniorAPY: APYData;
   latestJuniorAPY: APYData;
-  defiLlamaAPRs: any;
+  coingeckoPrices: CoingeckoPrices;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
 };
 
 function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
-  const { mode, markets, latestSeniorAPY, latestJuniorAPY, defiLlamaAPRs, setModal, setMarkets } = props;
+  const { mode, markets, latestSeniorAPY, latestJuniorAPY, coingeckoPrices, setModal, setMarkets } = props;
   // const { account } = useWeb3React<Web3Provider>();
   // const { price: wtfPrice } = useWTFPriceLP();
 
@@ -258,14 +259,14 @@ function MyPortfolio(props: Props) {
 
     const juniorTrancheAPR = new BigNumber(String(latestJuniorAPY?.y)).toNumber();
 
-    const APROnThatDate = selectedMarket.strategyFarms.map(
-      (sf: StrategyFarm) =>
-        defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-          const date = new Date(latestSeniorAPY.x);
-          const timestamp = new Date(d.timestamp);
-          return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-        })[0]
-    );
+    // const APROnThatDate = selectedMarket.strategyFarms.map(
+    //   (sf: StrategyFarm) =>
+    //     defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
+    //       const date = new Date(latestSeniorAPY.x);
+    //       const timestamp = new Date(d.timestamp);
+    //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+    //     })[0]
+    // );
 
     const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
 
@@ -274,18 +275,18 @@ function MyPortfolio(props: Props) {
       Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
     ];
 
-    const seniorRewardAPR =
-      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-      (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    // const seniorRewardAPR =
+    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+    //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
-    const juniorRewardAPR =
-      APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-        (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    // const juniorRewardAPR =
+    //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
+    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+    //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
-    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
+    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR };
 
-    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
+    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR };
 
     return [seniorAPYData, juniorAPYData];
   }

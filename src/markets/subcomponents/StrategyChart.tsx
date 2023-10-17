@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from "victory";
 import { Tranche } from "../../types";
+import { CoingeckoPrices } from "../Markets";
 
 type Props = {
   APYdata: any[] | undefined;
-  defiLlamaAPRs: any;
+  coingeckoPrices: CoingeckoPrices;
   tranches: Tranche[];
   trancheCount: number;
   toggleChartTranche: number;
@@ -19,7 +20,7 @@ type Props = {
 // }
 
 const StrategyChart = (props: Props) => {
-  const { APYdata, defiLlamaAPRs, tranches, trancheCount, toggleChartTranche } = props;
+  const { APYdata, coingeckoPrices, tranches, trancheCount, toggleChartTranche } = props;
   const [hoverYield, setHoverYield] = useState<string>();
 
   const [seniorRewardAPRs, setSeniorRewardAPRs] = useState<any[]>([]);
@@ -33,18 +34,18 @@ const StrategyChart = (props: Props) => {
 
   useEffect(() => {
     if (APYdata) {
-      const stargateAPRsOnThatDate = APYdata.map((d) =>
-        defiLlamaAPRs.stargate.data.filter((a: any) => {
-          const date = new Date(a.timestamp);
-          return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
-        })
-      );
-      const aaveAPRsOnThatDate = APYdata.map((d) =>
-        defiLlamaAPRs.aave.data.filter((a: any) => {
-          const date = new Date(a.timestamp);
-          return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
-        })
-      );
+      // const stargateAPRsOnThatDate = APYdata.map((d) =>
+      //   defiLlamaAPRs.stargate.data.filter((a: any) => {
+      //     const date = new Date(a.timestamp);
+      //     return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
+      //   })
+      // );
+      // const aaveAPRsOnThatDate = APYdata.map((d) =>
+      //   defiLlamaAPRs.aave.data.filter((a: any) => {
+      //     const date = new Date(a.timestamp);
+      //     return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
+      //   })
+      // );
 
       const sum = Number(tranches[0]?.autoPrincipal) + Number(tranches[1]?.autoPrincipal);
 
@@ -58,9 +59,7 @@ const StrategyChart = (props: Props) => {
           id: d.id,
           x: d.x,
           //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          y:
-            ((stargateAPRsOnThatDate[i][0].apyReward + aaveAPRsOnThatDate[i][0].apyReward) / 2) *
-            (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5),
+          y: 0, //PLACEHOLDER HARDCODE
         };
       });
 
@@ -72,10 +71,7 @@ const StrategyChart = (props: Props) => {
           x: d.x,
           //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
           // * 1 = replace with * seniorTrancheThickness IF seniorTrancheThickness is less than 50, but just 50 if more
-          y:
-            (stargateAPRsOnThatDate[i][0].apyReward + aaveAPRsOnThatDate[i][0].apyReward) / 2 -
-            ((stargateAPRsOnThatDate[i][0].apyReward + aaveAPRsOnThatDate[i][0].apyReward) / 2) *
-              (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5),
+          y: 0, //PLACEHOLDER HARDCODE
         };
       });
 
@@ -94,7 +90,7 @@ const StrategyChart = (props: Props) => {
 
       setTotalAPRs(totalRewards);
     }
-  }, [APYdata, defiLlamaAPRs, tranches]);
+  }, [APYdata, coingeckoPrices, tranches]);
 
   return (
     <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>

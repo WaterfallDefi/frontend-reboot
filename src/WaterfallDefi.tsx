@@ -12,7 +12,7 @@ import { fetchSingleSubgraphCycleQuery } from "./myportfolio/hooks/useSubgraphQu
 import MyPortfolio from "./myportfolio/MyPortfolio";
 // import Stake from "./stake/Stake";
 import { Market } from "./types";
-import { useDefiLlamaAPRs } from "./hooks/useCoingeckoPrices";
+import { useCoingeckoPrices } from "./hooks/useCoingeckoPrices";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -55,7 +55,6 @@ export type APYDataFull = {
   startAt: Date; //start of duration
   farmTokens: any; //type this
   farmTokensAmt: any; //type this
-  principal: any; // type this
 };
 
 function WaterfallDefi() {
@@ -67,7 +66,7 @@ function WaterfallDefi() {
   const [latestSeniorAPY, setLatestSeniorAPY] = useState<APYData | undefined>();
   const [latestJuniorAPY, setLatestJuniorAPY] = useState<APYData | undefined>();
 
-  const defiLlamaAPRs: any = useDefiLlamaAPRs(); //rename file!!!
+  const coingeckoPrices: any = useCoingeckoPrices();
 
   useEffect(() => {
     setModal({
@@ -95,7 +94,6 @@ function WaterfallDefi() {
         startAt: new Date(Number(tc.startAt) * 1000),
         farmTokens: tc.farmTokens,
         farmTokensAmt: tc.farmTokensAmt,
-        principal: new BigNumber(tc.principal).dividedBy(BIG_TEN.pow(6)).toString(), //set to 6 for usdc
       }));
       setAPYData(data);
     };
@@ -138,7 +136,7 @@ function WaterfallDefi() {
           element={layout(
             [
               //render condition latestSeniorAPY
-              latestSeniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave ? (
+              latestSeniorAPY ? (
                 <Markets
                   key="markets"
                   mode={Mode.Dark}
@@ -149,20 +147,20 @@ function WaterfallDefi() {
                   setMarkets={setMarkets}
                   setModal={setModal}
                   APYData={APYData}
-                  defiLlamaAPRs={defiLlamaAPRs}
+                  coingeckoPrices={coingeckoPrices}
                   latestSeniorAPY={latestSeniorAPY} //currently used as a render condition
                 />
               ) : (
                 <div />
               ),
-              latestSeniorAPY && latestJuniorAPY && defiLlamaAPRs.stargate && defiLlamaAPRs.aave && markets ? (
+              latestSeniorAPY && latestJuniorAPY && markets ? (
                 <MyPortfolio
                   key="portfolio"
                   mode={Mode.Dark}
                   markets={markets}
                   latestSeniorAPY={latestSeniorAPY}
                   latestJuniorAPY={latestJuniorAPY}
-                  defiLlamaAPRs={defiLlamaAPRs}
+                  coingeckoPrices={coingeckoPrices}
                   setModal={setModal}
                   setMarkets={setMarkets}
                 />

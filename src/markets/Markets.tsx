@@ -25,13 +25,14 @@ type Props = {
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   APYData: APYDataFull[];
-  defiLlamaAPRs: any;
+  coingeckoPrices: CoingeckoPrices;
   latestSeniorAPY: APYData;
 };
 
-type CoingeckoPrices = {
+export type CoingeckoPrices = {
   wbnb?: { usd?: number };
   ["wrapped-avax"]?: { usd?: number };
+  ["stargate-finance"]?: { usd?: number };
 };
 
 type TableRowData = {
@@ -62,7 +63,7 @@ function Markets(props: Props) {
     setMarkets,
     setModal,
     APYData,
-    defiLlamaAPRs,
+    coingeckoPrices,
     latestSeniorAPY,
   } = props;
 
@@ -112,32 +113,47 @@ function Markets(props: Props) {
             const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
             const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-            const APROnThatDate = m.strategyFarms.map(
-              (sf) =>
-                defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-                  const date = new Date(latestSeniorAPY.x);
-                  const timestamp = new Date(d.timestamp);
-                  return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-                })[0]
-            );
-
+            //new historical
             const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
 
             const thicknesses = [
               Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
               Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
             ];
+            //need verbose naming because this is complicated
+            const seniorTranchePrincipal = markets[0].tranches[0]?.principal;
 
-            const seniorRewardAPR =
-              (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-              (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            const seniorTrancheProfit = _latestSeniorAPY?.farmTokensAmt[0]; //times farm token price
+            //times USDC price
 
-            const juniorRewardAPR =
-              APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-              (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-                (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            //OLD indicative
+            // const APROnThatDate = m.strategyFarms.map(
+            //   (sf) =>
+            //     defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
+            //       const date = new Date(latestSeniorAPY.x);
+            //       const timestamp = new Date(d.timestamp);
+            //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+            //     })[0]
+            // );
 
-            const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
+            // const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
+
+            // const thicknesses = [
+            //   Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
+            //   Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
+            // ];
+
+            // const seniorRewardAPR =
+            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+            //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+            // const juniorRewardAPR =
+            //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
+            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+            //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+            //PLACEHOLDER: DECOMPOSE REWARD CALCULATION
+            const tranchesApr = [seniorTrancheAPR, juniorTrancheAPR];
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
@@ -205,7 +221,7 @@ function Markets(props: Props) {
             />
           ))
       : [];
-  }, [markets, headerSort, latestSeniorAPY, APYData, goToMarket, defiLlamaAPRs]);
+  }, [markets, headerSort, latestSeniorAPY, APYData, goToMarket]);
 
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
@@ -215,14 +231,14 @@ function Markets(props: Props) {
     const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
     const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-    const APROnThatDate = selectedMarket.strategyFarms.map(
-      (sf) =>
-        defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-          const date = new Date(latestSeniorAPY.x);
-          const timestamp = new Date(d.timestamp);
-          return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-        })[0]
-    );
+    // const APROnThatDate = selectedMarket.strategyFarms.map(
+    //   (sf) =>
+    //     coingeckoPrices[sf.dataId].data.filter((d: any) => {
+    //       const date = new Date(latestSeniorAPY.x);
+    //       const timestamp = new Date(d.timestamp);
+    //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+    //     })[0]
+    // );
 
     const sum = Number(selectedMarket.tranches[0]?.autoPrincipal) + Number(selectedMarket.tranches[1]?.autoPrincipal);
 
@@ -231,18 +247,20 @@ function Markets(props: Props) {
       Number(selectedMarket.tranches[1]?.autoPrincipal) / Number(sum),
     ];
 
-    const seniorRewardAPR =
-      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-      (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    // const seniorRewardAPR =
+    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+    //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
-    const juniorRewardAPR =
-      APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-        (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    // const juniorRewardAPR =
+    //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
+    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+    //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
-    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
+    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR };
+    // + seniorRewardAPR };
 
-    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
+    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR };
+    // + juniorRewardAPR };
 
     return [seniorAPYData, juniorAPYData];
   }
@@ -285,7 +303,7 @@ function Markets(props: Props) {
           setModal={setModal}
           setMarkets={setMarkets}
           APYData={APYData}
-          defiLlamaAPRs={defiLlamaAPRs}
+          coingeckoPrices={coingeckoPrices}
           latestAPYs={calculateAPR(selectedMarket)}
         />
       ) : null}
