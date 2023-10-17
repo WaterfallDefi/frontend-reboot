@@ -126,6 +126,8 @@ function Markets(props: Props) {
             const seniorTrancheProfit = _latestSeniorAPY?.farmTokensAmt[0]; //times farm token price
             //times USDC price
 
+            // console.log("XYZZY - Gandalf Was Here");
+
             //OLD indicative
             // const APROnThatDate = m.strategyFarms.map(
             //   (sf) =>

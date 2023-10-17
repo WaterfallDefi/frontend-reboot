@@ -20,6 +20,8 @@ export const useCoingeckoPrices = () => {
     };
     fetchBalance();
   }, []);
+
+  return prices;
 };
 
 //stargate usdc

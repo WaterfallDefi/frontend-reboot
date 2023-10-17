@@ -68,6 +68,8 @@ function WaterfallDefi() {
 
   const coingeckoPrices: any = useCoingeckoPrices();
 
+  console.log(coingeckoPrices);
+
   useEffect(() => {
     setModal({
       state: Modal.Terms,
