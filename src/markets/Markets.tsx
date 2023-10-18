@@ -137,11 +137,11 @@ function Markets(props: Props) {
 
             const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 rn which is correct. If there was yield it would be greater than 1.
 
-            const durationFractionOfYear =
-              (_latestSeniorAPY?.duration ? _latestSeniorAPY?.duration : 31536000) / 31536000;
+            const durationYearMultiplier =
+              31536000 / (_latestSeniorAPY?.duration ? _latestSeniorAPY?.duration : 31536000);
 
             //WARNING: HARDCODED ONLY FOR STARGATE
-            const rewardAPR = (rawYieldForCycle - 1) * 100 * durationFractionOfYear;
+            const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
 
             //"
             const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
@@ -251,10 +251,10 @@ function Markets(props: Props) {
     //not yet accounting for duration -> APR
     const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 which is correct. If there was yield it would be greater than 1.
 
-    const durationFractionOfYear = (_latestSeniorAPY?.duration ? _latestSeniorAPY?.duration : 31536000) / 31536000;
+    const durationYearMultiplier = 31536000 / (_latestSeniorAPY?.duration ? _latestSeniorAPY?.duration : 31536000);
 
     //WARNING: HARDCODED ONLY FOR STARGATE
-    const rewardAPR = (rawYieldForCycle - 1) * 100 * durationFractionOfYear;
+    const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
 
     //"
     const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
