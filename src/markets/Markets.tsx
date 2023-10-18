@@ -132,14 +132,13 @@ function Markets(props: Props) {
             const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
 
             //WARNING: HARDCODED
-            //harvest means flat value received from protocol, not yet accounting for USDC price at time
+            //harvest means flat value received from protocol, *not yet accounting for USDC price*
             const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
 
-            const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 which is correct. If there was yield it would be greater than 1.
+            const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 rn which is correct. If there was yield it would be greater than 1.
 
-            const duration = _latestSeniorAPY?.duration; //in seconds
-
-            const durationFractionOfYear = duration / 31536000;
+            const durationFractionOfYear =
+              (_latestSeniorAPY?.duration ? _latestSeniorAPY?.duration : 31536000) / 31536000;
 
             //WARNING: HARDCODED ONLY FOR STARGATE
             const rewardAPR = (rawYieldForCycle - 1) * 100 * durationFractionOfYear;
@@ -249,14 +248,10 @@ function Markets(props: Props) {
     //harvest means flat value received from protocol, not yet accounting for USDC price at time
     const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
 
-    console.log(principal);
-
     //not yet accounting for duration -> APR
     const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 which is correct. If there was yield it would be greater than 1.
 
-    const duration = _latestSeniorAPY?.duration; //in seconds
-
-    const durationFractionOfYear = duration / 31536000;
+    const durationFractionOfYear = (_latestSeniorAPY?.duration ? _latestSeniorAPY?.duration : 31536000) / 31536000;
 
     //WARNING: HARDCODED ONLY FOR STARGATE
     const rewardAPR = (rawYieldForCycle - 1) * 100 * durationFractionOfYear;
