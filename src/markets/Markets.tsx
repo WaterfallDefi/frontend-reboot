@@ -110,52 +110,47 @@ function Markets(props: Props) {
             const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
             const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
 
+            console.log(_latestSeniorAPY);
+
             const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
             const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
             //new historical
+            //HARDCODED markets[0]
             const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
 
             const thicknesses = [
               Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
               Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
             ];
-            //need verbose naming because this is complicated
-            const seniorTranchePrincipal = markets[0].tranches[0]?.principal;
 
-            const seniorTrancheProfit = _latestSeniorAPY?.farmTokensAmt[0]; //times farm token price
-            //times USDC price
+            //WARNING: HARDCODED
+            const principal = _latestSeniorAPY?.principal;
 
-            // console.log("XYZZY - Gandalf Was Here");
+            //WARNING: HARDCODED
+            const stargateFarmTokensAmt = _latestSeniorAPY?.farmTokensAmt[0];
 
-            //OLD indicative
-            // const APROnThatDate = m.strategyFarms.map(
-            //   (sf) =>
-            //     defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-            //       const date = new Date(latestSeniorAPY.x);
-            //       const timestamp = new Date(d.timestamp);
-            //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-            //     })[0]
-            // );
+            //WARNING: HARDCODED
+            const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
 
-            // const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
+            //WARNING: HARDCODED
+            //harvest means flat value received from protocol, not yet accounting for USDC price at time
+            const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
 
-            // const thicknesses = [
-            //   Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
-            //   Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
-            // ];
+            console.log(principal);
 
-            // const seniorRewardAPR =
-            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-            //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            //not yet accounting for duration -> APR
+            const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 which is correct. If there was yield it would be greater than 1.
 
-            // const juniorRewardAPR =
-            //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-            //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            //WARNING: HARDCODED ONLY FOR STARGATE
+            const rewardAPR = (rawYieldForCycle - 1) * 100;
 
-            //PLACEHOLDER: DECOMPOSE REWARD CALCULATION
-            const tranchesApr = [seniorTrancheAPR, juniorTrancheAPR];
+            //"
+            const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+            const juniorRewardAPR = rewardAPR - seniorRewardAPR;
+
+            const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
@@ -233,15 +228,8 @@ function Markets(props: Props) {
     const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
     const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-    // const APROnThatDate = selectedMarket.strategyFarms.map(
-    //   (sf) =>
-    //     coingeckoPrices[sf.dataId].data.filter((d: any) => {
-    //       const date = new Date(latestSeniorAPY.x);
-    //       const timestamp = new Date(d.timestamp);
-    //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    //     })[0]
-    // );
-
+    //new historical
+    //HARDCODED markets[0]
     const sum = Number(selectedMarket.tranches[0]?.autoPrincipal) + Number(selectedMarket.tranches[1]?.autoPrincipal);
 
     const thicknesses = [
@@ -249,19 +237,36 @@ function Markets(props: Props) {
       Number(selectedMarket.tranches[1]?.autoPrincipal) / Number(sum),
     ];
 
-    // const seniorRewardAPR =
-    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-    //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    //WARNING: HARDCODED
+    const principal = _latestSeniorAPY?.principal;
 
-    // const juniorRewardAPR =
-    //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-    //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    //WARNING: HARDCODED
+    const stargateFarmTokensAmt = _latestSeniorAPY?.farmTokensAmt[0];
 
-    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR };
+    //WARNING: HARDCODED
+    const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
+
+    //WARNING: HARDCODED
+    //harvest means flat value received from protocol, not yet accounting for USDC price at time
+    const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
+
+    console.log(principal);
+
+    //not yet accounting for duration -> APR
+    const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 which is correct. If there was yield it would be greater than 1.
+
+    //WARNING: HARDCODED ONLY FOR STARGATE
+    const rewardAPR = (rawYieldForCycle - 1) * 100;
+
+    //"
+    const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+    const juniorRewardAPR = rewardAPR - seniorRewardAPR;
+
+    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
     // + seniorRewardAPR };
 
-    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR };
+    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
     // + juniorRewardAPR };
 
     return [seniorAPYData, juniorAPYData];
