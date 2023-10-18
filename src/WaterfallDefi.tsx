@@ -51,8 +51,8 @@ export type APYData = {
 export type APYDataFull = {
   id: string;
   y: number;
-  x: Date; //endAt - end of duration
-  startAt: Date; //start of duration
+  x: Date;
+  duration: number;
   farmTokens: any; //type this
   farmTokensAmt: any; //type this
   principal: any; //type this
@@ -94,7 +94,7 @@ function WaterfallDefi() {
         id: tc.id,
         y: new BigNumber(tc.apr).dividedBy(BIG_TEN.pow(16)).toNumber(),
         x: new Date(Number(tc.endAt) * 1000),
-        startAt: new Date(Number(tc.startAt) * 1000),
+        duration: tc.endAt - tc.startAt,
         farmTokens: tc.farmTokens,
         farmTokensAmt: tc.farmTokensAmt,
         principal: new BigNumber(tc.principal).dividedBy(BIG_TEN.pow(6)).toNumber(),

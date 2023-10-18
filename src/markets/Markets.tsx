@@ -110,8 +110,6 @@ function Markets(props: Props) {
             const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
             const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
 
-            console.log(_latestSeniorAPY);
-
             const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
             const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
@@ -137,13 +135,14 @@ function Markets(props: Props) {
             //harvest means flat value received from protocol, not yet accounting for USDC price at time
             const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
 
-            console.log(principal);
-
-            //not yet accounting for duration -> APR
             const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 which is correct. If there was yield it would be greater than 1.
 
+            const duration = _latestSeniorAPY?.duration; //in seconds
+
+            const durationFractionOfYear = duration / 31536000;
+
             //WARNING: HARDCODED ONLY FOR STARGATE
-            const rewardAPR = (rawYieldForCycle - 1) * 100;
+            const rewardAPR = (rawYieldForCycle - 1) * 100 * durationFractionOfYear;
 
             //"
             const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
@@ -218,7 +217,7 @@ function Markets(props: Props) {
             />
           ))
       : [];
-  }, [markets, headerSort, latestSeniorAPY, APYData, goToMarket]);
+  }, [markets, coingeckoPrices, headerSort, APYData, goToMarket]);
 
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
@@ -255,8 +254,12 @@ function Markets(props: Props) {
     //not yet accounting for duration -> APR
     const rawYieldForCycle = (principal + stargateHarvest) / principal; // returns 1 which is correct. If there was yield it would be greater than 1.
 
+    const duration = _latestSeniorAPY?.duration; //in seconds
+
+    const durationFractionOfYear = duration / 31536000;
+
     //WARNING: HARDCODED ONLY FOR STARGATE
-    const rewardAPR = (rawYieldForCycle - 1) * 100;
+    const rewardAPR = (rawYieldForCycle - 1) * 100 * durationFractionOfYear;
 
     //"
     const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
