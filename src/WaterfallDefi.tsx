@@ -12,7 +12,7 @@ import { fetchSingleSubgraphCycleQuery } from "./myportfolio/hooks/useSubgraphQu
 import MyPortfolio from "./myportfolio/MyPortfolio";
 // import Stake from "./stake/Stake";
 import { Market } from "./types";
-import { useCoingeckoPrices } from "./hooks/useCoingeckoPrices";
+import { useCoingeckoPrices, useDefiLlamaAPRs } from "./hooks/useCoingeckoPrices";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -68,8 +68,7 @@ function WaterfallDefi() {
   const [latestJuniorAPY, setLatestJuniorAPY] = useState<APYData | undefined>();
 
   const coingeckoPrices: any = useCoingeckoPrices();
-
-  console.log(coingeckoPrices);
+  const defiLlamaAPRs: any = useDefiLlamaAPRs();
 
   useEffect(() => {
     setModal({
@@ -152,6 +151,7 @@ function WaterfallDefi() {
                   setModal={setModal}
                   APYData={APYData}
                   coingeckoPrices={coingeckoPrices}
+                  defiLlamaAPRs={defiLlamaAPRs}
                   latestSeniorAPY={latestSeniorAPY} //currently used as a render condition
                 />
               ) : (
