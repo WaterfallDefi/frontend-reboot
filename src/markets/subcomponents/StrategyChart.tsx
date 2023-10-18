@@ -3,21 +3,15 @@ import { useEffect, useState } from "react";
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from "victory";
 import { Tranche } from "../../types";
 import { CoingeckoPrices } from "../Markets";
+import { APYDataFull } from "../../WaterfallDefi";
 
 type Props = {
-  APYdata: any[] | undefined;
+  APYdata: APYDataFull[] | undefined;
   coingeckoPrices: CoingeckoPrices;
   tranches: Tranche[];
   trancheCount: number;
   toggleChartTranche: number;
-  // color: string;
 };
-
-// enum Timescale {
-//   Day = 0,
-//   Week = 1,
-//   TwoWeeks = 2,
-// }
 
 const StrategyChart = (props: Props) => {
   const { APYdata, coingeckoPrices, tranches, trancheCount, toggleChartTranche } = props;
@@ -34,19 +28,6 @@ const StrategyChart = (props: Props) => {
 
   useEffect(() => {
     if (APYdata) {
-      // const stargateAPRsOnThatDate = APYdata.map((d) =>
-      //   defiLlamaAPRs.stargate.data.filter((a: any) => {
-      //     const date = new Date(a.timestamp);
-      //     return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
-      //   })
-      // );
-      // const aaveAPRsOnThatDate = APYdata.map((d) =>
-      //   defiLlamaAPRs.aave.data.filter((a: any) => {
-      //     const date = new Date(a.timestamp);
-      //     return date.getDate() - d.x.getDate() === 0 && date.getMonth() - d.x.getMonth() === 0;
-      //   })
-      // );
-
       const sum = Number(tranches[0]?.autoPrincipal) + Number(tranches[1]?.autoPrincipal);
 
       const thicknesses = [
@@ -55,23 +36,65 @@ const StrategyChart = (props: Props) => {
       ];
 
       const seniorRewardAPRs = APYdata.map((d, i) => {
+        const principal = d.principal;
+
+        //warning: hardcoded
+        const stargateFarmTokensAmt = d.farmTokensAmt ? d.farmTokensAmt[0] : 0;
+
+        //warning: hardcoded
+        const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
+
+        //WARNING: HARDCODED
+        //harvest means flat value received from cycle, *not yet accounting for USDC price*
+        const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
+
+        const rawYieldForCycle = principal > 0 ? (principal + stargateHarvest) / principal : 1;
+
+        const durationYearMultiplier = 31536000 / d.duration;
+
+        //WARNING: HARDCODED ONLY FOR STARGATE
+        const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
+
+        const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
         return {
           id: d.id,
           x: d.x,
           //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          y: 0, //PLACEHOLDER HARDCODE
+          y: seniorRewardAPR, //PLACEHOLDER HARDCODE
         };
       });
 
       setSeniorRewardAPRs(seniorRewardAPRs);
 
       const juniorRewardAPRs = APYdata.map((d, i) => {
+        const principal = d.principal;
+
+        //warning: hardcoded
+        const stargateFarmTokensAmt = d.farmTokensAmt ? d.farmTokensAmt[0] : 0;
+
+        //warning: hardcoded
+        const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
+
+        //WARNING: HARDCODED
+        //harvest means flat value received from cycle, *not yet accounting for USDC price*
+        const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
+
+        const rawYieldForCycle = principal > 0 ? (principal + stargateHarvest) / principal : 1;
+
+        const durationYearMultiplier = 31536000 / d.duration;
+
+        //WARNING: HARDCODED ONLY FOR STARGATE
+        const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
+
+        const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+        const juniorRewardAPR = rewardAPR - seniorRewardAPR;
+
         return {
           id: d.id,
           x: d.x,
-          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          // * 1 = replace with * seniorTrancheThickness IF seniorTrancheThickness is less than 50, but just 50 if more
-          y: 0, //PLACEHOLDER HARDCODE
+          y: juniorRewardAPR,
         };
       });
 
@@ -91,6 +114,9 @@ const StrategyChart = (props: Props) => {
       setTotalAPRs(totalRewards);
     }
   }, [APYdata, coingeckoPrices, tranches]);
+
+  // console.log(seniorRewardAPRs);
+  // console.log(juniorRewardAPRs);
 
   return (
     <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>

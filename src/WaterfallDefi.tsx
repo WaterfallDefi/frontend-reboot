@@ -98,6 +98,7 @@ function WaterfallDefi() {
         farmTokensAmt: tc.farmTokensAmt,
         principal: new BigNumber(tc.principal).dividedBy(BIG_TEN.pow(6)).toNumber(),
       }));
+      console.log(data);
       setAPYData(data);
     };
 

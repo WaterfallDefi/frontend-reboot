@@ -6,7 +6,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import { Market, Tranche } from "../../types";
-import { APYData, ModalProps } from "../../WaterfallDefi";
+import { APYData, APYDataFull, ModalProps } from "../../WaterfallDefi";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
 import ClaimRedeposit from "./ClaimRedeposit";
@@ -22,7 +22,7 @@ type Props = {
   // coingeckoPrices: any;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
-  APYData: APYData[];
+  APYData: APYDataFull[];
   coingeckoPrices: CoingeckoPrices;
   latestAPYs: (APYData | undefined)[];
 };
@@ -76,7 +76,8 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
     account && selectedMarket.isMulticurrency ? fetchMCBalance() : fetchBalance();
   }, [account, fetchMCBalance, fetchBalance, selectedMarket.isMulticurrency]);
 
-  const principalTVL = selectedMarket.tranches.reduce((acc: number, next: Tranche) => acc + Number(next.target), 0);
+  //don't know why this is here but keep just in case
+  // const principalTVL = selectedMarket.tranches.reduce((acc: number, next: Tranche) => acc + Number(next.target), 0);
 
   return (
     <div className="market-detail-wrapper">
