@@ -28,15 +28,22 @@ const StrategyChart = (props: Props) => {
 
   useEffect(() => {
     if (APYdata) {
-      const sum = Number(tranches[0]?.autoPrincipal) + Number(tranches[1]?.autoPrincipal);
+      // const sum = Number(tranches[0]?.autoPrincipal) + Number(tranches[1]?.autoPrincipal);
 
-      const thicknesses = [
-        Number(tranches[0]?.autoPrincipal) / Number(sum),
-        Number(tranches[1]?.autoPrincipal) / Number(sum),
-      ];
+      // const thicknesses = [
+      //   Number(tranches[0]?.autoPrincipal) / Number(sum),
+      //   Number(tranches[1]?.autoPrincipal) / Number(sum),
+      // ];
 
       const seniorRewardAPRs = APYdata.map((d, i) => {
         const principal = d.principal;
+
+        const matchingTranchePrincipal = APYdata.filter((e) => e.id === "1-" + d.id.slice(2))[0].principal;
+
+        const sum = Number(principal) + Number(matchingTranchePrincipal);
+
+        //senior comes first
+        const thicknesses = [Number(principal) / Number(sum), Number(matchingTranchePrincipal) / Number(sum)];
 
         //warning: hardcoded
         const stargateFarmTokensAmt = d.farmTokensAmt ? d.farmTokensAmt[0] : 0;
@@ -69,6 +76,13 @@ const StrategyChart = (props: Props) => {
 
       const juniorRewardAPRs = APYdata.map((d, i) => {
         const principal = d.principal;
+
+        const matchingTranchePrincipal = APYdata.filter((e) => e.id === "0-" + d.id.slice(2))[0].principal;
+
+        const sum = Number(principal) + Number(matchingTranchePrincipal);
+
+        //junior goes second
+        const thicknesses = [Number(matchingTranchePrincipal) / Number(sum), Number(principal) / Number(sum)];
 
         //warning: hardcoded
         const stargateFarmTokensAmt = d.farmTokensAmt ? d.farmTokensAmt[0] : 0;
