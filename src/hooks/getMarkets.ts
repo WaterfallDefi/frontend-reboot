@@ -8,21 +8,21 @@ import ky from "ky";
 const BIG_ZERO = new BigNumber(0);
 const BIG_TEN = new BigNumber(10);
 
-const getFarmsAPY = async () => {
-  let response;
-  try {
-    response = await ky
-      .get("https://supply.waterfalldefi.org/farms")
-      .json()
-      .then((res: any) => {
-        return res;
-      });
-  } catch (err) {
-    // Error handling here
-    return;
-  }
-  return response;
-};
+// const getFarmsAPY = async () => {
+//   let response;
+//   try {
+//     response = await ky
+//       .get(" ")
+//       .json()
+//       .then((res: any) => {
+//         return res;
+//       });
+//   } catch (err) {
+//     // Error handling here
+//     return;
+//   }
+//   return response;
+// };
 
 const calculateJuniorAPY = (tranches: Tranche[], totalTarget: BigNumber, juniorTarget: BigNumber, decimals = 18) => {
   const juniorTVL = juniorTarget;
@@ -44,7 +44,6 @@ export const getMarkets = async (payload: Market[]) => {
     const _payload: Market[] = payload;
     // JSON.parse(JSON.stringify(payload));
     // const _tt1 = Date.now();
-    const farmsAPYResult = await getFarmsAPY();
 
     const markets = await Promise.all(
       _payload.map(async (marketData, marketId) => {

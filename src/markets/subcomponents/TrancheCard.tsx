@@ -2,7 +2,7 @@ import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
 import React from "react";
 import { Market, Tranche } from "../../types";
-import { APYData } from "../../WaterfallDefi";
+import { APYData } from "../../Yego";
 
 const BIG_TEN = new BigNumber(10);
 

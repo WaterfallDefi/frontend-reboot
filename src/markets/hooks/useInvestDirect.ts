@@ -6,7 +6,7 @@ import { Contract } from "@ethersproject/contracts";
 
 import { getContract, getSigner } from "../../hooks/getContract";
 import { Market } from "../../types";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../Yego";
 
 const invest = async (
   contract: Contract,

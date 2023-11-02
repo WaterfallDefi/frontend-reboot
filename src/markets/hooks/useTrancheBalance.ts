@@ -6,7 +6,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import { getContract } from "../../hooks/getContract";
-import { Network } from "../../WaterfallDefi";
+import { Network } from "../../Yego";
 
 const BIG_TEN = new BigNumber(10);
 

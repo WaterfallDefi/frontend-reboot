@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import Multicall from "../config/abis/Multicall.json";
-import { Network } from "../WaterfallDefi";
+import { Network } from "../Yego";
 
 export const getContract = (
   abi: any,

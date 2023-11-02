@@ -4,7 +4,7 @@ import WrapAVAX from "../../config/abis/WrapAVAX.json";
 // import WrapBNB from "../../config/abis/WrapBNB.json";
 import { WrapAVAXAddress } from "../../config/address";
 import { NETWORKS } from "../../types";
-import { Network } from "../../WaterfallDefi";
+import { Network } from "../../Yego";
 
 const useWrapAVAXContract = () => {
   const signer = getSigner();

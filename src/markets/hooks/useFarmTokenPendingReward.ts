@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Network } from "../../WaterfallDefi";
+import { Network } from "../../Yego";
 import { useWeb3React } from "@web3-react/core";
 import { multicall } from "../../hooks/getContract";
 import BigNumber from "bignumber.js";

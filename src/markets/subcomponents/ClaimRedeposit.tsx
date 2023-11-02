@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import React, { useEffect, useState } from "react";
 import { Market, PORTFOLIO_STATUS } from "../../types";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../Yego";
 import useWithdraw from "../hooks/useWithdraw";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";

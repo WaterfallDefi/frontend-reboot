@@ -5,7 +5,7 @@ import useRedeemDirect from "../../markets/hooks/useRedeemDirect";
 import { useTrancheBalance } from "../../markets/hooks/useTrancheBalance";
 import useWithdraw from "../../markets/hooks/useWithdraw";
 import { Market } from "../../types";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../Yego";
 
 const BIG_TEN = new BigNumber(10);
 

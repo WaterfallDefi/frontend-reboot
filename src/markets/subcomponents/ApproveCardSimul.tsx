@@ -9,7 +9,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useBalances } from "../../hooks/useBalance";
 import { useCheckApproveAll } from "../../hooks/useCheckApprove";
 import { Market } from "../../types";
-import { Modal, ModalProps } from "../../WaterfallDefi";
+import { Modal, ModalProps } from "../../Yego";
 import { useMultiApprove } from "../hooks/useApprove";
 import useInvestDirectMCSimul from "../hooks/useInvestDirectMCSimul";
 

@@ -18,8 +18,11 @@ type MediumItem = {
   categories: string[];
 };
 
+//inject new medium feed id here
 const getMediumFeed = async () => {
-  const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/waterfall-defi`);
+  const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/
+
+  `);
   const data = await response.json();
   return data;
 };

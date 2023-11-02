@@ -7,7 +7,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import ERC20 from "../config/abis/WTF.json";
-import { Network } from "../WaterfallDefi";
+import { Network } from "../Yego";
 import { getContract, multicall } from "./getContract";
 
 const BIG_TEN = new BigNumber(10);

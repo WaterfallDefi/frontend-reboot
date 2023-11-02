@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from "victory";
 import { Tranche } from "../../types";
 import { CoingeckoPrices } from "../Markets";
-import { APYDataFull } from "../../WaterfallDefi";
+import { APYDataFull } from "../../Yego";
 
 type Props = {
   APYdata: APYDataFull[] | undefined;

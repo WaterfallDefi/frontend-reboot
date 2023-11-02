@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../Yego";
 
 type Props = {
   network: Network;

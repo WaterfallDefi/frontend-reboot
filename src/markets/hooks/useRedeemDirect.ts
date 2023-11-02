@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { getContract, getSigner } from "../../hooks/getContract";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../Yego";
 import { Market } from "../../types";
 
 const useRedeemDirect = (

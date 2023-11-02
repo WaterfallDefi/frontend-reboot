@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
-import { Modal, ModalProps, Mode, Network } from "../WaterfallDefi";
+import { Modal, ModalProps, Mode, Network } from "../Yego";
 import useAuth, { setupNetwork, useEagerConnect } from "./hooks/useAuth";
 import ConnectWalletModal from "./subcomponents/ConnectWalletModal";
 import TransactionModal from "./subcomponents/TransactionModal";
@@ -154,7 +154,7 @@ function Header(props: Props) {
           </p>
         </div>
         {/* <div className="menu-block-wrapper">
-          <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
+          <a href="">User Guide</a>
         </div>
         <div className="menu-block-wrapper">
           <Link className="link" to={"/blog"} data-selected={location.pathname === "/blog"}>
@@ -206,7 +206,7 @@ function Header(props: Props) {
             </Link>
           </div>
           {/* <div className="mobile-menu-block-wrapper">
-            <a href="https://waterfall-defi.gitbook.io/waterfall-defi/resources/mainnet-user-guide">User Guide</a>
+            <a href="">User Guide</a>
           </div>
           <div className="mobile-menu-block-wrapper">
             <Link

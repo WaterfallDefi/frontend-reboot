@@ -7,7 +7,7 @@ import { useWeb3React } from "@web3-react/core";
 
 import ERC20 from "../../config/abis/WTF.json";
 import { getContract, getSigner, multicall } from "../../hooks/getContract";
-import { Modal, ModalProps, Network } from "../../WaterfallDefi";
+import { Modal, ModalProps, Network } from "../../Yego";
 
 const useERC20Contract = (network: Network, address: string) => {
   const signer = getSigner();

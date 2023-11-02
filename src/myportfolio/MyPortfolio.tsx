@@ -20,7 +20,7 @@ import {
   ModalProps,
   // ModalProps,
   Mode,
-} from "../WaterfallDefi";
+} from "../Yego";
 // import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
 // import PortfolioFold from "./subcomponents/PortfolioFold";

@@ -1,4 +1,4 @@
-import { Mode } from "../WaterfallDefi";
+import { Mode } from "../Yego";
 import "./Footer.scss";
 // import Discord from "./svgs/Discord";
 // import FooterLine from "./svgs/FooterLine";
@@ -16,8 +16,8 @@ function Footer(props: Props) {
   // const CONTACTS = [
   //   { Icon: Discord, link: "https://discord.gg/gS9Gda4sez" },
   //   { Icon: Telegram, link: "https://t.me/joinchat/BYZHfIJv0eRjY2I0" },
-  //   { Icon: Medium, link: "https://medium.com/@WaterfallDefi" },
-  //   { Icon: Twitter, link: "https://twitter.com/waterfalldefi" },
+  //   { Icon: Medium, link: "https://medium.com/@" },
+  //   { Icon: Twitter, link: "https://twitter.com/" },
   // ];
 
   return (

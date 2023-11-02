@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import Countdown from "react-countdown";
 
 import { Market, PORTFOLIO_STATUS } from "../../types";
-import { APYData, ModalProps } from "../../WaterfallDefi";
+import { APYData, ModalProps } from "../../Yego";
 import ApproveCardDefault from "./ApproveCardDefault";
 import ApproveCardSimul from "./ApproveCardSimul";
 import TrancheCard from "./TrancheCard";
@@ -51,7 +51,7 @@ const handleReminder = (startTime: number, endTime: number) => {
     "T" +
     new Date(endTime * 1000).getHours() +
     new Date(endTime * 1000).getMinutes();
-  window?.open(`https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Waterfall`, "_blank");
+  window?.open(`https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Yego`, "_blank");
 };
 
 const formatTimestamp = (num: string | number) => {

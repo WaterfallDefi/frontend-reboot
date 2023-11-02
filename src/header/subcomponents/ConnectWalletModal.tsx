@@ -1,6 +1,6 @@
 import { Metamask } from "../svgs/Metamask";
 import { WalletConnect } from "../svgs/WalletConnect";
-import { Network } from "../../WaterfallDefi";
+import { Network } from "../../Yego";
 import useAuth from "../hooks/useAuth";
 import { useCallback } from "react";
 

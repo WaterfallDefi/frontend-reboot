@@ -58,7 +58,7 @@ export type APYDataFull = {
   principal: any; //type this
 };
 
-function WaterfallDefi() {
+function Yego() {
   const [network, setNetwork] = useState<Network>(Network.AETH);
   const [markets, setMarkets] = useState<Market[] | undefined>();
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
@@ -182,4 +182,4 @@ function WaterfallDefi() {
   );
 }
 
-export default WaterfallDefi;
+export default Yego;

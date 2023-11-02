@@ -1,5 +1,5 @@
 import { Contract } from "web3-eth-contract";
-import { Network } from "../WaterfallDefi";
+import { Network } from "../Yego";
 
 export const PORTFOLIO_STATUS = {
   ACTIVE: "ACTIVE",

@@ -9,7 +9,7 @@ import {
   WalletConnectConnector,
   UserRejectedRequestError as UserRejectedRequestErrorWalletConnect,
 } from "@web3-react/walletconnect-connector";
-import { Network } from "../../WaterfallDefi";
+import { Network } from "../../Yego";
 
 enum ConnectorNames {
   Injected = "injected",

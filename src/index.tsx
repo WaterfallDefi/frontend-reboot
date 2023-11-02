@@ -4,7 +4,7 @@ import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { ethers } from "ethers";
 import { Web3ReactProvider } from "@web3-react/core";
-import WaterfallDefi from "./WaterfallDefi";
+import Yego from "./Yego";
 
 const getLibrary = (provider: any): ethers.providers.Web3Provider => {
   const library = new ethers.providers.Web3Provider(provider);
@@ -18,7 +18,7 @@ if (container) {
   root.render(
     <React.StrictMode>
       <Web3ReactProvider getLibrary={getLibrary}>
-        <WaterfallDefi />
+        <Yego />
       </Web3ReactProvider>
     </React.StrictMode>
   );

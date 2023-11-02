@@ -6,7 +6,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
 import { Market, Tranche } from "../../types";
-import { APYData, APYDataFull, ModalProps } from "../../WaterfallDefi";
+import { APYData, APYDataFull, ModalProps } from "../../Yego";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
 import ClaimRedeposit from "./ClaimRedeposit";
