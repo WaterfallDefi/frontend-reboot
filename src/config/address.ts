@@ -32,13 +32,11 @@ export const LSD_BenqiStrat: { [network: string]: string } = {
 };
 
 //YEGO Arbitrum Test Contract
-//updated 5th sept
+//updated 8th nov
 export const Arbitrum_TrancheMaster: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  // [NETWORKS.MAINNET]: "0x5787C5DD64861fAbf886A565e55dfd25b7E9D94d",
-  // [NETWORKS.MAINNET]: "0xD9B9B5D73E113b05623C3d5d31AeBE35F1e9FFB1",
-  [NETWORKS.MAINNET]: "0x2F2B5cCb500dAd51972Ca91Dfe372f931F87856D",
+  [NETWORKS.MAINNET]: "0x0Aa525D68EC9f3425f65568Ff6A5eC183Fd73FaA",
 };
 
 export const Arbitrum_Ethereum_DepositAddress: { [network: string]: string } = {
@@ -52,10 +50,11 @@ export const USDC_Address_Arbitrum: { [network: string]: string } = {
   [NETWORKS.MAINNET]: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
 };
 //YEGO Reward Tokens contract
+//updated 8th nov
 export const Arbitrum_Rewards_Contract: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0xAbf195B75df20c4D46Dcbe54812dEcacA5421048",
+  [NETWORKS.MAINNET]: "0xDb561C73D030Abdcec367fd590706BcA37770B14",
 };
 
 //utility addresses
