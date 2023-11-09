@@ -36,7 +36,7 @@ export const LSD_BenqiStrat: { [network: string]: string } = {
 export const Arbitrum_TrancheMaster: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
-  [NETWORKS.MAINNET]: "0x0Aa525D68EC9f3425f65568Ff6A5eC183Fd73FaA",
+  [NETWORKS.MAINNET]: "0xc8Dc4C7FDaAECF02Cf371EdB1D89eAB9F2E844f1",
 };
 
 export const Arbitrum_Ethereum_DepositAddress: { [network: string]: string } = {
