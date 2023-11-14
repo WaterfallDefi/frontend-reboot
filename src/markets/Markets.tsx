@@ -210,36 +210,49 @@ function Markets(props: Props) {
 
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
-    const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
-    const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
+    //actual
+    // const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "0-").pop();
+    // const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "1-").pop();
+
+    //hardcoded this to the last complete cycle with money in it
+    const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "0-5").pop();
+    const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "1-5").pop();
+
+    const sum = _latestSeniorAPY?.principal + _latestJuniorAPY?.principal;
+    const thicknesses = [_latestSeniorAPY?.principal / sum, _latestJuniorAPY?.principal / sum];
 
     const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
     const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-    const APROnThatDate = selectedMarket.strategyFarms.map(
-      (sf) =>
-        defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-          const date = new Date(latestSeniorAPY.x);
-          const timestamp = new Date(d.timestamp);
-          return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-        })[0]
-    );
+    //warning: hardcoded
+    const stargateFarmTokensAmtSenior = _latestSeniorAPY?.farmTokensAmt ? _latestSeniorAPY?.farmTokensAmt[0] : 0;
+    const stargateFarmTokensAmtJunior = _latestJuniorAPY?.farmTokensAmt ? _latestJuniorAPY?.farmTokensAmt[0] : 0;
 
-    const sum = Number(selectedMarket.tranches[0]?.autoPrincipal) + Number(selectedMarket.tranches[1]?.autoPrincipal);
+    //warning: hardcoded
+    const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
 
-    const thicknesses = [
-      Number(selectedMarket.tranches[0]?.autoPrincipal) / Number(sum),
-      Number(selectedMarket.tranches[1]?.autoPrincipal) / Number(sum),
-    ];
+    //WARNING: HARDCODED
+    //harvest means flat value received from cycle, *not yet accounting for USDC price*
+    const stargateHarvestSenior = stargateFarmTokensAmtSenior * (stargatePrice ? stargatePrice : 1);
+    const stargateHarvestJunior = stargateFarmTokensAmtJunior * (stargatePrice ? stargatePrice : 1);
+
+    const rawYieldForCycleSenior =
+      _latestSeniorAPY?.principal > 0
+        ? (_latestSeniorAPY?.principal + stargateHarvestSenior) / _latestSeniorAPY?.principal
+        : 1;
+    const rawYieldForCycleJunior =
+      _latestJuniorAPY?.principal > 0
+        ? (_latestJuniorAPY?.principal + stargateHarvestJunior) / _latestJuniorAPY?.principal
+        : 1;
+
+    const durationYearMultiplierSenior = _latestSeniorAPY?.duration ? 31536000 / _latestSeniorAPY?.duration : 0;
+    const durationYearMultiplierJunior = _latestJuniorAPY?.duration ? 31536000 / _latestJuniorAPY?.duration : 0;
 
     const seniorRewardAPR =
-      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-      (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+      (rawYieldForCycleSenior - 1) * 100 * durationYearMultiplierSenior * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
     const juniorRewardAPR =
-      APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-      (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-        (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+      (rawYieldForCycleJunior - 1) * 100 * durationYearMultiplierJunior * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
     const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
 
