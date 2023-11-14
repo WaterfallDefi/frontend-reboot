@@ -292,7 +292,19 @@ function ApproveCardDefault(props: Props) {
       <button
         style={{ height: 56 }}
         onClick={handleDeposit}
-        disabled={!enabled || isSoldOut || !balanceInput || selectedMarket?.isRetired}
+        disabled={
+          !enabled ||
+          isSoldOut ||
+          !balanceInput ||
+          selectedMarket?.isRetired ||
+          //investment window disable
+          Date.now() -
+            (Number(selectedMarket.duration) +
+              Number(selectedMarket.actualStartAt) +
+              Number(selectedMarket.investmentWindow)) *
+              1000 >
+            0
+        }
       >
         Deposit
       </button>
