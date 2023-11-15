@@ -215,7 +215,7 @@ function MyPortfolio(props: Props) {
 
     const rewardsUSDValues = _latestSeniorAPY
       ? _latestSeniorAPY.farmTokensAmt.map(
-          (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+          (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(18)).toNumber() * farmTokensPrices[i]
         )
       : [];
 
@@ -236,10 +236,6 @@ function MyPortfolio(props: Props) {
     const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
 
     const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
-
-    console.log(seniorTrancheAPR);
-    console.log(seniorRewardAPR);
-    console.log([seniorAPYData, juniorAPYData]);
 
     return [seniorAPYData, juniorAPYData];
   }

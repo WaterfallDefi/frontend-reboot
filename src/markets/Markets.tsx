@@ -110,8 +110,6 @@ function Markets(props: Props) {
               Number(m.tranches[1]?.autoPrincipal) / Number(sum),
             ];
 
-            console.log(_latestJuniorAPY);
-
             const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
             const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
@@ -146,12 +144,6 @@ function Markets(props: Props) {
             const juniorRewardAPR = rewardAPR - seniorRewardAPR;
 
             const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
-
-            console.log(juniorTrancheAPR);
-            console.log(juniorRewardAPR);
-
-            console.log("correct:");
-            console.log(tranchesApr);
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
@@ -219,8 +211,8 @@ function Markets(props: Props) {
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
     //actual
-    const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "0-").pop();
-    const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "1-").pop();
+    const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
+    const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-").pop();
 
     const sum = _latestSeniorAPY?.principal + _latestJuniorAPY?.principal;
     const thicknesses = [_latestSeniorAPY?.principal / sum, _latestJuniorAPY?.principal / sum];
@@ -241,7 +233,7 @@ function Markets(props: Props) {
 
     const rewardsUSDValues = _latestSeniorAPY
       ? _latestSeniorAPY.farmTokensAmt.map(
-          (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+          (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(18)).toNumber() * farmTokensPrices[i]
         )
       : [];
 
@@ -262,10 +254,6 @@ function Markets(props: Props) {
     const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
 
     const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
-
-    console.log(seniorTrancheAPR);
-    console.log(seniorRewardAPR);
-    console.log([seniorAPYData, juniorAPYData]);
 
     return [seniorAPYData, juniorAPYData];
   }
