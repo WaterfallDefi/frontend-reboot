@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const getCoingeckoPrices = async () => {
   const result = await ky
     .get(
-      "https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD&ids=binancecoin,avalanche-2,wrapped-avax,wbnb,stargate-finance"
+      "https://api.coingecko.com/api/v3/simple/price?vs_currencies=USD&ids=binancecoin,avalanche-2,wrapped-avax,wbnb,stargate-finance,hop-protocol,curve-dao-token,convex-finance"
     )
     .json()
     .then((res: any) => res);

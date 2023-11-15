@@ -31,9 +31,7 @@ type Props = {
 };
 
 export type CoingeckoPrices = {
-  wbnb?: { usd?: number };
-  ["wrapped-avax"]?: { usd?: number };
-  ["stargate-finance"]?: { usd?: number };
+  [dataId: string]: { usd?: number };
 };
 
 type TableRowData = {
@@ -110,35 +108,38 @@ function Markets(props: Props) {
             const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
             const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
 
-            const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
-            const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
-
-            const APROnThatDate = m.strategyFarms.map(
-              (sf) =>
-                defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-                  const date = new Date(latestSeniorAPY.x);
-                  const timestamp = new Date(d.timestamp);
-                  return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-                })[0]
-            );
-
             const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
-
             const thicknesses = [
               Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
               Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
             ];
 
-            const seniorRewardAPR =
-              (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-              (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
+            const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-            const juniorRewardAPR =
-              APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-              (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-                (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            //LASTSAVEDGAME
 
-            const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
+            //raw subgraph APR, no reward tokens yet.
+
+            // const APROnThatDate = m.strategyFarms.map(
+            //   (sf) =>
+            //     defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
+            //       const date = new Date(latestSeniorAPY.x);
+            //       const timestamp = new Date(d.timestamp);
+            //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
+            //     })[0]
+            // );
+
+            // const seniorRewardAPR =
+            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+            //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+            // const juniorRewardAPR =
+            //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
+            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
+            //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+
+            const tranchesApr = [seniorTrancheAPR, juniorTrancheAPR];
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
@@ -146,11 +147,6 @@ function Markets(props: Props) {
               (!nonDollarTvl ? "$" : "") +
               numeral(m.tvl.includes("e-") ? "0" : m.tvl).format("0,0.[0000]") +
               (nonDollarTvl ? " " + m.assets[0] : "");
-
-            // const networkStrings = {
-            //   43114: "AVAX",
-            //   42161: "AETH",
-            // };
 
             return {
               market: m,
@@ -206,23 +202,21 @@ function Markets(props: Props) {
             />
           ))
       : [];
-  }, [markets, defiLlamaAPRs, headerSort, latestSeniorAPY, APYData, goToMarket]);
+  }, [markets, headerSort, APYData, goToMarket]);
 
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
     //actual
-    // const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "0-").pop();
-    // const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "1-").pop();
-
-    //hardcoded this to the last complete cycle with money in it
-    const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "0-5").pop();
-    const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "1-5").pop();
+    const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "0-").pop();
+    const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 3) === "1-").pop();
 
     const sum = _latestSeniorAPY?.principal + _latestJuniorAPY?.principal;
     const thicknesses = [_latestSeniorAPY?.principal / sum, _latestJuniorAPY?.principal / sum];
 
     const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
     const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
+
+    //LASTSAVEDGAME
 
     //warning: hardcoded
     const stargateFarmTokensAmtSenior = _latestSeniorAPY?.farmTokensAmt ? _latestSeniorAPY?.farmTokensAmt[0] : 0;

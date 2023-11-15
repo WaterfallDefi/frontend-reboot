@@ -167,6 +167,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
             {APYData ? (
               <StrategyChart
                 APYdata={APYData}
+                strategyFarms={selectedMarket.strategyFarms}
                 coingeckoPrices={coingeckoPrices}
                 tranches={selectedMarket.tranches}
                 trancheCount={selectedMarket.trancheCount}

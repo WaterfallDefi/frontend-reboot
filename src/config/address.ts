@@ -38,7 +38,6 @@ export const Arbitrum_TrancheMaster: { [network: string]: string } = {
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0xc8Dc4C7FDaAECF02Cf371EdB1D89eAB9F2E844f1",
 };
-
 export const Arbitrum_Ethereum_DepositAddress: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
@@ -55,6 +54,12 @@ export const Arbitrum_Rewards_Contract: { [network: string]: string } = {
   [NETWORKS.DEVNET]: "",
   [NETWORKS.TESTNET]: "",
   [NETWORKS.MAINNET]: "0xDb561C73D030Abdcec367fd590706BcA37770B14",
+};
+//multistrategy is for retrieving which strategies are employed in cycle and discerning which reward tokens will be received
+export const Arbitrum_MultiStrategy: { [network: string]: string } = {
+  [NETWORKS.DEVNET]: "",
+  [NETWORKS.TESTNET]: "",
+  [NETWORKS.MAINNET]: "0xb189C213d2C527f484c78AA1Ffe18465945d5eB0",
 };
 
 //utility addresses

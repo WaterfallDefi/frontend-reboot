@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
-
+import BigNumber from "bignumber.js";
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryVoronoiContainer } from "victory";
-import { Tranche } from "../../types";
+import { StrategyFarm, Tranche } from "../../types";
 import { CoingeckoPrices } from "../Markets";
 import { APYDataFull } from "../../Yego";
 
 type Props = {
   APYdata: APYDataFull[] | undefined;
+  strategyFarms: StrategyFarm[];
   coingeckoPrices: CoingeckoPrices;
   tranches: Tranche[];
   trancheCount: number;
   toggleChartTranche: number;
 };
 
+const BIG_TEN = new BigNumber(10);
+
 const StrategyChart = (props: Props) => {
-  const { APYdata, coingeckoPrices, tranches, trancheCount, toggleChartTranche } = props;
+  const { APYdata, strategyFarms, coingeckoPrices, tranches, trancheCount, toggleChartTranche } = props;
   const [hoverYield, setHoverYield] = useState<string>();
 
   const [seniorRewardAPRs, setSeniorRewardAPRs] = useState<any[]>([]);
@@ -22,22 +25,10 @@ const StrategyChart = (props: Props) => {
 
   const [totalAPRs, setTotalAPRs] = useState<any[]>([]);
 
-  // const xys = defiLlamaAPRs.stargate.data.map((rt: any) => {
-  //   return { y: rt.apyReward, x: rt.timestamp };
-  // });
-
   useEffect(() => {
     if (APYdata) {
-      // const sum = Number(tranches[0]?.autoPrincipal) + Number(tranches[1]?.autoPrincipal);
-
-      // const thicknesses = [
-      //   Number(tranches[0]?.autoPrincipal) / Number(sum),
-      //   Number(tranches[1]?.autoPrincipal) / Number(sum),
-      // ];
-
-      const seniorRewardAPRs = APYdata.map((d, i) => {
+      const seniorRewardAPRs = APYdata.map((d: APYDataFull, i) => {
         const principal = d.principal;
-
         const matchingTranchePrincipal = APYdata.filter((e) => e.id === "1-" + d.id.slice(2))[0].principal;
 
         const sum = Number(principal) + Number(matchingTranchePrincipal);
@@ -45,21 +36,27 @@ const StrategyChart = (props: Props) => {
         //senior comes first
         const thicknesses = [Number(principal) / Number(sum), Number(matchingTranchePrincipal) / Number(sum)];
 
-        //warning: hardcoded
-        const stargateFarmTokensAmt = d.farmTokensAmt ? d.farmTokensAmt[0] : 0;
+        //find prices of tokens
+        //ONLY FINDING CURRENT PRICE FOR NOW
+        const farmTokensPrices = d.farmTokens
+          ? d.farmTokens.map((add: string) => {
+              const targetFarm: StrategyFarm = strategyFarms.filter((f) => f.farmTokenContractAddress === add)[0];
+              return coingeckoPrices[targetFarm.dataId]?.usd;
+            })
+          : [];
 
-        //warning: hardcoded
-        const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
+        const rewardsUSDValues = d.farmTokens
+          ? d.farmTokensAmt.map(
+              (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+            )
+          : [];
 
-        //WARNING: HARDCODED
-        //harvest means flat value received from cycle, *not yet accounting for USDC price*
-        const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
+        const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
 
-        const rawYieldForCycle = principal > 0 ? (principal + stargateHarvest) / principal : 1;
+        const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
 
         const durationYearMultiplier = 31536000 / d.duration;
 
-        //WARNING: HARDCODED ONLY FOR STARGATE
         const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
 
         const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
@@ -84,21 +81,27 @@ const StrategyChart = (props: Props) => {
         //junior goes second
         const thicknesses = [Number(matchingTranchePrincipal) / Number(sum), Number(principal) / Number(sum)];
 
-        //warning: hardcoded
-        const stargateFarmTokensAmt = d.farmTokensAmt ? d.farmTokensAmt[0] : 0;
+        //find prices of tokens
+        //ONLY FINDING CURRENT PRICE FOR NOW
+        const farmTokensPrices = d.farmTokens
+          ? d.farmTokens.map((add: string) => {
+              const targetFarm: StrategyFarm = strategyFarms.filter((f) => f.farmTokenContractAddress === add)[0];
+              return coingeckoPrices[targetFarm.dataId]?.usd;
+            })
+          : [];
 
-        //warning: hardcoded
-        const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
+        const rewardsUSDValues = d.farmTokens
+          ? d.farmTokensAmt.map(
+              (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+            )
+          : [];
 
-        //WARNING: HARDCODED
-        //harvest means flat value received from cycle, *not yet accounting for USDC price*
-        const stargateHarvest = stargateFarmTokensAmt * (stargatePrice ? stargatePrice : 1);
+        const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
 
-        const rawYieldForCycle = principal > 0 ? (principal + stargateHarvest) / principal : 1;
+        const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
 
         const durationYearMultiplier = 31536000 / d.duration;
 
-        //WARNING: HARDCODED ONLY FOR STARGATE
         const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
 
         const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
@@ -127,7 +130,7 @@ const StrategyChart = (props: Props) => {
 
       setTotalAPRs(totalRewards);
     }
-  }, [APYdata, coingeckoPrices, tranches]);
+  }, [APYdata, coingeckoPrices, strategyFarms, tranches]);
 
   // console.log(seniorRewardAPRs);
   // console.log(juniorRewardAPRs);

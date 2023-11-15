@@ -72,6 +72,8 @@ export interface Market {
   isRetired?: boolean;
   //NEW - rewards contract address
   rewardsContract: string;
+  //NEW - multistrategy contract address
+  multistrategyContract: string;
   //NEW - rewards contract abi
   rewardsContractAbi: any;
 }
