@@ -8,7 +8,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import numeral from "numeral";
 
 import TableRow from "../shared/TableRow";
-import { Market } from "../types";
+import { Market, StrategyFarm } from "../types";
 import { APYData, APYDataFull, ModalProps, Mode, Network } from "../Yego";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { switchNetwork } from "../header/Header";
@@ -26,8 +26,6 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   APYData: APYDataFull[];
   coingeckoPrices: CoingeckoPrices;
-  defiLlamaAPRs: any;
-  latestSeniorAPY: APYData;
 };
 
 export type CoingeckoPrices = {
@@ -63,8 +61,6 @@ function Markets(props: Props) {
     setModal,
     APYData,
     coingeckoPrices,
-    defiLlamaAPRs,
-    latestSeniorAPY,
   } = props;
 
   const { account } = useWeb3React<Web3Provider>();
@@ -110,36 +106,44 @@ function Markets(props: Props) {
 
             const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
             const thicknesses = [
-              Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
-              Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
+              Number(m.tranches[0]?.autoPrincipal) / Number(sum),
+              Number(m.tranches[1]?.autoPrincipal) / Number(sum),
             ];
 
             const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
             const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-            //LASTSAVEDGAME
+            //find prices of tokens
+            //ONLY FINDING CURRENT PRICE FOR NOW
+            const farmTokensPrices = _latestSeniorAPY
+              ? _latestSeniorAPY.farmTokens.map((add: string) => {
+                  const targetFarm: StrategyFarm = m.strategyFarms.filter((f) => f.farmTokenContractAddress === add)[0];
+                  return coingeckoPrices[targetFarm.dataId]?.usd;
+                })
+              : [];
 
-            //raw subgraph APR, no reward tokens yet.
+            const rewardsUSDValues = _latestSeniorAPY
+              ? _latestSeniorAPY.farmTokensAmt.map(
+                  (amt: number, i: number) =>
+                    new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+                )
+              : [];
 
-            // const APROnThatDate = m.strategyFarms.map(
-            //   (sf) =>
-            //     defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-            //       const date = new Date(latestSeniorAPY.x);
-            //       const timestamp = new Date(d.timestamp);
-            //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-            //     })[0]
-            // );
+            const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
 
-            // const seniorRewardAPR =
-            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-            //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            const principal = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
+            const duration = _latestSeniorAPY ? _latestSeniorAPY.duration : 0;
 
-            // const juniorRewardAPR =
-            //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-            //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-            //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
 
-            const tranchesApr = [seniorTrancheAPR, juniorTrancheAPR];
+            const durationYearMultiplier = 31536000 / duration;
+
+            const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
+
+            const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+            const juniorRewardAPR = rewardAPR - seniorRewardAPR;
+
+            const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
@@ -202,7 +206,7 @@ function Markets(props: Props) {
             />
           ))
       : [];
-  }, [markets, headerSort, APYData, goToMarket]);
+  }, [markets, coingeckoPrices, headerSort, APYData, goToMarket]);
 
   //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
@@ -216,28 +220,49 @@ function Markets(props: Props) {
     const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
     const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-    //LASTSAVEDGAME
+    //find prices of tokens
+    //ONLY FINDING CURRENT PRICE FOR NOW
+    const farmTokensPrices = _latestSeniorAPY
+      ? _latestSeniorAPY.farmTokens.map((add: string) => {
+          const targetFarm: StrategyFarm = selectedMarket.strategyFarms.filter(
+            (f) => f.farmTokenContractAddress === add
+          )[0];
+          return coingeckoPrices[targetFarm.dataId]?.usd;
+        })
+      : [];
 
-    //warning: hardcoded
-    const stargateFarmTokensAmtSenior = _latestSeniorAPY?.farmTokensAmt ? _latestSeniorAPY?.farmTokensAmt[0] : 0;
-    const stargateFarmTokensAmtJunior = _latestJuniorAPY?.farmTokensAmt ? _latestJuniorAPY?.farmTokensAmt[0] : 0;
+    const rewardsUSDValues = _latestSeniorAPY
+      ? _latestSeniorAPY.farmTokensAmt.map(
+          (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+        )
+      : [];
 
-    //warning: hardcoded
-    const stargatePrice = coingeckoPrices["stargate-finance"]?.usd;
+    const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
 
-    //WARNING: HARDCODED
-    //harvest means flat value received from cycle, *not yet accounting for USDC price*
-    const stargateHarvestSenior = stargateFarmTokensAmtSenior * (stargatePrice ? stargatePrice : 1);
-    const stargateHarvestJunior = stargateFarmTokensAmtJunior * (stargatePrice ? stargatePrice : 1);
+    const principalSenior = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
+    const principalJunior = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
+    const duration = _latestSeniorAPY ? _latestSeniorAPY.duration : 0; //I hope I don't get matching the cycles wrong but this should be the same
 
-    const rawYieldForCycleSenior =
-      _latestSeniorAPY?.principal > 0
-        ? (_latestSeniorAPY?.principal + stargateHarvestSenior) / _latestSeniorAPY?.principal
-        : 1;
-    const rawYieldForCycleJunior =
-      _latestJuniorAPY?.principal > 0
-        ? (_latestJuniorAPY?.principal + stargateHarvestJunior) / _latestJuniorAPY?.principal
-        : 1;
+    const rawYieldForCycleSenior = principalSenior > 0 ? (principalSenior + totalReward) / principalSenior : 1;
+    const rawYieldForCycleJunior = principalJunior > 0 ? (principalJunior + totalReward) / principalJunior : 1;
+
+    const durationYearMultiplier = 31536000 / duration;
+
+    // const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier; ????
+
+    // const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    // const juniorRewardAPR = rewardAPR - seniorRewardAPR;
+
+    // const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
+
+    // const rawYieldForCycleSenior =
+    //   _latestSeniorAPY?.principal > 0
+    //     ? (_latestSeniorAPY?.principal + stargateHarvestSenior) / _latestSeniorAPY?.principal
+    //     : 1;
+    // const rawYieldForCycleJunior =
+    //   _latestJuniorAPY?.principal > 0
+    //     ? (_latestJuniorAPY?.principal + stargateHarvestJunior) / _latestJuniorAPY?.principal
+    //     : 1;
 
     const durationYearMultiplierSenior = _latestSeniorAPY?.duration ? 31536000 / _latestSeniorAPY?.duration : 0;
     const durationYearMultiplierJunior = _latestJuniorAPY?.duration ? 31536000 / _latestJuniorAPY?.duration : 0;

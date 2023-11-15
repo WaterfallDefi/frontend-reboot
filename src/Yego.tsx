@@ -139,25 +139,18 @@ function Yego() {
           path="/"
           element={layout(
             [
-              //render condition latestSeniorAPY
-              latestSeniorAPY ? (
-                <Markets
-                  key="markets"
-                  mode={Mode.Dark}
-                  network={network}
-                  setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
-                  setNetwork={setNetwork}
-                  markets={markets}
-                  setMarkets={setMarkets}
-                  setModal={setModal}
-                  APYData={APYData}
-                  coingeckoPrices={coingeckoPrices}
-                  defiLlamaAPRs={defiLlamaAPRs}
-                  latestSeniorAPY={latestSeniorAPY} //currently used as a render condition
-                />
-              ) : (
-                <div />
-              ),
+              <Markets
+                key="markets"
+                mode={Mode.Dark}
+                network={network}
+                setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
+                setNetwork={setNetwork}
+                markets={markets}
+                setMarkets={setMarkets}
+                setModal={setModal}
+                APYData={APYData}
+                coingeckoPrices={coingeckoPrices}
+              />,
               latestSeniorAPY && latestJuniorAPY && markets ? (
                 <MyPortfolio
                   key="portfolio"
