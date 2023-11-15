@@ -27,7 +27,7 @@ const StrategyChart = (props: Props) => {
 
   useEffect(() => {
     if (APYdata) {
-      const seniorRewardAPRs = APYdata.map((d: APYDataFull, i) => {
+      const rewardAPRs = APYdata.map((d: APYDataFull, i) => {
         const principal = d.principal;
         const matchingTranchePrincipal = APYdata.filter((e) => e.id === "1-" + d.id.slice(2))[0].principal;
 
@@ -61,79 +61,34 @@ const StrategyChart = (props: Props) => {
 
         const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
 
-        return {
-          id: d.id,
-          x: d.x,
-          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          y: seniorRewardAPR, //PLACEHOLDER HARDCODE
-        };
-      });
-
-      setSeniorRewardAPRs(seniorRewardAPRs);
-
-      const juniorRewardAPRs = APYdata.map((d, i) => {
-        const principal = d.principal;
-
-        const matchingTranchePrincipal = APYdata.filter((e) => e.id === "0-" + d.id.slice(2))[0].principal;
-
-        const sum = Number(principal) + Number(matchingTranchePrincipal);
-
-        //junior goes second
-        const thicknesses = [Number(matchingTranchePrincipal) / Number(sum), Number(principal) / Number(sum)];
-
-        //find prices of tokens
-        //ONLY FINDING CURRENT PRICE FOR NOW
-        const farmTokensPrices = d.farmTokens
-          ? d.farmTokens.map((add: string) => {
-              const targetFarm: StrategyFarm = strategyFarms.filter((f) => f.farmTokenContractAddress === add)[0];
-              return coingeckoPrices[targetFarm.dataId]?.usd;
-            })
-          : [];
-
-        const rewardsUSDValues = d.farmTokens
-          ? d.farmTokensAmt.map(
-              (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
-            )
-          : [];
-
-        const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
-
-        const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
-
-        const durationYearMultiplier = 31536000 / d.duration;
-
-        const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
-
-        const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
-
         const juniorRewardAPR = rewardAPR - seniorRewardAPR;
 
         return {
           id: d.id,
-          x: d.x,
-          y: juniorRewardAPR,
+          senior: {
+            id: d.id,
+            x: d.x,
+            y: seniorRewardAPR,
+          },
+          junior: { id: d.id, x: d.x, y: juniorRewardAPR },
         };
       });
 
-      setJuniorRewardAPRs(juniorRewardAPRs);
+      setSeniorRewardAPRs(rewardAPRs.map((apr) => apr.senior));
+      setJuniorRewardAPRs(rewardAPRs.map((apr) => apr.junior));
 
       const totalRewards = APYdata.map((d, i) => {
-        const reward = seniorRewardAPRs.filter((rew) => rew.id === d.id);
-        const juniorReward = juniorRewardAPRs.filter((rew) => rew.id === d.id);
+        const reward = rewardAPRs.filter((rew) => rew.id === d.id)[0];
         return {
           id: d.id,
           x: d.x,
-          //TODO: AVERAGE THESE APRS IN PROPORTION TO HARDCODED STRATEGY BALANCE INSTEAD OF ASSUMING 50 / 50
-          y: d.y + (d.id.slice(0, 2) === "0-" ? reward[0].y : juniorReward[0].y),
+          y: d.y + (d.id.slice(0, 2) === "0-" ? reward.senior.y : reward.junior.y),
         };
       });
 
       setTotalAPRs(totalRewards);
     }
   }, [APYdata, coingeckoPrices, strategyFarms, tranches]);
-
-  // console.log(seniorRewardAPRs);
-  // console.log(juniorRewardAPRs);
 
   return (
     <div className="strategy-chart" onMouseLeave={() => setHoverYield(undefined)}>
@@ -202,17 +157,16 @@ const StrategyChart = (props: Props) => {
           APYdata && toggleChartTranche === 0 && (
             <VictoryLine
               data={totalAPRs.filter((tc) => tc.id.slice(0, 2) === "0-" && tc.y !== 0)}
-              style={{ data: { stroke: "#0066ff" } }}
+              style={{ data: { stroke: "#fcb500" } }}
             />
           )
         }
-
         {
           // junior tranche base
           APYdata && toggleChartTranche === 1 && (
             <VictoryLine
               data={APYdata.filter((tc) => tc.id.slice(0, 2) === "1-" && tc.y !== 0)}
-              style={{ data: { stroke: "#fcb500" } }}
+              style={{ data: { stroke: "#0066ff" } }}
             />
           )
         }
