@@ -20,6 +20,29 @@ const useClaimRewards = (
     [abi, rewardsTokensContractAddress, network, signer]
   );
 
+  const handleClaimAllRewards = useCallback(
+    async (rewardsTokenAddresses: string[]) => {
+      const tx = await rewardsTokensContract.claimRewards(rewardsTokenAddresses);
+      const receipt = await tx.wait();
+      if (receipt.status === 1) {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "COMPLETED",
+          message: "Claim All Rewards Success",
+        });
+      } else {
+        setModal({
+          state: Modal.Txn,
+          txn: tx.hash,
+          status: "REVERTED",
+          message: "Claim All Rewards Failed",
+        });
+      }
+    },
+    [rewardsTokensContract, setModal]
+  );
+
   const handleClaimRewards = useCallback(
     async (rewardsTokenAddress: string) => {
       const tx = await rewardsTokensContract.claimRewards([rewardsTokenAddress]);
@@ -43,7 +66,7 @@ const useClaimRewards = (
     [rewardsTokensContract, setModal]
   );
 
-  return { onClaimRewards: handleClaimRewards };
+  return { onClaimRewards: handleClaimRewards, onClaimAllRewards: handleClaimAllRewards };
 };
 
 export default useClaimRewards;

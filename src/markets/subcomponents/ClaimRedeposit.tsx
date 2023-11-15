@@ -51,6 +51,8 @@ function ClaimRedeposit(props: Props) {
 
   const { rewards, fetchRewards } = useFarmTokenPendingRewards(
     network,
+    selectedMarket.rewardsContract,
+    selectedMarket.rewardsContractAbi,
     selectedMarket.strategyFarms.map((sf, i) => sf.farmTokenContractAddress)
   );
 
@@ -84,7 +86,7 @@ function ClaimRedeposit(props: Props) {
     setMarkets
   );
 
-  const { onClaimRewards } = useClaimRewards(
+  const { onClaimRewards, onClaimAllRewards } = useClaimRewards(
     selectedMarket.network,
     selectedMarket.rewardsContract,
     selectedMarket.rewardsContractAbi,
@@ -251,6 +253,28 @@ function ClaimRedeposit(props: Props) {
     }
   };
 
+  const claimAllRewards = async () => {
+    try {
+      await onClaimAllRewards(selectedMarket.strategyFarms.map((f) => f.farmTokenContractAddress));
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Claim All Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Claim All Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
   return (
     <div className="claim-redeposit">
       {/* <div className="pocket assetsPendingEntry">
@@ -403,6 +427,7 @@ function ClaimRedeposit(props: Props) {
             )}
           </div>
         ))}
+        <button onClick={() => claimAllRewards()}>WITHDRAW ALL REWARDS</button>
       </div>
     </div>
   );

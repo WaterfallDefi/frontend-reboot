@@ -4,12 +4,16 @@ import { useWeb3React } from "@web3-react/core";
 import { multicall } from "../../hooks/getContract";
 import BigNumber from "bignumber.js";
 import { Web3Provider } from "@ethersproject/providers";
-import FarmTokenContract from "../../config/abis/Farm_Token_Contract.json";
 import numeral from "numeral";
 
 const BIG_TEN = new BigNumber(10);
 
-export const useFarmTokenPendingRewards = (network: Network, farmTokenAddresses: string[]) => {
+export const useFarmTokenPendingRewards = (
+  network: Network,
+  address: string,
+  abi: any,
+  farmTokenAddresses: string[]
+) => {
   const [rewards, setRewards] = useState<string[]>([]);
 
   const { account } = useWeb3React<Web3Provider>();
@@ -19,13 +23,14 @@ export const useFarmTokenPendingRewards = (network: Network, farmTokenAddresses:
 
     const calls = farmTokenAddresses.map((a) => {
       return {
-        address: a,
+        // hardcoded farmPool address for convenience
+        address: address,
         name: "pendingRewardOf",
-        params: [account],
+        params: [a, account],
       };
     });
 
-    const [...rewardBalances] = await multicall(network, FarmTokenContract.abi, calls);
+    const [...rewardBalances] = await multicall(network, abi, calls);
 
     const bignumbers = rewardBalances.map((tb: BigNumber[]) => tb[0]);
 
@@ -34,7 +39,7 @@ export const useFarmTokenPendingRewards = (network: Network, farmTokenAddresses:
         numeral(new BigNumber(v._hex).dividedBy(BIG_TEN.pow(18)).toString()).format("0,0.[0000]")
       )
     );
-  }, [account, network, farmTokenAddresses]);
+  }, [account, network, farmTokenAddresses, abi, address]);
 
   useEffect(() => {
     fetchRewards();
