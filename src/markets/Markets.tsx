@@ -102,7 +102,7 @@ function Markets(props: Props) {
       ? markets
           .map((m: Market) => {
             const _latestSeniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "0-" && apy.y !== 0).pop();
-            const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-" && apy.y !== 0).pop();
+            const _latestJuniorAPY = APYData.filter((apy) => apy.id.slice(0, 2) === "1-").pop();
 
             const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
             const thicknesses = [

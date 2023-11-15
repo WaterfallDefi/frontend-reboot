@@ -335,6 +335,7 @@
                 font-size: $font-size-md;
                 border: 2px solid $layer-color-dark;
                 opacity: 0.5;
+                cursor: pointer;
                 &.senior,
                 &.fixed {
                   background: #fcb500;

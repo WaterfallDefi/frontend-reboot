@@ -6,6 +6,7 @@ import { Tranche } from "../../types";
 type Props = {
   tranches: Tranche[];
   totalTranchesTarget: string;
+  toggleChartTranche: number;
   setToggleChartTranche: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -23,7 +24,7 @@ const COLORS: { [key: string]: string } = {
 };
 
 function TrancheStructure(props: Props) {
-  const { tranches, totalTranchesTarget, setToggleChartTranche } = props;
+  const { tranches, totalTranchesTarget, toggleChartTranche, setToggleChartTranche } = props;
 
   const [hoveredTranche, setHoveredTranche] = useState<number>(-1);
 
@@ -120,10 +121,17 @@ function TrancheStructure(props: Props) {
               onMouseEnter={() => {
                 setHoveredTranche(i);
               }}
+              onMouseLeave={() => {
+                setHoveredTranche(-1);
+              }}
               onClick={() => {
                 setToggleChartTranche(i);
               }}
-              className={"tranche-stack" + (hoveredTranche === i ? " hovered " : " ") + t.name.toLowerCase()}
+              className={
+                "tranche-stack" +
+                (hoveredTranche === i || toggleChartTranche === i ? " hovered " : " ") +
+                t.name.toLowerCase()
+              }
               style={{ height: t.value * 125 + "px" }}
             >
               <span>{numeral(t.value * 100).format("0,0")}%</span>

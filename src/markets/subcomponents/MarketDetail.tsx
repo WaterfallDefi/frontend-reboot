@@ -159,6 +159,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         <TrancheStructure
           tranches={selectedMarket.tranches}
           totalTranchesTarget={selectedMarket.totalTranchesTarget}
+          toggleChartTranche={toggleChartTranche}
           setToggleChartTranche={setToggleChartTranche}
         />
         <div className="chart-block historical-performance">
