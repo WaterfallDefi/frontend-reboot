@@ -1,26 +1,11 @@
 import "./MyPortfolio.scss";
 
 import React, { useEffect, useMemo, useState } from "react";
-
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
-
-// import { Web3Provider } from "@ethersproject/providers";
-// import { useWeb3React } from "@web3-react/core";
-
 import TableRow from "../shared/TableRow";
-import {
-  Market,
-  StrategyFarm,
-  // PORTFOLIO_STATUS, UserInvest
-} from "../types";
-import {
-  APYData,
-  Modal,
-  ModalProps,
-  // ModalProps,
-  Mode,
-} from "../Yego";
+import { Market, StrategyFarm } from "../types";
+import { APYData, APYDataFull, Modal, ModalProps, Mode } from "../Yego";
 // import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
 // import PortfolioFold from "./subcomponents/PortfolioFold";
@@ -62,8 +47,8 @@ type Props = {
   //may need network yo
   mode: Mode;
   markets: Market[];
-  latestSeniorAPY: APYData;
-  latestJuniorAPY: APYData;
+  latestSeniorAPY: APYDataFull;
+  latestJuniorAPY: APYDataFull;
   coingeckoPrices: CoingeckoPrices;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
@@ -72,8 +57,6 @@ type Props = {
 function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
   const { mode, markets, latestSeniorAPY, latestJuniorAPY, coingeckoPrices, setModal, setMarkets } = props;
-  // const { account } = useWeb3React<Web3Provider>();
-  // const { price: wtfPrice } = useWTFPriceLP();
 
   const positions = usePositions(markets);
   //positions return array tuple: [0: Fixed Tranche Invested, 1: Variable Tranche Invested, 2: Fixed Tranche Pending, 3: Variable Tranche Pending]
@@ -127,20 +110,6 @@ function MyPortfolio(props: Props) {
     setModal,
     setMarkets
   );
-
-  // const investPendingAgg = useMemo(
-  //   () =>
-  //     positions.length > 0
-  //       ? numeral(
-  //           new BigNumber(positions[0][2][0]._hex)
-  //             .plus(new BigNumber(positions[0][3][0]._hex))
-  //             //changed to 6 for USDC
-  //             .dividedBy(BIG_TEN.pow(6))
-  //             .toString()
-  //         ).format("0,0.[000000]")
-  //       : "-",
-  //   [positions]
-  // );
 
   const investAgg = useMemo(
     () =>
@@ -222,71 +191,55 @@ function MyPortfolio(props: Props) {
     }
   };
 
-  // const redeemPending = async (trancheId: number) => {
-  //   // setWithdrawAllLoading(true);
-
-  //   setModal({
-  //     state: Modal.Txn,
-  //     txn: undefined,
-  //     status: "PENDING",
-  //     message: "Redeeming Assets Pending Cycle Entry",
-  //   });
-  //   try {
-  //     if (!balance) return;
-  //     await onRedeemDirect(trancheId);
-  //     setModal({
-  //       state: Modal.Txn,
-  //       txn: undefined,
-  //       status: "SUCCESS",
-  //       message: "Redeem Success",
-  //     });
-  //   } catch (e) {
-  //     console.error(e);
-  //     setModal({
-  //       state: Modal.Txn,
-  //       txn: undefined,
-  //       status: "REJECTED",
-  //       message: "Redeem Failed ",
-  //     });
-  //   } finally {
-  //     // setWithdrawAllLoading(false);
-  //   }
-  // };
-
-  //horrible hack but what can you do?
   function calculateAPR(selectedMarket: Market) {
-    const seniorTrancheAPR = new BigNumber(String(latestSeniorAPY?.y)).toNumber();
+    //actual
+    const _latestSeniorAPY = latestSeniorAPY;
+    const _latestJuniorAPY = latestJuniorAPY;
 
-    const juniorTrancheAPR = new BigNumber(String(latestJuniorAPY?.y)).toNumber();
+    const sum = _latestSeniorAPY?.principal + _latestJuniorAPY?.principal;
+    const thicknesses = [_latestSeniorAPY?.principal / sum, _latestJuniorAPY?.principal / sum];
 
-    // const APROnThatDate = selectedMarket.strategyFarms.map(
-    //   (sf: StrategyFarm) =>
-    //     defiLlamaAPRs[sf.dataId].data.filter((d: any) => {
-    //       const date = new Date(latestSeniorAPY.x);
-    //       const timestamp = new Date(d.timestamp);
-    //       return date.getDate() - timestamp.getDate() === 0 && date.getMonth() - timestamp.getMonth() === 0;
-    //     })[0]
-    // );
+    const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
+    const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-    const sum = Number(markets[0].tranches[0]?.autoPrincipal) + Number(markets[0].tranches[1]?.autoPrincipal);
+    //find prices of tokens
+    //ONLY FINDING CURRENT PRICE FOR NOW
+    const farmTokensPrices = _latestSeniorAPY
+      ? _latestSeniorAPY.farmTokens.map((add: string) => {
+          const targetFarm: StrategyFarm = selectedMarket.strategyFarms.filter(
+            (f) => f.farmTokenContractAddress === add
+          )[0];
+          return coingeckoPrices[targetFarm.dataId]?.usd;
+        })
+      : [];
 
-    const thicknesses = [
-      Number(markets[0].tranches[0]?.autoPrincipal) / Number(sum),
-      Number(markets[0].tranches[1]?.autoPrincipal) / Number(sum),
-    ];
+    const rewardsUSDValues = _latestSeniorAPY
+      ? _latestSeniorAPY.farmTokensAmt.map(
+          (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+        )
+      : [];
 
-    // const seniorRewardAPR =
-    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-    //   (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
 
-    // const juniorRewardAPR =
-    //   APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length -
-    //   (APROnThatDate.reduce((acc, next) => acc + next.apyReward, 0) / APROnThatDate.length) *
-    //     (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    const principal = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
+    const duration = _latestSeniorAPY ? _latestSeniorAPY.duration : 0;
 
-    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR };
+    const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
 
-    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR };
+    const durationYearMultiplier = 31536000 / duration;
+
+    const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
+
+    const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    const juniorRewardAPR = rewardAPR - seniorRewardAPR;
+
+    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
+
+    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
+
+    console.log(seniorTrancheAPR);
+    console.log(seniorRewardAPR);
+    console.log([seniorAPYData, juniorAPYData]);
 
     return [seniorAPYData, juniorAPYData];
   }
@@ -303,13 +256,6 @@ function MyPortfolio(props: Props) {
                 portfolio: "YEGO Finance",
                 tranche: "Fixed",
                 APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
-                // userInvestPending:
-                //   positions.length > 0
-                //     ? //changed to 6 for USDC
-                //       numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
-                //         "0,0.[000000]"
-                //       )
-                //     : "-",
                 nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
@@ -328,16 +274,6 @@ function MyPortfolio(props: Props) {
                 portfolio: "YEGO Finance",
                 tranche: "Risk-On",
                 APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
-                // userInvestPending:
-                //   positions.length > 0
-                //     ? // numeral(
-                //       //changed to 6 for USDC
-                //       new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()
-                //     : // )
-                //       // .format(
-                //       //     "0,0.[000000]"
-                //       //   )
-                //       "-",
                 nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
@@ -439,44 +375,6 @@ function MyPortfolio(props: Props) {
           [
             usersInvestsPayload,
             <div className="my-portfolio-buttons">
-              {/* <button
-                className="claim-redep-btn"
-                onClick={() => {
-                  redeemPending(0);
-                }}
-                // loading={withdrawAllLoading}
-
-                //**refactor this!
-                disabled={
-                  (positions.length > 0
-                    ? //changed to 6 for USDC
-                      numeral(new BigNumber(positions[0][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
-                        "0,0.[000000]"
-                      )
-                    : "-") === "0"
-                }
-              >
-                Redeem Risk-Off
-              </button>
-              <button
-                className="claim-redep-btn"
-                onClick={() => {
-                  redeemPending(1);
-                }}
-                // loading={withdrawAllLoading}
-
-                //** refactor this!
-                disabled={
-                  (positions.length > 0
-                    ? //changed to 6 for USDC
-                      numeral(new BigNumber(positions[0][3][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
-                        "0,0.[000000]"
-                      )
-                    : "-") === "0"
-                }
-              >
-                Redeem Risk-On
-              </button> */}
               <button
                 className="claim-redep-btn"
                 onClick={() => {

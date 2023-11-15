@@ -64,8 +64,8 @@ function Yego() {
   const [modal, setModal] = useState<ModalProps>({ state: Modal.None });
   const [disableHeaderNetworkSwitch, setDisableHeaderNetworkSwitch] = useState<boolean>(false);
   const [APYData, setAPYData] = useState<APYDataFull[]>([]);
-  const [latestSeniorAPY, setLatestSeniorAPY] = useState<APYData | undefined>();
-  const [latestJuniorAPY, setLatestJuniorAPY] = useState<APYData | undefined>();
+  const [latestSeniorAPY, setLatestSeniorAPY] = useState<APYDataFull | undefined>();
+  const [latestJuniorAPY, setLatestJuniorAPY] = useState<APYDataFull | undefined>();
 
   const coingeckoPrices: any = useCoingeckoPrices();
   const defiLlamaAPRs: any = useDefiLlamaAPRs();

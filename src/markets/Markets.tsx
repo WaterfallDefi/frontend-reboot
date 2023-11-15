@@ -127,7 +127,7 @@ function Markets(props: Props) {
             const rewardsUSDValues = _latestSeniorAPY
               ? _latestSeniorAPY.farmTokensAmt.map(
                   (amt: number, i: number) =>
-                    new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+                    new BigNumber(amt).dividedBy(BIG_TEN.pow(18)).toNumber() * farmTokensPrices[i]
                 )
               : [];
 
