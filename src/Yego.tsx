@@ -68,7 +68,7 @@ function Yego() {
   const [latestJuniorAPY, setLatestJuniorAPY] = useState<APYDataFull | undefined>();
 
   const coingeckoPrices: any = useCoingeckoPrices();
-  const defiLlamaAPRs: any = useDefiLlamaAPRs();
+  // const defiLlamaAPRs: any = useDefiLlamaAPRs();
 
   useEffect(() => {
     setModal({

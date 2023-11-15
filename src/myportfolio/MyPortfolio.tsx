@@ -58,11 +58,13 @@ function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
   const { mode, markets, latestSeniorAPY, latestJuniorAPY, coingeckoPrices, setModal, setMarkets } = props;
 
+  //UPGRADED to add "balanceOf" to multicall!
   const positions = usePositions(markets);
   //positions return array tuple: [0: Fixed Tranche Invested, 1: Variable Tranche Invested, 2: Fixed Tranche Pending, 3: Variable Tranche Pending]
 
   //new shit
   //**CURRENTLY HARDCODED TO MarketList[0] : THIS NEEDS TO CHANGE IF WE EVER ADD MORE PRODUCTS
+  //delete this after 1. unfolding positions rendering structure, and 2. folding balance and invested retrieval from usePositions
   const {
     balance,
     invested,
@@ -240,23 +242,47 @@ function MyPortfolio(props: Props) {
     return [seniorAPYData, juniorAPYData];
   }
 
-  const latestAPYs = calculateAPR(markets[0]);
+  // const latestAPYs = calculateAPR(markets[0]);
 
-  //refine this later
-  const usersInvestsPayload = useMemo(
+  const latestAPYs = markets.map((m) => calculateAPR(m));
+
+  const usersInvestPayload = useMemo(
     () =>
-      positions.length > 0
-        ? [
+      //calculations
+      positions
+        .map((p: Market, i: number) => {
+          return [
             {
               data: {
-                portfolio: "YEGO Finance",
+                portfolio: p.portfolio,
                 tranche: "Fixed",
-                APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
+                APY: latestAPYs[i] ? latestAPYs[i][0].y + "%" : "-",
+                nextCycle: dateToNextCycle,
+                userInvest:
+                  // positions[i] this market's positions
+                  // [0] the tranche
+                  // [1] the returned argument index, argument 0 is just cycle ffs
+                  positions.length > 0
+                    ? //changed to 6 for USDC
+                      numeral(new BigNumber(positions[i][0][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
+                        "0,0.[000000]"
+                      )
+                    : "-",
+                assetsPlusReturn: "",
+                assetsWithdrawable: "",
+              },
+              pointer: false,
+            },
+            {
+              data: {
+                portfolio: p.portfolio,
+                tranche: "Degen",
+                APY: latestAPYs[i] ? latestAPYs[i][1].y + "%" : "-",
                 nextCycle: dateToNextCycle,
                 userInvest:
                   positions.length > 0
                     ? //changed to 6 for USDC
-                      numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
+                      numeral(new BigNumber(positions[i][1][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
                         "0,0.[000000]"
                       )
                     : "-",
@@ -268,41 +294,91 @@ function MyPortfolio(props: Props) {
             {
               data: {
                 portfolio: "YEGO Finance",
-                tranche: "Risk-On",
-                APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
-                nextCycle: dateToNextCycle,
-                userInvest:
-                  positions.length > 0
-                    ? //  numeral(
-                      //changed to 6 for USDC
-                      new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()
-                    : // )
-                      // .format(
-                      //     "0,0.[000000]"
-                      //   )
-                      "-",
-                assetsPlusReturn: "",
-                assetsWithdrawable: "",
-              },
-              pointer: false,
-            },
-            {
-              data: {
-                portfolio: "YEGO Finance",
                 tranche: "Aggregate",
                 APY: "",
-                // userInvestPending: investPendingAgg,
                 nextCycle: dateToNextCycle,
-                userInvest: investAgg,
-                assetsPlusReturn: invested,
-                assetsWithdrawable: balance,
+                userInvest: numeral(
+                  new BigNumber(positions[i][0][1]._hex)
+                    .plus(new BigNumber(positions[i][1][1]._hex))
+                    //changed to 6 for USDC
+                    .dividedBy(BIG_TEN.pow(6))
+                    .toString()
+                ).format("0,0.[000000]"),
+
+                //invested and balance of are therefore the "third tranche" (there is no third tranche)
+                assetsPlusReturn: positions[i][2][1], //invested is argument 1
+                assetsWithdrawable: positions[i][2][0], //balance is argument 0
               },
               pointer: true,
             },
-          ].map((tr: any, i) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
-        : undefined,
-    [latestAPYs, positions, balance, invested, investAgg, dateToNextCycle]
+          ];
+          //render
+        })
+        .map((tr: any, i: number) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />),
+    [positions, dateToNextCycle, latestAPYs]
   );
+
+  //refine this later
+  // const usersInvestsPayload = useMemo(
+  //   () =>
+  //     positions.length > 0
+  //       ? [
+  //           {
+  //             data: {
+  //               portfolio: "YEGO Finance",
+  //               tranche: "Fixed",
+  //               APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
+  //               nextCycle: dateToNextCycle,
+  //               userInvest:
+  //                 positions.length > 0
+  //                   ? //changed to 6 for USDC
+  //                     numeral(new BigNumber(positions[0][0][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
+  //                       "0,0.[000000]"
+  //                     )
+  //                   : "-",
+  //               assetsPlusReturn: "",
+  //               assetsWithdrawable: "",
+  //             },
+  //             pointer: false,
+  //           },
+  //           {
+  //             data: {
+  //               portfolio: "YEGO Finance",
+  //               tranche: "Risk-On",
+  //               APY: latestAPYs[1] ? latestAPYs[1].y + "%" : "-",
+  //               nextCycle: dateToNextCycle,
+  //               userInvest:
+  //                 positions.length > 0
+  //                   ? //  numeral(
+  //                     //changed to 6 for USDC
+  //                     new BigNumber(positions[0][1][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()
+  //                   : // )
+  //                     // .format(
+  //                     //     "0,0.[000000]"
+  //                     //   )
+  //                     "-",
+  //               assetsPlusReturn: "",
+  //               assetsWithdrawable: "",
+  //             },
+  //             pointer: false,
+  //           },
+  //           {
+  //             data: {
+  //               portfolio: "YEGO Finance",
+  //               tranche: "Aggregate",
+  //               APY: "",
+  //               // userInvestPending: investPendingAgg,
+  //               nextCycle: dateToNextCycle,
+  //               userInvest: investAgg,
+  //               assetsPlusReturn: invested,
+  //               assetsWithdrawable: balance,
+  //             },
+  //             pointer: true,
+  //           },
+  //         ].map((tr: any, i) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
+  //       : undefined,
+  //   [latestAPYs, positions, balance, invested, investAgg, dateToNextCycle]
+  // );
 
   // const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
   //   setSelectedAsset(event.target.value);
@@ -362,14 +438,14 @@ function MyPortfolio(props: Props) {
           </div>
         ))}
       </div>
-      {usersInvestsPayload ? (
+      {usersInvestPayload ? (
         Number(invested) === 0 && Number(balance) === 0 ? (
           <div className="no-data">
             <span>No Positions</span>
           </div>
         ) : (
           [
-            usersInvestsPayload,
+            usersInvestPayload,
             <div className="my-portfolio-buttons">
               <button
                 className="claim-redep-btn"
