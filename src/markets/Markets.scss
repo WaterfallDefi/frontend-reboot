@@ -334,8 +334,21 @@
                 color: $base-color;
                 font-size: $font-size-md;
                 border: 2px solid $layer-color-dark;
+                opacity: 0.5;
+                &.senior,
+                &.fixed {
+                  background: #fcb500;
+                }
+                &.mezzanine {
+                  background: #00a14a;
+                }
+                &.junior,
+                &.degen {
+                  background: $highlight-color;
+                }
                 &.hovered {
                   border: 2px solid $base-color;
+                  opacity: 1;
                 }
               }
             }

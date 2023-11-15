@@ -63,11 +63,11 @@ function TrancheStructure(props: Props) {
         ]
       : [
           {
-            name: "RiskOff",
+            name: "Fixed",
             value: values[0],
           },
           {
-            name: "RiskOn",
+            name: "Degen",
             value: values[1],
           },
         ];
@@ -80,7 +80,7 @@ function TrancheStructure(props: Props) {
           {hoveredTranche !== -1 ? (
             <div className="subordination" key="subordination">
               <span className={"tranche-name " + payload[hoveredTranche].name.toLowerCase()}>
-                {payload[hoveredTranche].name === "RiskOff" ? "Risk Off" : "Risk On"}
+                {payload[hoveredTranche].name}
               </span>
               <br />
               {/* {hoveredTranche !== payload.length - 1 && (
@@ -90,7 +90,7 @@ function TrancheStructure(props: Props) {
               <br /> */}
               {hoveredTranche === 0 && (
                 <span className="comment">
-                  Repayment of Interest and Principal is paid out to this segment first.
+                  Repayment of Interest and Principal is paid out to the Fixed segment first.
                   {/* {payload[hoveredTranche].name}{" "} */}
                   {/* Tranche users have principal protection until the portfolio strategy experiences{" "}
                   {numeral(getSubordination().toString()).format("0,0.[0000]")}% loss or more. */}
@@ -123,8 +123,8 @@ function TrancheStructure(props: Props) {
               onClick={() => {
                 setToggleChartTranche(i);
               }}
-              className={"tranche-stack" + (hoveredTranche === i ? " hovered" : "")}
-              style={{ height: t.value * 125 + "px", background: COLORS[t.name] }}
+              className={"tranche-stack" + (hoveredTranche === i ? " hovered " : " ") + t.name.toLowerCase()}
+              style={{ height: t.value * 125 + "px" }}
             >
               <span>{numeral(t.value * 100).format("0,0")}%</span>
             </div>

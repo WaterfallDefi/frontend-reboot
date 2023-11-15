@@ -301,7 +301,7 @@ function MyPortfolio(props: Props) {
             {
               data: {
                 portfolio: "YEGO Finance",
-                tranche: "Risk-Off",
+                tranche: "Fixed",
                 APY: latestAPYs[0] ? latestAPYs[0].y + "%" : "-",
                 // userInvestPending:
                 //   positions.length > 0

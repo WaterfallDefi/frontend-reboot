@@ -110,6 +110,8 @@ function Markets(props: Props) {
               Number(m.tranches[1]?.autoPrincipal) / Number(sum),
             ];
 
+            console.log(_latestJuniorAPY);
+
             const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
             const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
@@ -144,6 +146,12 @@ function Markets(props: Props) {
             const juniorRewardAPR = rewardAPR - seniorRewardAPR;
 
             const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
+
+            console.log(juniorTrancheAPR);
+            console.log(juniorRewardAPR);
+
+            console.log("correct:");
+            console.log(tranchesApr);
 
             const nonDollarTvl = m.assets[0] === "WBNB" || m.assets[0] === "WAVAX";
 
@@ -239,43 +247,25 @@ function Markets(props: Props) {
 
     const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
 
-    const principalSenior = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
-    const principalJunior = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
-    const duration = _latestSeniorAPY ? _latestSeniorAPY.duration : 0; //I hope I don't get matching the cycles wrong but this should be the same
+    const principal = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
+    const duration = _latestSeniorAPY ? _latestSeniorAPY.duration : 0;
 
-    const rawYieldForCycleSenior = principalSenior > 0 ? (principalSenior + totalReward) / principalSenior : 1;
-    const rawYieldForCycleJunior = principalJunior > 0 ? (principalJunior + totalReward) / principalJunior : 1;
+    const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
 
     const durationYearMultiplier = 31536000 / duration;
 
-    // const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier; ????
+    const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
 
-    // const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
-    // const juniorRewardAPR = rewardAPR - seniorRewardAPR;
-
-    // const tranchesApr = [seniorTrancheAPR + seniorRewardAPR, juniorTrancheAPR + juniorRewardAPR];
-
-    // const rawYieldForCycleSenior =
-    //   _latestSeniorAPY?.principal > 0
-    //     ? (_latestSeniorAPY?.principal + stargateHarvestSenior) / _latestSeniorAPY?.principal
-    //     : 1;
-    // const rawYieldForCycleJunior =
-    //   _latestJuniorAPY?.principal > 0
-    //     ? (_latestJuniorAPY?.principal + stargateHarvestJunior) / _latestJuniorAPY?.principal
-    //     : 1;
-
-    const durationYearMultiplierSenior = _latestSeniorAPY?.duration ? 31536000 / _latestSeniorAPY?.duration : 0;
-    const durationYearMultiplierJunior = _latestJuniorAPY?.duration ? 31536000 / _latestJuniorAPY?.duration : 0;
-
-    const seniorRewardAPR =
-      (rawYieldForCycleSenior - 1) * 100 * durationYearMultiplierSenior * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
-
-    const juniorRewardAPR =
-      (rawYieldForCycleJunior - 1) * 100 * durationYearMultiplierJunior * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+    const juniorRewardAPR = rewardAPR - seniorRewardAPR;
 
     const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
 
     const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
+
+    console.log(seniorTrancheAPR);
+    console.log(seniorRewardAPR);
+    console.log([seniorAPYData, juniorAPYData]);
 
     return [seniorAPYData, juniorAPYData];
   }

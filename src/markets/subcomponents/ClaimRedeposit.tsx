@@ -347,7 +347,7 @@ function ClaimRedeposit(props: Props) {
             // loading={withdrawAllLoading}
             disabled={selectedMarket.status === PORTFOLIO_STATUS.ACTIVE || !withdrawalQueued}
           >
-            Redeem Risk-Off
+            Redeem Fixed
           </button>
           <button
             className="claim-redep-btn"
@@ -357,7 +357,7 @@ function ClaimRedeposit(props: Props) {
             // loading={withdrawAllLoading}
             disabled={selectedMarket.status === PORTFOLIO_STATUS.ACTIVE || !withdrawalQueued}
           >
-            Redeem Risk-On
+            Redeem Degen
           </button>
         </div>
       </div>

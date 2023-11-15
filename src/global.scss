@@ -85,10 +85,12 @@ $font-size-xl: 30px;
     flex-grow: 1;
     color: $text-color-dark;
 
-    &.Risk-Off {
+    &.Risk-Off,
+    &.fixed {
       color: rgba(252, 182, 4, 0.8);
     }
-    &.Risk-On {
+    &.Risk-On,
+    &.degen {
       color: $highlight-color;
     }
 
@@ -518,11 +520,11 @@ $font-size-xl: 30px;
           box-sizing: border-box;
           border-radius: 8px;
           background: $base-color;
-          &.risk-off.selected {
+          &.fixed.selected {
             border-color: rgba(252, 182, 4, 0.8);
             background: $layer-color-dark-2;
           }
-          &.risk-on.selected {
+          &.degen.selected {
             border-color: $highlight-color;
             background: $layer-color-dark-2;
           }
@@ -570,14 +572,16 @@ $font-size-xl: 30px;
                 border-radius: 100%;
                 margin-right: 5px;
                 &.senior,
-                &.risk-off {
+                &.risk-off,
+                &.fixed {
                   background-color: rgba(252, 182, 4, 0.8);
                 }
                 &.mezzanine {
                   background-color: $highlight-color;
                 }
                 &.junior,
-                &.risk-on {
+                &.risk-on,
+                &.degen {
                   background-color: $highlight-color;
                 }
               }
@@ -588,14 +592,16 @@ $font-size-xl: 30px;
             line-height: 22px;
             margin: 10px 0;
             &.senior,
-            &.risk-off {
+            &.risk-off,
+            &.fixed {
               color: rgba(252, 182, 4, 0.8);
             }
             &.mezzanine {
               color: $highlight-color;
             }
             &.junior,
-            &.risk-on {
+            &.risk-on,
+            &.degen {
               color: $highlight-color;
             }
           }
