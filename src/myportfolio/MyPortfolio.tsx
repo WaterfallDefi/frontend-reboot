@@ -70,19 +70,15 @@ function MyPortfolio(props: Props) {
     invested,
     // fetchBalance
   } = useTrancheBalance(MarketList[0].network, MarketList[0].address, MarketList[0].abi, MarketList[0].isMulticurrency);
+  //DEHARDCODE ^ successfully rolled into usePositions
 
   const { getUserInfo } = useUserInfo(MarketList[0].network, MarketList[0].address, MarketList[0].abi);
-
-  const [dateToNextCycle, setDateToNextCycle] = useState<Number>(0);
+  //DEHARDCODE ^ need to roll this into usePositions, if not possible modify useUserInfo hook to cover multiple products
 
   const [withdrawalQueued, setWithdrawalQueued] = useState(false);
+  //DEHARDCODE ^ make this state an array to track withdrawal queue state of all products
   const [withdrawalQueuedPending, setWithdrawalQueuedPending] = useState(true);
-
-  useEffect(() => {
-    markets.length > 0 && markets[0].duration && markets[0].actualStartAt
-      ? setDateToNextCycle(Number(markets[0].duration) + Number(markets[0].actualStartAt))
-      : setDateToNextCycle(0);
-  }, [markets]);
+  //DEHARDCODE ^ make this state an array to track withdrawal queue state of all products
 
   useEffect(() => {
     if (withdrawalQueuedPending) {
@@ -104,6 +100,9 @@ function MyPortfolio(props: Props) {
     setModal,
     setMarkets
   );
+  //DEHARDCODE ^ add parameters to the hook's returned function so that you pack the contract
+  //call inside the function itself instead of statically in the hook, that means you can
+  //withdraw from multiple contracts.
 
   const { onRedeemDirect } = useRedeemDirect(
     MarketList[0].network,
@@ -112,20 +111,8 @@ function MyPortfolio(props: Props) {
     setModal,
     setMarkets
   );
-
-  const investAgg = useMemo(
-    () =>
-      positions.length > 0
-        ? numeral(
-            new BigNumber(positions[0][0][1]._hex)
-              .plus(new BigNumber(positions[0][1][1]._hex))
-              //changed to 6 for USDC
-              .dividedBy(BIG_TEN.pow(6))
-              .toString()
-          ).format("0,0.[000000]")
-        : "-",
-    [positions]
-  );
+  //DEHARDCODE ^ "
+  //we figure out what the flow / logic is for redeem direct vs. withdraw later
 
   // const [headerSort, setHeaderSort] = useState<number>(-1);
   // const [sortAsc, setSortAsc] = useState<boolean>(true);
@@ -258,7 +245,7 @@ function MyPortfolio(props: Props) {
                     portfolio: p.portfolio,
                     tranche: "Fixed",
                     APY: latestAPYs[i] ? latestAPYs[i][0].y + "%" : "-",
-                    nextCycle: dateToNextCycle,
+                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
                     userInvest:
                       // positions[i] this market's positions
                       // [0] the tranche
@@ -279,7 +266,7 @@ function MyPortfolio(props: Props) {
                     portfolio: p.portfolio,
                     tranche: "Degen",
                     APY: latestAPYs[i] ? latestAPYs[i][1].y + "%" : "-",
-                    nextCycle: dateToNextCycle,
+                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
                     userInvest:
                       positions.length > 0
                         ? //changed to 6 for USDC
@@ -297,7 +284,7 @@ function MyPortfolio(props: Props) {
                     portfolio: "YEGO Finance",
                     tranche: "Aggregate",
                     APY: "",
-                    nextCycle: dateToNextCycle,
+                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
                     userInvest: numeral(
                       new BigNumber(positions[i][0][1]._hex)
                         .plus(new BigNumber(positions[i][1][1]._hex))
@@ -317,7 +304,7 @@ function MyPortfolio(props: Props) {
           //render
         })
         .map((tr: any, i: number) => (tr ? <TableRow key={i} data={tr.data} pointer={tr.pointer} /> : <div />)),
-    [positions, dateToNextCycle, latestAPYs]
+    [positions, latestAPYs, markets]
   );
 
   // const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -386,31 +373,35 @@ function MyPortfolio(props: Props) {
         ) : (
           [
             usersInvestPayload,
-            // NEED TO MULTIPRODUCT THESE BUTTONS
-            //"action panel": positions all on top, interaction with products all on bottom
-
-            <div className="my-portfolio-buttons">
-              <button
-                className="claim-redep-btn"
-                onClick={() => {
-                  queueWithdrawAll();
-                }}
-                // loading={withdrawAllLoading}
-                disabled={!+invested || withdrawalQueued}
-              >
-                Queue Withdrawal
-              </button>
-              <button
-                className="claim-redep-btn"
-                onClick={() => {
-                  withdrawAll();
-                }}
-                // loading={withdrawAllLoading}
-                disabled={!+balance}
-              >
-                Withdraw
-              </button>
-            </div>,
+            positions.map((p: Market, i: number) => {
+              return positions[i][2][1] > 0 && positions[i][2][2] > 0 ? (
+                //NEED TO CHANGE LOGIC FROM ONLY WITHDRAWING FROM FIRST PRODUCT
+                <div className="my-portfolio-buttons">
+                  <button
+                    className="claim-redep-btn"
+                    onClick={() => {
+                      queueWithdrawAll();
+                    }}
+                    // loading={withdrawAllLoading}
+                    disabled={!+invested || withdrawalQueued}
+                  >
+                    Queue Withdrawal
+                  </button>
+                  <button
+                    className="claim-redep-btn"
+                    onClick={() => {
+                      withdrawAll();
+                    }}
+                    // loading={withdrawAllLoading}
+                    disabled={!+balance}
+                  >
+                    Withdraw
+                  </button>
+                </div>
+              ) : (
+                <div />
+              );
+            }),
           ]
         )
       ) : (
