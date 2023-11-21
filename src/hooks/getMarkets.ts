@@ -48,6 +48,7 @@ export const getMarkets = async (payload: Market[]) => {
     const markets = await Promise.all(
       _payload.map(async (marketData, marketId) => {
         const _marketAddress = marketData.address;
+
         const tokenCalls = !marketData.isMulticurrency
           ? []
           : marketData.assets.map((a: string, i: number) => ({
@@ -105,6 +106,44 @@ export const getMarkets = async (payload: Market[]) => {
 
         const _tranches = tranchesAndTokens.slice(0, marketData.trancheCount);
         const _tokens = tranchesAndTokens.slice(marketData.trancheCount);
+
+        //START OF CODE BLOCK: GETTING THE RATIOS
+        //(DO WE REALLY NEED THIS?!?!?!)
+        const _stratAddress = marketData.multistrategyContract;
+        const [strategyCount, zerothStratAddress] = await multicall(marketData.network, marketData.multistrategyAbi, [
+          {
+            address: _stratAddress,
+            name: "strategyCount",
+          },
+          {
+            address: _stratAddress,
+            name: "strategies",
+            params: [0],
+          },
+        ]);
+        const _callsStrategy = [];
+        //does not start on index 0 because we have the first strat already
+        for (let i = 1; i < strategyCount; i++) {
+          _callsStrategy.push({
+            address: _stratAddress,
+            name: "strategies",
+            params: [i],
+          });
+        }
+        const strategyAddresses = [
+          zerothStratAddress,
+          ...(await multicall(marketData.network, marketData.multistrategyAbi, _callsStrategy)),
+        ];
+        const _callsRatio = strategyAddresses.map((a) => {
+          return {
+            address: _stratAddress,
+            name: "ratios",
+            params: a,
+          };
+        });
+        const ratios = await multicall(marketData.network, marketData.multistrategyAbi, _callsRatio);
+        console.log(ratios);
+        //END OF CODE BLOCK: GETTING THE RATIOS
 
         const tokenObjs = _tokens.map((t: any) => {
           return { addr: t[0], strategy: t[1], percent: t[2] };
@@ -169,6 +208,8 @@ export const getMarkets = async (payload: Market[]) => {
           totalTranchesTarget: totalTranchesTarget.toString(),
           tvl: tvl.toString(),
           cycle: cycle.toString(),
+          strategyAddresses: strategyAddresses,
+          strategyRatios: ratios,
         };
         // const _masterchefAddress = marketData.masterChefAddress;
         // const poolCalls = [];

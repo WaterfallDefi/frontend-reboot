@@ -66,8 +66,10 @@ export interface Market {
   depositAssetAddresses: string[];
   depositAssetContract?: Contract;
   rewardPerBlock?: string;
-  strategyFarms: StrategyFarm[];
+  strategyFarms: StrategyFarm[]; //hardcoded
   strategyBlurbs: string[];
+  strategyAddresses?: string[]; //retrieved from contract
+  strategyRatios?: number[]; //retrieved from contract
   subgraphURL: string;
   isRetired?: boolean;
   //NEW - rewards contract address
@@ -76,6 +78,8 @@ export interface Market {
   multistrategyContract: string;
   //NEW - rewards contract abi
   rewardsContractAbi: any;
+  //NEW - multistrategy abi
+  multistrategyAbi: any;
 }
 export type Token = {
   addr: string;
