@@ -40,7 +40,7 @@ export const MarketList: Market[] = [
     strategyFarms: [
       {
         farmName: "Stargate",
-        shares: 0.2,
+        shares: 0,
         dataId: "stargate-finance",
         farmTokenContractAddress: "0x6694340fc020c5e6b96567843da2df01b2ce1eb6",
       },
@@ -61,6 +61,12 @@ export const MarketList: Market[] = [
         shares: 0.3,
         dataId: "convex-finance",
         farmTokenContractAddress: "0xb952a807345991bd529fdded05009f5e80fe8f45",
+      },
+      {
+        farmName: "Stargate",
+        shares: 0.2,
+        dataId: "stargate-finance",
+        farmTokenContractAddress: "0x912ce59144191c1204e64559fe8253a0e49e6548",
       },
     ],
     rewardsContract: Arbitrum_Rewards_Contract[NETWORK],
