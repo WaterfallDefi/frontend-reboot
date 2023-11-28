@@ -68,8 +68,6 @@ export interface Market {
   rewardPerBlock?: string;
   strategyFarms: StrategyFarm[]; //hardcoded
   strategyBlurbs: string[];
-  strategyAddresses?: string[]; //retrieved from contract
-  strategyRatios?: number[]; //retrieved from contract
   subgraphURL: string;
   isRetired?: boolean;
   //NEW - rewards contract address
