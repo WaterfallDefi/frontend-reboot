@@ -47,7 +47,7 @@ const StrategyChart = (props: Props) => {
 
         const rewardsUSDValues = d.farmTokens
           ? d.farmTokensAmt.map(
-              (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(16)).toNumber() * farmTokensPrices[i]
+              (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(18)).toNumber() * farmTokensPrices[i]
             )
           : [];
 
