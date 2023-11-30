@@ -302,7 +302,7 @@ function ApproveCardDefault(props: Props) {
             (Number(selectedMarket.duration) +
               Number(selectedMarket.actualStartAt) +
               Number(selectedMarket.investmentWindow)) *
-              1000 >
+              1000 <
             0
         }
       >
