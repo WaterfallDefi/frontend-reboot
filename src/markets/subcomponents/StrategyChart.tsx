@@ -36,6 +36,8 @@ const StrategyChart = (props: Props) => {
         //senior comes first
         const thicknesses = [Number(principal) / Number(sum), Number(matchingTranchePrincipal) / Number(sum)];
 
+        console.log("LOK TAR O DAR");
+        console.log(coingeckoPrices);
         //find prices of tokens
         //ONLY FINDING CURRENT PRICE FOR NOW
         const farmTokensPrices = d.farmTokens
