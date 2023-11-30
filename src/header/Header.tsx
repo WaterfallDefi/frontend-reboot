@@ -137,7 +137,7 @@ function Header(props: Props) {
               }
             }}
           >
-            Vaults
+            Refresh Vaults
           </Link>
         </div>
         <div className="menu-block-wrapper">
