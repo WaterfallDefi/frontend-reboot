@@ -10,7 +10,19 @@ type Props = {
   strategyFarms: StrategyFarm[];
 };
 
-const COLORS = ["rgb(51, 51, 51)", "#FFB0E3", "#4A63B9", "#85C872", "#F7C05F", "#89CFF0"];
+const COLORS = [
+  "rgb(51, 51, 51)",
+  //stargate
+  "#FFB0E3",
+  //hop
+  "#4A63B9",
+  //curve
+  "#85C872",
+  //convex
+  "#F7C05F",
+  //stargate again
+  "#FFB0E3",
+];
 
 function PortfolioChart(props: Props) {
   const { strategyFarms } = props;
