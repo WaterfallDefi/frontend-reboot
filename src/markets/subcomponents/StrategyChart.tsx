@@ -25,6 +25,8 @@ const StrategyChart = (props: Props) => {
 
   const [totalAPRs, setTotalAPRs] = useState<any[]>([]);
 
+  console.log("push baby push");
+
   useEffect(() => {
     if (APYdata) {
       const rewardAPRs = APYdata.map((d: APYDataFull, i) => {
