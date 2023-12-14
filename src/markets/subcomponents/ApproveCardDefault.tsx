@@ -187,7 +187,18 @@ function ApproveCardDefault(props: Props) {
         return "Insufficient Balance to Wrap";
       }
     }
-  }, [actualBalanceWallet, balanceInput, balance, metamaskBalance, selectedMarket.wrap]);
+
+    if (
+      Date.now() -
+        (Number(selectedMarket.duration) +
+          Number(selectedMarket.actualStartAt) +
+          Number(selectedMarket.investmentWindow)) *
+          1000 >
+      0
+    ) {
+      return "Please wait until investment window opens again after current cycle.";
+    }
+  }, [actualBalanceWallet, balanceInput, balance, metamaskBalance, selectedMarket]);
 
   const handleWrap = async () => {
     setDepositLoading(true);
@@ -302,7 +313,7 @@ function ApproveCardDefault(props: Props) {
             (Number(selectedMarket.duration) +
               Number(selectedMarket.actualStartAt) +
               Number(selectedMarket.investmentWindow)) *
-              1000 <
+              1000 >
             0
         }
       >

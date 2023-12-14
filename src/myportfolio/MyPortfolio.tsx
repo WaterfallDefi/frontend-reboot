@@ -238,7 +238,8 @@ function MyPortfolio(props: Props) {
       //calculations
       positions
         .map((p: Market, i: number) => {
-          return positions[i][2][1] > 0 && positions[i][2][2] > 0
+          return new BigNumber(positions[i][2][1]._hex).toNumber() > 0 ||
+            new BigNumber(positions[i][2][2]._hex).toNumber() > 0
             ? [
                 {
                   data: {
