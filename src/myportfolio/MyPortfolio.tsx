@@ -33,14 +33,13 @@ const formatBigNumber2HexString = (bn: BigNumber) => {
 // ];
 
 const headers = [
-  "Portfolio Name",
+  "Vault",
   "Tranche",
-  "Latest APY",
-  "Principal Pending",
-  "Next Cycle",
-  "Principal",
-  "Principal + Yield",
+  // "Latest APY",
+  "Total Principle",
+  "Pending Yield",
   "Assets Withdrawable",
+  "Aggregate",
 ];
 
 type Props = {
@@ -180,58 +179,60 @@ function MyPortfolio(props: Props) {
     }
   };
 
-  function calculateAPR(selectedMarket: Market) {
-    //actual
-    const _latestSeniorAPY = latestSeniorAPY;
-    const _latestJuniorAPY = latestJuniorAPY;
+  //NOT CALCULATING APRS AT ALL HERE FOR NOW BECAUSE APRS ARE NOT INDICATIVE.
 
-    const sum = _latestSeniorAPY?.principal + _latestJuniorAPY?.principal;
-    const thicknesses = [_latestSeniorAPY?.principal / sum, _latestJuniorAPY?.principal / sum];
+  // function calculateAPR(selectedMarket: Market) {
+  //   //actual
+  //   const _latestSeniorAPY = latestSeniorAPY;
+  //   const _latestJuniorAPY = latestJuniorAPY;
 
-    const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
-    const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
+  //   const sum = _latestSeniorAPY?.principal + _latestJuniorAPY?.principal;
+  //   const thicknesses = [_latestSeniorAPY?.principal / sum, _latestJuniorAPY?.principal / sum];
 
-    //find prices of tokens
-    //ONLY FINDING CURRENT PRICE FOR NOW
-    const farmTokensPrices = _latestSeniorAPY
-      ? _latestSeniorAPY.farmTokens.map((add: string) => {
-          const targetFarm: StrategyFarm = selectedMarket.strategyFarms.filter(
-            (f) => f.farmTokenContractAddress === add
-          )[0];
-          return coingeckoPrices[targetFarm.dataId]?.usd;
-        })
-      : [];
+  //   const seniorTrancheAPR = new BigNumber(String(_latestSeniorAPY?.y)).toNumber();
+  //   const juniorTrancheAPR = new BigNumber(String(_latestJuniorAPY?.y)).toNumber();
 
-    const rewardsUSDValues = _latestSeniorAPY
-      ? _latestSeniorAPY.farmTokensAmt.map(
-          (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(18)).toNumber() * farmTokensPrices[i]
-        )
-      : [];
+  //   //find prices of tokens
+  //   //ONLY FINDING CURRENT PRICE FOR NOW
+  //   const farmTokensPrices = _latestSeniorAPY
+  //     ? _latestSeniorAPY.farmTokens.map((add: string) => {
+  //         const targetFarm: StrategyFarm = selectedMarket.strategyFarms.filter(
+  //           (f) => f.farmTokenContractAddress === add
+  //         )[0];
+  //         return coingeckoPrices[targetFarm.dataId]?.usd;
+  //       })
+  //     : [];
 
-    const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
+  //   const rewardsUSDValues = _latestSeniorAPY
+  //     ? _latestSeniorAPY.farmTokensAmt.map(
+  //         (amt: number, i: number) => new BigNumber(amt).dividedBy(BIG_TEN.pow(18)).toNumber() * farmTokensPrices[i]
+  //       )
+  //     : [];
 
-    const principal = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
-    const duration = _latestSeniorAPY ? _latestSeniorAPY.duration : 0;
+  //   const totalReward = rewardsUSDValues.reduce((acc: number, next: number) => acc + next, 0);
 
-    const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
+  //   const principal = _latestSeniorAPY ? _latestSeniorAPY.principal : 0;
+  //   const duration = _latestSeniorAPY ? _latestSeniorAPY.duration : 0;
 
-    const durationYearMultiplier = 31536000 / duration;
+  //   const rawYieldForCycle = principal > 0 ? (principal + totalReward) / principal : 1;
 
-    const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
+  //   const durationYearMultiplier = 31536000 / duration;
 
-    const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
-    const juniorRewardAPR = rewardAPR - seniorRewardAPR;
+  //   const rewardAPR = (rawYieldForCycle - 1) * 100 * durationYearMultiplier;
 
-    const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
+  //   const seniorRewardAPR = rewardAPR * (thicknesses[0] < 0.5 ? thicknesses[0] : 0.5);
+  //   const juniorRewardAPR = rewardAPR - seniorRewardAPR;
 
-    const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
+  //   const seniorAPYData: APYData = { id: "0-", x: new Date(), y: seniorTrancheAPR + seniorRewardAPR };
 
-    return [seniorAPYData, juniorAPYData];
-  }
+  //   const juniorAPYData: APYData = { id: "1-", x: new Date(), y: juniorTrancheAPR + juniorRewardAPR };
+
+  //   return [seniorAPYData, juniorAPYData];
+  // }
 
   // const latestAPYs = calculateAPR(markets[0]);
 
-  const latestAPYs = markets.map((m) => calculateAPR(m));
+  // const latestAPYs = markets.map((m) => calculateAPR(m));
 
   const usersInvestPayload = useMemo(
     () =>
@@ -245,8 +246,7 @@ function MyPortfolio(props: Props) {
                   data: {
                     portfolio: p.portfolio,
                     tranche: "Fixed",
-                    APY: latestAPYs[i] ? latestAPYs[i][0].y + "%" : "-",
-                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    //APY: latestAPYs[i] ? latestAPYs[i][0].y + "%" : "-",
                     userInvest:
                       // positions[i] this market's positions
                       // [0] the tranche
@@ -257,8 +257,10 @@ function MyPortfolio(props: Props) {
                             "0,0.[000000]"
                           )
                         : "-",
-                    assetsPlusReturn: "",
+                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    pendingYield: "",
                     assetsWithdrawable: "",
+                    assetsPlusReturn: "",
                   },
                   pointer: false,
                 },
@@ -266,8 +268,7 @@ function MyPortfolio(props: Props) {
                   data: {
                     portfolio: p.portfolio,
                     tranche: "Degen",
-                    APY: latestAPYs[i] ? latestAPYs[i][1].y + "%" : "-",
-                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    // APY: latestAPYs[i] ? latestAPYs[i][1].y + "%" : "-",
                     userInvest:
                       positions.length > 0
                         ? //changed to 6 for USDC
@@ -275,8 +276,10 @@ function MyPortfolio(props: Props) {
                             "0,0.[000000]"
                           )
                         : "-",
-                    assetsPlusReturn: "",
+                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    pendingYield: "",
                     assetsWithdrawable: "",
+                    assetsPlusReturn: "",
                   },
                   pointer: false,
                 },
@@ -284,8 +287,8 @@ function MyPortfolio(props: Props) {
                   data: {
                     portfolio: "YEGO Finance",
                     tranche: "Aggregate",
-                    APY: "",
-                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    // APY: "",
+                    //AGGREGATE TOTAL PRINCIPLE
                     userInvest: numeral(
                       new BigNumber(positions[i][0][1]._hex)
                         .plus(new BigNumber(positions[i][1][1]._hex))
@@ -293,10 +296,23 @@ function MyPortfolio(props: Props) {
                         .dividedBy(BIG_TEN.pow(6))
                         .toString()
                     ).format("0,0.[000000]"),
+                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    pendingYield:
+                      //we are printing this whole thing to string because of the untestable nature of the app right now
+                      //so better to print out the actual calculation and then run it after it's sure to be right
+                      positions[i][2][1].toString() +
+                      " - " +
+                      numeral(
+                        new BigNumber(positions[i][0][1]._hex)
+                          .plus(new BigNumber(positions[i][1][1]._hex))
+                          //changed to 6 for USDC
+                          .dividedBy(BIG_TEN.pow(6))
+                          .toString()
+                      ).format("0,0.[000000]"),
 
                     //invested and balance of are therefore the "third tranche" (there is no third tranche)
-                    assetsPlusReturn: positions[i][2][1], //invested is argument 1
                     assetsWithdrawable: positions[i][2][0], //balance is argument 0
+                    assetsPlusReturn: positions[i][2][1], //invested is argument 1
                   },
                   pointer: true,
                 },
@@ -305,7 +321,11 @@ function MyPortfolio(props: Props) {
           //render
         })
         .map((tr: any, i: number) => (tr ? <TableRow key={i} data={tr.data} pointer={tr.pointer} /> : <div />)),
-    [positions, latestAPYs, markets]
+    [
+      positions,
+      markets,
+      //,latestAPYs
+    ]
   );
 
   // const handleAssetChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
