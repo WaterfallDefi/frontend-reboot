@@ -36,12 +36,12 @@ const connectorsByName = {
 };
 
 const AVAXNodes = ["https://api.avax.network/ext/bc/C/rpc", "https://rpc.ankr.com/avalanche"];
-const BNBNodes = [
-  "https://bsc-dataseed.binance.org/",
-  "https://bsc-dataseed1.defibit.io",
-  "https://bsc-dataseed1.ninicoin.io/",
-];
-const PolygonNodes = ["https://polygon-rpc.com", "https://rpc-mainnet.matic.network", "https://rpc.ankr.com/polygon"];
+// const BNBNodes = [
+//   "https://bsc-dataseed.binance.org/",
+//   "https://bsc-dataseed1.defibit.io",
+//   "https://bsc-dataseed1.ninicoin.io/",
+// ];
+// const PolygonNodes = ["https://polygon-rpc.com", "https://rpc-mainnet.matic.network", "https://rpc.ankr.com/polygon"];
 const ArbitrumNodes = [
   "https://arb1.arbitrum.io/rpc",
   "https://arbitrum.blockpi.network/v1/rpc/public",

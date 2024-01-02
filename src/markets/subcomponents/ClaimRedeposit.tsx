@@ -250,6 +250,7 @@ function ClaimRedeposit(props: Props) {
       });
     } finally {
       // setWithdrawAllLoading(false);
+      fetchRewards();
     }
   };
 

@@ -1,4 +1,4 @@
-import { BigNumber } from "bignumber.js";
+// import { BigNumber } from "bignumber.js";
 import numeral from "numeral";
 import { useState } from "react";
 import { Tranche } from "../../types";
@@ -10,21 +10,26 @@ type Props = {
   setToggleChartTranche: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const getPercentage = (num: string | undefined, total: string | undefined) => {
-  if (!num || !total) return "0";
-  return new BigNumber(num).dividedBy(new BigNumber(total)).times(100).toFormat(2).toString();
-};
+// const getPercentage = (num: string | undefined, total: string | undefined) => {
+//   if (!num || !total) return "0";
+//   return new BigNumber(num).dividedBy(new BigNumber(total)).times(100).toFormat(2).toString();
+// };
 
-const COLORS: { [key: string]: string } = {
-  Senior: "#FCB500",
-  Mezzanine: "#00A14A",
-  Junior: "#0066FF",
-  RiskOff: "#FCB500",
-  RiskOn: "rgb(80, 144, 234)",
-};
+// const COLORS: { [key: string]: string } = {
+//   Senior: "#FCB500",
+//   Mezzanine: "#00A14A",
+//   Junior: "#0066FF",
+//   RiskOff: "#FCB500",
+//   RiskOn: "rgb(80, 144, 234)",
+// };
 
 function TrancheStructure(props: Props) {
-  const { tranches, totalTranchesTarget, toggleChartTranche, setToggleChartTranche } = props;
+  const {
+    tranches,
+    // totalTranchesTarget,
+    toggleChartTranche,
+    setToggleChartTranche,
+  } = props;
 
   const [hoveredTranche, setHoveredTranche] = useState<number>(-1);
 

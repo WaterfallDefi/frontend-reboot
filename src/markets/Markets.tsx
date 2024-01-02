@@ -12,7 +12,6 @@ import { Market, StrategyFarm } from "../types";
 import { APYData, APYDataFull, ModalProps, Mode, Network } from "../Yego";
 import MarketDetail from "./subcomponents/MarketDetail";
 import { switchNetwork } from "../header/Header";
-import Dashboard from "../dashboard_v2/Dashboard_v2";
 
 const BIG_TEN = new BigNumber(10);
 

@@ -204,6 +204,25 @@
     justify-content: flex-end;
     margin: 0 20px 20px 0;
 
+    .assets-in-cycle {
+      border-radius: 12px;
+      padding: 8px;
+      margin: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-direction: column;
+      background: #00000030;
+      color: #ffffff;
+
+      .rtn-amt {
+        display: flex;
+        width: 100%;
+        gap: 42px;
+        align-items: center;
+      }
+    }
+
     button {
       border-radius: 8px;
       height: 35px;

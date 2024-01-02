@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
-import ky from "ky";
+// import ky from "ky";
 import { MarketList } from "../../config/markets";
 import { multicall } from "../../hooks/getContract";
 

@@ -1,6 +1,6 @@
 import "./Dashboard.scss";
 // import numeral from "numeral";
-import { Metamask } from "../header/svgs/Metamask";
+// import { Metamask } from "../header/svgs/Metamask";
 import useTotalTvl from "./hooks/useTotalTvl";
 
 function Dashboard() {

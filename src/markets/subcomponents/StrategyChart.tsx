@@ -10,14 +10,21 @@ type Props = {
   strategyFarms: StrategyFarm[];
   coingeckoPrices: CoingeckoPrices;
   tranches: Tranche[];
-  trancheCount: number;
+  // trancheCount: number;
   toggleChartTranche: number;
 };
 
 const BIG_TEN = new BigNumber(10);
 
 const StrategyChart = (props: Props) => {
-  const { APYdata, strategyFarms, coingeckoPrices, tranches, trancheCount, toggleChartTranche } = props;
+  const {
+    APYdata,
+    strategyFarms,
+    coingeckoPrices,
+    tranches,
+    // trancheCount,
+    toggleChartTranche,
+  } = props;
   const [hoverYield, setHoverYield] = useState<string>();
 
   const [seniorRewardAPRs, setSeniorRewardAPRs] = useState<any[]>([]);

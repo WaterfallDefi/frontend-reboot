@@ -77,7 +77,7 @@ export const usePositions = (marketList: Market[]) => {
         // }
 
         const userInvest = await multicall(marketList[i].network, marketList[i].abi, calls);
-        console.log(userInvest);
+        // console.log(userInvest);
         // _result.push(userInvest);
         _result[i] = userInvest;
       }

@@ -1,16 +1,16 @@
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 import numeral from "numeral";
 import { useState } from "react";
 import Countdown from "react-countdown";
 // import Tooltip from "./svgs/Tooltip";
 
-const COLORS: { [key: string]: string } = {
-  Senior: "#FCB500",
-  Mezzanine: "#00A14A",
-  Junior: "#0066FF",
-  Fixed: "#FCB500",
-  Variable: "#0066FF",
-};
+// const COLORS: { [key: string]: string } = {
+//   Senior: "#FCB500",
+//   Mezzanine: "#00A14A",
+//   Junior: "#0066FF",
+//   Fixed: "#FCB500",
+//   Variable: "#0066FF",
+// };
 
 type Props = {
   data: any;
@@ -19,11 +19,11 @@ type Props = {
   foldElement?: JSX.Element;
 };
 
-const formatTimestamp = (num: string | number) => {
-  const format1 = "YYYY/MM/DD HH:mm:ss";
-  const d = parseInt(num + "000");
-  return dayjs(d).format(format1);
-};
+// const formatTimestamp = (num: string | number) => {
+//   const format1 = "YYYY/MM/DD HH:mm:ss";
+//   const d = parseInt(num + "000");
+//   return dayjs(d).format(format1);
+// };
 
 function TableRow(props: Props) {
   const { data, pointer, setSelectedMarket, foldElement } = props;

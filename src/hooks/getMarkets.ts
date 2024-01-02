@@ -1,9 +1,9 @@
-import { EthersCall, Market, PORTFOLIO_STATUS, Token, Tranche } from "../types";
+import { Market, PORTFOLIO_STATUS, Tranche } from "../types";
 import BigNumber from "bignumber.js";
 import { multicall } from "./getContract";
 // import { getFarmsAPY } from "services/http";
 import numeral from "numeral";
-import ky from "ky";
+// import ky from "ky";
 
 const BIG_ZERO = new BigNumber(0);
 const BIG_TEN = new BigNumber(10);

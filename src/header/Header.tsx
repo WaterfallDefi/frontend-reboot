@@ -84,7 +84,7 @@ function Header(props: Props) {
 
   const { logout } = useAuth(network);
 
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  // const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState<boolean>(false);
 
   const location = useLocation();
@@ -223,7 +223,10 @@ function Header(props: Props) {
       <div className="right">
         <div className="wallet-wrapper">
           <div
-            className={"dropdown" + (dropdownOpen ? " open" : "")}
+            className={"dropdown"}
+            //  + (dropdownOpen ? " open" : "")}
+            //    ^ for when Yego ever goes multichain
+
             // onMouseEnter={() => setDropdownOpen(true)}
             // onMouseLeave={() => setDropdownOpen(false)}
           >
@@ -235,7 +238,7 @@ function Header(props: Props) {
               <div className="dropdown-triangle">▼</div>
               {network === Network.AETH && <Arbitrum />}
             </div>
-            {dropdownOpen
+            {/* {dropdownOpen
               ? network === Network.AETH
                 ? [
                     <div
@@ -255,7 +258,7 @@ function Header(props: Props) {
                       AVAX
                     </div>,
                   ]
-              : null}
+              : null} */}
           </div>
           {!active ? (
             <button

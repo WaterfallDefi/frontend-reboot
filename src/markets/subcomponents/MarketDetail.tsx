@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import BigNumber from "bignumber.js";
+// import BigNumber from "bignumber.js";
 import numeral from "numeral";
 
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 
-import { Market, Tranche } from "../../types";
+import { Market } from "../../types";
 import { APYData, APYDataFull, ModalProps } from "../../Yego";
 import { useMulticurrencyTrancheBalance, useTrancheBalance } from "../hooks/useTrancheBalance";
 import Arrow from "../svgs/Arrow";
-import ClaimRedeposit from "./ClaimRedeposit";
+// import ClaimRedeposit from "./ClaimRedeposit";
 import Deposit from "./Deposit";
 import PortfolioChart from "./PortfolioChart";
 import StrategyChart from "./StrategyChart";
@@ -83,14 +83,20 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
   const [toggleChartTranche, setToggleChartTranche] = useState<number>(0);
 
   //NEW SHIT: invested is assets in cycle => queueWithdrawal
-  const { balance, invested, fetchBalance } = useTrancheBalance(
+  const {
+    // balance, invested,
+    fetchBalance,
+  } = useTrancheBalance(
     selectedMarket.network,
     selectedMarket.address,
     selectedMarket.abi,
     selectedMarket.isMulticurrency
   );
 
-  const { MCbalance, MCinvested, fetchMCBalance } = useMulticurrencyTrancheBalance(
+  const {
+    // MCbalance, MCinvested,
+    fetchMCBalance,
+  } = useMulticurrencyTrancheBalance(
     //don't need { MCinvested } for now
     selectedMarket.network,
     selectedMarket.address,
@@ -246,7 +252,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
                 strategyFarms={selectedMarket.strategyFarms}
                 coingeckoPrices={coingeckoPrices}
                 tranches={selectedMarket.tranches}
-                trancheCount={selectedMarket.trancheCount}
+                // trancheCount={selectedMarket.trancheCount}
                 toggleChartTranche={toggleChartTranche}
               />
             ) : (
@@ -255,7 +261,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
           </div>
         </div>
       </div>
-      {account ? (
+      {/* {account ? (
         <ClaimRedeposit
           network={selectedMarket.network}
           selectedMarket={selectedMarket}
@@ -273,7 +279,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         <div className="tvl-bar wallet-not-connected">
           <div>Wallet Not Connected</div>
         </div>
-      )}
+      )} */}
       <Deposit
         selectedMarket={selectedMarket}
         // coingeckoPrices={coingeckoPrices}
@@ -283,7 +289,7 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
         setSimulDeposit={setSimulDeposit}
         setModal={setModal}
         setMarkets={setMarkets}
-        balance={selectedMarket.isMulticurrency ? MCbalance : balance}
+        // balance={selectedMarket.isMulticurrency ? MCbalance : balance}
         latestAPYs={latestAPYs}
       />
     </div>

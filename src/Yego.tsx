@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BigNumber from "bignumber.js";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -12,7 +12,7 @@ import { fetchSingleSubgraphCycleQuery } from "./myportfolio/hooks/useSubgraphQu
 import MyPortfolio from "./myportfolio/MyPortfolio";
 // import Stake from "./stake/Stake";
 import { Market } from "./types";
-import { useCoingeckoPrices, useDefiLlamaAPRs } from "./hooks/useCoingeckoPrices";
+import { useCoingeckoPrices } from "./hooks/useCoingeckoPrices";
 import Dashboard from "./dashboard_v2/Dashboard_v2";
 
 const BIG_TEN = new BigNumber(10);
@@ -99,7 +99,7 @@ function Yego() {
         farmTokensAmt: tc.farmTokensAmt,
         principal: new BigNumber(tc.principal).dividedBy(BIG_TEN.pow(6)).toNumber(),
       }));
-      console.log(data);
+      // console.log(data);
       setAPYData(data);
     };
 

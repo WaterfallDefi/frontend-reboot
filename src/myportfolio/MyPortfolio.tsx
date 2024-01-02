@@ -4,8 +4,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import numeral from "numeral";
 import TableRow from "../shared/TableRow";
-import { Market, StrategyFarm } from "../types";
-import { APYData, APYDataFull, Modal, ModalProps, Mode } from "../Yego";
+import { Market } from "../types";
+import { APYDataFull, Modal, ModalProps, Mode } from "../Yego";
 // import NoData from "./svgs/NoData";
 import { usePositions } from "./hooks/usePositions";
 // import PortfolioFold from "./subcomponents/PortfolioFold";
@@ -18,6 +18,8 @@ import useWithdraw from "../markets/hooks/useWithdraw";
 import useRedeemDirect from "../markets/hooks/useRedeemDirect";
 import useUserInfo from "../markets/hooks/useUserInfo";
 import { CoingeckoPrices } from "../markets/Markets";
+import { useFarmTokenPendingRewards } from "../markets/hooks/useFarmTokenPendingReward";
+import useClaimRewards from "../markets/hooks/useClaimRewards";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -55,7 +57,13 @@ type Props = {
 
 function MyPortfolio(props: Props) {
   //**TODO: dropped a "logged out" prop in here to reset back to "No Data"
-  const { mode, markets, latestSeniorAPY, latestJuniorAPY, coingeckoPrices, setModal, setMarkets } = props;
+  const {
+    mode,
+    markets,
+    // latestSeniorAPY, latestJuniorAPY, coingeckoPrices,
+    setModal,
+    setMarkets,
+  } = props;
 
   //UPGRADED to add "balanceOf" to multicall!
   const positions = usePositions(markets);
@@ -68,10 +76,10 @@ function MyPortfolio(props: Props) {
     balance,
     invested,
     // fetchBalance
-  } = useTrancheBalance(MarketList[0].network, MarketList[0].address, MarketList[0].abi, MarketList[0].isMulticurrency);
+  } = useTrancheBalance(markets[0].network, markets[0].address, markets[0].abi, markets[0].isMulticurrency);
   //DEHARDCODE ^ successfully rolled into usePositions
 
-  const { getUserInfo } = useUserInfo(MarketList[0].network, MarketList[0].address, MarketList[0].abi);
+  const { getUserInfo } = useUserInfo(markets[0].network, markets[0].address, markets[0].abi);
   //DEHARDCODE ^ need to roll this into usePositions, if not possible modify useUserInfo hook to cover multiple products
 
   const [withdrawalQueued, setWithdrawalQueued] = useState(false);
@@ -93,9 +101,9 @@ function MyPortfolio(props: Props) {
   // const [selectedStatus, setSelectedStatus] = useState(-1);
 
   const { onWithdraw, onQueueWithdraw } = useWithdraw(
-    MarketList[0].network,
-    MarketList[0].address,
-    MarketList[0].abi,
+    markets[0].network,
+    markets[0].address,
+    markets[0].abi,
     setModal,
     setMarkets
   );
@@ -103,10 +111,10 @@ function MyPortfolio(props: Props) {
   //call inside the function itself instead of statically in the hook, that means you can
   //withdraw from multiple contracts.
 
-  const { onRedeemDirect } = useRedeemDirect(
-    MarketList[0].network,
-    MarketList[0].address,
-    MarketList[0].abi,
+  const { onRedeemDirect, onRedeemDirectPartial } = useRedeemDirect(
+    markets[0].network,
+    markets[0].address,
+    markets[0].abi,
     setModal,
     setMarkets
   );
@@ -115,6 +123,25 @@ function MyPortfolio(props: Props) {
 
   // const [headerSort, setHeaderSort] = useState<number>(-1);
   // const [sortAsc, setSortAsc] = useState<boolean>(true);
+
+  const {
+    rewards,
+    //figure out what to do with this:
+    // fetchRewards
+  } = useFarmTokenPendingRewards(
+    markets[0].network,
+    markets[0].rewardsContract,
+    markets[0].rewardsContractAbi,
+    markets[0].strategyFarms.map((sf, i) => sf.farmTokenContractAddress)
+  );
+
+  const { onClaimRewards, onClaimAllRewards } = useClaimRewards(
+    markets[0].network,
+    markets[0].rewardsContract,
+    markets[0].rewardsContractAbi,
+    setModal,
+    setMarkets
+  );
 
   const withdrawAll = async () => {
     // setWithdrawAllLoading(true);
@@ -173,6 +200,112 @@ function MyPortfolio(props: Props) {
         txn: undefined,
         status: "REJECTED",
         message: "Queue Withdrawal Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const redeemDirect = async () => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Redeeming Assets Pending Cycle Entry",
+    });
+    try {
+      if (!invested) return;
+      await onRedeemDirect();
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Redeem Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Redeem Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const redeemDirectPartial = async (i: number) => {
+    // setWithdrawAllLoading(true);
+
+    setModal({
+      state: Modal.Txn,
+      txn: undefined,
+      status: "PENDING",
+      message: "Redeeming Assets Pending Cycle Entry",
+    });
+    try {
+      if (!invested) return;
+      await onRedeemDirectPartial(i);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Redeem Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Redeem Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const claimRewards = async (rewardsTokenAddress: string) => {
+    try {
+      await onClaimRewards(rewardsTokenAddress);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Claim Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Claim Failed ",
+      });
+    } finally {
+      // setWithdrawAllLoading(false);
+    }
+  };
+
+  const claimAllRewards = async () => {
+    try {
+      await onClaimAllRewards(MarketList[0].strategyFarms.map((f) => f.farmTokenContractAddress));
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "SUCCESS",
+        message: "Claim All Success",
+      });
+    } catch (e) {
+      console.error(e);
+      setModal({
+        state: Modal.Txn,
+        txn: undefined,
+        status: "REJECTED",
+        message: "Claim All Failed ",
       });
     } finally {
       // setWithdrawAllLoading(false);
@@ -400,11 +533,22 @@ function MyPortfolio(props: Props) {
         ) : (
           [
             usersInvestPayload,
+            //there will be redundant buttons for withdrawals for product 0 if there are more than one product
+            //even if their disable status accurately reflects amt invested in product
+            //because all withdrawal hooks are hardcoded rn
             positions.map((p: Market, i: number) => {
               return new BigNumber(positions[i][2][1]._hex).toNumber() > 0 ||
                 new BigNumber(positions[i][2][2]._hex).toNumber() > 0 ? (
                 //NEED TO CHANGE LOGIC FROM ONLY WITHDRAWING FROM FIRST PRODUCT
                 <div className="my-portfolio-buttons">
+                  <div className="assets-in-cycle">
+                    <span>Assets In Cycle</span>
+                    <span>{numeral(withdrawalQueued ? 0 : invested).format("0,0.[0000]")}</span>
+                  </div>
+                  <div className="assets-in-cycle">
+                    <span>Assets Invested</span>
+                    <span>{numeral(withdrawalQueued ? invested : 0).format("0,0.[0000]")}</span>
+                  </div>
                   <button
                     className="claim-redep-btn"
                     onClick={() => {
@@ -424,6 +568,75 @@ function MyPortfolio(props: Props) {
                     disabled={!+balance}
                   >
                     Withdraw
+                  </button>
+                  <button
+                    className="claim-redep-btn"
+                    onClick={() => {
+                      redeemDirect();
+                    }}
+                    // loading={withdrawAllLoading}
+                    disabled={!+invested || !withdrawalQueued || markets[0].status === "ACTIVE"}
+                  >
+                    Redeem Direct
+                  </button>
+                  <button
+                    className="claim-redep-btn"
+                    onClick={() => {
+                      redeemDirectPartial(0);
+                    }}
+                    // loading={withdrawAllLoading}
+                    disabled={!+invested || !withdrawalQueued || markets[0].status === "ACTIVE"}
+                  >
+                    Redeem Fixed
+                  </button>
+                  <button
+                    className="claim-redep-btn"
+                    onClick={() => {
+                      redeemDirectPartial(1);
+                    }}
+                    // loading={withdrawAllLoading}
+                    disabled={
+                      new BigNumber(positions[i][1][1]._hex).toNumber() > 0 ||
+                      !withdrawalQueued ||
+                      markets[0].status === "ACTIVE"
+                    }
+                  >
+                    Redeem Degen
+                  </button>
+                  <div className="assets-in-cycle">
+                    {rewards.map(
+                      (r, i) =>
+                        i !== 0 && (
+                          <div className="rtn-amt" key={i}>
+                            <span>
+                              {markets[0].strategyFarms[i].farmName} : {r}
+                            </span>
+                            {/* reward withdrawal only available for stargate rn */}
+                            {markets[0].strategyFarms[i].farmName === "Stargate" && (
+                              <button
+                                onClick={() => claimRewards(markets[0].strategyFarms[i].farmTokenContractAddress)}
+                                disabled={new BigNumber(r).toNumber() === 0}
+                              >
+                                Claim
+                              </button>
+                            )}
+                          </div>
+                        )
+                    )}
+                  </div>
+                  <button
+                    className="claim-redep-btn"
+                    onClick={() => {
+                      claimAllRewards();
+                    }}
+                    // loading={withdrawAllLoading}
+                    disabled={
+                      rewards.reduce((next, acc) => {
+                        return new BigNumber(acc).toNumber() + next;
+                      }, 0) === 0
+                    }
+                  >
+                    Claim All Rewards
                   </button>
                 </div>
               ) : (

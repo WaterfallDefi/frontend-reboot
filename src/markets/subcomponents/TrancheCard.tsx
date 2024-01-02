@@ -4,11 +4,11 @@ import React from "react";
 import { Market, Tranche } from "../../types";
 import { APYData } from "../../Yego";
 
-const BIG_TEN = new BigNumber(10);
+// const BIG_TEN = new BigNumber(10);
 
 type Props = {
   selectedMarket: Market;
-  selectedDepositAssetIndex: number;
+  // selectedDepositAssetIndex: number;
   tranche: Tranche;
   trancheIndex: number;
   selected: boolean;
@@ -28,7 +28,7 @@ const formatTVL = (num: string | undefined, decimals = 18) => {
 function TrancheCard(props: Props) {
   const {
     selectedMarket,
-    selectedDepositAssetIndex,
+    // selectedDepositAssetIndex,
     tranche,
     trancheIndex,
     selected,
@@ -38,7 +38,7 @@ function TrancheCard(props: Props) {
   } = props;
   const isSoldout = false;
 
-  const trancheApr = tranche.apy;
+  // const trancheApr = tranche.apy;
 
   const tranchePrincipal: string = Number(tranche.autoPrincipal).toString();
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 import BigNumber from "bignumber.js";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 
-import { Market, PORTFOLIO_STATUS } from "../../types";
+import { Market } from "../../types";
 import { APYData, ModalProps } from "../../Yego";
 import ApproveCardDefault from "./ApproveCardDefault";
 import ApproveCardSimul from "./ApproveCardSimul";
@@ -20,7 +20,7 @@ type Props = {
   setSimulDeposit: React.Dispatch<React.SetStateAction<boolean>>;
   setModal: React.Dispatch<React.SetStateAction<ModalProps>>;
   setMarkets: React.Dispatch<React.SetStateAction<Market[] | undefined>>;
-  balance: string | string[];
+  // balance: string | string[];
   latestAPYs: (APYData | undefined)[];
 };
 
@@ -44,7 +44,7 @@ function Deposit(props: Props) {
     setSimulDeposit,
     setModal,
     setMarkets,
-    balance,
+    // balance,
     latestAPYs,
   } = props;
 
@@ -116,7 +116,7 @@ function Deposit(props: Props) {
               <TrancheCard
                 key={i}
                 selectedMarket={selectedMarket}
-                selectedDepositAssetIndex={selectedDepositAssetIndex}
+                // selectedDepositAssetIndex={selectedDepositAssetIndex}
                 tranche={t}
                 trancheIndex={i}
                 selected={selectTrancheIdx === i}
