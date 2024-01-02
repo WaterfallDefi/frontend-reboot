@@ -447,7 +447,7 @@ function MyPortfolio(props: Props) {
                       new BigNumber(positions[i][2][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()
                     ).format("0,0.[000000]"), //invested is argument 1
                   },
-                  pointer: true,
+                  pointer: false,
                 },
               ]
             : undefined;
