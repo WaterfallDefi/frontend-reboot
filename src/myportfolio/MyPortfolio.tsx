@@ -246,7 +246,7 @@ function MyPortfolio(props: Props) {
             ? [
                 {
                   data: {
-                    portfolio: p.portfolio,
+                    portfolio: markets[i].portfolio,
                     tranche: "Fixed",
                     //APY: latestAPYs[i] ? latestAPYs[i][0].y + "%" : "-",
                     userInvest:
@@ -259,7 +259,7 @@ function MyPortfolio(props: Props) {
                             "0,0.[000000]"
                           )
                         : "-",
-                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    // nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
                     pendingYield: "",
                     assetsWithdrawable: "",
                     assetsPlusReturn: "",
@@ -268,7 +268,7 @@ function MyPortfolio(props: Props) {
                 },
                 {
                   data: {
-                    portfolio: p.portfolio,
+                    portfolio: markets[i].portfolio,
                     tranche: "Degen",
                     // APY: latestAPYs[i] ? latestAPYs[i][1].y + "%" : "-",
                     userInvest:
@@ -278,7 +278,7 @@ function MyPortfolio(props: Props) {
                             "0,0.[000000]"
                           )
                         : "-",
-                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    // nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
                     pendingYield: "",
                     assetsWithdrawable: "",
                     assetsPlusReturn: "",
@@ -287,7 +287,7 @@ function MyPortfolio(props: Props) {
                 },
                 {
                   data: {
-                    portfolio: "YEGO Finance",
+                    portfolio: markets[i].portfolio,
                     tranche: "Aggregate",
                     // APY: "",
                     //AGGREGATE TOTAL PRINCIPLE
@@ -298,19 +298,15 @@ function MyPortfolio(props: Props) {
                         .dividedBy(BIG_TEN.pow(6))
                         .toString()
                     ).format("0,0.[000000]"),
-                    nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
-                    pendingYield:
-                      //we are printing this whole thing to string because of the untestable nature of the app right now
-                      //so better to print out the actual calculation and then run it after it's sure to be right
-                      positions[i][2][1].toString() +
-                      " - " +
-                      numeral(
-                        new BigNumber(positions[i][0][1]._hex)
-                          .plus(new BigNumber(positions[i][1][1]._hex))
-                          //changed to 6 for USDC
-                          .dividedBy(BIG_TEN.pow(6))
-                          .toString()
-                      ).format("0,0.[000000]"),
+                    // nextCycle: Number(markets[i].duration) + Number(markets[i].actualStartAt),
+                    pendingYield: numeral(
+                      new BigNumber(positions[i][0][1]._hex)
+                        .plus(new BigNumber(positions[i][1][1]._hex))
+                        .minus(new BigNumber(positions[i][2][1]._hex))
+                        //changed to 6 for USDC
+                        .dividedBy(BIG_TEN.pow(6))
+                        .toString()
+                    ).format("0,0.[000000]"),
 
                     //invested and balance of are therefore the "third tranche" (there is no third tranche)
                     assetsWithdrawable: numeral(
