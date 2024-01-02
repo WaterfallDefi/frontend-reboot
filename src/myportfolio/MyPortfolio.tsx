@@ -234,8 +234,6 @@ function MyPortfolio(props: Props) {
 
   // const latestAPYs = markets.map((m) => calculateAPR(m));
 
-  console.log(positions);
-
   const usersInvestPayload = useMemo(
     () =>
       //calculations
@@ -403,7 +401,8 @@ function MyPortfolio(props: Props) {
           [
             usersInvestPayload,
             positions.map((p: Market, i: number) => {
-              return positions[i][2][1] > 0 && positions[i][2][2] > 0 ? (
+              return new BigNumber(positions[i][2][1]._hex).toNumber() > 0 ||
+                new BigNumber(positions[i][2][2]._hex).toNumber() > 0 ? (
                 //NEED TO CHANGE LOGIC FROM ONLY WITHDRAWING FROM FIRST PRODUCT
                 <div className="my-portfolio-buttons">
                   <button

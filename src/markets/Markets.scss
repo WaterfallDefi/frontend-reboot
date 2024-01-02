@@ -156,6 +156,35 @@
         }
       }
 
+      .clock-div {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .button {
+          border-radius: 8px;
+          height: 28px;
+          font-size: $font-size-md;
+          font-weight: 600;
+          border: 1px solid $text-color-lightest;
+          background: #ffffff20;
+          color: $highlight-color;
+          cursor: pointer;
+          padding: 5px;
+          margin-top: 8px;
+
+          & > svg {
+            margin-left: 5px;
+          }
+
+          &:disabled {
+            color: $base-color;
+            cursor: auto;
+            opacity: 0.5;
+          }
+        }
+      }
+
       .status-div {
         font-size: $font-size-md;
         padding-top: 6px;

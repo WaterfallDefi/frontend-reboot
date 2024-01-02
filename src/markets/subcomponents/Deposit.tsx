@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import BigNumber from "bignumber.js";
 import dayjs from "dayjs";
-import Countdown from "react-countdown";
 
 import { Market, PORTFOLIO_STATUS } from "../../types";
 import { APYData, ModalProps } from "../../Yego";
@@ -34,31 +33,6 @@ type Props = {
 //   if (largerOnly) return _num1.comparedTo(_num2) > 0 ? true : false;
 //   return _num1.comparedTo(_num2) >= 0 ? true : false;
 // };
-
-const handleReminder = (startTime: number, endTime: number) => {
-  if (!window || !startTime || !endTime) return;
-  const start =
-    new Date(startTime * 1000).getFullYear() +
-    new Date(startTime * 1000).getMonth() +
-    new Date(startTime * 1000).getDay() +
-    "T" +
-    new Date(startTime * 1000).getHours() +
-    new Date(startTime * 1000).getMinutes();
-  const end =
-    new Date(endTime * 1000).getFullYear() +
-    new Date(endTime * 1000).getMonth() +
-    new Date(endTime * 1000).getDay() +
-    "T" +
-    new Date(endTime * 1000).getHours() +
-    new Date(endTime * 1000).getMinutes();
-  window?.open(`https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Yego`, "_blank");
-};
-
-const formatTimestamp = (num: string | number) => {
-  const format1 = "YYYY/MM/DD HH:mm:ss";
-  const d = parseInt(num + "000");
-  return dayjs(d).format(format1);
-};
 
 function Deposit(props: Props) {
   const {
@@ -106,52 +80,6 @@ function Deposit(props: Props) {
   return (
     <div className="deposit dark-deposit">
       {/* {selectedMarket.status === PORTFOLIO_STATUS.ACTIVE && selectedMarket.actualStartAt && selectedMarket.duration ? ( */}
-      <div className="next-cycle-wrapper">
-        <div className="next-cycle">
-          Next Cycle <br />
-          <span className="countdown">
-            <Countdown
-              date={
-                (Number(selectedMarket.duration) +
-                  Number(selectedMarket.actualStartAt) +
-                  Number(selectedMarket.investmentWindow)) *
-                1000
-              }
-              renderer={({ days, hours, minutes, seconds, completed }) => {
-                return (
-                  <span>
-                    {!completed && (
-                      <>
-                        {hours} Hours {minutes} Minutes {seconds} Seconds
-                      </>
-                    )}
-                  </span>
-                );
-              }}
-            />
-          </span>
-        </div>
-        <div className="active-cycle">
-          Active Cycle
-          {" " + formatTimestamp(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0)} -
-          {" " +
-            formatTimestamp(
-              Number(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0) +
-                Number(selectedMarket.duration ? selectedMarket.duration : 0)
-            )}{" "}
-        </div>
-        <div
-          className="button"
-          onClick={() =>
-            handleReminder(
-              Number(selectedMarket.actualStartAt),
-              Number(selectedMarket.actualStartAt) + Number(selectedMarket.duration)
-            )
-          }
-        >
-          Remind Me
-        </div>
-      </div>
       {/* ) : null} */}
       <div className="top-bar">
         <div className="step-bar">

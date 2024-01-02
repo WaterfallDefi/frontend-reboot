@@ -15,6 +15,33 @@ import PortfolioChart from "./PortfolioChart";
 import StrategyChart from "./StrategyChart";
 import TrancheStructure from "./TrancheStructure";
 import { CoingeckoPrices } from "../Markets";
+import dayjs from "dayjs";
+import Countdown from "react-countdown";
+
+const formatTimestamp = (num: string | number) => {
+  const format1 = "YYYY/MM/DD HH:mm:ss";
+  const d = parseInt(num + "000");
+  return dayjs(d).format(format1);
+};
+
+const handleReminder = (startTime: number, endTime: number) => {
+  if (!window || !startTime || !endTime) return;
+  const start =
+    new Date(startTime * 1000).getFullYear() +
+    new Date(startTime * 1000).getMonth() +
+    new Date(startTime * 1000).getDay() +
+    "T" +
+    new Date(startTime * 1000).getHours() +
+    new Date(startTime * 1000).getMinutes();
+  const end =
+    new Date(endTime * 1000).getFullYear() +
+    new Date(endTime * 1000).getMonth() +
+    new Date(endTime * 1000).getDay() +
+    "T" +
+    new Date(endTime * 1000).getHours() +
+    new Date(endTime * 1000).getMinutes();
+  window?.open(`https://calendar.google.com/calendar/u/0/r/eventedit?dates=${start}/${end}&text=Yego`, "_blank");
+};
 
 type Props = {
   selectedMarket: Market;
@@ -127,6 +154,54 @@ const MarketDetail: React.FC<Props> = (props: Props) => {
             <span className="tvl">{numeral(selectedMarket.tvl).format("0,0.0000")} </span>
             {selectedMarket.assets[0] === "WBNB" || "WAVAX" ? selectedMarket.assets[0] : "$"}
           </div>
+        </div>
+        <div className="clock-div">
+          <div className="next-cycle">
+            Next Cycle <br />
+            <span className="countdown">
+              <Countdown
+                date={
+                  (Number(selectedMarket.duration) +
+                    Number(selectedMarket.actualStartAt) +
+                    Number(selectedMarket.investmentWindow)) *
+                  1000
+                }
+                renderer={({ days, hours, minutes, seconds, completed }) => {
+                  return (
+                    <span>
+                      {!completed && (
+                        <>
+                          {hours} Hours {minutes} Minutes {seconds} Seconds
+                        </>
+                      )}
+                    </span>
+                  );
+                }}
+              />
+            </span>
+          </div>
+          <div className="active-cycle">
+            {selectedMarket.status === "PENDING" ? "Last" : "Active"} Cycle
+            {" " + formatTimestamp(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0)} -
+            {" " +
+              formatTimestamp(
+                Number(selectedMarket.actualStartAt ? selectedMarket.actualStartAt : 0) +
+                  Number(selectedMarket.duration ? selectedMarket.duration : 0)
+              )}{" "}
+          </div>
+          {selectedMarket.status === "ACTIVE" && (
+            <div
+              className="button"
+              onClick={() =>
+                handleReminder(
+                  Number(selectedMarket.actualStartAt),
+                  Number(selectedMarket.actualStartAt) + Number(selectedMarket.duration)
+                )
+              }
+            >
+              Remind Me
+            </div>
+          )}
         </div>
         <div className="status-div">
           Status:{" "}

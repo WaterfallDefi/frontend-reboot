@@ -13,6 +13,7 @@ import MyPortfolio from "./myportfolio/MyPortfolio";
 // import Stake from "./stake/Stake";
 import { Market } from "./types";
 import { useCoingeckoPrices, useDefiLlamaAPRs } from "./hooks/useCoingeckoPrices";
+import Dashboard from "./dashboard_v2/Dashboard_v2";
 
 const BIG_TEN = new BigNumber(10);
 
@@ -139,18 +140,7 @@ function Yego() {
           path="/"
           element={layout(
             [
-              <Markets
-                key="markets"
-                mode={Mode.Dark}
-                network={network}
-                setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
-                setNetwork={setNetwork}
-                markets={markets}
-                setMarkets={setMarkets}
-                setModal={setModal}
-                APYData={APYData}
-                coingeckoPrices={coingeckoPrices}
-              />,
+              <Dashboard />,
               latestSeniorAPY && latestJuniorAPY && markets ? (
                 <MyPortfolio
                   key="portfolio"
@@ -165,6 +155,18 @@ function Yego() {
               ) : (
                 <div />
               ),
+              <Markets
+                key="markets"
+                mode={Mode.Dark}
+                network={network}
+                setDisableHeaderNetworkSwitch={setDisableHeaderNetworkSwitch}
+                setNetwork={setNetwork}
+                markets={markets}
+                setMarkets={setMarkets}
+                setModal={setModal}
+                APYData={APYData}
+                coingeckoPrices={coingeckoPrices}
+              />,
             ],
             true
           )}

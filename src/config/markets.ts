@@ -73,7 +73,12 @@ export const MarketList: Market[] = [
     multistrategyContract: Arbitrum_MultiStrategy[NETWORK],
     rewardsContractAbi: YEGO_RewardTokens.abi,
     multistrategyAbi: YEGO_MultiStrategy.abi,
-    strategyBlurbs: ["YEGO Finance"],
+    strategyBlurbs: [
+      "Stargate is a fully composable liquidity transport protocol that lives at the heart of omnichain DeFi.",
+      "Hop is a protocol for sending tokens across rollups.",
+      "The Curve DAO token powers the Curve.fi financial platform, which acts as an exchange and automated market maker.",
+      "Convex is a platform that boosts rewards for CRV stakers and liquidity providers alike, all in a simple and easy to use interface.",
+    ],
     subgraphURL: "https://apiarbitrum.yego.finance/subgraphs/name/yego/arb-usdc",
   },
 ];

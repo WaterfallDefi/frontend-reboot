@@ -260,7 +260,6 @@ function Markets(props: Props) {
 
   return (
     <div className={"markets-wrapper " + mode} id="markets">
-      {!selectedMarket ? <Dashboard /> : null}
       {!selectedMarket ? (
         <div className="header-row">
           {headers.map((h, i) => (
