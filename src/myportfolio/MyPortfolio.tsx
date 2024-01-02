@@ -234,12 +234,15 @@ function MyPortfolio(props: Props) {
 
   // const latestAPYs = markets.map((m) => calculateAPR(m));
 
+  console.log(positions);
+
   const usersInvestPayload = useMemo(
     () =>
       //calculations
       positions
         .map((p: Market, i: number) => {
-          return new BigNumber(positions[i][2][1]).toNumber() > 0 || new BigNumber(positions[i][2][2]).toNumber() > 0
+          return new BigNumber(positions[i][2][1]._hex).toNumber() > 0 ||
+            new BigNumber(positions[i][2][2]._hex).toNumber() > 0
             ? [
                 {
                   data: {
@@ -252,7 +255,7 @@ function MyPortfolio(props: Props) {
                       // [1] the returned argument index, argument 0 is just cycle ffs
                       positions.length > 0
                         ? //changed to 6 for USDC
-                          numeral(new BigNumber(positions[i][0][1]).dividedBy(BIG_TEN.pow(6)).toString()).format(
+                          numeral(new BigNumber(positions[i][0][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
                             "0,0.[000000]"
                           )
                         : "-",
@@ -271,7 +274,7 @@ function MyPortfolio(props: Props) {
                     userInvest:
                       positions.length > 0
                         ? //changed to 6 for USDC
-                          numeral(new BigNumber(positions[i][1][1]).dividedBy(BIG_TEN.pow(6)).toString()).format(
+                          numeral(new BigNumber(positions[i][1][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
                             "0,0.[000000]"
                           )
                         : "-",
@@ -289,8 +292,8 @@ function MyPortfolio(props: Props) {
                     // APY: "",
                     //AGGREGATE TOTAL PRINCIPLE
                     userInvest: numeral(
-                      new BigNumber(positions[i][0][1])
-                        .plus(new BigNumber(positions[i][1][1]))
+                      new BigNumber(positions[i][0][1]._hex)
+                        .plus(new BigNumber(positions[i][1][1]._hex))
                         //changed to 6 for USDC
                         .dividedBy(BIG_TEN.pow(6))
                         .toString()
@@ -302,16 +305,20 @@ function MyPortfolio(props: Props) {
                       positions[i][2][1].toString() +
                       " - " +
                       numeral(
-                        new BigNumber(positions[i][0][1])
-                          .plus(new BigNumber(positions[i][1][1]))
+                        new BigNumber(positions[i][0][1]._hex)
+                          .plus(new BigNumber(positions[i][1][1]._hex))
                           //changed to 6 for USDC
                           .dividedBy(BIG_TEN.pow(6))
                           .toString()
                       ).format("0,0.[000000]"),
 
                     //invested and balance of are therefore the "third tranche" (there is no third tranche)
-                    assetsWithdrawable: positions[i][2][0], //balance is argument 0
-                    assetsPlusReturn: positions[i][2][1], //invested is argument 1
+                    assetsWithdrawable: numeral(
+                      new BigNumber(positions[i][2][0]._hex).dividedBy(BIG_TEN.pow(6)).toString()
+                    ).format("0,0.[000000]"), //balance is argument 0
+                    assetsPlusReturn: numeral(
+                      new BigNumber(positions[i][2][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()
+                    ).format("0,0.[000000]"), //invested is argument 1
                   },
                   pointer: true,
                 },
@@ -319,7 +326,13 @@ function MyPortfolio(props: Props) {
             : undefined;
           //render
         })
-        .map((tr: any, i: number) => (tr ? <TableRow key={i} data={tr.data} pointer={tr.pointer} /> : <div />)),
+        .map((market: any, i: number) =>
+          market ? (
+            market.map((tr: any, i: number) => <TableRow key={i} data={tr.data} pointer={tr.pointer} />)
+          ) : (
+            <div />
+          )
+        ),
     [
       positions,
       markets,

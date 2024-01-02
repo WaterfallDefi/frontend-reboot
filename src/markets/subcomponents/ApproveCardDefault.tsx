@@ -188,14 +188,7 @@ function ApproveCardDefault(props: Props) {
       }
     }
 
-    if (
-      Date.now() -
-        (Number(selectedMarket.duration) +
-          Number(selectedMarket.actualStartAt) +
-          Number(selectedMarket.investmentWindow)) *
-          1000 >
-      0
-    ) {
+    if (selectedMarket.status !== "PENDING") {
       return "Please wait until investment window opens again after current cycle.";
     }
   }, [actualBalanceWallet, balanceInput, balance, metamaskBalance, selectedMarket]);
@@ -304,17 +297,7 @@ function ApproveCardDefault(props: Props) {
         style={{ height: 56 }}
         onClick={handleDeposit}
         disabled={
-          !enabled ||
-          isSoldOut ||
-          !balanceInput ||
-          selectedMarket?.isRetired ||
-          //investment window disable
-          Date.now() -
-            (Number(selectedMarket.duration) +
-              Number(selectedMarket.actualStartAt) +
-              Number(selectedMarket.investmentWindow)) *
-              1000 >
-            0
+          !enabled || isSoldOut || !balanceInput || selectedMarket?.isRetired || selectedMarket?.status !== "PENDING"
         }
       >
         Deposit
