@@ -239,8 +239,7 @@ function MyPortfolio(props: Props) {
       //calculations
       positions
         .map((p: Market, i: number) => {
-          return new BigNumber(positions[i][2][1]._hex).toNumber() > 0 ||
-            new BigNumber(positions[i][2][2]._hex).toNumber() > 0
+          return new BigNumber(positions[i][2][1]).toNumber() > 0 || new BigNumber(positions[i][2][2]).toNumber() > 0
             ? [
                 {
                   data: {
@@ -253,7 +252,7 @@ function MyPortfolio(props: Props) {
                       // [1] the returned argument index, argument 0 is just cycle ffs
                       positions.length > 0
                         ? //changed to 6 for USDC
-                          numeral(new BigNumber(positions[i][0][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
+                          numeral(new BigNumber(positions[i][0][1]).dividedBy(BIG_TEN.pow(6)).toString()).format(
                             "0,0.[000000]"
                           )
                         : "-",
@@ -272,7 +271,7 @@ function MyPortfolio(props: Props) {
                     userInvest:
                       positions.length > 0
                         ? //changed to 6 for USDC
-                          numeral(new BigNumber(positions[i][1][1]._hex).dividedBy(BIG_TEN.pow(6)).toString()).format(
+                          numeral(new BigNumber(positions[i][1][1]).dividedBy(BIG_TEN.pow(6)).toString()).format(
                             "0,0.[000000]"
                           )
                         : "-",
@@ -290,8 +289,8 @@ function MyPortfolio(props: Props) {
                     // APY: "",
                     //AGGREGATE TOTAL PRINCIPLE
                     userInvest: numeral(
-                      new BigNumber(positions[i][0][1]._hex)
-                        .plus(new BigNumber(positions[i][1][1]._hex))
+                      new BigNumber(positions[i][0][1])
+                        .plus(new BigNumber(positions[i][1][1]))
                         //changed to 6 for USDC
                         .dividedBy(BIG_TEN.pow(6))
                         .toString()
@@ -303,8 +302,8 @@ function MyPortfolio(props: Props) {
                       positions[i][2][1].toString() +
                       " - " +
                       numeral(
-                        new BigNumber(positions[i][0][1]._hex)
-                          .plus(new BigNumber(positions[i][1][1]._hex))
+                        new BigNumber(positions[i][0][1])
+                          .plus(new BigNumber(positions[i][1][1]))
                           //changed to 6 for USDC
                           .dividedBy(BIG_TEN.pow(6))
                           .toString()
